@@ -583,6 +583,12 @@
                     <h3>مخطط الجلوس</h3>
                     <p>تنظيم أماكن جلوس التلاميذ داخل المخبر</p>
                 </div>
+				<div class="document-card" onclick="showDocument('other-docs')">
+					<div class="status-badge status-pending">قيد الإنجاز</div>
+					<span class="icon">📎</span>
+					<h3>وثائق أخرى</h3>
+					<p>ملفات ووثائق إدارية أو تعليمية إضافية</p>
+				</div>
             </div>
         </div>
         <!-- صفحات التفاصيل -->
@@ -1042,7 +1048,29 @@
         </div>
     </div>
 </div>
+		<div id="other-docs" class="document-detail">
+		<button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
+		<div class="header">
+        <h1>وثائق أخرى 📎</h1>
 		
+        <p>وثائق أخرى قد يحتاجها الأستاذ أثناء تأدية عمله</p>
+    </div>
+     <div class="section">
+	  <h3>نماذج لوثائق اخرى</h3>
+    <div class="file-list">
+        <div class="file-item">
+            <div class="file-info">
+                <div class="file-name">دليل مرافقة الأستاذ المتربص</div>
+                <div class="file-size">PDF - 1.63 MB</div>
+            </div>
+				<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/qlkn7ut8acwey0k/دليل+مرافقة+الأستاذ+المتربص.pdf/file', '_blank')">
+                    تحميل
+                </button>
+        </div>
+        <!-- Add more documents here -->
+    </div>
+	</div>
+</div>
     </div>
 
     <script>
