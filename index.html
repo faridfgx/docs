@@ -1,3 +1,4 @@
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -179,6 +180,82 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
+        /* Status Badge Styles */
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-new {
+            background: linear-gradient(135deg, #00c851 0%, #00a043 100%);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-updated {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: white;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .status-complete {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            animation: blink 2s infinite;
+        }
+
+        .status-not-implemented {
+            background: linear-gradient(135deg, #9e9e9e 0%, #616161 100%);
+            color: white;
+            opacity: 0.8;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 200, 81, 0.2); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0, 200, 81, 0.4); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 200, 81, 0.2); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3); }
+            100% { box-shadow: 0 6px 25px rgba(255, 68, 68, 0.6); }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.6; }
+        }
+
+        /* Disabled card style for not implemented */
+        .document-card.not-implemented {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .document-card.not-implemented:hover {
+            transform: none;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0.10) 50%, 
+                rgba(255, 255, 255, 0.05) 100%);
+        }
+
         .document-detail {
             display: none;
             background: linear-gradient(135deg, 
@@ -325,6 +402,51 @@
         .home-view.hidden {
             display: none;
         }
+
+        /* Status Legend */
+        .status-legend {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-legend h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-badge {
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .legend-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -336,92 +458,133 @@
                 <p>جميع الوثائق والملفات التي يحتاجها أستاذ المعلوماتية في مكان واحد</p>
             </div>
 
+            <!-- دليل الحالات -->
+            <div class="status-legend">
+                <h3>🔍 دليل حالات الملفات</h3>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <span class="legend-badge status-new">جديد</span>
+                        <span class="legend-text">ملفات جديدة مضافة حديثاً</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-badge status-updated">محدث</span>
+                        <span class="legend-text">ملفات تم تحديثها مؤخراً</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-badge status-complete">مكتمل</span>
+                        <span class="legend-text">ملفات جاهزة للاستخدام</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-badge status-pending">قيد الإنجاز</span>
+                        <span class="legend-text">ملفات قيد التطوير</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-badge status-not-implemented">غير متوفر</span>
+                        <span class="legend-text">ملفات غير متوفرة حالياً</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="documents-grid">
-                <div class="document-card" onclick="showDocument('notes')">
+                <div class="document-card not-implemented" onclick="showNotImplemented('المذكرات')">
+                    <div class="status-badge status-not-implemented">غير متوفر</div>
                     <span class="icon">📝</span>
                     <h3>المذكرات</h3>
                     <p>مذكرات تربوية لجميع الدروس والوحدات</p>
                 </div>
 
-                <div class="document-card" onclick="showDocument('lessons')">
+                <div class="document-card not-implemented" onclick="showNotImplemented('الدروس')">
+                    <div class="status-badge status-not-implemented">غير متوفر</div>
                     <span class="icon">📚</span>
                     <h3>الدروس</h3>
                     <p>محتوى الدروس مفصل ومنظم</p>
                 </div>
 
-                <div class="document-card" onclick="showDocument('presentations')">
+                <div class="document-card not-implemented" onclick="showNotImplemented('العروض التقديمية')">
+                    <div class="status-badge status-not-implemented">غير متوفر</div>
                     <span class="icon">🎯</span>
                     <h3>العروض التقديمية</h3>
                     <p>عروض PowerPoint جاهزة للاستخدام</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('annual-progression')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">📅</span>
                     <h3>التدرج السنوي</h3>
                     <p>توزيع المنهج على أشهر السنة</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('textbook')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">📖</span>
                     <h3>الكتاب المدرسي</h3>
                     <p>الكتاب المقرر وملحقاته</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('annual-distribution')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">🗓️</span>
                     <h3>التوزيع السنوي</h3>
                     <p>خطة توزيع الدروس والأنشطة</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('grade-book')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">📊</span>
                     <h3>دفتر التنقيط</h3>
                     <p>سجلات الدرجات والتقييم</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('training-book')">
+                    <div class="status-badge status-new">جديد</div>
                     <span class="icon">🎓</span>
                     <h3>دفتر التكوين</h3>
                     <p>سجل التطوير المهني والتدريب</p>
                 </div>
 
-                <div class="document-card" onclick="showDocument('daily-journal')">
+                <div class="document-card not-implemented" onclick="showNotImplemented('الدفتر اليومي')">
+                    <div class="status-badge status-not-implemented">غير متوفر</div>
                     <span class="icon">📝</span>
                     <h3>الدفتر اليومي</h3>
                     <p>تسجيل الأنشطة اليومية</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('lab-tracking')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">🔬</span>
                     <h3>دفتر متابعة المخبر</h3>
                     <p>تتبع أنشطة المختبر والصيانة</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('programs')">
+                    <div class="status-badge status-updated">محدث</div>
                     <span class="icon">💻</span>
                     <h3>البرامج</h3>
                     <p>البرمجيات التعليمية والأدوات</p>
                 </div>
 
                 <div class="document-card" onclick="showDocument('lab-rules')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">⚖️</span>
                     <h3>القانون الداخلي للمخبر</h3>
                     <p>قوانين وقواعد استخدام المختبر</p>
                 </div>
-				<div class="document-card" onclick="showDocument('lab-guide')">
+
+                <div class="document-card" onclick="showDocument('lab-guide')">
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">🖥️</span>
                     <h3>دليل تسيير مخبر المعلوماتية</h3>
                     <p>إرشادات وتنظيمات تسيير المخبر بالتفصيل</p>
                 </div>
-				<div class="document-card" onclick="showDocument('seating-plan')">
-					<span class="icon">🪑</span>
-					<h3>مخطط الجلوس</h3>
-					<p>تنظيم أماكن جلوس التلاميذ داخل المخبر</p>
-				</div>
 
+                <div class="document-card" onclick="showDocument('seating-plan')">
+                    <div class="status-badge status-new">جديد</div>
+                    <span class="icon">🪑</span>
+                    <h3>مخطط الجلوس</h3>
+                    <p>تنظيم أماكن جلوس التلاميذ داخل المخبر</p>
+                </div>
             </div>
         </div>
-
         <!-- صفحات التفاصيل -->
         <div id="notes" class="document-detail">
             <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
@@ -555,11 +718,9 @@
                             <div class="file-name">التدرج في بناء التعلمات السنة الأولى جذع مشترك علوم وتكنولوجيا و جذع مشترك أداب</div>
                             <div class="file-size">PDF - 2 MB</div>
                         </div>
-						
-						
-                        <a href="https://www.mediafire.com/file/h4x3t2j7woldt1o/التدرجات+السنوية(1).pdf/file" download>
-                            <button class="download-btn">تحميل</button>
-                        </a>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/h4x3t2j7woldt1o/التدرجات+السنوية(1).pdf/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -580,10 +741,9 @@
                     <div class="file-size">PDF - 1.5 MB</div>
                 </div>
 				
-				
-                                        <a href="https://www.mediafire.com/file/znh4mhnojvecfc7/دليل+تسيير+المخبر.pdf/file" download>
-  <button class="download-btn">تحميل من الرابط الاول</button>
-</a>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/znh4mhnojvecfc7/دليل+تسيير+المخبر.pdf/file', '_blank')">
+                            تحميل
+                        </button>
             </div>
 
 
@@ -606,13 +766,12 @@
                             <div class="file-size">PDF - 13.3 MB</div>
                         </div>
 						
-                        <a href="https://www.mediafire.com/file/1cp9pqytwc4i834/%25D9%2583%25D8%25AA%25D8%25A7%25D8%25A8_%25D8%25A7%25D9%2584%25D9%2585%25D8%25B9%25D9%2584%25D9%2588%25D9%2585%25D8%25A7%25D8%25AA%25D9%258A%25D8%25A9_%25D8%25A7%25D8%25B5%25D9%2584%25D9%258A.pdf/file" download>
-  <button class="download-btn">تحميل من الرابط الاول</button>
-</a>
-
-<a href="https://www.mediafire.com/file/1km72fy2k4b525e/info1eras.pdf/file" download>
-  <button class="download-btn">تحميل من الرابط الثاني</button>
-</a>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/1cp9pqytwc4i834/%25D9%2583%25D8%25AA%25D8%25A7%25D8%25A8_%25D8%25A7%25D9%2584%25D9%2585%25D8%25B9%25D9%2584%25D9%2588%25D9%2585%25D8%25A7%25D8%25AA%25D9%258A%25D8%25A9_%25D8%25A7%25D8%25B5%25D9%2584%25D9%258A.pdf/file', '_blank')">
+                            تحميل
+                        </button>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/1km72fy2k4b525e/info1eras.pdf/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -632,18 +791,18 @@
                             <div class="file-name">التوزيع السنوي - جميع المستويات - النموذج 01</div>
                             <div class="file-size">DOCX - 31 KB</div>
                         </div>
-                        <a href="https://www.mediafire.com/file/2n0ui9w13liqeo6/%D8%A7%D9%84%D8%AA%D9%88%D8%B2%D9%8A%D8%B9+%D8%A7%D9%84%D8%B3%D9%86%D9%88%D9%8A+2025+-+Copie.docx/file" download>
-                            <button class="download-btn">تحميل</button>
-                        </a>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/2n0ui9w13liqeo6/%D8%A7%D9%84%D8%AA%D9%88%D8%B2%D9%8A%D8%B9+%D8%A7%D9%84%D8%B3%D9%86%D9%88%D9%8A+2025+-+Copie.docx/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
 					<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">التوزيع السنوي - جميع المستويات - النموذج 02</div>
                             <div class="file-size">XLSX - 25 KB</div>
                         </div>
-                        <a href="https://www.mediafire.com/file/hv50usg7jd7ofli/التوزيع+السنوي.xlsx/file" download>
-                            <button class="download-btn">تحميل</button>
-                        </a>
+						<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/hv50usg7jd7ofli/التوزيع+السنوي.xlsx/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -663,12 +822,10 @@
                             <div class="file-name">دفتر التنقيط - نموذج 01</div>
                             <div class="file-size">XLSX - 20 KB</div>
                         </div>
-						
-						
-                        <a href="https://www.mediafire.com/file/46w0xwci5extuqy/%25D8%25AF%25D9%2581%25D8%25AA%25D8%25B1_%25D8%25A7%25D9%2584%25D8%25AA%25D9%2586%25D9%2582%25D9%258A%25D8%25B7_2025.xlsx/file" download>
-  <button class="download-btn">تحميل</button>
-</a>
 
+                        <button class="download-btn" onclick="window.open('https://www.mediafire.com/file/46w0xwci5extuqy/%25D8%25AF%25D9%2581%25D8%25AA%25D8%25B1_%25D8%25A7%25D9%2584%25D8%25AA%25D9%2586%25D9%2582%25D9%258A%25D8%25B7_2025.xlsx/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -685,10 +842,12 @@
                 <div class="file-list">
                     <div class="file-item">
                         <div class="file-info">
-                            <div class="file-name">دفتر التكوين - النموذج الرسمي</div>
-                            <div class="file-size">PDF - 445 KB</div>
+                            <div class="file-name">دفتر التكوين - النموذج 01</div>
+                            <div class="file-size">DOCX - 47 KB</div>
                         </div>
-                        <button class="download-btn" onclick="downloadFile('دفتر التكوين')">تحميل</button>
+                        <button class="download-btn" onclick="window.open('https://www.mediafire.com/file/n9tvw6adfigrv7h/دفتر+التكوين+والندوات.docx/file', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -708,7 +867,9 @@
                             <div class="file-name">الكراس اليومي - النموذج الرسمي</div>
                             <div class="file-size">PDF - 234 KB</div>
                         </div>
-                        <button class="download-btn" onclick="downloadFile('الكراس اليومي')">تحميل</button>
+                        <button class="download-btn" onclick="window.open('', '_blank')">
+                            تحميل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -728,18 +889,19 @@
                             <div class="file-name"> دفتر متابعة المخبر  - نموذج 01</div>
                             <div class="file-size">DOCX - 75 KB</div>
                         </div>
-                            <a href="https://www.mediafire.com/file/75qym27a7zhq9a2/سجل+متابعة+المخبر01.docx/file" download>
-                                <button class="download-btn">تحميل</button>
-                            </a>
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/75qym27a7zhq9a2/سجل+متابعة+المخبر01.docx/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 					<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">دفتر متابعة المخبر  - نموذج 02</div>
                             <div class="file-size">DOCX - 41 KB</div>
                         </div>
-                            <a href="https://www.mediafire.com/file/4u01il70zy05squ/سجل+متابعة+المخبر02+.docx/file" download>
-                                <button class="download-btn">تحميل</button>
-                            </a>
+
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/4u01il70zy05squ/سجل+متابعة+المخبر02+.docx/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
                 </div>
             </div>
@@ -759,13 +921,14 @@
                             <div class="file-name">LARP - برنامج رسم وتنفيذ المخططات الانسيابية </div>
                             <div class="file-size">EXE - 6 MB</div>
                         </div>
-<a href="https://www.prof-tc.fr/Lycee/file/Telechargement/LarpSetup.exe" download>
-  <button class="download-btn">تحميل من الرابط الاول</button>
-</a>
 
-<a href="https://www.mediafire.com/file/w313wiier9z0jhq/LarpSetup.exe/file" download>
-  <button class="download-btn">تحميل من الرابط الثاني</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://www.prof-tc.fr/Lycee/file/Telechargement/LarpSetup.exe', '_blank')">
+                                تحميل
+                            </button>
+
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/w313wiier9z0jhq/LarpSetup.exe/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
                     <div class="file-item">
                         <div class="file-info">
@@ -773,13 +936,13 @@
                             <div class="file-size">MSI - 70.5 MB</div>
                         </div>
                        
-					   <a href="https://www.xm1math.net/algobox/assets/files/Algobox_1.1.1_Win_x64.msi" download>
-  <button class="download-btn">تحميل من الرابط الاول</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://www.xm1math.net/algobox/assets/files/Algobox_1.1.1_Win_x64.msi', '_blank')">
+                                تحميل
+                            </button>
 
-<a href="https://www.mediafire.com/file/dqur1ixcd42b1jp/Algobox_1.1.1_Win_x64.msi/file" download>
-  <button class="download-btn">تحميل من الرابط الثاني</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/dqur1ixcd42b1jp/Algobox_1.1.1_Win_x64.msi/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 					                    <div class="file-item">
                         <div class="file-info">
@@ -787,9 +950,9 @@
                             <div class="file-size">EXE - 68 MB</div>
                         </div>
                        
-					   <a href="https://www.mediafire.com/file/6jjp4tu9vbmqlp1/AlgoFX140fix54setup.exe/file" download>
-  <button class="download-btn">تحميل</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/6jjp4tu9vbmqlp1/AlgoFX140fix54setup.exe/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 
 										<div class="file-item">
@@ -798,29 +961,28 @@
                             <div class="file-size">EXE - 115 MB</div>
                         </div>
                        
-					   <a href="https://download.filepuma.com/files/web-browsers/google-chrome-32bit-/Google_Chrome_(32bit)_v137.0.7151.104.exe" download>
-  <button class="download-btn">تحميل</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://download.filepuma.com/files/web-browsers/google-chrome-32bit-/Google_Chrome_(32bit)_v137.0.7151.104.exe', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 															<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">المتصفح CHROME بدون انترنت نسخة 64 بت</div>
                             <div class="file-size">EXE - 128 MB</div>
                         </div>
-                       
-					   <a href="https://download.filepuma.com/files/web-browsers/google-chrome-64bit-/Google_Chrome_(64bit)_v137.0.7151.104.exe" download>
-  <button class="download-btn"> تحميل</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://download.filepuma.com/files/web-browsers/google-chrome-64bit-/Google_Chrome_(64bit)_v137.0.7151.104.exe', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 																				<div class="file-item">
                         <div class="file-info">
-                            <div class="file-name">محرر الأكواد Notepad++ النسخة 32 بت</div>
+                            <div class="file-name">محرر الأكواد Notepad++ </div>
                             <div class="file-size">EXE - 6.4 MB</div>
                         </div>
                        
-					   <a href="https://objects.githubusercontent.com/github-production-release-asset-2e65be/33014811/6c838352-1746-4713-85a6-d1ab5352fa3f?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250611%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250611T224537Z&X-Amz-Expires=300&X-Amz-Signature=20abe5cf5baa5c8be35c86072f55be436510978e557b1b31d479c66a976428c1&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dnpp.8.8.1.Installer.exe&response-content-type=application%2Foctet-stream" download>
-  <button class="download-btn">تحميل</button>
-</a>
+							<button class="download-btn" onclick="window.open('https://notepad-plus-plus.org/downloads/', '_blank')">
+                                تحميل
+                            </button>
                     </div>
                 </div>
             </div>
@@ -840,9 +1002,9 @@
                             <div class="file-name">القانون الداخلي لمخبر المعلوماتية - نموذج 01</div>
                             <div class="file-size">DOCX - 22 KB</div>
                         </div>
-                            <a href="https://www.mediafire.com/file/mqisdaqd35686cl/%25D8%25A7%25D9%2584%25D9%2582%25D8%25A7%25D9%2586%25D9%2588%25D9%2586-%25D8%25A7%25D9%2584%25D8%25AF%25D8%25A7%25D8%25AE%25D9%2584%25D9%258A-%25D9%2584%25D9%2585%25D8%25AE%25D8%25A8%25D8%25B1-%25D8%25A7%25D9%2584%25D9%2585%25D8%25B9%25D9%2584%25D9%2588%25D9%2585%25D8%25A7%25D8%25AA%25D9%258A%25D8%25A9.docx/file" download>
-                                <button class="download-btn">تحميل</button>
-                            </a>
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/mqisdaqd35686cl/%25D8%25A7%25D9%2584%25D9%2582%25D8%25A7%25D9%2586%25D9%2588%25D9%2586-%25D8%25A7%25D9%2584%25D8%25AF%25D8%25A7%25D8%25AE%25D9%2584%25D9%258A-%25D9%2584%25D9%2585%25D8%25AE%25D8%25A8%25D8%25B1-%25D8%25A7%25D9%2584%25D9%2585%25D8%25B9%25D9%2584%25D9%2588%25D9%2585%25D8%25A7%25D8%25AA%25D9%258A%25D8%25A9.docx/file', '_blank')">
+                                تحميل
+                            </button>
                     </div>
 
                 </div>
@@ -862,18 +1024,20 @@
                     <div class="file-name">مخطط الجلوس - النموذج الرسمي</div>
                     <div class="file-size">DOCX - 21 KB</div>
                 </div>
-                <a href="https://www.mediafire.com/file/p8j1xg7x0t59lcf/مخطط+الجلوس+كلي.docx/file" download>
-                    <button class="download-btn">تحميل</button>
-                </a>
+
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/p8j1xg7x0t59lcf/مخطط+الجلوس+كلي.docx/file', '_blank')">
+                                تحميل
+                            </button>
             </div>
 			<div class="file-item">
                 <div class="file-info">
                     <div class="file-name">مخطط الجلوس - ورقة خاصة بكل حاسوب</div>
                     <div class="file-size">DOCX - 138 KB</div>
                 </div>
-                <a href="https://www.mediafire.com/file/ih0341rnqk9h3zw/ورقة+الحاسوب.docx/file" download>
-                    <button class="download-btn">تحميل</button>
-                </a>
+
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/ih0341rnqk9h3zw/ورقة+الحاسوب.docx/file', '_blank')">
+                                تحميل
+                            </button>
             </div>
         </div>
     </div>
