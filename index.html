@@ -458,7 +458,7 @@
                 <p>جميع الوثائق والملفات التي يحتاجها أستاذ المعلوماتية في مكان واحد</p>
             </div>
 
-            <!-- دليل الحالات -->
+            <!-- دليل الحالات 
             <div class="status-legend">
                 <h3>🔍 دليل حالات الملفات</h3>
                 <div class="legend-items">
@@ -485,6 +485,7 @@
                 </div>
             </div>
 
+-->
             <div class="documents-grid">
                 <div class="document-card not-implemented" onclick="showNotImplemented('المذكرات')">
                     <div class="status-badge status-not-implemented">غير متوفر</div>
@@ -542,8 +543,8 @@
                     <p>سجل التطوير المهني والتدريب</p>
                 </div>
 
-                <div class="document-card not-implemented" onclick="showNotImplemented('الدفتر اليومي')">
-                    <div class="status-badge status-not-implemented">غير متوفر</div>
+                <div class="document-card" onclick="showDocument('daily-journal')">
+                    <div class="status-badge status-new">جديد</div>
                     <span class="icon">📝</span>
                     <h3>الدفتر اليومي</h3>
                     <p>تسجيل الأنشطة اليومية</p>
@@ -578,13 +579,13 @@
                 </div>
 
                 <div class="document-card" onclick="showDocument('seating-plan')">
-                    <div class="status-badge status-new">جديد</div>
+                    <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">🪑</span>
                     <h3>مخطط الجلوس</h3>
                     <p>تنظيم أماكن جلوس التلاميذ داخل المخبر</p>
                 </div>
 				<div class="document-card" onclick="showDocument('other-docs')">
-					<div class="status-badge status-pending">قيد الإنجاز</div>
+					 <div class="status-badge status-new">جديد</div>
 					<span class="icon">📎</span>
 					<h3>وثائق أخرى</h3>
 					<p>ملفات ووثائق إدارية أو تعليمية إضافية</p>
@@ -870,13 +871,24 @@
                 <div class="file-list">
                     <div class="file-item">
                         <div class="file-info">
-                            <div class="file-name">الكراس اليومي - النموذج الرسمي</div>
-                            <div class="file-size">PDF - 234 KB</div>
+                            <div class="file-name">الكراس اليومي - النموذج 01</div>
+                            <div class="file-size">DOCX - 425 KB</div>
                         </div>
-                        <button class="download-btn" onclick="window.open('', '_blank')">
+                        <button class="download-btn" onclick="window.open('https://www.mediafire.com/file/2brtf28p8143qp7/الدفتر+اليومي+نموذج+01.docx/file', '_blank')">
                             تحميل
                         </button>
                     </div>
+					<div class="file-item">
+					    <div class="file-info">
+                            <div class="file-name">الكراس اليومي - النموذج 02</div>
+                            <div class="file-size">DOCX - 2.14 MB</div>
+                        </div>
+                        <button class="download-btn" onclick="window.open('https://www.mediafire.com/file/j9c2ap6fpfy7ovm/الدفتر+اليومي+نموذج+02.docx/file', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+					
+					
                 </div>
             </div>
         </div>
@@ -922,15 +934,31 @@
             <div class="section">
                 <h3>البرامج التعليمية</h3>
                 <div class="file-list">
+					<div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">AlgoFX - برنامج كتابة وتنفيذ الخوارزميات تماما كما تكتب على السبورة</div>
+                            <div class="file-size">EXE - 68 MB</div>
+                        </div>
+                       
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/6jjp4tu9vbmqlp1/AlgoFX140fix54setup.exe/file', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+				    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">برنامج محاكات تركيب الحاسوب Essentials virtual desktop مع متصفح Baidu spark </div>
+                            <div class="file-size">ZIP - 106 MB</div>
+                        </div>
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/zxhb0lwbdm2xbl7/Essentials+virtual+desktop+avec+Spark.zip/file', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+					
                     <div class="file-item">
                         <div class="file-info">
                             <div class="file-name">LARP - برنامج رسم وتنفيذ المخططات الانسيابية </div>
                             <div class="file-size">EXE - 6 MB</div>
                         </div>
-
-							<button class="download-btn" onclick="window.open('https://www.prof-tc.fr/Lycee/file/Telechargement/LarpSetup.exe', '_blank')">
-                                تحميل
-                            </button>
 
 							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/w313wiier9z0jhq/LarpSetup.exe/file', '_blank')">
                                 تحميل
@@ -942,26 +970,22 @@
                             <div class="file-size">MSI - 70.5 MB</div>
                         </div>
                        
-							<button class="download-btn" onclick="window.open('https://www.xm1math.net/algobox/assets/files/Algobox_1.1.1_Win_x64.msi', '_blank')">
-                                تحميل
-                            </button>
-
 							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/dqur1ixcd42b1jp/Algobox_1.1.1_Win_x64.msi/file', '_blank')">
                                 تحميل
                             </button>
                     </div>
-					                    <div class="file-item">
+
+					<div class="file-item">
                         <div class="file-info">
-                            <div class="file-name">AlgoFX - برنامج كتابة وتنفيذ الخوارزميات تماما كما تكتب على السبورة</div>
-                            <div class="file-size">EXE - 68 MB</div>
+                            <div class="file-name">برنامج محاكاة تثبيت نظام التشغيل Win 10</div>
+                            <div class="file-size">RAR - 6 MB</div>
                         </div>
                        
-							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/6jjp4tu9vbmqlp1/AlgoFX140fix54setup.exe/file', '_blank')">
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/ti0f5g7tv3utg4l/Windows_10_Simulation.rar/file', '_blank')">
                                 تحميل
                             </button>
                     </div>
-
-										<div class="file-item">
+					<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">المتصفح CHROME بدون انترنت نسخة 32 بت</div>
                             <div class="file-size">EXE - 115 MB</div>
@@ -971,7 +995,7 @@
                                 تحميل
                             </button>
                     </div>
-															<div class="file-item">
+					<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">المتصفح CHROME بدون انترنت نسخة 64 بت</div>
                             <div class="file-size">EXE - 128 MB</div>
@@ -980,13 +1004,23 @@
                                 تحميل
                             </button>
                     </div>
-																				<div class="file-item">
+					<div class="file-item">
                         <div class="file-info">
                             <div class="file-name">محرر الأكواد Notepad++ </div>
                             <div class="file-size">EXE - 6.4 MB</div>
                         </div>
                        
 							<button class="download-btn" onclick="window.open('https://notepad-plus-plus.org/downloads/', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+					<div class="file-item">
+                        <div class="file-info">
+                            <div class="file-name">برنامج تسيير حواسيب قاعة المعلوماتية NetSupport School </div>
+                            <div class="file-size">RAR - 51 MB</div>
+                        </div>
+                       
+							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/8pw149p83y19wjs/NetSupport.School.Pro.v11.41.19.rar/file', '_blank')">
                                 تحميل
                             </button>
                     </div>
@@ -1027,7 +1061,7 @@
         <div class="file-list">
             <div class="file-item">
                 <div class="file-info">
-                    <div class="file-name">مخطط الجلوس - النموذج الرسمي</div>
+                    <div class="file-name">نموذج مخطط الجلوس – خاص بالأستاذ– (وثيقة رقم 1)</div>
                     <div class="file-size">DOCX - 21 KB</div>
                 </div>
 
@@ -1037,7 +1071,7 @@
             </div>
 			<div class="file-item">
                 <div class="file-info">
-                    <div class="file-name">مخطط الجلوس - ورقة خاصة بكل حاسوب</div>
+                    <div class="file-name">نموذج مخطط الجلوس – خاص بالمحطات – (وثيقة رقم 2)</div>
                     <div class="file-size">DOCX - 138 KB</div>
                 </div>
 
