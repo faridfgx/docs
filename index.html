@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة وثائق أستاذ المعلوماتية</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -453,16 +453,129 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-    </style>
 
+        /* Notice Modal Styles - UPDATED */
+        .notice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .notice-modal.show {
+            display: flex;
+        }
+
+        .notice-content {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 3rem 2rem 2rem 2rem; /* Added top padding for close button */
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+        }
+
+        /* FIXED: Close button positioned in top-right corner and stays fixed */
+.notice-close {
+   position: fixed;
+   top: calc(10% + 1rem);
+   left: calc((100% - 90%) / 2 + 1rem); /* Changed from right to left */
+   background: var(--error-color);
+   color: var(--white);
+   border: none;
+   border-radius: 50%;
+   width: 40px;
+   height: 40px;
+   cursor: pointer;
+   font-size: 1.2rem;
+   font-weight: bold;
+   transition: all 0.2s ease;
+   z-index: 1001;
+   box-shadow: var(--shadow-lg);
+}
+
+        .notice-close:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Alternative approach - close button stays at top of scrollable content */
+        .notice-close-alternative {
+            position: sticky; /* Alternative solution */
+            top: 0;
+            left: auto;
+            left: 0;
+            margin-left: auto;
+            margin-bottom: 1rem;
+            background: var(--error-color);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 1001;
+            box-shadow: var(--shadow-lg);
+            display: block;
+        }
+
+        .notice-button-header {
+            background: var(--error-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .notice-button-header:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Media query adjustments for fixed close button */
+@media (max-width: 768px) {
+   .notice-close {
+       left: calc((100% - 90%) / 2 + 0.5rem); /* Changed from right to left */
+       top: calc(10% + 0.5rem);
+       width: 35px;
+       height: 35px;
+       font-size: 1rem;
+   }
+}
+    </style>
 </head>
 <body>
+	
     <div class="container">
         <!-- الصفحة الرئيسية -->
         <div id="home-view" class="home-view">
             <div class="header">
                 <h1>🖥️ وثائق أستاذ مادة المعلوماتية</h1>
                 <p>جميع الوثائق والملفات التي يحتاجها أستاذ المعلوماتية في مكان واحد</p>
+			    <button class="notice-button-header" onclick="showNotice()">⚠️ معلومات مهمة</button>
+
             </div>
 
             <!-- دليل الحالات 
@@ -1175,7 +1288,111 @@
 	</div>
 </div>
     </div>
+<!-- Notice Modal -->
+<div id="noticeModal" class="notice-modal">
+    <div class="notice-content">
+        <button class="notice-close" onclick="closeNotice()">×</button>
+        <h1>📚 وثائق أستاذ المعلوماتية – التعليم الثانوي بالجزائر</h1>
+        <p>فيما يلي أهم الوثائق التي يجب أن يمتلكها أستاذ المعلوماتية، مرتبة حسب الأولوية، مع شرح مختصر ووثائق رسمية داعمة:</p>
 
+        <hr>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🥇 دفتر النصوص</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: رسمي وقانوني</p>
+        <ul style="margin-right: 2em;">
+            <li>يسجل فيه كل حصة: التاريخ، الموضوع، الوسائل التقنية، حالات الغياب أو الأعطال.</li>
+            <li>يستخدم من طرف التفتيش، ويحتفظ به في السجلات الرسمية لمدة لا تقل عن 3 سنوات.</li>
+            <li>يسمح بتتبع نشاط الأستاذ وربطه بالمنهج الرسمي</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🥈 التدرّج السنوي + المخطط السنوي</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: رسمي وتنظيمي</p>
+        <ul style="margin-right: 2em;">
+            <li><strong>التدرّج السنوي</strong>: وثيقة وزارية تحدد الأهداف الزمنية والمحتوى المنهجي للسنة.</li>
+            <li><strong>المخطّط السنوي</strong>: يُعدّه الأستاذ لتوزيع الدروس على أسابيع العام، بالإدماج مع العطل والمحطات التربوية.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🥉 الوثائق الإدارية – ملف التعيين (من مهام الإدارة)</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: قانوني وإثباتي</p>
+        <ul style="margin-right: 2em;">
+            <li>يشمل: بطاقة الهوية، الشهادات والدبلومات، التعيينات،التنصيبات...الخ</li>
+            <li>ضروري لإثبات حق الأستاذ في مزاولة التعليم داخل المؤسسة.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🟠 دفتر التحضير اليومي</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: تنظيمي وبيداغوجي</p>
+        <ul style="margin-right: 2em;">
+            <li>تفصيلي: يحدد أهداف الحصة وخطواتها وأدواتها وتقويمها.</li>
+            <li>يدعم التنظيم الذاتي للأستاذ ويستخدم كمؤشر للمفتش أثناء الزيارة.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🟡 شبكة التقييم المستمر</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: تقييمي تربوي</p>
+        <ul style="margin-right: 2em;">
+            <li>تسجّل فيها نتائج التلاميذ في الفروض والاختبارات الدورية.</li>
+            <li>أساسية لحساب المعدلات وتحديد منحى الدعم التربوي.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🟢 دفاتر الدعم والمشاريع التقنية</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: اختياري وإثرائي</p>
+        <ul style="margin-right: 2em;">
+            <li>تشمل أنشطة وبرامج عملية: مشاريع برمجة، دعم فردي لتلاميذ ضعفاء.</li>
+            <li>تُظهر ندية الأستاذ لفروق التلاميذ وحرصه على تنويع أساليبه.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🔵 محاضر الاجتماعات الرسمية (من مهام الإدارة ولكن على الأستاذ حضورها و الإمضاء عليها)</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: إداري ومؤسسي</p>
+        <ul style="margin-right: 2em;">
+            <li>توثّق اجتماعات مجلس القسم أو التنسيق بين الأساتذة، بتوقيع الحضور.</li>
+            <li>تعكس التزام الأستاذ بالمشاركة الجماعية داخل المؤسسة.</li>
+        </ul>
+
+        <h2><span style="font-size: 1.2em; font-weight: bold;">⚪ أوراق العمل والتحضيرات التقنية</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">طابع: داعم وإبداعي</p>
+        <ul style="margin-right: 2em;">
+            <li>المذكرات و العروض PowerPoint و مشاريع تطبيقية والدروس ...الخ.</li>
+            <li>تُستخدم أثناء التفتيش لإثبات قدرة الأستاذ على الإبداع والتكيّف.</li>
+        </ul>
+
+        <hr>
+        <h2><span style="font-size: 1.2em; font-weight: bold;">🟠وثائق خاصة بمخبر المعلوماتية</span></h2>
+        <p style="color: #16a085; margin-bottom: 0.5em;">ضرورية لتسسير المخبر وحماية الأستاذ وتحديد المسؤوليات</p>
+        <ul style="margin-right: 2em;">
+            <li>وورقة الجرد الخاصة بالعتاد الموجود على مستوى القاعة موقع من قبل المقتصد</li>
+            <li>سجل متابعة عتاد المخبر</li>
+            <li>مخطط الجلوس</li>
+        </ul>
+
+        <hr>
+        <h2>✅ ملخّص ترتيب الوثائق حسب الأهمية</h2>
+        <ol style="margin-right: 2em;">
+            <li>دفتر النصوص – وثيقة رسمية جوهرية.</li>
+            <li>التدرّج السنوي + المخطط السنوي – الهيكل الزمني للمناهج.</li>
+            <li>الوثائق الإدارية – إثبات قانوني للوظيفة.</li>
+            <li>دفتر التحضير اليومي – دعم المهنية والتنظيم الذاتي.</li>
+            <li>شبكة التقييم – أدوات متابعة التلاميذ.</li>
+            <li>دفاتر الدعم – تعزيز بيداغوجي للفروق الفردية.</li>
+            <li>محاضر الاجتماعات – علامة مشاركة مؤسسية.</li>
+            <li>أوراق العمل التقنية – إبداع واستعداد أثناء التدريس.</li>
+        </ol>
+    </div>
+</div>
+<script>
+function showNotice() {
+    document.getElementById('noticeModal').classList.add('show');
+}
+
+function closeNotice() {
+    document.getElementById('noticeModal').classList.remove('show');
+}
+
+// Close modal when clicking outside content
+document.getElementById('noticeModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeNotice();
+    }
+});
+</script>
     <script>
         function showDocument(documentId) {
             // إخفاء الصفحة الرئيسية
