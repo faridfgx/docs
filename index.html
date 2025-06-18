@@ -1,571 +1,27 @@
 
 <html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة وثائق أستاذ المعلوماتية</title>
+    
+	<title>منصة وثائق أستاذ المعلوماتية</title>
+	
+	    <!-- Primary Meta Tags -->
+    <title>وثائق أستاذ مادة المعلوماتية - مصادر تعليمية شاملة</title>
+    <meta name="title" content="وثائق أستاذ مادة المعلوماتية - مصادر تعليمية شاملة">
+    <meta name="description" content="جميع الوثائق والملفات التي يحتاجها أستاذ المعلوماتية في مكان واحد. مذكرات تربوية، عروض PowerPoint، توزيع المنهج، وأدوات تعليمية متكاملة.">
+    <meta name="keywords" content="معلوماتية, تعليم, مذكرات تربوية, عروض تقديمية, مخبر الإعلام الآلي, أستاذ المعلوماتية">
+    <meta name="author" content="Farid MEZANE">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Arabic">
+	   
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="styles.css">
 
-        :root {
-            --primary-color: #1e40af;
-            --secondary-color: #3b82f6;
-            --accent-color: #06b6d4;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --error-color: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --white: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-
-        body {
-            font-family: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
-            min-height: 100vh;
-            direction: rtl;
-            color: var(--gray-900);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* Header Styles */
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            background: var(--white);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-200);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-        }
-
-        .header-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2.5rem;
-            color: var(--white);
-            box-shadow: var(--shadow-md);
-        }
-
-        .header h1 {
-            color: var(--gray-900);
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.025em;
-        }
-
-        .header p {
-            color: var(--gray-600);
-            font-size: 1.125rem;
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Navigation Breadcrumb */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            padding: 1rem 1.5rem;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
-        }
-
-        .breadcrumb-item {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .breadcrumb-separator {
-            color: var(--gray-400);
-            font-size: 0.75rem;
-        }
-
-        .breadcrumb-current {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* Status Legend */
-        .status-legend {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
-        }
-
-        .status-legend h3 {
-            color: var(--gray-900);
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .legend-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .legend-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .legend-text {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        /* Document Grid */
-        .documents-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .document-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 1px solid var(--gray-200);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .document-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--primary-color);
-        }
-
-        .document-card:active {
-            transform: translateY(-2px);
-        }
-
-        .document-card .icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            color: var(--white);
-            transition: all 0.3s ease;
-        }
-
-        .document-card:hover .icon {
-            transform: scale(1.1);
-            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        }
-
-        .document-card h3 {
-            color: var(--gray-900);
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .document-card p {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-
-        /* Status Badge Styles */
-        .status-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.375rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            z-index: 10;
-        }
-
-        .status-new {
-            background-color: var(--success-color);
-            color: var(--white);
-        }
-
-        .status-updated {
-            background-color: var(--error-color);
-            color: var(--white);
-        }
-
-        .status-complete {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        .status-pending {
-            background-color: var(--warning-color);
-            color: var(--white);
-        }
-
-        .status-not-implemented {
-            background-color: var(--gray-400);
-            color: var(--white);
-        }
-
-        /* Document Detail View */
-        .document-detail {
-            display: none;
-        }
-
-        .document-detail.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .back-btn {
-            background: var(--primary-color);
-            color: var(--white);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .back-btn:hover {
-            background: var(--secondary-color);
-            transform: translateX(2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .section {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
-        }
-
-        .section h3 {
-            color: var(--gray-900);
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--gray-200);
-        }
-
-        /* File List */
-        .file-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .file-item {
-            background: var(--gray-50);
-            padding: 1.5rem;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.2s ease;
-            border: 1px solid var(--gray-200);
-        }
-
-        .file-item:hover {
-            background: var(--gray-100);
-            transform: translateX(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .file-info {
-            flex: 1;
-        }
-
-        .file-name {
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: 0.25rem;
-            font-size: 0.875rem;
-        }
-
-        .file-size {
-            font-size: 0.75rem;
-            color: var(--gray-500);
-            font-weight: 500;
-        }
-
-        .download-btn {
-            background: var(--success-color);
-            color: var(--white);
-            border: none;
-            padding: 0.75rem 1.25rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            margin-left: 0.5rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .download-btn:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .header {
-                padding: 2rem 1.5rem;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .documents-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .file-item {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 1rem;
-            }
-
-            .download-btn {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            .legend-items {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Utilities */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Notice Modal Styles - UPDATED */
-        .notice-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .notice-modal.show {
-            display: flex;
-        }
-
-        .notice-content {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 3rem 2rem 2rem 2rem; /* Added top padding for close button */
-            max-width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            box-shadow: var(--shadow-xl);
-            position: relative;
-        }
-
-        /* FIXED: Close button positioned in top-right corner and stays fixed */
-.notice-close {
-   position: fixed;
-   top: calc(10% + 1rem);
-   left: calc((100% - 90%) / 2 + 1rem); /* Changed from right to left */
-   background: var(--error-color);
-   color: var(--white);
-   border: none;
-   border-radius: 50%;
-   width: 40px;
-   height: 40px;
-   cursor: pointer;
-   font-size: 1.2rem;
-   font-weight: bold;
-   transition: all 0.2s ease;
-   z-index: 1001;
-   box-shadow: var(--shadow-lg);
-}
-
-        .notice-close:hover {
-            background: #dc2626;
-            transform: scale(1.1);
-        }
-
-        /* Alternative approach - close button stays at top of scrollable content */
-        .notice-close-alternative {
-            position: sticky; /* Alternative solution */
-            top: 0;
-            left: auto;
-            left: 0;
-            margin-left: auto;
-            margin-bottom: 1rem;
-            background: var(--error-color);
-            color: var(--white);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: all 0.2s ease;
-            z-index: 1001;
-            box-shadow: var(--shadow-lg);
-            display: block;
-        }
-
-        .notice-button-header {
-            background: var(--error-color);
-            color: var(--white);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            box-shadow: var(--shadow-lg);
-            margin-top: 1rem;
-            animation: pulse 2s infinite;
-        }
-
-        .notice-button-header:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Media query adjustments for fixed close button */
-@media (max-width: 768px) {
-   .notice-close {
-       left: calc((100% - 90%) / 2 + 0.5rem); /* Changed from right to left */
-       top: calc(10% + 0.5rem);
-       width: 35px;
-       height: 35px;
-       font-size: 1rem;
-   }
-}
-    </style>
 </head>
+
 <body>
 	
     <div class="container">
@@ -577,35 +33,16 @@
 			    <button class="notice-button-header" onclick="showNotice()">⚠️ معلومات مهمة</button>
 
             </div>
-
-            <!-- دليل الحالات 
-            <div class="status-legend">
-                <h3>🔍 دليل حالات الملفات</h3>
-                <div class="legend-items">
-                    <div class="legend-item">
-                        <span class="legend-badge status-new">جديد</span>
-                        <span class="legend-text">ملفات جديدة مضافة حديثاً</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-badge status-updated">محدث</span>
-                        <span class="legend-text">ملفات تم تحديثها مؤخراً</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-badge status-complete">مكتمل</span>
-                        <span class="legend-text">ملفات جاهزة للاستخدام</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-badge status-pending">قيد الإنجاز</span>
-                        <span class="legend-text">ملفات قيد التطوير</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-badge status-not-implemented">غير متوفر</span>
-                        <span class="legend-text">ملفات غير متوفرة حالياً</span>
-                    </div>
-                </div>
-            </div>
-
--->
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder=" ابحث في الوثائق والملفات..." id="searchInput">
+        <span class="search-icon">🔍</span>
+        <button class="clear-search" id="clearSearch">×</button>
+    </div>
+    <div class="search-results" id="searchResults">
+        <!-- النتائج ستظهر هنا -->
+    </div>
+</div>
             <div class="documents-grid">
                 <div class="document-card not-implemented" onclick="showNotImplemented('المذكرات')">
                     <div class="status-badge status-not-implemented">غير متوفر</div>
@@ -841,6 +278,7 @@
                 <h3>التدرج السنوي 2022-2023</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
                             <div class="file-name">التدرج في بناء التعلمات السنة الأولى جذع مشترك علوم وتكنولوجيا و جذع مشترك أداب</div>
                             <div class="file-size">PDF - 2 MB</div>
@@ -853,7 +291,7 @@
             </div>
         </div>
 		
-        <div id="lab-guide" class="document-detail">
+<div id="lab-guide" class="document-detail">
     <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
     <div class="header">
         <h1>🖥️ دليل تسيير مخبر المعلوماتية</h1>
@@ -863,6 +301,7 @@
         <h3>الملفات المتاحة</h3>
         <div class="file-list">
             <div class="file-item">
+			<div class="file-icon pdf">PDF</div>
                 <div class="file-info">
                     <div class="file-name">الدليل الكامل لتسيير المخبر</div>
                     <div class="file-size">PDF - 1.5 MB</div>
@@ -888,6 +327,7 @@
                 <h3>الكتب المدرسية</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
                             <div class="file-name">كتاب المعلوماتية - السنة الأولى من التعليم الثانوي</div>
                             <div class="file-size">PDF - 13.3 MB</div>
@@ -912,6 +352,7 @@
                 <h3>التوزيع السنوي للدروس</h3>
                 <div class="file-list">
                     <div class="file-item">
+					    <div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name">التوزيع السنوي - جميع المستويات - النموذج 01</div>
                             <div class="file-size">DOCX - 31 KB</div>
@@ -921,6 +362,7 @@
                         </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon xlsx">XLS</div>
                         <div class="file-info">
                             <div class="file-name">التوزيع السنوي - جميع المستويات - النموذج 02</div>
                             <div class="file-size">XLSX - 25 KB</div>
@@ -943,6 +385,7 @@
                 <h3>نماذج دفاتر التنقيط</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon xlsx">XLS</div>
                         <div class="file-info">
                             <div class="file-name">دفتر التنقيط - نموذج 01</div>
                             <div class="file-size">XLSX - 20 KB</div>
@@ -966,6 +409,7 @@
                 <h3>نماذج دفتر التكوين</h3>
                 <div class="file-list">
                     <div class="file-item">
+					 <div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name">دفتر التكوين - النموذج 01</div>
                             <div class="file-size">DOCX - 47 KB</div>
@@ -988,6 +432,7 @@
                 <h3>نماذج الدفتر اليومي</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name">الكراس اليومي - النموذج 01</div>
                             <div class="file-size">DOCX - 425 KB</div>
@@ -997,6 +442,7 @@
                         </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon docx">DOC</div>
 					    <div class="file-info">
                             <div class="file-name">الكراس اليومي - النموذج 02</div>
                             <div class="file-size">DOCX - 2.14 MB</div>
@@ -1021,6 +467,7 @@
                 <h3>نماذج متابعة المختبر</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name"> دفتر متابعة المخبر  - نموذج 01</div>
                             <div class="file-size">DOCX - 75 KB</div>
@@ -1030,6 +477,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name">دفتر متابعة المخبر  - نموذج 02</div>
                             <div class="file-size">DOCX - 41 KB</div>
@@ -1053,6 +501,7 @@
                 <h3>البرامج التعليمية</h3>
                 <div class="file-list">
 					<div class="file-item">
+					    <div class="file-icon exe">EXE</div>
                         <div class="file-info">
                             <div class="file-name">AlgoFX - برنامج كتابة وتنفيذ الخوارزميات تماما كما تكتب على السبورة</div>
                             <div class="file-size">EXE - 68 MB</div>
@@ -1063,6 +512,7 @@
                             </button>
                     </div>
 				    <div class="file-item">
+					<div class="file-icon zip">ZIP</div>
                         <div class="file-info">
                             <div class="file-name">برنامج محاكات تركيب الحاسوب Essentials virtual desktop مع متصفح Baidu spark </div>
                             <div class="file-size">ZIP - 106 MB</div>
@@ -1073,6 +523,7 @@
                     </div>
 					
                     <div class="file-item">
+					    <div class="file-icon exe">EXE</div>
                         <div class="file-info">
                             <div class="file-name">LARP - برنامج رسم وتنفيذ المخططات الانسيابية </div>
                             <div class="file-size">EXE - 6 MB</div>
@@ -1083,6 +534,7 @@
                             </button>
                     </div>
                     <div class="file-item">
+					<div class="file-icon exe">MSI</div>
                         <div class="file-info">
                             <div class="file-name">ALGOBOX - برنامج كتابة وتنفيذ الخوارزميات حسب التدرج السنوي</div>
                             <div class="file-size">MSI - 70.5 MB</div>
@@ -1094,6 +546,7 @@
                     </div>
 
 					<div class="file-item">
+					<div class="file-icon rar">RAR</div>
                         <div class="file-info">
                             <div class="file-name">برنامج محاكاة تثبيت نظام التشغيل Win 10</div>
                             <div class="file-size">RAR - 6 MB</div>
@@ -1104,6 +557,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon exe">EXE</div>
                         <div class="file-info">
                             <div class="file-name">المتصفح CHROME بدون انترنت نسخة 32 بت</div>
                             <div class="file-size">EXE - 115 MB</div>
@@ -1114,6 +568,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon exe">EXE</div>
                         <div class="file-info">
                             <div class="file-name">المتصفح CHROME بدون انترنت نسخة 64 بت</div>
                             <div class="file-size">EXE - 128 MB</div>
@@ -1123,6 +578,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon exe">EXE</div>
                         <div class="file-info">
                             <div class="file-name">محرر الأكواد Notepad++ </div>
                             <div class="file-size">EXE - 6.4 MB</div>
@@ -1133,6 +589,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon rar">RAR</div>
                         <div class="file-info">
                             <div class="file-name">برنامج تسيير حواسيب قاعة المعلوماتية NetSupport School </div>
                             <div class="file-size">RAR - 51 MB</div>
@@ -1144,6 +601,7 @@
                     </div>
 					
 					<div class="file-item">
+					<div class="file-icon zip">ZIP</div>
                         <div class="file-info">
                             <div class="file-name">برنامج الحماية من فيروسات الفلاش SMADAV</div>
                             <div class="file-size">ZIP - 3.02 MB</div>
@@ -1167,6 +625,7 @@
                 <h3>وثائق القانون الداخلي</h3>
                 <div class="file-list">
                     <div class="file-item">
+					<div class="file-icon docx">DOC</div>
                         <div class="file-info">
                             <div class="file-name">القانون الداخلي لمخبر المعلوماتية - نموذج 01</div>
                             <div class="file-size">DOCX - 22 KB</div>
@@ -1176,6 +635,7 @@
                             </button>
                     </div>
                     <div class="file-item">
+					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
                             <div class="file-name">القانون الداخلي لمخبر المعلوماتية - نموذج 02</div>
                             <div class="file-size">PDF - 642 KB</div>
@@ -1185,6 +645,7 @@
                             </button>
                     </div>
 					<div class="file-item">
+					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
                             <div class="file-name">القانون الداخلي لمخبر المعلوماتية - نموذج 03</div>
                             <div class="file-size">PDF - 88 KB</div>
@@ -1206,6 +667,7 @@
         <h3>نماذج مخطط الجلوس</h3>
         <div class="file-list">
             <div class="file-item">
+			<div class="file-icon docx">DOC</div>
                 <div class="file-info">
                     <div class="file-name">نموذج مخطط الجلوس – خاص بالأستاذ– (وثيقة رقم 1)</div>
                     <div class="file-size">DOCX - 21 KB</div>
@@ -1216,6 +678,7 @@
                             </button>
             </div>
 			<div class="file-item">
+			<div class="file-icon docx">DOC</div>
                 <div class="file-info">
                     <div class="file-name">نموذج مخطط الجلوس – خاص بالمحطات – (وثيقة رقم 2)</div>
                     <div class="file-size">DOCX - 138 KB</div>
@@ -1239,6 +702,7 @@
 	  <h3>نماذج لوثائق اخرى</h3>
     <div class="file-list">
         <div class="file-item">
+		<div class="file-icon pdf">PDF</div>
             <div class="file-info">
                 <div class="file-name">دليل مرافقة الأستاذ المتربص</div>
                 <div class="file-size">PDF - 1.63 MB</div>
@@ -1248,6 +712,7 @@
                 </button>
         </div>
 		        <div class="file-item">
+				<div class="file-icon pdf">PDF</div>
             <div class="file-info">
                 <div class="file-name">دليل أستاذ المعلوماتية للتعليم الثانوي</div>
                 <div class="file-size">PDF - 392 KB</div>
@@ -1258,6 +723,7 @@
         </div>
 		
         <div class="file-item">
+		<div class="file-icon pdf">PDF</div>
             <div class="file-info">
                 <div class="file-name">الدليل التربوي لأستاذ التعليم الثانوي</div>
                 <div class="file-size">PDF - 1.23 MB</div>
@@ -1267,6 +733,7 @@
                 </button>
         </div>
 		<div class="file-item">
+		<div class="file-icon docx">DOC</div>
             <div class="file-info">
                 <div class="file-name">نموذج لجرد عتاد مخبر المعلوماتية</div>
                 <div class="file-size">DOCX - 18 kB</div>
@@ -1276,6 +743,7 @@
                 </button>
         </div>
 	   <div class="file-item">
+	   <div class="file-icon docx">DOC</div>
             <div class="file-info">
                 <div class="file-name">نموذج لتقرير حول مخبر المعلوماتية</div>
                 <div class="file-size">DOCX - 24 kB</div>
@@ -1293,7 +761,7 @@
     <div class="notice-content">
         <button class="notice-close" onclick="closeNotice()">×</button>
         <h1>📚 وثائق أستاذ المعلوماتية – التعليم الثانوي بالجزائر</h1>
-        <p>فيما يلي أهم الوثائق التي يجب أن يمتلكها أستاذ المعلوماتية، مرتبة حسب الأولوية، مع شرح مختصر ووثائق رسمية داعمة:</p>
+        <p>فيما يلي أهم الوثائق التي يجب أن يمتلكها أستاذ المعلوماتية، مرتبة حسب الأولوية، مع شرح مختصر :</p>
 
         <hr>
 
@@ -1358,7 +826,7 @@
         <h2><span style="font-size: 1.2em; font-weight: bold;">🟠وثائق خاصة بمخبر المعلوماتية</span></h2>
         <p style="color: #16a085; margin-bottom: 0.5em;">ضرورية لتسسير المخبر وحماية الأستاذ وتحديد المسؤوليات</p>
         <ul style="margin-right: 2em;">
-            <li>وورقة الجرد الخاصة بالعتاد الموجود على مستوى القاعة موقعة من قبل المقتصد</li>
+            <li>وورقة الجرد الخاصة بالعتاد الموجود على مستوى القاعة موقع من قبل المقتصد</li>
             <li>سجل متابعة عتاد المخبر</li>
             <li>مخطط الجلوس</li>
         </ul>
@@ -1377,61 +845,38 @@
         </ol>
     </div>
 </div>
+<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+<!-- Modal functionality -->
+<script src="modal.js"></script>
+
+<!-- Navigation functionality -->
+<script src="navigation.js"></script>
+
+<!-- Search functionality -->
+<script src="search.js"></script>
 <script>
-function showNotice() {
-    document.getElementById('noticeModal').classList.add('show');
-}
-
-function closeNotice() {
-    document.getElementById('noticeModal').classList.remove('show');
-}
-
-// Close modal when clicking outside content
-document.getElementById('noticeModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeNotice();
-    }
+// Back to Top Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+    
+    // Smooth scroll to top when clicked
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });
 </script>
-    <script>
-        function showDocument(documentId) {
-            // إخفاء الصفحة الرئيسية
-            document.getElementById('home-view').classList.add('hidden');
-            
-            // إخفاء جميع صفحات التفاصيل
-            const details = document.querySelectorAll('.document-detail');
-            details.forEach(detail => {
-                detail.classList.remove('active');
-            });
-            
-            // إظهار الصفحة المطلوبة
-            document.getElementById(documentId).classList.add('active');
-        }
 
-        function showHome() {
-            // إظهار الصفحة الرئيسية
-            document.getElementById('home-view').classList.remove('hidden');
-            
-            // إخفاء جميع صفحات التفاصيل
-            const details = document.querySelectorAll('.document-detail');
-            details.forEach(detail => {
-                detail.classList.remove('active');
-            });
-        }
-
-        function downloadFile(fileName) {
-            // محاكاة تحميل الملف
-            alert('🎯 جاري تحميل: ' + fileName + '\n\nملاحظة: هذا موقع تجريبي - في النسخة الحقيقية سيتم تحميل الملف الفعلي');
-        }
-
-        // تأثيرات بصرية إضافية
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.document-card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = (index * 0.1) + 's';
-                card.style.animation = 'fadeIn 0.6s ease forwards';
-            });
-        });
-    </script>
 </body>
 </html>
