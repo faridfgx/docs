@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل بناء مذكرة التعليم الثانوي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            color: #2980b9;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1.1em;
+        }
+
+        ul {
+            margin-bottom: 15px;
+            padding-right: 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .intro {
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-right: 5px solid #3498db;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .subsection {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-right: 3px solid #27ae60;
+        }
+
+        .time-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .time-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .time-card h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #fcd770, #f8b500);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .tips-section h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .tips-section h3 {
+            color: #ddd;
+        }
+
+        .tips-section .subsection {
+            background-color: rgba(255,255,255,0.1);
+            border-right: 3px solid rgba(255,255,255,0.5);
+            color: white;
+        }
+
+        .tips-section .subsection h3 {
+            color: white;
+        }
+
+        .tips-section ul {
+            color: white;
+        }
+
+        .tips-section li {
+            color: white;
+        }
+
+        .references {
+            background-color: #2c3e50;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .references h2 {
+            color: white;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .conclusion {
+            background: linear-gradient(135deg, #00cec9, #00b894);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .conclusion h2 {
+            color: white;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border-right: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            .time-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>دليل بناء مذكرة التعليم الثانوي</h1>
+            <p style="text-align: center;">دليل شامل لإعداد مذكرات تعليمية فعالة ومتطورة</p>
+        </header>
+
+        <div class="intro">
+            <h2>مقدمة</h2>
+            <p>المذكرة التعليمية هي الخريطة التي يستخدمها الأستاذ لتوجيه عملية التعليم والتعلم بفعالية. إنها أداة تخطيط شاملة تحدد ما يحتاج الطلاب لتعلمه وكيفية تحقيق ذلك خلال وقت الحصة.</p>
+        </div>
+
+        <div class="section">
+            <h2>المكونات الأساسية للمذكرة</h2>
+            
+            <div class="subsection">
+                <h3>1- المعلومات الأساسية</h3>
+                <ul>
+                    <li>اسم المدرسة والأستاذ</li>
+                    <li>المادة والقسم</li>
+                    <li>التاريخ والوقت</li>
+                    <li>مدة الحصة ...الخ</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>2- الأهداف التعليمية</h3>
+                <p>الأهداف التعليمية هي حجر الأساس في أي مذكرة تعليمية. يجب أن تكون:</p>
+                <ul>
+                    <li><strong>محددة وواضحة</strong></li>
+                    <li><strong>قابلة للقياس</strong></li>
+                    <li><strong>قابلة للتحقيق</strong></li>
+                    <li><strong>مرتبطة بالمنهج</strong></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>3- المحتوى التعليمي</h3>
+                <p>تحديد المادة العلمية التي سيتم تدريسها:</p>
+                <ul>
+                    <li><strong>المفاهيم الأساسية</strong></li>
+                    <li><strong>المعلومات والحقائق</strong></li>
+                    <li><strong>المهارات المستهدفة</strong></li>
+                    <li><strong>القيم والاتجاهات</strong></li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>4- استراتيجيات التدريس</h3>
+                <h4>الطرق والأساليب المستخدمة:</h4>
+                <ul>
+                    <li>العصف الذهني</li>
+                    <li>التعلم التعاوني</li>
+                    <li>حل المشكلات</li>
+                    <li>التعلم القائم على المشاريع</li>
+                    <li>المناقشة والحوار</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>5- الأنشطة التعليمية</h3>
+                <h4>تقسيم الأنشطة حسب مراحل الدرس:</h4>
+                
+                <div class="time-breakdown">
+                    <div class="time-card">
+                        <h4>أ. التمهيد (5-10 دقائق)</h4>
+                        <ul style="text-align: right; padding-right: 20px;">
+                            <li>مراجعة الدرس السابق</li>
+                            <li>إثارة الدافعية للتعلم</li>
+                            <li>ربط الدرس الجديد بالخبرات السابقة</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="time-card">
+                        <h4>ب. العرض والتطوير (20-25 دقيقة)</h4>
+                        <ul style="text-align: right; padding-right: 20px;">
+                            <li>عرض المفاهيم الجديدة</li>
+                            <li>تطبيق الأمثلة</li>
+                            <li>الأنشطة التفاعلية</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="time-card">
+                        <h4>ج. التطبيق والممارسة (10-15 دقيقة)</h4>
+                        <ul style="text-align: right; padding-right: 20px;">
+                            <li>تمارين فردية وجماعية</li>
+                            <li>حل المشكلات</li>
+                            <li>التطبيق العملي</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="time-card">
+                        <h4>د. الخاتمة والتقويم (5 دقائق)</h4>
+                        <ul style="text-align: right; padding-right: 20px;">
+                            <li>تلخيص النقاط الرئيسية</li>
+                            <li>التقويم الختامي</li>
+                            <li>الواجب المنزلي</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>6- المواد والوسائل التعليمية</h3>
+                <h4>الأدوات المطلوبة:</h4>
+                <ul>
+                    <li>الكتاب المدرسي</li>
+                    <li>السبورة التفاعلية</li>
+                    <li>أجهزة العرض</li>
+                    <li>المواد العملية</li>
+                    <li>التقنيات الرقمية</li>
+                    <li>الوسائل البصرية</li>
+                </ul>
+            </div>
+
+            <div class="subsection">
+                <h3>7- أساليب التقويم</h3>
+                <h4>أنواع التقويم:</h4>
+                
+                <div class="highlight">
+                    <h4>أ. التقويم التشخيصي (قبل التدريس)</h4>
+                    <ul>
+                        <li>تحديد مستوى الطلاب</li>
+                        <li>معرفة الخبرات السابقة</li>
+                        <li>تشخيص نقاط القوة والضعف</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight">
+                    <h4>ب. التقويم التكويني (أثناء التدريس)</h4>
+                    <ul>
+                        <li>الملاحظة المباشرة</li>
+                        <li>الأسئلة الشفوية</li>
+                        <li>التطبيقات العملية</li>
+                        <li>المناقشات الصفية</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight">
+                    <h4>ج. التقويم الختامي (بعد التدريس)</h4>
+                    <ul>
+                        <li>الاختبارات</li>
+                        <li>الواجبات</li>
+                        <li>المشاريع</li>
+                        <li>التقييم الذاتي</li>
+                    </ul>
+                </div>
+            </div>
+		<div class="subsection">
+            <h2>8- التمايز في التعليم</h2>
+            <h3>مراعاة الفروق الفردية:</h3>
+            <ul>
+                <li>أنشطة للطلاب المتفوقين</li>
+                <li>دعم إضافي للطلاب المتأخرين</li>
+                <li>طرق تعلم متنوعة</li>
+                <li>مستويات مختلفة من التحدي</li>
+            </ul>
+        </div>
+		<div class="subsection">
+            <h2>9- إدارة و تسيير القسم</h2>
+            <h3>استراتيجيات الإدارة:</h3>
+            <ul>
+                <li>تنظيم البيئة الصفية</li>
+                <li>وضع القواعد والإجراءات</li>
+                <li>تحفيز الطلاب</li>
+                <li>التعامل مع السلوكيات المشكلة</li>
+            </ul>
+        </div>
+		<div class="subsection">
+            <h2>10- التحسين والتطوير</h2>
+            <h3>بعد تنفيذ الدرس:</h3>
+            <ul>
+                <li>تقييم فعالية الطرق المستخدمة</li>
+                <li>تحديد نقاط القوة والضعف</li>
+                <li>اقتراح تحسينات للمستقبل</li>
+                <li>توثيق الملاحظات والتجارب</li>
+            </ul>
+        </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="tips-section">
+            <h2>نصائح لكتابة مذكرة فعالة</h2>
+            
+            <div class="subsection">
+                <h3>التخطيط المسبق</h3>
+                <ul>
+                    <li>ابدأ التخطيط مبكراً</li>
+                    <li>حدد الأهداف بوضوح</li>
+                    <li>راجع المنهج والمعايير</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <h3>مراعاة الطلاب</h3>
+                <ul>
+                    <li>اعرف مستوى طلابك</li>
+                    <li>راع الفروق الفردية</li>
+                    <li>استخدم أساليب متنوعة</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <h3>المرونة في التطبيق</h3>
+                <ul>
+                    <li>كن مستعداً للتعديل</li>
+                    <li>راقب استجابة الطلاب</li>
+                    <li>اضبط الوقت حسب الحاجة</li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <h3>التقويم المستمر</h3>
+                <ul>
+                    <li>قيم فهم الطلاب باستمرار</li>
+                    <li>اعطِ تغذية راجعة فورية</li>
+                    <li>اضبط الخطة حسب النتائج</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="references">
+            <h2>المراجع والمصادر</h2>
+            <p>هذا الدليل مبني على أفضل الممارسات في التعليم والمراجع التعليمية الموثوقة، بما في ذلك:</p>
+            <ul>
+                <li>مركز إيبرلي للتميز في التدريس، جامعة كارنيجي ميلون</li>
+                <li>مركز التميز في التدريس، جامعة ميشيغان</li>
+                <li>مركز التميز في التدريس، جامعة سنغافورة الإدارية</li>
+                <li>الوكالة الوطنية الفنلندية للتعليم</li>
+                <li>وزارة التعليم في سنغافورة</li>
+            </ul>
+        </div>
+
+        <div class="conclusion">
+            <h2>خاتمة</h2>
+            <p>بناء مذكرة تعليمية فعالة يتطلب تخطيطاً دقيقاً ومراعاة لجميع عناصر العملية التعليمية. المذكرة الجيدة هي التي تحقق التوازن بين الأهداف التعليمية، وحاجات الطلاب، والإمكانيات المتاحة.</p>
+            <p>التطوير المستمر للمذكرات التعليمية والتأمل في فعاليتها يساهم في تحسين جودة التعليم وتحقيق نتائج تعلم أفضل للطلاب.</p>
+        </div>
+    </div>
+</body>
+</html>
