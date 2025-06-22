@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل استراتيجيات التعلم النشط والمقاربة بالكفاءات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .nav-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-pill {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border-right: 5px solid #3498db;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .section h4 {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .strategy-card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-right: 4px solid #e74c3c;
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .strategy-card h4 {
+            color: #e74c3c;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .competency-card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-right: 4px solid #27ae60;
+            transition: all 0.3s ease;
+        }
+
+        .competency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .competency-card h4 {
+            color: #27ae60;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(116, 185, 255, 0.3);
+        }
+
+        .example-box h4 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .reference-section {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .reference-section h3 {
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .reference-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .reference-category {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .reference-category h4 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .reference-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding-right: 0;
+        }
+
+        .steps-list li {
+            counter-increment: step-counter;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            position: relative;
+            padding-right: 50px;
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #3498db;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(45deg, #ffeaa7, #fdcb6e);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-right: 4px solid #e17055;
+        }
+
+        .highlight-box strong {
+            color: #d63031;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .nav-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .reference-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header fade-in">
+            <h1>🎓 دليل استراتيجيات التعلم النشط</h1>
+            <p>والمقاربة بالكفاءات - مرجع شامل للمعلمين والمربين</p>
+            <div class="nav-pills">
+                <a href="#strategies" class="nav-pill">استراتيجيات التعلم النشط</a>
+                <a href="#competencies" class="nav-pill">المقاربة بالكفاءات</a>
+                <a href="#techniques" class="nav-pill">التقنيات والأدوات</a>
+                <a href="#assessment" class="nav-pill">التقييم</a>
+                <a href="#examples" class="nav-pill">أمثلة تطبيقية</a>
+                <a href="#references" class="nav-pill">المصادر</a>
+            </div>
+        </header>
+
+        <main class="content fade-in">
+            <section class="section" id="intro">
+                <h2><span class="icon">📚</span>مقدمة</h2>
+                <div class="highlight-box">
+                    <p><strong>التعلم النشط</strong> هو نهج تعليمي يركز على إشراك الطلاب بفعالية في عملية التعلم من خلال أنشطة تفاعلية تتطلب التفكير النقدي والتحليل وحل المشكلات، بدلاً من الاستماع السلبي للمحاضرات التقليدية.</p>
+                </div>
+            </section>
+
+            <section class="section" id="strategies">
+                <h2><span class="icon">🎯</span>استراتيجيات التعلم النشط الأساسية</h2>
+                
+                <div class="strategy-card">
+                    <h4>💡 العصف الذهني (Brainstorming)</h4>
+                    <p><strong>الوصف:</strong> تقنية تهدف إلى توليد أكبر عدد من الأفكار الإبداعية حول موضوع معين</p>
+                    <p><strong>التطبيق:</strong></p>
+                    <ol class="steps-list">
+                        
+                        <li>طرح سؤال أو مشكلة محددة</li>
+                        <li>تشجيع الطلاب على طرح جميع الأفكار دون نقد</li>
+                        <li>تسجيل وتصنيف الأفكار المطروحة</li>
+                    </ol>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>👥 التعلم التعاوني (Cooperative Learning)</h4>
+                    <p><strong>الوصف:</strong> استراتيجية تعتمد على العمل الجماعي المنظم لتحقيق أهداف تعليمية مشتركة</p>
+                    <p><strong>الأنواع:</strong></p>
+                    <ul>
+                        <li><strong>جيجسو (Jigsaw):</strong> كل طالب يصبح خبيراً في جزء من الموضوع</li>
+                        <li><strong>فكر-زاوج-شارك:</strong> التفكير الفردي ثم المناقشة الثنائية ثم المشاركة الجماعية</li>
+                        <li><strong>المجموعات الاستقصائية:</strong> البحث الجماعي في موضوع محدد</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🔍 التعلم القائم على المشكلات (Problem-Based Learning)</h4>
+                    <p><strong>الوصف:</strong> تقديم مشكلات حقيقية أو محاكاة للواقع ليقوم الطلاب بحلها</p>
+                    <p><strong>المراحل:</strong></p>
+                    <ol class="steps-list">
+                        <li>تحديد المشكلة وفهم طبيعتها</li>
+                        <li>جمع المعلومات والبيانات اللازمة</li>
+                        <li>وضع الفرضيات والحلول المحتملة</li>
+                        <li>اختبار الحلول وتقييمها</li>
+                        <li>تطبيق الحل الأمثل</li>
+                    </ol>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🔬 التعلم القائم على الاستقصاء (Inquiry-Based Learning)</h4>
+                    <p><strong>الوصف:</strong> تشجيع الطلاب على طرح الأسئلة والبحث عن الإجابات بأنفسهم</p>
+                    <p><strong>الأنواع:</strong></p>
+                    <ul>
+                        <li><strong>الاستقصاء الموجه:</strong> المعلم يوجه الطلاب نحو اكتشاف محدد</li>
+                        <li><strong>الاستقصاء المفتوح:</strong> الطلاب يحددون مسار البحث بأنفسهم</li>
+                        <li><strong>الاستقصاء التأكيدي:</strong> التحقق من صحة المعلومات المعروفة</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section" id="competencies">
+                <h2><span class="icon">⚡</span>المقاربة بالكفاءات</h2>
+                
+                <div class="highlight-box">
+                    <p><strong>تعريف الكفاءة:</strong> القدرة على تعبئة وتوظيف مجموعة من المعارف والمهارات والسلوكيات لحل مشكلة أو إنجاز مهمة محددة في وضعية معينة.</p>
+                </div>
+
+                <h3>أنواع الكفاءات</h3>
+
+                <div class="competency-card">
+                    <h4>🏗️ الكفاءات الأساسية (القاعدية)</h4>
+                    <p><strong>التعريف:</strong> المعارف والمهارات الأساسية اللازمة لكل مادة دراسية</p>
+                    <p><strong>أمثلة:</strong> القراءة، الكتابة، العمليات الحسابية الأساسية</p>
+                </div>
+
+                <div class="competency-card">
+                    <h4>🌐 الكفاءات المستعرضة (العرضية)</h4>
+                    <p><strong>التعريف:</strong> كفاءات قابلة للتطبيق في مختلف المواد والمجالات</p>
+                    <p><strong>أمثلة:</strong> التفكير النقدي، حل المشكلات، التواصل، العمل الجماعي</p>
+                </div>
+
+                <div class="competency-card">
+                    <h4>🎯 الكفاءات النهائية الإدماجية</h4>
+                    <p><strong>التعريف:</strong> كفاءات شاملة تدمج مختلف التعلمات في وضعيات معقدة</p>
+                    <p><strong>أمثلة:</strong> إنجاز مشروع متكامل، حل مشكلة مركبة</p>
+                </div>
+
+                <h3>استراتيجيات تنمية الكفاءات</h3>
+
+                <div class="strategy-card">
+                    <h4>🎭 بيداغوجيا الوضعيات المشكلة</h4>
+                    <p><strong>المفهوم:</strong> وضع الطالب أمام وضعية معقدة تتطلب تعبئة كفاءاته</p>
+                    <p><strong>المراحل:</strong></p>
+                    <ul>
+                        <li><strong>الوضعية الانطلاقية:</strong> إثارة اهتمام الطالب وتحفيزه</li>
+                        <li><strong>وضعيات البناء:</strong> تطوير المعارف والمهارات تدريجياً</li>
+                        <li><strong>وضعية الإدماج:</strong> توظيف جميع التعلمات في وضعية شاملة</li>
+                    </ul>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🏗️ بيداغوجيا المشروع</h4>
+                    <p><strong>الوصف:</strong> تنظيم التعلم حول إنجاز مشروع محدد وهادف</p>
+                    <ol class="steps-list">
+                        <li>تحديد المشروع: اختيار موضوع ذي معنى للطلاب</li>
+                        <li>التخطيط: وضع خطة عمل مفصلة</li>
+                        <li>التنفيذ: إنجاز المشروع مع المتابعة المستمرة</li>
+                        <li>التقييم: تقييم النتائج والعمليات</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section" id="techniques">
+                <h2><span class="icon">🛠️</span>تقنيات وأدوات التعلم النشط</h2>
+                
+                <h3>تقنيات المناقشة</h3>
+                <ul>
+                    <li><strong>حلقات النقاش:</strong> مناقشة منظمة حول موضوع محدد</li>
+                    <li><strong>المناقشة السقراطية:</strong> طرح أسئلة تحفز التفكير العميق</li>
+                    <li><strong>لعب الأدوار:</strong> تمثيل شخصيات مختلفة لفهم وجهات نظر متنوعة</li>
+                </ul>
+
+                <h3>التقنيات البصرية</h3>
+                <ul>
+                    <li><strong>الخرائط الذهنية:</strong> تنظيم الأفكار بشكل بصري</li>
+                    <li><strong>المخططات والرسوم البيانية:</strong> تمثيل البيانات والمعلومات</li>
+                    <li><strong>العروض التقديمية التفاعلية:</strong> استخدام الوسائط المتعددة</li>
+                </ul>
+
+                <h3>التقنيات الرقمية</h3>
+                <ul>
+                    <li><strong>منصات التعلم الإلكتروني:</strong> بيئات تفاعلية للتعلم</li>
+                    <li><strong>الألعاب التعليمية الرقمية:</strong> تحفيز التعلم من خلال اللعب</li>
+                    <li><strong>أدوات التعاون الرقمي:</strong> العمل الجماعي عن بُعد</li>
+                </ul>
+            </section>
+
+            <section class="section" id="assessment">
+                <h2><span class="icon">📊</span>التقييم في إطار المقاربة بالكفاءات</h2>
+                
+                <h3>أنواع التقييم</h3>
+
+                <div class="strategy-card">
+                    <h4>🔍 التقييم التشخيصي</h4>
+                    <p><strong>الهدف:</strong> تحديد مستوى الطلاب ونقطة البداية</p>
+                    <p><strong>الأدوات:</strong> اختبارات قبلية، استبيانات، ملاحظات</p>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>📈 التقييم التكويني</h4>
+                    <p><strong>الهدف:</strong> متابعة تقدم الطلاب وتقديم التغذية الراجعة</p>
+                    <p><strong>الأدوات:</strong> أنشطة تفاعلية، مناقشات، مشاريع صغيرة</p>
+                </div>
+
+                <div class="strategy-card">
+                    <h4>🎯 التقييم الإجمالي</h4>
+                    <p><strong>الهدف:</strong> قياس مدى تحقق الكفاءات النهائية</p>
+                    <p><strong>الأدوات:</strong> مشاريع شاملة، وضعيات إدماجية، امتحانات شاملة</p>
+                </div>
+
+                <h3>معايير التقييم</h3>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>الصحة:</strong> دقة المعلومات والمفاهيم</li>
+                        <li><strong>الاكتمال:</strong> شمولية الإجابة أو الإنجاز</li>
+                        <li><strong>الانسجام:</strong> ترابط الأفكار والعناصر</li>
+                        <li><strong>الإبداع:</strong> الأصالة والابتكار في الحلول</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section" id="examples">
+                <h2><span class="icon">💡</span>أمثلة تطبيقية</h2>
+                
+                <div class="example-box">
+                    <h4>🧪 مثال 1: درس في العلوم الطبيعية</h4>
+                    <p><strong>الموضوع:</strong> النظام البيئي</p>
+                    <p><strong>الاستراتيجية:</strong> التعلم القائم على المشكلات</p>
+                    <p><strong>التطبيق:</strong></p>
+                    <ol>
+                        <li>عرض مشكلة تلوث بيئي محلي</li>
+                        <li>تقسيم الطلاب إلى مجموعات للبحث</li>
+                        <li>جمع البيانات والمعلومات</li>
+                        <li>اقتراح حلول مبتكرة</li>
+                        <li>عرض النتائج ومناقشتها</li>
+                    </ol>
+                </div>
+
+                <div class="example-box">
+                    <h4>📐 مثال 2: درس في الرياضيات</h4>
+                    <p><strong>الموضوع:</strong> الهندسة التطبيقية</p>
+                    <p><strong>الاستراتيجية:</strong> بيداغوجيا المشروع</p>
+                    <p><strong>التطبيق:</strong></p>
+                    <ol>
+                        <li>تصميم نموذج لمبنى مدرسي</li>
+                        <li>حساب المساحات والأحجام</li>
+                        <li>تقدير التكاليف</li>
+                        <li>عرض المشروع وتبريره</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">💪</span>التحديات والحلول</h2>
+                
+                <h3>التحديات الشائعة</h3>
+                <ul>
+                    <li><strong>مقاومة التغيير:</strong> من قبل المعلمين أو الطلاب</li>
+                    <li><strong>ضيق الوقت:</strong> صعوبة تطبيق الاستراتيجيات في الوقت المحدد</li>
+                    <li><strong>نقص الموارد:</strong> عدم توفر الأدوات والوسائل اللازمة</li>
+                    <li><strong>عدد الطلاب الكبير:</strong> صعوبة إدارة الأنشطة التفاعلية</li>
+                </ul>
+
+                <h3>الحلول المقترحة</h3>
+                <div class="highlight-box">
+                    <ul>
+                        <li><strong>التدريب المستمر:</strong> تطوير قدرات المعلمين</li>
+                        <li><strong>التخطيط الجيد:</strong> وضع خطط مرنة وواقعية</li>
+                        <li><strong>الاستفادة من التكنولوجيا:</strong> استخدام الأدوات الرقمية</li>
+                        <li><strong>التعاون المؤسسي:</strong> العمل الجماعي لتذليل الصعوبات</li>
+                    </ul>
+                </div>
+            </section>
+
+
+
+            <section class="section">
+                <h2><span class="icon">🎯</span>التوصيات للممارسة الفعالة</h2>
+                
+                <h3>للمعلمين</h3>
+                <div class="strategy-card">
+                    <ul>
+                        <li><strong>التطوير المهني المستمر:</strong> المشاركة في دورات تدريبية</li>
+                        <li><strong>التخطيط الدقيق:</strong> إعداد خطط درس مفصلة</li>
+                        <li><strong>المرونة في التطبيق:</strong> التكيف مع ظروف الفصل</li>
+                        <li><strong>التقييم الذاتي:</strong> مراجعة الممارسات وتطويرها</li>
+                    </ul>
+                </div>
+
+                <h3>للمؤسسات التعليمية</h3>
+                <div class="competency-card">
+                    <ul>
+                        <li><strong>توفير البيئة المناسبة:</strong> قاعات مجهزة ومرنة</li>
+                        <li><strong>التدريب والدعم:</strong> برامج تطوير للمعلمين</li>
+                        <li><strong>التقييم والمتابعة:</strong> نظام متابعة فعال</li>
+                        <li><strong>التحفيز والتقدير:</strong> تشجيع الممارسات المبدعة</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">📝</span>خلاصة وتوجيهات عملية</h2>
+                
+                <div class="highlight-box pulse">
+                    <h4>🎯 النقاط الأساسية للتذكر:</h4>
+                    <ul>
+                        <li>التعلم النشط يتطلب مشاركة فعالة من الطلاب</li>
+                        <li>المقاربة بالكفاءات تركز على التطبيق العملي للمعارف</li>
+                        <li>التنويع في الاستراتيجيات يلبي احتياجات الطلاب المختلفة</li>
+                        <li>التقييم يجب أن يكون مستمراً وشاملاً</li>
+                        <li>التكوين المستمر للمعلمين ضروري للنجاح</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <h4>💡 نصائح للبدء:</h4>
+                    <ol>
+                        <li>ابدأ بتطبيق استراتيجية واحدة تدريجياً</li>
+                        <li>راقب ردود فعل الطلاب وتفاعلهم</li>
+                        <li>اطلب التغذية الراجعة من الطلاب والزملاء</li>
+                        <li>وثق تجاربك ونتائجها</li>
+                        <li>شارك خبراتك مع المعلمين الآخرين</li>
+                    </ol>
+                </div>
+            </section>
+			            <section class="reference-section" id="references">
+                <h2><span class="icon">📚</span>المصادر والمراجع</h2>
+                
+                <div class="reference-list">
+                    <div class="reference-category">
+                        <h4>📖 مراجع عربية أساسية</h4>
+                        <div class="reference-item">الدريج، محمد (2003). التدريس الهادف من النموذج بالأهداف إلى النموذج بالكفايات. منشورات عالم التربية.</div>
+                        <div class="reference-item">زيتون، حسن حسين (2003). استراتيجيات التدريس: رؤية معاصرة لطرق التعليم والتعلم. عالم الكتب.</div>
+                        <div class="reference-item">قطامي، يوسف وقطامي، نايفة (2000). سيكولوجية التعلم الصفي. دار الشروق.</div>
+                        <div class="reference-item">أبو جادو، صالح محمد علي (2003). سيكولوجية التنشئة الاجتماعية. دار المسيرة.</div>
+                    </div>
+
+                    <div class="reference-category">
+                        <h4>🌍 مراجع دولية مترجمة</h4>
+                        <div class="reference-item">برونر، جيروم (1999). التعلم بالاكتشاف (ترجمة: نبيل عبد الهادي). دار وائل.</div>
+                        <div class="reference-item">بياجيه، جان (2001). التطور المعرفي عند الطفل (ترجمة: محمد صالح الامام). دار الفكر.</div>
+                    </div>
+
+                    <div class="reference-category">
+                        <h4>💻 مصادر إلكترونية موثقة</h4>
+                        <div class="reference-item">موقع وزارة التربية الوطنية الجزائرية: https://www.education.gov.dz</div>
+                        <div class="reference-item">المركز الوطني للوثائق التربوية: https://www.cndp.dz</div>
+                        <div class="reference-item">بوابة التعليم الإلكتروني العربي: https://www.edraak.org</div>
+                    </div>
+
+                    <div class="reference-category">
+                        <h4>📰 دوريات علمية متخصصة</h4>
+                        <div class="reference-item">مجلة العلوم التربوية والنفسية - المجلد العلمي للنشر الأكاديمي</div>
+                        <div class="reference-item">مجلة الدراسات التربوية والإنسانية - كلية التربية جامعة دمنهور</div>
+                        <div class="reference-item">المجلة العربية للتربية العلمية والتقنية - المنظمة العربية للتربية والثقافة والعلوم</div>
+                    </div>
+
+                    <div class="reference-category">
+                        <h4>📋 تقارير ووثائق رسمية</h4>
+                        <div class="reference-item">منظمة اليونسكو (2015). التعليم للجميع 2000-2015: الإنجازات والتحديات</div>
+                        <div class="reference-item">البنك الدولي (2018). تقرير التنمية العالمية: التعلم لتحقيق وعد التعليم</div>
+                        <div class="reference-item">المنظمة العربية للتربية والثقافة والعلوم (2020). استراتيجية تطوير التعليم العربي</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer style="text-align: center; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; margin-top: 40px; color: white;">
+            <p>© 2025 - دليل استراتيجيات التعلم النشط والمقاربة بالكفاءات</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">مرجع تعليمي شامل للمعلمين والمربين في الوطن العربي</p>
+            <div style="margin-top: 20px;">
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin: 0 5px;">التعلم النشط</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin: 0 5px;">المقاربة بالكفاءات</span>
+                <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin: 0 5px;">التعليم الحديث</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // إضافة تأثيرات تفاعلية
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثير التمرير السلس للروابط
+            document.querySelectorAll('.nav-pill').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // تأثير الظهور التدريجي عند التمرير
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // مراقبة جميع البطاقات والأقسام
+            document.querySelectorAll('.strategy-card, .competency-card, .example-box').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+
+            // تأثير الإضاءة على الأزرار
+            document.querySelectorAll('.nav-pill').forEach(pill => {
+                pill.addEventListener('mouseover', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.05)';
+                });
+                
+                pill.addEventListener('mouseout', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // إضافة عداد للخطوات
+            let stepCounter = 0;
+            document.querySelectorAll('.steps-list li').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = 'rgba(52, 152, 219, 0.2)';
+                    this.style.transform = 'translateX(-5px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+                    this.style.transform = 'translateX(0)';
+                });
+            });
+
+            // تأثير النقر على العناوين
+            document.querySelectorAll('.section h2').forEach(title => {
+                title.addEventListener('click', function() {
+                    const section = this.parentElement;
+                    section.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        section.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // إضافة مؤشر التقدم في القراءة
+            const progressBar = document.createElement('div');
+            progressBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 0%;
+                height: 4px;
+                background: linear-gradient(90deg, #3498db, #2980b9);
+                z-index: 1000;
+                transition: width 0.3s ease;
+            `;
+            document.body.appendChild(progressBar);
+
+            window.addEventListener('scroll', function() {
+                const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+</html>
