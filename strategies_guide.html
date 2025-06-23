@@ -437,7 +437,83 @@
         display: none !important;
     }
 }
+        .signature-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px solid #dee2e6;
+        }
 
+        .signature-section h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .signature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .signature-box {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .signature-box h3 {
+            color: #495057;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .signature-field {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .signature-field label {
+            font-weight: bold;
+            color: #495057;
+            min-width: 120px;
+            font-size: 1.1em;
+        }
+
+        .signature-line {
+            flex: 1;
+            border-bottom: 2px solid #6c757d;
+            min-height: 25px;
+            position: relative;
+        }
+
+        .signature-area {
+            min-height: 60px;
+            border: 2px dashed #6c757d;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: #6c757d;
+        }
+
+        .signature-area::after {
+            content: "منطقة التوقيع";
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
@@ -785,7 +861,49 @@
                 </div>
             </section>
         </main>
+        <div class="signature-section">
+            <h2>الإنجاز و المراجعة</h2>
+            
+            <div class="signature-row">
+                <div class="signature-box">
+                    <h3>تم جمعه ومراجعته من قبل:</h3>
+                    <div class="signature-field">
+                        
+                        <div class="signature-line">الأستاذ: مزان فريد</div>
+                    </div>
+                    <div class="signature-field">
+                        <label>البريد الإلكتروني:</label>
+                        <div class="signature-line">faridmezane@gmail.com</div>
+                    </div>
 
+                </div>
+
+                <div class="signature-box">
+                    <h3>تم مراجعته بواسطة:</h3>
+                    <div class="signature-field">
+                        
+                        <div class="signature-line">الأستاذة: بن نجاعي هاجر</div>
+                    </div>
+                    <div class="signature-field">
+                        <label>البريد الإلكتروني:</label>
+                        <div class="signature-line">hadjerbennedjai@gmail.com</div>
+                    </div>
+
+                </div>
+				                <div class="signature-box">
+                    <h3>تم مراجعته بواسطة:</h3>
+                    <div class="signature-field">
+                        
+                        <div class="signature-line">الأستاذة: قاسمي سهيلة</div>
+                    </div>
+                    <div class="signature-field">
+                        <label>البريد الإلكتروني:</label>
+                        <div class="signature-line">gasmsouhaila23@gmail.com</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <footer style="text-align: center; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; margin-top: 40px; color: white;">
             <p>© 2025 - دليل استراتيجيات التعلم النشط والمقاربة بالكفاءات</p>
             <p style="font-size: 0.9em; margin-top: 10px;">مرجع تعليمي شامل للأساتذة</p>
@@ -795,6 +913,8 @@
                 <span style="background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; margin: 0 5px;">التعليم الحديث</span>
             </div>
         </footer>
+		
+		
     </div>
 
     <script>
