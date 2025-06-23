@@ -215,9 +215,184 @@
                 grid-template-columns: 1fr;
             }
         }
+/* Consistent action buttons for both pages */
+.action-buttons {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    min-width: 120px; /* Ensure consistent button width */
+    justify-content: center;
+}
+
+.btn-pdf {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.btn-pdf:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-print {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.btn-print:hover {
+    background: linear-gradient(135deg, #2980b9, #21618c);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Additional button styles for consistency */
+.btn-download {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+}
+
+.btn-download:hover {
+    background: linear-gradient(135deg, #229954, #1e8449);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+/* Print styles */
+@media print {
+    .action-buttons {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+    }
+    
+    .container {
+        background: white !important;
+        box-shadow: none !important;
+    }
+    
+    * {
+        background-color: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    /* Keep some structure for readability */
+    h1, h2, h3, h4 {
+        color: #000 !important;
+        border-color: #000 !important;
+    }
+    
+    .container {
+        box-shadow: none !important;
+        background: white !important;
+    }
+    
+    /* Ensure page breaks don't split sections */
+    .section, .subsection, .time-card, .highlight {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    
+    h2, h3, h4 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+}
+
+
+/* PDF-specific styles when generating PDF */
+.pdf-mode {
+    transform: scale(0.85);
+    transform-origin: top right;
+}
+
+.pdf-mode .section, 
+.pdf-mode .subsection, 
+.pdf-mode .time-card, 
+.pdf-mode .highlight,
+.pdf-mode .intro,
+.pdf-mode .tips-section,
+.pdf-mode .conclusion,
+.pdf-mode .references {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+.pdf-mode h2, 
+.pdf-mode h3, 
+.pdf-mode h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+@media (max-width: 768px) {
+    .action-buttons {
+        top: 10px;
+        left: 10px;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn {
+        padding: 10px 16px;
+        font-size: 12px;
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-buttons {
+        top: 5px;
+        left: 5px;
+        gap: 6px;
+    }
+    
+    .btn {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-width: 100px;
+    }
+}
     </style>
 </head>
 <body>
+<div class="action-buttons">
+    <button class="btn btn-pdf" onclick="downloadPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+        </svg>
+        تحميل PDF
+    </button>
+    <button class="btn btn-print" onclick="printDocument()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z"/>
+        </svg>
+        طباعة
+    </button>
+</div>
     <div class="container">
         <header>
             <h1>دليل بناء مذكرة التعليم الثانوي</h1>
@@ -461,5 +636,103 @@
 
 
     </div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+function downloadPDF() {
+    const element = document.querySelector('.container');
+    const clonedElement = element.cloneNode(true);
+    
+    // Add spacing and page break controls
+    const sections = clonedElement.querySelectorAll('h1, h2, h3, .section');
+    sections.forEach((section, index) => {
+        section.style.marginTop = '20px';
+        section.style.pageBreakBefore = 'auto';
+        if (index > 0) {
+            section.style.pageBreakBefore = 'avoid';
+        }
+    });
+    
+    // Fix lists
+    const lists = clonedElement.querySelectorAll('ul, ol');
+    lists.forEach(list => {
+        list.style.direction = 'rtl';
+        list.style.textAlign = 'right';
+        list.style.listStylePosition = 'inside';
+        list.style.pageBreakInside = 'avoid';
+        list.style.marginBottom = '15px';
+        
+        if (list.tagName === 'UL') {
+            const items = list.querySelectorAll('li');
+            items.forEach(item => {
+                item.style.position = 'relative';
+                item.style.paddingRight = '20px';
+                item.style.listStyle = 'none';
+                item.style.pageBreakInside = 'avoid';
+                item.style.marginBottom = '5px';
+                item.style.lineHeight = '1.6';
+                item.innerHTML = '• ' + item.innerHTML;
+            });
+        }
+    });
+    
+    // Add proper spacing for paragraphs
+    const paragraphs = clonedElement.querySelectorAll('p');
+    paragraphs.forEach(p => {
+        p.style.marginBottom = '10px';
+        p.style.pageBreakInside = 'avoid';
+        p.style.lineHeight = '1.6';
+    });
+    
+    const opt = {
+        margin: [15, 15, 15, 15], // Increased margins
+        filename: 'دليل_بناء_مذكرة_التعليم_الثانوي.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 1.5, // Reduced scale for better page fitting
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            backgroundColor: '#ffffff'
+        },
+        jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'portrait',
+            compress: true
+        },
+        pagebreak: {
+            mode: ['avoid-all', 'css'],
+            avoid: ['p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol']
+        }
+    };
+    
+    document.querySelector('.action-buttons').style.display = 'none';
+    
+    html2pdf().set(opt).from(clonedElement).save().then(() => {
+        document.querySelector('.action-buttons').style.display = 'flex';
+    });
+}
+function printDocument() {
+    // Hide buttons before printing
+    document.querySelector('.action-buttons').style.display = 'none';
+    
+    window.print();
+    
+    // Show buttons after print dialog
+    setTimeout(() => {
+        document.querySelector('.action-buttons').style.display = 'flex';
+    }, 1000);
+}
+
+// Handle print event
+window.addEventListener('beforeprint', function() {
+    document.querySelector('.action-buttons').style.display = 'none';
+});
+
+window.addEventListener('afterprint', function() {
+    document.querySelector('.action-buttons').style.display = 'flex';
+});
+</script>
 </body>
 </html>
