@@ -184,7 +184,12 @@
                     <h3>العروض التقديمية</h3>
                     <p>عروض PowerPoint جاهزة للاستخدام</p>
                 </div>
-
+				<div class="document-card not-implemented" onclick="showNotImplemented('التقويمات')">
+					<div class="status-badge status-not-implemented">غير متوفر</div>
+					<span class="icon">📝</span>
+					<h3>نماذج تقويمات وأنشطة</h3>
+					<p>نماذج لفروض, اختبارت وتقويمات تشخيصية</p>
+				</div>
                 <div class="document-card" onclick="showDocument('annual-progression')">
                     <div class="status-badge status-complete">مكتمل</div>
                     <span class="icon">📅</span>
@@ -267,6 +272,12 @@
 					<h3>وثائق أخرى</h3>
 					<p>ملفات ووثائق إدارية أو تعليمية إضافية</p>
 				</div>
+				<div class="document-card" onclick="showDocument('useful-websites')">
+    			    <div class="status-badge status-new">جديد</div>
+    			    <span class="icon">🌐</span>
+    			    <h3>مواقع مفيدة</h3>
+    			    <p>روابط لمواقع تعليمية وأدوات مفيدة للأستاذ والطالب</p>
+			     </div>
             </div>
         </div>
         <!-- صفحات التفاصيل -->
@@ -290,15 +301,19 @@
         <h2 class="grade-title">🎓 السنة الأولى جذع مشترك علوم (1 ج م ع)</h2>
         
         <div class="section">
-            <h3>بيئة التعامل مع الحاسوب</h3>
+            <h3>كل المجالات والوحدات</h3>
             <div class="file-list">
                 <div class="file-item">
                     <div class="file-info">
-                        <div class="file-name">مذكرة مقدمة في الحاسوب</div>
-                        <div class="file-size">PDF - 2.5 MB</div>
+                        <div class="file-name">مذكرات الأستاذ سعد غمراني 2022-2023</div>
+                        <div class="file-size">DOCX - 260 KB</div>
                     </div>
-                    <button class="download-btn" onclick="downloadFile('مذكرة مقدمة في الحاسوب')">تحميل</button>
-                </div>
+                   
+						<button class="download-btn" onclick="window.open('files/المذكرات_التربوية_لمادة_المعلوماتية_جذع_مشترك_علوم_وتكنولوجيا.docx', '_blank')">
+                            تحميل
+                        </button>
+				</div>
+				<!--
                 <div class="file-item">
                     <div class="file-info">
                         <div class="file-name">مذكرة نظام التشغيل</div>
@@ -306,9 +321,10 @@
                     </div>
                     <button class="download-btn" onclick="downloadFile('مذكرة نظام التشغيل')">تحميل</button>
                 </div>
+				-->
             </div>
         </div>
-        
+        <!--
         <div class="section">
             <h3>المخططات الانسيابية والخوارزميات</h3>
             <div class="file-list">
@@ -368,6 +384,7 @@
                 </div>
             </div>
         </div>
+		-->
     </div>
     
     <!-- القسم الثاني: 1 ج م أ -->
@@ -375,15 +392,19 @@
         <h2 class="grade-title">📚 السنة الأولى جذع مشترك آداب (1 ج م أ)</h2>
         
         <div class="section">
-            <h3>بيئة التعامل مع الحاسوب</h3>
+            <h3>كل المجالات والوحدات</h3>
             <div class="file-list">
                 <div class="file-item">
                     <div class="file-info">
-                        <div class="file-name">مذكرة أساسيات الحاسوب</div>
-                        <div class="file-size">PDF - 2.2 MB</div>
+                        <div class="file-name">مذكرات الأستاذ سعد غمراني 2022-2023</div>
+                        <div class="file-size">DOCX - 212 KB</div>
                     </div>
-                    <button class="download-btn" onclick="downloadFile('مذكرة أساسيات الحاسوب')">تحميل</button>
+                    
+						<button class="download-btn" onclick="window.open('files/المذكرات_التربوية_لمادة_المعلوماتية_جذع_مشترك_آداب.docx', '_blank')">
+                            تحميل
+                        </button>
                 </div>
+				<!--
                 <div class="file-item">
                     <div class="file-info">
                         <div class="file-name">مذكرة استخدام نظام التشغيل</div>
@@ -391,9 +412,10 @@
                     </div>
                     <button class="download-btn" onclick="downloadFile('مذكرة استخدام نظام التشغيل')">تحميل</button>
                 </div>
+				-->
             </div>
         </div>
-        
+        <!--
         <div class="section">
             <h3>المكتبية</h3>
             <div class="file-list">
@@ -433,6 +455,7 @@
                 </div>
             </div>
         </div>
+		-->
     </div>
 </div>
 
@@ -609,6 +632,16 @@
                             تحميل
                         </button>
                     </div>
+					<div class="file-item">
+					<div class="file-icon xlsx">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">التوزيع السنوي - جميع المستويات - النموذج 03</div>
+                            <div class="file-size">DOCX - 16 KB</div>
+                        </div>
+						<button class="download-btn" onclick="window.open('files/التوزيع السنوي 03.docx', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -768,6 +801,17 @@
                         </div>
 
 							<button class="download-btn" onclick="window.open('https://www.mediafire.com/file/w313wiier9z0jhq/LarpSetup.exe/file', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+					<div class="file-item">
+					    <div class="file-icon exe">RAR</div>
+                        <div class="file-info">
+                            <div class="file-name">Flowgorithm برنامج رسم وتنفيذ المخططات الانسيابية باللغة العربية</div>
+                            <div class="file-size">RAR - 2.3 MB</div>
+                        </div>
+
+							<button class="download-btn" onclick="window.open('http://flowgorithm.org/download/index.html', '_blank')">
                                 تحميل
                             </button>
                     </div>
@@ -980,6 +1024,17 @@
                     تحميل
                 </button>
         </div>
+		
+			   <div class="file-item">
+	   <div class="file-icon docx">DOC</div>
+            <div class="file-info">
+                <div class="file-name">تقرير حول وضعية مخبر المعلوماتية - طلب صيانة او تجهيز</div>
+                <div class="file-size">DOCX - 24 kB</div>
+            </div>
+				<button class="download-btn" onclick="window.open('files/تقرير حول وضعية مخبر المعلوماتية.docx', '_blank')">
+                    تحميل
+                </button>
+        </div>
 	   <div class="file-item">
 	   <div class="file-icon docx">DOC</div>
             <div class="file-info">
@@ -990,9 +1045,119 @@
                     تحميل
                 </button>
         </div>
+			   <div class="file-item">
+	   <div class="file-icon docx">DOC</div>
+            <div class="file-info">
+                <div class="file-name">ورقة معلومات وتعهد خاص بالتلاميذ  - تعزز حس المسؤولية لدى التلميذ -</div>
+                <div class="file-size">DOCX - 28 kB</div>
+            </div>
+				<button class="download-btn" onclick="window.open('files/ورقة  معلومات وتعهد .docx', '_blank')">
+                    تحميل
+                </button>
+        </div>
     </div>
 	</div>
 </div>
+<div id="useful-websites" class="document-detail">
+    <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
+    <div class="header">
+        <h1>🌐 مواقع مفيدة</h1>
+        <p>روابط مختارة لمواقع تعليمية وأدوات مساعدة في التعليم</p>
+    </div>
+    <div class="section">
+        <h3>قائمة المواقع</h3>
+        <div class="file-list">
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">وزارة التربية الوطنية الجزائرية</div>
+                    <div class="file-size">official.education.gov.dz</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.education.gov.dz', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">فضاء الأستاذ - منصة رقمية</div>
+                    <div class="file-size">بوابة الأستاذ الرسمية</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://ostad.education.dz/auth', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">الموقع الرسمي للجريدة الرسمية</div>
+                    <div class="file-size">مراجعة النصوص القانونية والتنظيمية</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.joradp.dz/HAR/Index.htm', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">موقع تعليمي - DzExams</div>
+                    <div class="file-size">موقع للتمارين والفروض والاختبارات</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.dzexams.com/', '_blank')">زيارة</button>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<div id="assessment-templates" class="document-detail">
+    <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
+    <div class="header">
+        <h1>📝 نماذج تقويمات وأنشطة</h1>
+        <p>فروض واختبارات لسنوات مستويات مختلفة في مادة الإعلام الآلي والتعليم الثانوي</p>
+    </div>
+    <div class="section">
+        <h3>نماذج جاهزة للتحميل</h3>
+        <div class="file-list">
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">نماذج فروض واختبارات الإعلام الآلي – 1 ثانوي</div>
+                    <div class="file-size">7 فروض + 36 اختبار للفصل الأول، 5 فروض + 25 اختبار للفصل الثاني، …</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.dzexams.com/ar/1as/informatique', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">بنك الفروض والاختبارات – سنة ثالثة ثانوي</div>
+                    <div class="file-size">نماذج تغطي جميع الشعب: علوم، أداب، تقني رياضي…</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://3as.ency-education.com/exams.html', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">بنك الفروض والاختبارات – سنة ثانية ثانوي</div>
+                    <div class="file-size">نماذج فروض واختبارات لكافة شعب الثانوية</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://2as.ency-education.com/exams.html', '_blank')">زيارة</button>
+            </div>
+
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">موقع تسنيم – فروض واختبارات التعليم الثانوي</div>
+                    <div class="file-size">نماذج محلولة لجميع المستويات والشعب مع التصحيح</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.t-onec.com/p/exams-high-school.html', '_blank')">زيارة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     </div>
 <!-- Notice Modal -->
 <div id="noticeModal" class="notice-modal">
