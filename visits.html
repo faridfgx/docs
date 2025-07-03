@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل الزيارات التفتيشية للأساتذة</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --success-color: #22c55e;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --background-light: #f8fafc;
+            --background-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--background-white);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+        }
+
+        .nav-menu {
+            background: var(--text-primary);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            margin: 0 8px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            display: inline-block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-menu a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .content {
+            padding: 50px 40px;
+            background: var(--background-light);
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 40px;
+            background: var(--background-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .section h2 {
+            font-family: 'Amiri', serif;
+            color: var(--primary-color);
+            font-size: 2.25rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-weight: 700;
+        }
+
+        .section h2::before {
+            content: '📋';
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 12px;
+            border-radius: 50%;
+            color: white;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .section h3 {
+            font-family: 'Amiri', serif;
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            margin: 35px 0 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--background-light), #e2e8f0);
+            border-radius: var(--border-radius);
+            border-right: 4px solid var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .section h4 {
+            color: var(--text-secondary);
+            font-size: 1.375rem;
+            margin: 25px 0 15px 0;
+            padding: 15px 20px;
+            background: #f1f5f9;
+            border-radius: var(--border-radius);
+            border-right: 3px solid var(--warning-color);
+            font-weight: 600;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(100%);
+            transition: transform 0.6s;
+        }
+
+        .type-card:hover::before {
+            transform: translateX(-100%);
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .characteristics {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            border-right: 4px solid var(--success-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .characteristics h4 {
+            color: var(--success-color);
+            margin-bottom: 20px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-size: 1.5rem;
+        }
+
+        .characteristics ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .characteristics li {
+            padding: 12px 0;
+            padding-right: 35px;
+            position: relative;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .characteristics li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.4rem;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+        }
+
+        .question-list {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            border-right: 4px solid var(--warning-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .question-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .question-list li {
+            padding: 10px 0;
+            padding-right: 35px;
+            position: relative;
+            color: #92400e;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .question-list li::before {
+            content: '؟';
+            position: absolute;
+            right: 0;
+            color: var(--warning-color);
+            font-weight: bold;
+            font-size: 1.4rem;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--danger-color), #f97316);
+            color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin: 30px 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.375rem;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+        }
+
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .eval-positive {
+            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border-right: 4px solid var(--success-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .eval-negative {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border-right: 4px solid var(--danger-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        .eval-positive h3,
+        .eval-negative h3 {
+            font-family: 'Amiri', serif;
+            margin-bottom: 15px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-size: 1.5rem;
+        }
+
+        .eval-positive h3 {
+            color: var(--success-color);
+        }
+
+        .eval-negative h3 {
+            color: var(--danger-color);
+        }
+
+        .eval-positive p,
+        .eval-negative p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--text-primary), #374151);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1rem;
+        }
+
+        .footer p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .section {
+                padding: 25px;
+                margin-bottom: 30px;
+            }
+            
+            .section h2 {
+                font-size: 1.75rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .section h3 {
+                font-size: 1.5rem;
+            }
+            
+            .types-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .evaluation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                padding: 15px;
+            }
+            
+            .nav-menu a {
+                display: block;
+                margin: 8px 0;
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .section h3 {
+                font-size: 1.25rem;
+            }
+            
+            .section h4 {
+                font-size: 1.125rem;
+            }
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            
+            .header {
+                background: var(--primary-color) !important;
+                print-color-adjust: exact;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>دليل الزيارات التفتيشية للأساتذة</h1>
+            <p>دليل للأساتذة </p>
+        </div>
+
+        <div class="nav-menu">
+            <a href="#types">أنواع الزيارات</a>
+            <a href="#activities">أعمال المفتش</a>
+            <a href="#notebooks">دفاتر التلاميذ</a>
+            <a href="#evaluation">التقويم</a>
+            <a href="#discussion">المناقشة</a>
+        </div>
+
+        <div class="content">
+            <section id="types" class="section">
+                <h2>أنواع الزيارات التفتيشية</h2>
+                
+                <h3>الأنواع الأربعة الرئيسية:</h3>
+                <div class="types-grid">
+                    <div class="type-card">التوجيهية</div>
+                    <div class="type-card">الترقية</div>
+                    <div class="type-card">المراقبة</div>
+                    <div class="type-card">الاستثنائية</div>
+                </div>
+
+                <div class="characteristics">
+                    <h4>الخصائص المشتركة للزيارات:</h4>
+                    <ul>
+                        <li>تتم في القسم</li>
+                        <li>متابعة عمل الأستاذ والتلاميذ</li>
+                        <li>تتطلب الرجوع إلى الوثائق التربوية (المذكرة، التوزيع، دفتر النصوص، كراريس التلاميذ، الفروض والواجبات المنزلية)</li>
+                        <li>تستدعي مناقشة وتقدير جهود الأستاذ وتثمين مردوده</li>
+                        <li>دعم الأستاذ ببعض التوجيهات</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="activities" class="section">
+                <h2>الأعمال التي يقوم بها المفتش أثناء سير الدرس</h2>
+
+                <h3>1. تسجيل الملاحظات حول الدرس</h3>
+                
+                <h4>أ) محتوى الدرس:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل الموضوع مقرر على الشعبة؟</li>
+                        <li>هل يرتبط بما قبله ارتباطاً موضوعياً كما يحدده واضع المنهاج؟</li>
+                        <li>هل تم تقسيم الدرس إلى عناصره الأساسية (مقدمة، عرض، خلاصة، تقويم)؟</li>
+                    </ul>
+                </div>
+
+                <h4>ب) التمهيد:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل كان التمهيد مناسباً؟</li>
+                        <li>هل حقق غرضه بإحياء المادة الضرورية لمباشرة الدرس الجديد؟</li>
+                        <li>هل كان مشوقاً ومحفزاً للتلاميذ في القسم؟</li>
+                    </ul>
+                </div>
+
+                <h4>ج) المعلومات والطريقة:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>المعلومات المقدمة أصحيحة هي؟ أم تتخللها أخطاء؟ ما درجة خطورة تلك الأخطاء؟</li>
+                        <li>أمناسبة للمستوى العام؟</li>
+                        <li>ما هي الطريقة المتبعة في عرض المادة؟</li>
+                        <li>هل سمحت بجعل المتعلم طرفاً فعالاً في بناء الدرس وإنجاز المهام؟</li>
+                    </ul>
+                </div>
+
+                <h4>د) استخدام السبورة والوسائل:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل استعملت السبورة؟</li>
+                        <li>هل راعى الأستاذ في استعمالها حسن التقسيم ووضوح الخط وسلامة ما يسجل علمياً ولغوياً؟</li>
+                        <li>هل استعان بوسائل الإيضاح (طباشير ملونة، تسطير، مخططات، رسومات)؟</li>
+                        <li>هل حققت الغرض المنتظر منها؟</li>
+                    </ul>
+                </div>
+
+                <h3>2. نوعية الأسئلة وجودتها</h3>
+                
+                <h4>أ) شروط الجودة:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل روعي فيها شروط الجودة من حيث البناء: من دقة وقصر ووضوح؟</li>
+                        <li>هل روعي فيها التنوع بين اختبار الذاكرة ودقة الملاحظة والتفكير المطلوب؟</li>
+                        <li>هل روعي في الأسئلة التي تسير نشاط التلاميذ التدرج؟</li>
+                    </ul>
+                </div>
+
+                <h4>ب) إلقاء وتوزيع الأسئلة:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل كان إلقاء وتوزيع الأسئلة على أنحاء القسم مدروساً؟</li>
+                        <li>هل وفق الأستاذ في إحياء الرغبة في المناقشة وتحاشى الإجابات الجماعية؟</li>
+                        <li>كيف يتم تعيين المجيب عن السؤال؟ هل بناء على رغبته أم بناء على اعتبارات أخرى؟</li>
+                    </ul>
+                </div>
+
+                <h4>ج) تقويم الإجابات:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل يتم تقويم أجوبة التلاميذ؟</li>
+                        <li>ما هي الوسائل المستعملة في تقويم الإجابات وتقدير قيمتها؟</li>
+                        <li>هل تتعدد الإجابات عن السؤال الواحد؟</li>
+                        <li>كيف يتم جمع شتات الأفكار المحصل عليها من الإجابات المتعددة؟</li>
+                        <li>هل كانت أسئلة كل عنصر متتابعة تطورية بحيث ينشأ السؤال الثاني من إجابة التلاميذ عن السؤال الأول؟</li>
+                    </ul>
+                </div>
+
+                <h4>د) أغراض الأسئلة:</h4>
+                <div class="characteristics">
+                    <ul>
+                        <li>تتبع خطوات الشرح</li>
+                        <li>مناقشة نقطة تشكل صعوبة</li>
+                        <li>لفت نظر التلاميذ إلى نقطة معينة لأهميتها</li>
+                        <li>إشعارهم بوجود مشكلة</li>
+                    </ul>
+                </div>
+
+                <h3>3. القسم وملائمته</h3>
+                
+                <h4>أ) النظافة:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل ينظف القسم مرة واحدة في اليوم أو مرتين؟</li>
+                        <li>هل توجد كتابات على جدرانه وكراسيه وطاولاته؟</li>
+                        <li>هل تمحى السبورة وتفتح النوافذ في نهاية كل حصة؟</li>
+                    </ul>
+                </div>
+
+                <h4>ب) الإنارة:</h4>
+                <div class="characteristics">
+                    <ul>
+                        <li>النوافذ لا تعرقل الدراسة عند فتحها</li>
+                        <li>الرؤية مقبولة</li>
+                        <li>مصابيح الإضاءة كافية</li>
+                    </ul>
+                </div>
+
+                <h4>ج) التدفئة:</h4>
+                <div class="characteristics">
+                    <ul>
+                        <li>موقع القسم يسمح بدخول أشعة الشمس</li>
+                        <li>التدفئة في الفصول الباردة موجودة وكافية للعمل في هيئة مريحة</li>
+                    </ul>
+                </div>
+
+                <h4>د) الاستماع:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل هو ممكن بالنسبة لجميع الموجودين في القسم؟</li>
+                        <li>هل يحترم أعضاء القسم المتكلم؟</li>
+                        <li>حجم القسم مناسب لعدد التلاميذ فيه؟</li>
+                    </ul>
+                </div>
+
+                <h4>ه) تسجيل الحضور:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>تسجيل عدد التلاميذ الحاضرين ومقارنته بعدد المسجلين في القائمة الاسمية</li>
+                        <li>هل يسجل المعلم الغائبين؟ وكيف يتم ذلك؟</li>
+                        <li>هل الأسلوب ناجع أم ينقصه الضبط وفيه هدر للوقت؟</li>
+                    </ul>
+                </div>
+
+                <h3>4. العلاقة بين المعلم والتلميذ</h3>
+                
+                <h4>أ) تكوين العادات:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل يعمل المعلم على تكوين عادات سلوكية وعملية حسنة؟</li>
+                        <li>هل يوجد احتكاك بين المعلم وتلاميذه من خلال تجواله بين الصفوف؟</li>
+                        <li>تصحيح الوضعيات غير الملائمة (طريقة الجلوس، الكتابة، الإصغاء، التفكير، معاملة القرين، استعمال الأدوات)</li>
+                    </ul>
+                </div>
+
+                <h4>ب) التجاوب والتشويق:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل هناك تجاوب بين المعلم وتلاميذه؟</li>
+                        <li>هل يوفق المعلم في تشويق تلاميذه وتجديد الانتباه كلما استدعى الأمر ذلك؟</li>
+                        <li>ما درجة رغبة التلاميذ في مساعدة معلمهم في إنجاز الدرس؟</li>
+                        <li>ما قيمة مساهمتهم الفعلية في بناء الدرس؟</li>
+                    </ul>
+                </div>
+
+                <h4>ج) تجانس القسم:</h4>
+                <div class="question-list">
+                    <ul>
+                        <li>هل القسم متجانس؟</li>
+                        <li>هل تظهر فيه تكتلات (ذكور وإناث، الأقوياء والضعفاء، الراغبون في العمل والراغبون عنه)؟</li>
+                        <li>هل يعاني القسم من تباينات واضحة في المستوى؟</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="notebooks" class="section">
+                <h2>الاطلاع على دفاتر التلاميذ</h2>
+
+                <h3>العناية بالدفاتر:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل هي مغلفة؟</li>
+                        <li>هل يعتني بها التلاميذ؟</li>
+                        <li>هل يراقبها المعلم؟</li>
+                        <li>ما قيمة هذه المراقبة من حيث دفع التلميذ إلى تنظيم كراسه والقيام بواجباته؟</li>
+                    </ul>
+                </div>
+
+                <h3>المحتوى:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل توجد في الكراس جل الدروس المسجلة في دفتر النصوص؟</li>
+                        <li>ما النقص الملاحظ: الخلط بين الأنشطة، عدم تسجيل عناوين وتواريخ بعض الدروس، عدم كتابة بعض الدروس بسبب الغياب أثناء إنجازها</li>
+                    </ul>
+                </div>
+
+                <h3>تسجيل الدروس:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل يسجل التلاميذ رؤوس أقلام أثناء الاستنتاجات؟</li>
+                        <li>أم يكتفون بنقل ما يدون على السبورة؟</li>
+                        <li>أم ينتظرون الإذن؟</li>
+                    </ul>
+                </div>
+
+                <h3>الواجبات المنزلية:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل أنجز التلاميذ واجباتهم المنزلية الدورية؟</li>
+                        <li>هل يحتفظون بأوراقها؟</li>
+                        <li>هل تم تصحيحها بشكل يضمن الاستفادة من التصحيح؟</li>
+                        <li>هل قام التلاميذ بالتصحيح الذاتي لأخطائهم؟</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="evaluation" class="section">
+                <h2>تقويم الدرس</h2>
+
+                <h3>الخلاصة:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل تمكن الأستاذ من استخلاص الأحكام الأساسية من درسه؟</li>
+                        <li>هل تم بمشاركة إيجابية للتلاميذ؟</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    "الدرس الجيد هو الذي يبدأ بالتلاميذ وينتهي بالتلاميذ"
+                </div>
+
+                <h3>تحقيق الأهداف:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل حقق الدرس أهدافه المعلن عنها في المقدمة أو بداية الحصة؟</li>
+                    </ul>
+                </div>
+
+                <h3>التقويم:</h3>
+                <div class="question-list">
+                    <ul>
+                        <li>هل هو مرتبط بالأهداف المسطرة؟</li>
+                        <li>هل يقيسها فعلاً؟</li>
+                        <li>هل أجري في الوقت المناسب؟</li>
+                        <li>ما طبيعة الأدوات (الأسئلة) التقويمية المختارة؟</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="discussion" class="section">
+                <h2>انتقاء النقاط للمناقشة</h2>
+
+                <div class="evaluation-grid">
+                    <div class="eval-positive">
+                        <h3>النقاط الإيجابية:</h3>
+                        <p>بيان سبل دعمها وجوانب قوتها</p>
+                    </div>
+                    
+                    <div class="eval-negative">
+                        <h3>النقاط السلبية:</h3>
+                        <p>نقاط ضعف وآثارها السلبية على تعلم التلاميذ أو سلوكهم وسبل التخلص منها</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 دليل الزيارات التفتيشية للأساتذة </p>
+        </div>
+    </div>
+</body>
+</html>
