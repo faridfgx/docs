@@ -8,9 +8,12 @@ function showDocument(documentId) {
     details.forEach(detail => {
         detail.classList.remove('active');
     });
-    
+
     // إظهار الصفحة المطلوبة
     document.getElementById(documentId).classList.add('active');
+
+    // التمرير إلى الأعلى بسلاسة
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showHome() {

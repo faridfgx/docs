@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 * {
     margin: 0;
     padding: 0;
@@ -931,4 +934,31 @@ body {
 
 .download-btn {
     flex-shrink: 0;
+}
+.jump-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  background-color: #f4f6f8;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.jump-buttons a {
+  text-decoration: none;
+  background: linear-gradient(135deg, #4a90e2, #007bff);
+  color: #fff;
+  padding: 12px 18px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jump-buttons a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
 }
