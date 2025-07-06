@@ -964,7 +964,7 @@ body {
 }
 /* Collapsible section styles */
 .collapsible-section h4 {
-    background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+    background: linear-gradient(135deg, #3a3f44 0%, #1f2429 100%);
     color: white;
     padding: 15px 20px;
     margin: 20px 0 0 0;
@@ -1000,7 +1000,7 @@ body {
 
 /* Optional: Slightly darker background when collapsed */
 .collapsible-section h4.collapsed {
-    background: linear-gradient(135deg, #3b3fbd 0%, #7a80f1 100%);
+    background: linear-gradient(135deg, #cdd3d8 0%, #aeb4b9 100%);
     box-shadow: 0 3px 12px rgba(59, 63, 189, 0.25);
 }
 

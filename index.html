@@ -1037,7 +1037,7 @@
 									</button>
 							</div>
 							</div>
-							</div>
+					</div>
 					<div class="collapsible-section">		
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدخل الى الخوازمية و التعليمات الأساسية</h4>
 							<div class="collapsible-content collapsed">
@@ -1172,8 +1172,9 @@
 										تحميل
 									</button>
 							</div>
+							<p></p>
 						</div>
-						</div>
+					</div>
 
 						
 					
@@ -1981,10 +1982,13 @@
 				</div>
             </div>
             <div class="section">
-                <h3>البرامج التعليمية</h3>
-                <div class="file-list">
-				<h3 id="algotools">🧠 برامج الخوارزميات والمخططات الانسيابية</h3>
-                <div class="file-list">
+                
+            
+				
+				<div class="collapsible-section">
+				<h4 id="algotools" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;🧠 برامج الخوارزميات والمخططات الانسيابية</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 					<div class="file-item">
 					    <div class="file-icon exe">EXE</div>
                         <div class="file-info">
@@ -2030,9 +2034,12 @@
                             </button>
                     </div>
 				</div>
-				
-				<h3 id="sims">🧪 محاكاة أنظمة التشغيل والأجهزة الافتراضية</h3>
-                <div class="file-list">
+				</div>
+				</div>
+				<div class="collapsible-section">
+				<h4 id="sims" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;🧪 محاكاة أنظمة التشغيل والأجهزة الافتراضية</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 				    <div class="file-item">
 					<div class="file-icon zip">ZIP</div>
                         <div class="file-info">
@@ -2111,8 +2118,13 @@
                             </button>
                     </div>
 				</div>
-				<h3 id="browsers">🌐 متصفحات الإنترنت</h3>
-                <div class="file-list">
+				</div>
+				</div>
+				
+				<div class="collapsible-section">
+				<h4 id="browsers" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;🌐 متصفحات الإنترنت</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 					<div class="file-item">
 					<div class="file-icon exe">EXE</div>
                         <div class="file-info">
@@ -2145,9 +2157,12 @@
                             </button>
                     </div>
 				</div>
-					
-				<h3 id="tools">🔧 أدوات مساعدة ومساندة</h3>
-                <div class="file-list">
+				</div>
+				</div>
+				<div class="collapsible-section">
+				<h4 id="tools" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;🔧 مضادات فيروسات وبرامج  مفيدة</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 					<div class="file-item">
 					<div class="file-icon iso">ISO</div>
                         <div class="file-info">
@@ -2249,8 +2264,12 @@
                             </button>
                     </div>
                 </div>
-				<h3 id="management">إدارة قاعات المعلوماتية 🖥️</h3>
-                <div class="file-list">
+				</div>
+				</div>
+				<div class="collapsible-section">
+				<h4 id="management" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;إدارة قاعات المعلوماتية 🖥️</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 				
 
 					<div class="file-item">
@@ -2298,8 +2317,12 @@
                             </button>
                     </div>
                 </div>
-				<h3 id="isos">💻 أنظمة التشغيل وبرامج الأوفيس (ملفات ISO)</h3>
-                <div class="file-list">
+				</div>
+				</div>
+				<div class="collapsible-section">
+				<h4 id="isos" class="section-title-simple" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;💻 أنظمة التشغيل وبرامج الأوفيس (ملفات ISO)</h3>
+                <div class="collapsible-content collapsed">
+				<div class="file-list">
 					<div class="file-item">
 					<div class="file-icon ISO">ISO</div>
                         <div class="file-info">
@@ -2430,12 +2453,10 @@
                             </button>
                     </div>
 				</div>
-
-                
+				</div>
+				</div>
             </div>
         </div>
-        </div>
-
         <div id="lab-rules" class="document-detail">
             <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
             <div class="header">
@@ -2478,7 +2499,6 @@
                 </div>
             </div>
         </div>
-
 		<div id="seating-plan" class="document-detail">
     <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
     <div class="header">
@@ -2524,7 +2544,6 @@
         </div>
     </div>
 </div>
-
 		<div id="other-docs" class="document-detail">
 		<button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
 		<div class="header">
@@ -2610,7 +2629,6 @@
     </div>
 	</div>
 </div>
-
         <div id="useful-websites" class="document-detail">
     <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
     <div class="header">
@@ -2662,7 +2680,6 @@
         </div>
     </div>
 </div>
-
         <div id="assessment-templates" class="document-detail">
     <button class="back-btn" onclick="showHome()">← العودة للرئيسية</button>
     <div class="header">
@@ -2716,38 +2733,9 @@
                     تحميل
                 </button>
             </div>
-<!--
-            <div class="file-item">
-                <div class="file-icon link">🔗</div>
-                <div class="file-info">
-                    <div class="file-name">بنك الفروض والاختبارات – سنة ثالثة ثانوي</div>
-                    <div class="file-size">نماذج تغطي جميع الشعب: علوم، أداب، تقني رياضي…</div>
-                </div>
-                <button class="download-btn" onclick="window.open('https://3as.ency-education.com/exams.html', '_blank')">زيارة</button>
-            </div>
-
-            <div class="file-item">
-                <div class="file-icon link">🔗</div>
-                <div class="file-info">
-                    <div class="file-name">بنك الفروض والاختبارات – سنة ثانية ثانوي</div>
-                    <div class="file-size">نماذج فروض واختبارات لكافة شعب الثانوية</div>
-                </div>
-                <button class="download-btn" onclick="window.open('https://2as.ency-education.com/exams.html', '_blank')">زيارة</button>
-            </div>
-
-            <div class="file-item">
-                <div class="file-icon link">🔗</div>
-                <div class="file-info">
-                    <div class="file-name">موقع تسنيم – فروض واختبارات التعليم الثانوي</div>
-                    <div class="file-size">نماذج محلولة لجميع المستويات والشعب مع التصحيح</div>
-                </div>
-                <button class="download-btn" onclick="window.open('https://www.t-onec.com/p/exams-high-school.html', '_blank')">زيارة</button>
-            </div>
-			-->
         </div>
     </div>
 </div>
-
     </div>
 <!-- Notice Modal -->
 <div id="noticeModal" class="notice-modal">
