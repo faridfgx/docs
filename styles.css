@@ -1006,7 +1006,7 @@ body {
 
 /* Content transitions */
 .collapsible-content {
-    max-height: 1000px;
+    max-height: 3000px;
     overflow: hidden;
     transition: max-height 0.3s ease;
 }
