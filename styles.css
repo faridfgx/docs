@@ -962,3 +962,89 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
 }
+/* Collapsible section styles */
+.collapsible-section h4 {
+    background: linear-gradient(135deg, #4e54c8 0%, #8f94fb 100%);
+    color: white;
+    padding: 15px 20px;
+    margin: 20px 0 0 0;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+    position: relative;
+    font-size: 1.1em;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+}
+
+.collapsible-section h4:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+}
+
+/* Arrow icon */
+.collapsible-section h4::after {
+    content: '▼';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+/* Rotated arrow when collapsed */
+.collapsible-section h4.collapsed::after {
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+/* Optional: Slightly darker background when collapsed */
+.collapsible-section h4.collapsed {
+    background: linear-gradient(135deg, #3b3fbd 0%, #7a80f1 100%);
+    box-shadow: 0 3px 12px rgba(59, 63, 189, 0.25);
+}
+
+/* Content transitions */
+.collapsible-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsible-content.collapsed {
+    max-height: 0;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.section-title:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.section-title:hover::before {
+    left: 100%;
+}
+
+/* Alternative simpler version */
+.section-title-simple {
+    background: #f8fafc;
+    color: #1e293b;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 25px 0 15px 0;
+    border-right: 4px solid #3b82f6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
