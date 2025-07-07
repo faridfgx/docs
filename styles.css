@@ -1000,7 +1000,7 @@ body {
 
 /* Optional: Slightly darker background when collapsed */
 .collapsible-section h4.collapsed {
-    background: linear-gradient(135deg, #cdd3d8 0%, #aeb4b9 100%);
+    background: linear-gradient(135deg, #aeb4b9 0%, #1ABC9C 100%);
     box-shadow: 0 3px 12px rgba(59, 63, 189, 0.25);
 }
 
