@@ -303,11 +303,8 @@
 
         // Show modal on page load if user hasn't seen it
         window.addEventListener('DOMContentLoaded', function() {
-            if (shouldShowModal()) {
-                document.getElementById('welcomeModal').style.display = 'flex';
-            } else {
-                document.getElementById('welcomeModal').style.display = 'none';
-            }
+            // Always show the modal on welcome.html
+            document.getElementById('welcomeModal').style.display = 'flex';
         });
 
         // Close modal function
@@ -315,16 +312,17 @@
             const modal = document.getElementById('welcomeModal');
             modal.style.animation = 'fadeOut 0.3s ease-out';
             setTimeout(() => {
-                modal.style.display = 'none';
                 // Mark that user has seen the modal
                 localStorage.setItem('hasSeenWelcomeModal', 'true');
+                // Redirect to main page
+                window.location.href = 'https://csdocs.space/?from=welcome';
             }, 300);
         }
 
         // Show contribution form/contact info
         function showContributionForm() {
-            // Close modal first
-            closeModal();
+            // Mark that user has seen the modal
+            localStorage.setItem('hasSeenWelcomeModal', 'true');
             // Redirect to contact form
             window.location.href = 'https://csdocs.space/contact.html';
         }
