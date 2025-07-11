@@ -140,7 +140,194 @@
         }
     }
     </script>
+<style>
+        .main-content {
+            flex: 1;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: #64748b;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
 
+        .footer {
+            background: #ffffff;
+            color: #374151;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand {
+            max-width: 350px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .footer-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .social-link:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+        }
+
+        .footer-bottom {
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .copyright {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .footer-bottom-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+            
+            .footer-brand {
+                max-width: none;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-bottom-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .footer-container {
+                padding: 2rem 1rem 1rem;
+            }
+            
+            .footer-content {
+                gap: 1.5rem;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -2289,10 +2476,6 @@
                 <h1>📝 الدفتر اليومي</h1>
                 <p>نماذج تسجيل الأنشطة اليومية</p>
             </div>
-		   <div class="section">
-   <h2 class="grade-title" align="center">⚠️ الملفات قيد المراجعة وسيتم عرضها فور الانتهاء</h2>
-   </div>
-		<!--
             <div class="section">
                 <h3>نماذج الدفتر اليومي</h3>
                 <div class="file-list">
@@ -2358,7 +2541,6 @@
                     </div>
                 </div>
             </div>
-		-->
         </div>
 
         <div id="lab-tracking" class="document-detail">
@@ -3509,10 +3691,20 @@
                     <div class="file-item">
 					<div class="file-icon doc">DOC</div>
                         <div class="file-info">
-                            <div class="file-name">فرض الفصل الثاني-ج م أ 2024-2022  الأستاذ: بن يوسف</div>
+                            <div class="file-name">فرض الفصل الثاني 2024-2025  الأستاذ: بن يوسف</div>
                             <div class="file-size">DOCX - 1.2 MB</div>
                         </div>
                         <button class="download-btn" onclick="window.open('files/assessments/فرض الفصل الثاني اداب 2024-2025 ب ي.docx', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+                    <div class="file-item">
+					<div class="file-icon doc">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">فرض الفصل الثاني 2024-2025  الأستاذ: مزان</div>
+                            <div class="file-size">DOCX - 1.2 MB</div>
+                        </div>
+                        <button class="download-btn" onclick="window.open('files/assessments/فرض الفصل الثاني أدبيين2024-2025 م ف.docx', '_blank')">
                             تحميل
                         </button>
                     </div>
@@ -3909,6 +4101,70 @@
     </div>
 </div>
 <button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+
+<div class="container">
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Brand Section -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">CS</div>
+                        <div class="logo-text">CSdocs.space</div>
+                    </div>
+                    <p class="footer-description">
+                        منصة تعليمية متخصصة توفر مصادر شاملة لأساتذة المعلوماتية.
+                    </p>
+					<!--
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="فيسبوك">📘</a>
+                        <a href="#" class="social-link" title="تويتر">🐦</a>
+                        <a href="#" class="social-link" title="يوتيوب">📺</a>
+                        <a href="#" class="social-link" title="تيليجرام">📱</a>
+                    </div>
+					-->
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" onclick="showHome()">الصفحة الرئيسية</a></li>
+                        <li><a href="#lessons" onclick="showDocument('lessons')">الدروس والمذكرات</a></li>
+                        <li><a href="#presentations" onclick="showDocument('presentations')">العروض التقديمية</a></li>
+                        <li><a href="#lessons" onclick="showDocument('assessment-templates')">الاختبارات</a></li>
+                        <li><a href="#programs" onclick="showDocument('programs')">البرامج</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="footer-section">
+                    <h3>الدعم والمساعدة</h3>
+                    <ul class="footer-links">
+                      <!--  <li><a href="#contact">اتصل بنا</a></li>
+                        <li><a href="#faq">الأسئلة الشائعة</a></li>
+                        <li><a href="#help">مركز المساعدة</a></li> -->
+                        <li><a href="contact.html">أرسل اقتراحك</a></li> 
+                        <p>faridmezane@gmail.com</p></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 CSdocs.space - جميع الحقوق محفوظة
+                </div>
+				<!--
+                <ul class="footer-bottom-links">
+                    <li><a href="#privacy">سياسة الخصوصية</a></li>
+                    <li><a href="#terms">شروط الاستخدام</a></li>
+                    <li><a href="#sitemap">خريطة الموقع</a></li>
+                </ul>
+				-->
+            </div>
+        </div>
+    </footer>
+</div>
 <!-- Modal functionality -->
 <script src="modal.js"></script>
 
