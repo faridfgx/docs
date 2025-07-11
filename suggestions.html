@@ -369,8 +369,15 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Response:', data);
+                
                 if (data.success) {
                     // Show success message
                     document.getElementById('successMessage').style.display = 'block';
@@ -383,12 +390,15 @@
                         behavior: 'smooth' 
                     });
                 } else {
-                    throw new Error('Form submission failed');
+                    // Handle Web3Forms error response
+                    const errorMessage = data.message || 'حدث خطأ غير معروف';
+                    alert(`خطأ في إرسال النموذج: ${errorMessage}`);
+                    console.error('Web3Forms Error:', data);
                 }
             })
             .catch(error => {
-                alert('عذراً، حدث خطأ في إرسال الاقتراح. يرجى المحاولة مرة أخرى.');
-                console.error('Error:', error);
+                console.error('Fetch Error:', error);
+                alert('عذراً، حدث خطأ في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
             })
             .finally(() => {
                 // Reset button
