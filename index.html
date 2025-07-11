@@ -328,6 +328,26 @@
             }
         }
     </style>
+	<script>
+window.addEventListener('DOMContentLoaded', function() {
+    // Check if user is returning from welcome page
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromWelcome = urlParams.get('from') === 'welcome';
+    
+    if (fromWelcome) {
+        // Mark as seen if coming from welcome page
+        localStorage.setItem('hasSeenWelcomeModal', 'true');
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+        // Check if user has seen welcome modal
+        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
+        if (!hasSeenModal) {
+            window.location.href = 'welcome.html';
+        }
+    }
+});
+</script>
 </head>
 
 <body>
