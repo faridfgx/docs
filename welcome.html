@@ -295,8 +295,10 @@
     <script>
         // Check if user has already seen the welcome modal
         function shouldShowModal() {
+            // Only show on main page and if user hasn't seen it
+            const isMainPage = window.location.pathname === '/' || window.location.pathname === '/index.html';
             const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-            return !hasSeenModal;
+            return isMainPage && !hasSeenModal;
         }
 
         // Show modal on page load if user hasn't seen it
@@ -321,8 +323,10 @@
 
         // Show contribution form/contact info
         function showContributionForm() {
-            alert('شكراً لرغبتك في المساهمة! يمكنك التواصل معنا عبر:\n\n📧 البريد الإلكتروني: contact@csdocs.space\n💬 أو عبر نموذج التواصل في الموقع\n\nنتطلع لسماع اقتراحاتك وملاحظاتك!');
+            // Close modal first
             closeModal();
+            // Redirect to contact form
+            window.location.href = 'https://csdocs.space/contact.html';
         }
 
         // Close modal when clicking outside
