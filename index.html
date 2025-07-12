@@ -342,7 +342,7 @@ window.addEventListener('DOMContentLoaded', function() {
     } else {
         // Check if user has seen welcome modal
         const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (true){ //(!hasSeenModal) {
+        if (!hasSeenModal) { //(true){ //
             window.location.href = 'welcome.html';
         }
     }
@@ -4276,10 +4276,14 @@ window.addEventListener('DOMContentLoaded', function() {
                     <ul class="footer-links">
                       <!--  <li><a href="#contact">اتصل بنا</a></li>
                         <li><a href="#faq">الأسئلة الشائعة</a></li>
-                        <li><a href="#help">مركز المساعدة</a></li> -->
-                        <li><a href="contact.html">أرسل اقتراحك</a></li> 
+                        <li><a href="#help">مركز المساعدة</a></li> 
+                        <li></li> -->
                         <p>faridmezane@gmail.com</p></li>
                     </ul>
+					</br>
+					<div class="jump-buttons">
+					<a href="contact.html"> لديك اقتراح لتحسين الموقع</a>
+					</div>
                 </div>
             </div>
 
