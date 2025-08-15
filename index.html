@@ -327,6 +327,123 @@
                 justify-content: center;
             }
         }
+		/* ===== RATING SYSTEM CSS - ADD TO YOUR EXISTING CSS ===== */
+
+.rating-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px;
+    min-width: 120px;
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 8px;
+}
+
+.rating-score {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.rating-count {
+    font-size: 12px;
+    color: #666;
+}
+
+.rating-stars {
+    display: flex;
+    gap: 3px;
+}
+
+.star {
+    font-size: 20px;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.star:hover {
+    transform: scale(1.1);
+}
+
+.star.filled {
+    color: #ffd700;
+}
+
+.star.hover {
+    color: #ffed4e;
+}
+
+.star.disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
+.rating-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #333;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.rating-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.rating-message.show {
+    transform: translateX(0);
+}
+
+.rating-message.error {
+    background: #dc2626;
+}
+
+.rating-message.warning {
+    background: #f59e0b;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .rating-section {
+        margin: 10px 0;
+        min-width: auto;
+    }
+    
+    .rating-display {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+    
+    .star {
+        font-size: 18px;
+    }
+}
     </style>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
@@ -528,53 +645,129 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;تقنية المعلومات </h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
-                                <div class="file-icon doc">DOC</div>
-                                    <div class="file-info">
-                                        <div class="file-name">تقنية المعلومات الأستاذ: بن يوسف</div>
-                                        <div class="file-size">DOCX - 44 KB</div>
-                                    </div>
-                                        <button class="download-btn" onclick="window.open('files/plans/ب ي تقنية المعلومات.docx', '_blank')">
-                                            تحميل
-                                    </button>
-                            </div>
-							<div class="file-item">
-                                <div class="file-icon pdf">PDF</div>
-                                    <div class="file-info">
-                                        <div class="file-name">تقنية المعلومات الأستاذ: غمراني</div>
-                                        <div class="file-size">PDF - 676 KB</div>
-                                    </div>
-                                        <button class="download-btn" onclick="window.open('files/plans/تقنية المعلومات - س غ -2223.pdf', '_blank')">
-                                            تحميل
-                                    </button>
-                            </div>
-							<div class="file-item">
+
+							<div class="file-item" data-file-id="NT0001">
+								<div class="file-icon doc">DOC</div>
+								<div class="file-info">
+									<div class="file-name">تقنية المعلومات الأستاذ: بن يوسف</div>
+									<div class="file-size">DOCX - 44 KB</div>
+								</div>
+								
+								<!-- ADD THIS RATING SECTION -->
+								<div class="rating-section">
+									<div class="rating-display">
+										<span class="rating-score">0.0</span>
+										<span class="rating-count">(0 تقييم)</span>
+									</div>
+									<div class="rating-stars">
+										<span class="star" data-rating="1">★</span>
+										<span class="star" data-rating="2">★</span>
+										<span class="star" data-rating="3">★</span>
+										<span class="star" data-rating="4">★</span>
+										<span class="star" data-rating="5">★</span>
+									</div>
+								</div>
+								
+								<button class="download-btn" onclick="window.open('files/plans/ب ي تقنية المعلومات.docx', '_blank')">
+									تحميل
+								</button>
+							</div>
+
+							<div class="file-item" data-file-id="NT0002">
+								<div class="file-icon pdf">PDF</div>
+								<div class="file-info">
+									<div class="file-name">تقنية المعلومات الأستاذ: غمراني</div>
+									<div class="file-size">PDF - 676 KB</div>
+								</div>
+								
+								<!-- ADD THIS RATING SECTION -->
+								<div class="rating-section">
+									<div class="rating-display">
+										<span class="rating-score">0.0</span>
+										<span class="rating-count">(0 تقييم)</span>
+									</div>
+									<div class="rating-stars">
+										<span class="star" data-rating="1">★</span>
+										<span class="star" data-rating="2">★</span>
+										<span class="star" data-rating="3">★</span>
+										<span class="star" data-rating="4">★</span>
+										<span class="star" data-rating="5">★</span>
+									</div>
+								</div>
+								
+								<button class="download-btn" onclick="window.open('files/plans/تقنية المعلومات - س غ -2223.pdf', '_blank')">
+									تحميل
+								</button>
+							</div>
+
+							<div class="file-item" data-file-id="NT0003">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تقنية المعلومات الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 76 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/تقنية المعلومات - م ف -2425.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
 							
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0004">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تقنية المعلومات (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 212 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للدرس 01 تقنية المعلومات .docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0005">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تقنية المعلومات (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 24 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للتطبيق 01 تقنية المعلومات .docx', '_blank')">
                                             تحميل
                                     </button>
@@ -586,62 +779,146 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;تجميع الحاسوب</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0006">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب 01 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 32 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/ب ي تجميع الحاسوب01 .docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0007">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب 02 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 52 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/ب ي وحدة الذاكرة --تجميع الحاسوب02.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0008">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 680 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/تجميع الحاسوب - س غ - 2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0009">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 52 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/تجميع الحاسوب - م ف - 2223.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0010">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 576 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للدرس 02 تجميع الحاسوب.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0011">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">تجميع الحاسوب (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 896 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للتطبيق 02 تجميع الحاسوب.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -653,52 +930,122 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;نظام التشغيل</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0012">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">نظام التشغيل الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 276 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/ب ي نظام التشغيل.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0013">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">نظام التشغيل الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 491 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/نظام التشغيل - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0014">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">نظام التشغيل الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 104 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/نظام التشغيل - م ف - 2223.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0015">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">نظام التشغيل (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 32 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للدرس 03 نظام التشغيل.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0016">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">نظام التشغيل (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 24 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للتطبيق 03 نظام التشغيل.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -710,32 +1057,73 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;لوحة التحكم</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0017">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">لوحة التحكم الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 32 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/لوحة التحكم ب ي .docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0018">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">لوحة التحكم الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 484 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/لوحة التحكم - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0019">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">لوحة التحكم وحماية الحاسوب الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 28 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/لوحة التحكم وحماية الحاسوب - م ف - 2223.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -748,52 +1136,121 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;حماية الحاسوب</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0020">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">حماية الحاسوب الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 32 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/ب ي حماية الحاسوب.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0021">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name"> حماية الحاسوب الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 675 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/حماية الحاسوب- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0022">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">لوحة التحكم وحماية الحاسوب الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 28 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/لوحة التحكم وحماية الحاسوب - م ف - 2223.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0023">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">حماية الحاسوب (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 80 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للدرس 05 حماية الحاسوب.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0024">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">حماية الحاسوب (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 24 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للتطبيق 05 حماية الحاسوب.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -805,52 +1262,120 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;الشبكة المحلية</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0025">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">الشبكة المحلية الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 204 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/ب ي الشبكة المحلية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0026">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">الشبكة المحلية الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 697 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الشبكة المحلية- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0027">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">الشبكة المحلية الأستاذ: مزان</div>
                                         <div class="file-size">DOCX - 124 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/الشبكة المحلية - م ف - 2223.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0028">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">الشبكة المحلية (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 1.90 MB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
+
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للدرس 06 الشبكة المحلية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT0029">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">الشبكة المحلية (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 24 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة بيداغوجية للتطبيق 06 الشبكات.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -866,73 +1391,164 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;المخطط الإنسيابي وانشاء المخطط الانسيابي</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1001">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المخطط الانسيابي الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 428 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المخطط الانسيابي مدخل + الشرط + الحلقة.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1002">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء المخطط الانسيابي الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 672 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/انشاء المخطط الانسيابي - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1003">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">المخطط الانسيابي الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 674 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المخطط الانسيابي- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
 							
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1004">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المخطط الانسيابي (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 108 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-07-المخططات-الإنسيابية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1005">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المخطط الانسيابي (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 120 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-07-المخططات-الإنسيابية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1006">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء المخطط الانسيابي (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 320 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-08-إنشاء-المخططات-الإنسيابية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1007">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء المخطط الانسيابي (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 84 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-08-إنشاء-المخططات-الإنسيابية.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -944,92 +1560,209 @@ window.addEventListener('DOMContentLoaded', function() {
 					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدخل الى الخوازمية و التعليمات الأساسية</h4>
 					<div class="collapsible-content collapsed">
 						
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1008">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">مدخل الى الخوارزمية الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 64 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الخوارزميات مدخل.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1009">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">مدخل الى الخوارزمية الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 674 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مدخل الى الخوارزمية- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1010">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">التعليمة الشرطية الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 48 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الحوارزميات التعليمات الشرطية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1011">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">التعليمة التكرارية الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الخزارزميات التعليمات التكرارية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1012">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">التعليمات الأساسية الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 671 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/التعليمات الاساسية- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1013">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">مدخل الى الخوارزمية (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 80+ KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-09-مدخل للخوارزميات.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1014">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">مدخل الى الخوارزمية (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-09-مدخل للخوارزميات.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1015">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">التعليمات الأساسية (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 128 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-10-التعليمات الأساسية.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT1016">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">التعليمات الأساسية (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 220 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-10-التعليمات الأساسية.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1048,32 +1781,71 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;المتصفح ومحرك البحث</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2001">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المتصفح الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 36 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المتصفح ب ي.docx', '_blank')">
                                             تحميل
                                     </button>
 							</div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2002">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">المتصفح الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 491 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المتصفح - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2003">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name"> المتصفح (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 444 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-11-المتصفح.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1086,32 +1858,71 @@ window.addEventListener('DOMContentLoaded', function() {
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
 
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2004">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name"> استغلال ادوات التواصل الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 36 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/أدوات التواصل ب ي.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2005">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">استغلال أدوات التواصل الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 491 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/استغلال أدوات التواصل - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2006">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">استغلال ادوات التواصل (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-14 استغلال أدوات التواصل.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1123,32 +1934,71 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;البريد الإلكتروني</h4>
 					<div class="collapsible-content collapsed">
 					    <div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2007">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">البريد الإلكتروني الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 36 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/البريد الالكتروني ب ي.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2008">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">البريد الإلكتروني الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 666 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/البريد الالكتروني - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2009">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">استغلال ادوات التواصل (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 56 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-13-البريد الإلكتروني.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1160,62 +2010,140 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;انشاء صفحة ويب(لغة HTML)</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2010">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب 01 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 340 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/01هيكل صفحة الويب.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2011">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب 02 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 300 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/02الفقرات ،العنوين وتنسيقاتها.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2012">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب 03 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/03الصور والقوائم.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT2013">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب 04 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 396 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/04الارتباطات والجداول 2024-2025.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2014">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 737 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/انشاء صفحة ويب- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT2015">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">انشاء صفحة ويب (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 108 KB</div>
                                     </div>
+									<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-12 انشاء   صفحة ويب.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1233,52 +2161,117 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;معالج النصوص 01</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3001">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص الأنماط و القوالب الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 44 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/معالج النصوص 01  --  الأنماط-والقوالب.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3002">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص المقاطع الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/معالج النصوص 02 --المقاطع.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT3003">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 01 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 674 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/معالج النصوص 01- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3004">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 01 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 616 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - معالج النصوص 01 - س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3005">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 01 (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 328 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-15 معالج النصوص01.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1290,52 +2283,117 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;معالج النصوص 02</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item"  data-file-id="NT3006">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 02 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 188 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/دمج المراسلات ب ي.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT3007">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 02 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 670 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/معالج النصوص 02- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT3008">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 02 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 672 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - جداول البيانات 01- س غ -2223 (2).pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3009">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 02 (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 120 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس-16 معالج النصوص 02.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3010">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">معالج النصوص 02 (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 596 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-16 معالج النصوص 02.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1347,62 +2405,140 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;جداول البيانات 01</h4>
 					<div class="collapsible-content collapsed">
 					    <div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3011">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المجدول (الصيغ) الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 500 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المجدول 01  --الصيغ.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3012">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">المجدول (الدوال) الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 188 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/المجدول 02  -- الدوال.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT3013">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 01 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 619 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/جداول البيانات 01- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item" data-file-id="NT3014">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 01 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 620 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - جداول البيانات 01- س غ -2223 (1).pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3015">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 01 (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 152 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس 17 جداول البيانات 01.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item" data-file-id="NT3016">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 01 (مذكرة التطبيق)</div>
                                         <div class="file-size">DOCX - 700 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-التطبيقية-17 جداول البيانات 01.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1414,32 +2550,71 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)"4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;جداول البيانات 02</h4>
 					<div class="collapsible-content collapsed">
 					    <div class="file-list">
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3017">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 02 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 609 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/جداول البيانات 02- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3018">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 02 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 612 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - جداول البيانات 02- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
-                            </div>
- 							<div class="file-item">
+                            </div> 
+ 							<div class="file-item"  data-file-id="NT3019">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">جداول البيانات 02 (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 700 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس 18 جداول البيانات 02.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1451,42 +2626,94 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;العروض التقديمية 01</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item"  data-file-id="NT3020">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 01 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الحركات 2024-2025.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3021">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 01 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 679 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/العروض التقديمية 01- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3022">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 01 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 680 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - العروض التقديمية 02 - س غ -2223 (2).pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
- 							<div class="file-item">
+ 							<div class="file-item"  data-file-id="NT3023">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 01 (مذكرة الدرس)</div>
                                         <div class="file-size">DOCX - 120 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/مذكرة-بيداغوجية-للدرس 19 العروض التقديمية 01.docx', '_blank')">
                                             تحميل
                                     </button>
@@ -1498,32 +2725,71 @@ window.addEventListener('DOMContentLoaded', function() {
                     <h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;العروض التقديمية 02</h4>
 					<div class="collapsible-content collapsed">
 						<div class="file-list">
- 							<div class="file-item">
+ 							<div class="file-item"  data-file-id="NT3024">
                                 <div class="file-icon doc">DOC</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 02 الأستاذ: بن يوسف</div>
                                         <div class="file-size">DOCX - 40 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/الارتباطات التشعبية 2024-2025.docx', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3025">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 02 (ج م ع ت) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 616 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/العروض التقديمية 02- س غ -2223.pdf', '_blank')">
                                             تحميل
                                     </button>
                             </div>
-							<div class="file-item">
+							<div class="file-item"  data-file-id="NT3026">
                                 <div class="file-icon pdf">PDF</div>
                                     <div class="file-info">
                                         <div class="file-name">العروض التقديمية 02 (ج م أ) الأستاذ: غمراني</div>
                                         <div class="file-size">PDF - 620 KB</div>
                                     </div>
+																		<div class="rating-section">
+										<div class="rating-display">
+											<span class="rating-score">0.0</span>
+											<span class="rating-count">(0 تقييم)</span>
+										</div>
+										<div class="rating-stars">
+											<span class="star" data-rating="1">★</span>
+											<span class="star" data-rating="2">★</span>
+											<span class="star" data-rating="3">★</span>
+											<span class="star" data-rating="4">★</span>
+											<span class="star" data-rating="5">★</span>
+										</div>
+									</div>
                                         <button class="download-btn" onclick="window.open('files/plans/ج م أ - العروض التقديمية 02 - س غ -2223 (1).pdf', '_blank')">
                                             تحميل
                                     </button>
@@ -5642,6 +6908,307 @@ function toggleSection(header) {
   content.classList.toggle("collapsed");
 }
 </script>
+<script>
+/* ===== GLOBAL RATING SYSTEM JS - ADD TO YOUR EXISTING JS OR IN SCRIPT TAG ===== */
 
+// Firebase configuration - Replace with your own config from Firebase Console
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyABiYwT5EkZpGgt03v-qLRsZtZhqLieZrI",
+    authDomain: "csdocsfiles.firebaseapp.com",
+    projectId: "csdocsfiles",
+    storageBucket: "csdocsfiles.firebasestorage.app",
+    messagingSenderId: "750949427920",
+    appId: "1:750949427920:web:192b819b32526bb48fccd5"
+  };
+
+class GlobalRatingSystem {
+    constructor() {
+        this.db = null;
+        this.userFingerprint = null;
+        this.init();
+    }
+
+    async init() {
+        try {
+            // Import Firebase
+            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js');
+            const { getFirestore, collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
+            
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            this.db = getFirestore(app);
+            this.firestoreFunctions = { collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs };
+            
+            // Generate user fingerprint
+            this.userFingerprint = await this.generateUserFingerprint();
+            
+            // Load existing ratings
+            await this.loadAllRatings();
+            
+            // Attach event listeners
+            this.attachEventListeners();
+            
+        } catch (error) {
+            console.error('Error initializing rating system:', error);
+            this.showMessage('خطأ في تحميل نظام التقييم', 'error');
+        }
+    }
+
+    async generateUserFingerprint() {
+        // Create a simple fingerprint based on browser characteristics
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillText('User fingerprint', 2, 2);
+        
+        const fingerprint = [
+            navigator.userAgent,
+            navigator.language,
+            screen.width + 'x' + screen.height,
+            new Date().getTimezoneOffset(),
+            canvas.toDataURL()
+        ].join('|');
+        
+        // Simple hash function
+        let hash = 0;
+        for (let i = 0; i < fingerprint.length; i++) {
+            const char = fingerprint.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32-bit integer
+        }
+        
+        return Math.abs(hash).toString();
+    }
+
+    async loadAllRatings() {
+        const fileItems = document.querySelectorAll('.file-item[data-file-id]');
+        
+        for (const item of fileItems) {
+            const fileId = item.dataset.fileId;
+            await this.loadRatingForFile(fileId);
+        }
+    }
+
+    async loadRatingForFile(fileId) {
+        try {
+            const { doc, getDoc } = this.firestoreFunctions;
+            const docRef = doc(this.db, 'ratings', fileId);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                this.updateDisplay(fileId, data);
+                
+                // Check if user has already rated
+                const hasRated = data.raters && data.raters.includes(this.userFingerprint);
+                if (hasRated) {
+                    this.disableRating(fileId);
+                }
+            } else {
+                this.updateDisplay(fileId, { average: 0, count: 0 });
+            }
+        } catch (error) {
+            console.error('Error loading rating:', error);
+            this.updateDisplay(fileId, { average: 0, count: 0 });
+        }
+    }
+
+    attachEventListeners() {
+        document.querySelectorAll('.file-item[data-file-id]').forEach(item => {
+            const fileId = item.dataset.fileId;
+            const stars = item.querySelectorAll('.star');
+            
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', (e) => {
+                    if (!star.classList.contains('disabled')) {
+                        this.highlightStars(stars, parseInt(e.target.dataset.rating));
+                    }
+                });
+
+                star.addEventListener('mouseleave', () => {
+                    if (!star.classList.contains('disabled')) {
+                        this.clearHighlight(stars);
+                        this.showCurrentRating(stars, fileId);
+                    }
+                });
+
+                star.addEventListener('click', async (e) => {
+                    if (!star.classList.contains('disabled')) {
+                        const rating = parseInt(e.target.dataset.rating);
+                        await this.rateFile(fileId, rating);
+                    }
+                });
+            });
+        });
+    }
+
+    highlightStars(stars, rating) {
+        stars.forEach((star, index) => {
+            star.classList.remove('hover', 'filled');
+            if (index < rating) {
+                star.classList.add('hover');
+            }
+        });
+    }
+
+    clearHighlight(stars) {
+        stars.forEach(star => {
+            star.classList.remove('hover');
+        });
+    }
+
+    showCurrentRating(stars, fileId) {
+        const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        const scoreElement = item.querySelector('.rating-score');
+        const currentRating = parseFloat(scoreElement.textContent);
+        
+        stars.forEach((star, index) => {
+            star.classList.remove('filled');
+            if (index < Math.round(currentRating)) {
+                star.classList.add('filled');
+            }
+        });
+    }
+
+    async rateFile(fileId, rating) {
+        try {
+            // Show loading
+            this.showLoadingForFile(fileId);
+            
+            const { doc, getDoc, setDoc, updateDoc, increment } = this.firestoreFunctions;
+            const docRef = doc(this.db, 'ratings', fileId);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                
+                // Check if user already rated
+                if (data.raters && data.raters.includes(this.userFingerprint)) {
+                    this.showMessage('لقد قمت بتقييم هذا الملف مسبقاً!', 'warning');
+                    this.hideLoadingForFile(fileId);
+                    return;
+                }
+                
+                // Update existing rating
+                const newTotal = data.total + rating;
+                const newCount = data.count + 1;
+                const newAverage = newTotal / newCount;
+                const newRaters = [...(data.raters || []), this.userFingerprint];
+                
+                await updateDoc(docRef, {
+                    total: newTotal,
+                    count: newCount,
+                    average: newAverage,
+                    raters: newRaters
+                });
+                
+                this.updateDisplay(fileId, { average: newAverage, count: newCount });
+                
+            } else {
+                // Create new rating
+                const newData = {
+                    total: rating,
+                    count: 1,
+                    average: rating,
+                    raters: [this.userFingerprint]
+                };
+                
+                await setDoc(docRef, newData);
+                this.updateDisplay(fileId, newData);
+            }
+            
+            // Disable further rating for this user
+            this.disableRating(fileId);
+            
+            // Hide loading
+            this.hideLoadingForFile(fileId);
+            
+            // Show success message
+            this.showMessage('شكراً لك على التقييم!', 'success');
+            
+        } catch (error) {
+            console.error('Error rating file:', error);
+            this.hideLoadingForFile(fileId);
+            this.showMessage('خطأ في حفظ التقييم. حاول مرة أخرى.', 'error');
+        }
+    }
+
+    updateDisplay(fileId, data) {
+        const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (!item) return;
+
+        const scoreElement = item.querySelector('.rating-score');
+        const countElement = item.querySelector('.rating-count');
+        const stars = item.querySelectorAll('.star');
+
+        scoreElement.textContent = (data.average || 0).toFixed(1);
+        countElement.textContent = `(${data.count || 0} تقييم)`;
+
+        // Update stars display
+        stars.forEach((star, index) => {
+            star.classList.remove('filled');
+            if (index < Math.round(data.average || 0)) {
+                star.classList.add('filled');
+            }
+        });
+    }
+
+    disableRating(fileId) {
+        const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (!item) return;
+
+        const stars = item.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.classList.add('disabled');
+        });
+    }
+
+    showLoadingForFile(fileId) {
+        const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (!item) return;
+
+        const scoreElement = item.querySelector('.rating-score');
+        scoreElement.innerHTML = '<div class="rating-loading"></div>';
+    }
+
+    hideLoadingForFile(fileId) {
+        // Rating will be updated by updateDisplay method
+    }
+
+    showMessage(text, type = 'success') {
+        // Remove existing message
+        const existingMessage = document.getElementById('ratingMessage');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+
+        // Create new message
+        const messageEl = document.createElement('div');
+        messageEl.id = 'ratingMessage';
+        messageEl.className = `rating-message ${type}`;
+        messageEl.textContent = text;
+        document.body.appendChild(messageEl);
+
+        // Show message
+        setTimeout(() => messageEl.classList.add('show'), 100);
+
+        // Hide message after 3 seconds
+        setTimeout(() => {
+            messageEl.classList.remove('show');
+            setTimeout(() => messageEl.remove(), 300);
+        }, 3000);
+    }
+}
+
+// Initialize the rating system when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new GlobalRatingSystem();
+});
+
+// Export for use in other scripts if needed
+window.GlobalRatingSystem = GlobalRatingSystem;
+</script>
 </body>
 </html>
