@@ -49,9 +49,9 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="imgs/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/imgs/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="imgs/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="imgs/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imgs/favicon-16x16.png">
     <link rel="manifest" href="site.webmanifest">
     
     <!-- Alternate Languages -->
@@ -444,7 +444,32 @@
         font-size: 18px;
     }
 }
-    </style>
+
+/* Download counter styles - minimal and clean */
+.file-item .download-count {
+    font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Download button disabled state */
+.download-btn.disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    transform: none !important;
+}
+
+.download-btn.disabled:hover {
+    background-color: #ccc !important;
+    transform: none !important;
+}
+
+
+
+
+	</style>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     // Check if user is returning from welcome page
@@ -6864,8 +6889,8 @@ window.addEventListener('DOMContentLoaded', function() {
 <!-- Navigation functionality -->
 <script src="navigation.js"></script>
 
-<!-- Search functionality -->
-<script src="search.js"></script>
+<!-- Search functionality 
+<script src="search.js"></script> -->
 <script>
 // Back to Top Button Functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -6908,11 +6933,8 @@ function toggleSection(header) {
   content.classList.toggle("collapsed");
 }
 </script>
-<script>
-/* ===== GLOBAL RATING SYSTEM JS - ADD TO YOUR EXISTING JS OR IN SCRIPT TAG ===== */
 
-// Firebase configuration - Replace with your own config from Firebase Console
-  // Your web app's Firebase configuration
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyABiYwT5EkZpGgt03v-qLRsZtZhqLieZrI",
     authDomain: "csdocsfiles.firebaseapp.com",
@@ -6926,6 +6948,8 @@ class GlobalRatingSystem {
     constructor() {
         this.db = null;
         this.userFingerprint = null;
+        this.lastDownloadTime = 0;
+        this.downloadCooldown = 10000; // 10 seconds in milliseconds
         this.init();
     }
 
@@ -6933,26 +6957,63 @@ class GlobalRatingSystem {
         try {
             // Import Firebase
             const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js');
-            const { getFirestore, collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
+            const { getFirestore, collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs, documentId } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
             
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
             this.db = getFirestore(app);
-            this.firestoreFunctions = { collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs };
+            this.firestoreFunctions = { collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs, documentId };
             
             // Generate user fingerprint
             this.userFingerprint = await this.generateUserFingerprint();
             
-            // Load existing ratings
-            await this.loadAllRatings();
-            
-            // Attach event listeners
-            this.attachEventListeners();
+            // Wait for DOM to be fully loaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => this.initializeAfterDOM());
+            } else {
+                this.initializeAfterDOM();
+            }
             
         } catch (error) {
             console.error('Error initializing rating system:', error);
             this.showMessage('خطأ في تحميل نظام التقييم', 'error');
         }
+    }
+
+    async initializeAfterDOM() {
+        try {
+            // Get all valid file IDs first
+            const validFileIds = this.getValidFileIds();
+            
+            if (validFileIds.length > 0) {
+                // Load ratings and download counts in batch
+                await Promise.all([
+                    this.loadAllRatingsBatch(validFileIds),
+                    this.loadAllDownloadCountsBatch(validFileIds)
+                ]);
+            }
+            
+            // Attach event listeners only to files with valid IDs
+            this.attachEventListeners();
+            this.attachDownloadListeners();
+            
+        } catch (error) {
+            console.error('Error during DOM initialization:', error);
+        }
+    }
+
+    getValidFileIds() {
+        const fileItems = document.querySelectorAll('.file-item[data-file-id]');
+        const validIds = [];
+        
+        fileItems.forEach(item => {
+            const fileId = item.dataset.fileId;
+            if (fileId && fileId.trim() !== '') {
+                validIds.push(fileId.trim());
+            }
+        });
+        
+        return validIds;
     }
 
     async generateUserFingerprint() {
@@ -6982,13 +7043,88 @@ class GlobalRatingSystem {
         return Math.abs(hash).toString();
     }
 
-    async loadAllRatings() {
-        const fileItems = document.querySelectorAll('.file-item[data-file-id]');
-        
-        for (const item of fileItems) {
-            const fileId = item.dataset.fileId;
-            await this.loadRatingForFile(fileId);
+    async loadAllRatingsBatch(fileIds) {
+        if (fileIds.length === 0) return;
+
+        try {
+            const { collection, query, where, getDocs, documentId } = this.firestoreFunctions;
+            
+            // Split into chunks of 10 (Firestore 'in' query limit)
+            const chunks = this.chunkArray(fileIds, 10);
+            const allRatings = new Map();
+            
+            for (const chunk of chunks) {
+                const ratingsRef = collection(this.db, 'ratings');
+                const q = query(ratingsRef, where(documentId(), 'in', chunk));
+                const querySnapshot = await getDocs(q);
+                
+                querySnapshot.forEach((doc) => {
+                    allRatings.set(doc.id, doc.data());
+                });
+            }
+            
+            // Update displays for all files
+            fileIds.forEach(fileId => {
+                const data = allRatings.get(fileId) || { average: 0, count: 0 };
+                this.updateRatingDisplay(fileId, data);
+                
+                // Check if user has already rated
+                if (data.raters && data.raters.includes(this.userFingerprint)) {
+                    this.disableRating(fileId);
+                }
+            });
+            
+        } catch (error) {
+            console.error('Error loading ratings in batch:', error);
+            // Fallback to individual loading
+            for (const fileId of fileIds) {
+                await this.loadRatingForFile(fileId);
+            }
         }
+    }
+
+    async loadAllDownloadCountsBatch(fileIds) {
+        if (fileIds.length === 0) return;
+
+        try {
+            const { collection, query, where, getDocs, documentId } = this.firestoreFunctions;
+            
+            // Split into chunks of 10 (Firestore 'in' query limit)
+            const chunks = this.chunkArray(fileIds, 10);
+            const allDownloads = new Map();
+            
+            for (const chunk of chunks) {
+                const downloadsRef = collection(this.db, 'downloads');
+                const q = query(downloadsRef, where(documentId(), 'in', chunk));
+                const querySnapshot = await getDocs(q);
+                
+                querySnapshot.forEach((doc) => {
+                    allDownloads.set(doc.id, doc.data());
+                });
+            }
+            
+            // Update displays for all files
+            fileIds.forEach(fileId => {
+                const data = allDownloads.get(fileId);
+                const count = data ? (data.count || 0) : 0;
+                this.updateDownloadDisplay(fileId, count);
+            });
+            
+        } catch (error) {
+            console.warn('Error loading download counts in batch:', error.message);
+            // Set all to 0 on error
+            fileIds.forEach(fileId => {
+                this.updateDownloadDisplay(fileId, 0);
+            });
+        }
+    }
+
+    chunkArray(array, size) {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+            chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
     }
 
     async loadRatingForFile(fileId) {
@@ -6999,7 +7135,7 @@ class GlobalRatingSystem {
             
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                this.updateDisplay(fileId, data);
+                this.updateRatingDisplay(fileId, data);
                 
                 // Check if user has already rated
                 const hasRated = data.raters && data.raters.includes(this.userFingerprint);
@@ -7007,40 +7143,225 @@ class GlobalRatingSystem {
                     this.disableRating(fileId);
                 }
             } else {
-                this.updateDisplay(fileId, { average: 0, count: 0 });
+                this.updateRatingDisplay(fileId, { average: 0, count: 0 });
             }
         } catch (error) {
-            console.error('Error loading rating:', error);
-            this.updateDisplay(fileId, { average: 0, count: 0 });
+            console.error('Error loading rating for', fileId, ':', error);
+            this.updateRatingDisplay(fileId, { average: 0, count: 0 });
         }
     }
 
     attachEventListeners() {
-        document.querySelectorAll('.file-item[data-file-id]').forEach(item => {
+        // Only attach to files with valid file IDs
+        const fileItems = document.querySelectorAll('.file-item[data-file-id]');
+        
+        fileItems.forEach(item => {
             const fileId = item.dataset.fileId;
+            
+            // Skip if no file ID or empty file ID
+            if (!fileId || fileId.trim() === '') {
+                return;
+            }
+            
             const stars = item.querySelectorAll('.star');
             
             stars.forEach(star => {
-                star.addEventListener('mouseenter', (e) => {
-                    if (!star.classList.contains('disabled')) {
-                        this.highlightStars(stars, parseInt(e.target.dataset.rating));
+                // Remove existing listeners to prevent duplicates
+                const newStar = star.cloneNode(true);
+                star.parentNode.replaceChild(newStar, star);
+                
+                newStar.addEventListener('mouseenter', (e) => {
+                    if (!newStar.classList.contains('disabled')) {
+                        const allStars = item.querySelectorAll('.star');
+                        this.highlightStars(allStars, parseInt(e.target.dataset.rating));
                     }
                 });
 
-                star.addEventListener('mouseleave', () => {
-                    if (!star.classList.contains('disabled')) {
-                        this.clearHighlight(stars);
-                        this.showCurrentRating(stars, fileId);
+                newStar.addEventListener('mouseleave', () => {
+                    if (!newStar.classList.contains('disabled')) {
+                        const allStars = item.querySelectorAll('.star');
+                        this.clearHighlight(allStars);
+                        this.showCurrentRating(allStars, fileId);
                     }
                 });
 
-                star.addEventListener('click', async (e) => {
-                    if (!star.classList.contains('disabled')) {
+                newStar.addEventListener('click', async (e) => {
+                    if (!newStar.classList.contains('disabled')) {
                         const rating = parseInt(e.target.dataset.rating);
                         await this.rateFile(fileId, rating);
                     }
                 });
             });
+        });
+    }
+
+    attachDownloadListeners() {
+        const downloadButtons = document.querySelectorAll('.download-btn');
+        
+        downloadButtons.forEach(button => {
+            const fileItem = button.closest('.file-item');
+            
+            // Skip if no file item found
+            if (!fileItem) {
+                return;
+            }
+            
+            const fileId = fileItem.dataset.fileId;
+            
+            // Skip if no file ID or empty file ID
+            if (!fileId || fileId.trim() === '') {
+                return;
+            }
+            
+            const originalOnclick = button.getAttribute('onclick');
+            
+            // Skip if no onclick attribute
+            if (!originalOnclick) {
+                return;
+            }
+            
+            // Remove original onclick to prevent conflicts
+            button.removeAttribute('onclick');
+            
+            // Create new click handler
+            const clickHandler = (e) => {
+                e.preventDefault();
+                this.handleDownload(fileId.trim(), originalOnclick);
+            };
+            
+            // Remove existing listeners and add new one
+            button.removeEventListener('click', clickHandler);
+            button.addEventListener('click', clickHandler);
+        });
+    }
+
+    async handleDownload(fileId, originalOnclick) {
+        const now = Date.now();
+        const timeRemaining = this.downloadCooldown - (now - this.lastDownloadTime);
+
+        if (timeRemaining > 0 && this.lastDownloadTime > 0) {
+            const seconds = Math.ceil(timeRemaining / 1000);
+            this.showMessage(`يرجى الانتظار ${seconds} ثانية قبل تحميل ملف آخر`, 'warning');
+            this.startCooldownTimer(timeRemaining);
+            return;
+        }
+
+        try {
+            // Set last download time first
+            this.lastDownloadTime = now;
+            
+            // Execute original download
+            eval(originalOnclick);
+            
+            // Try to update download count (but don't fail if it doesn't work)
+            this.incrementDownloadCount(fileId).catch(error => {
+                console.warn('Could not update download count:', error.message);
+            });
+            
+            // Start cooldown timer
+            this.startCooldownTimer(this.downloadCooldown);
+            
+            this.showMessage('تم بدء التحميل بنجاح!', 'success');
+            
+        } catch (error) {
+            console.error('Error handling download:', error);
+            this.showMessage('خطأ في تسجيل التحميل', 'error');
+        }
+    }
+
+    async incrementDownloadCount(fileId) {
+        try {
+            const { doc, getDoc, setDoc, updateDoc, increment } = this.firestoreFunctions;
+            const docRef = doc(this.db, 'downloads', fileId);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                await updateDoc(docRef, {
+                    count: increment(1),
+                    lastDownload: new Date()
+                });
+                
+                // Get updated count
+                const updatedSnap = await getDoc(docRef);
+                const newCount = updatedSnap.data().count;
+                this.updateDownloadDisplay(fileId, newCount);
+                
+            } else {
+                await setDoc(docRef, {
+                    count: 1,
+                    firstDownload: new Date(),
+                    lastDownload: new Date()
+                });
+                
+                this.updateDownloadDisplay(fileId, 1);
+            }
+            
+        } catch (error) {
+            console.warn('Could not increment download count for', fileId, ':', error.message);
+            throw error;
+        }
+    }
+
+    startCooldownTimer(duration) {
+        this.disableAllDownloadButtons();
+        
+        const startTime = Date.now();
+        const timer = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, duration - elapsed);
+            const seconds = Math.ceil(remaining / 1000);
+            
+            if (remaining <= 0) {
+                clearInterval(timer);
+                this.enableAllDownloadButtons();
+                this.updateDownloadButtonsText('تحميل');
+            } else {
+                this.updateDownloadButtonsText(`انتظر ${seconds} ثواني `);
+            }
+        }, 100);
+    }
+
+    disableAllDownloadButtons() {
+        // Only disable buttons for files with valid IDs
+        const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
+        validFileItems.forEach(item => {
+            const fileId = item.dataset.fileId;
+            if (fileId && fileId.trim() !== '') {
+                const button = item.querySelector('.download-btn');
+                if (button) {
+                    button.disabled = true;
+                    button.classList.add('disabled');
+                }
+            }
+        });
+    }
+
+    enableAllDownloadButtons() {
+        // Only enable buttons for files with valid IDs
+        const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
+        validFileItems.forEach(item => {
+            const fileId = item.dataset.fileId;
+            if (fileId && fileId.trim() !== '') {
+                const button = item.querySelector('.download-btn');
+                if (button) {
+                    button.disabled = false;
+                    button.classList.remove('disabled');
+                }
+            }
+        });
+    }
+
+    updateDownloadButtonsText(text) {
+        // Only update buttons for files with valid IDs
+        const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
+        validFileItems.forEach(item => {
+            const fileId = item.dataset.fileId;
+            if (fileId && fileId.trim() !== '') {
+                const button = item.querySelector('.download-btn');
+                if (button) {
+                    button.textContent = text;
+                }
+            }
         });
     }
 
@@ -7061,8 +7382,12 @@ class GlobalRatingSystem {
 
     showCurrentRating(stars, fileId) {
         const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (!item) return;
+        
         const scoreElement = item.querySelector('.rating-score');
-        const currentRating = parseFloat(scoreElement.textContent);
+        if (!scoreElement) return;
+        
+        const currentRating = parseFloat(scoreElement.textContent) || 0;
         
         stars.forEach((star, index) => {
             star.classList.remove('filled');
@@ -7077,7 +7402,7 @@ class GlobalRatingSystem {
             // Show loading
             this.showLoadingForFile(fileId);
             
-            const { doc, getDoc, setDoc, updateDoc, increment } = this.firestoreFunctions;
+            const { doc, getDoc, setDoc, updateDoc } = this.firestoreFunctions;
             const docRef = doc(this.db, 'ratings', fileId);
             const docSnap = await getDoc(docRef);
             
@@ -7104,7 +7429,7 @@ class GlobalRatingSystem {
                     raters: newRaters
                 });
                 
-                this.updateDisplay(fileId, { average: newAverage, count: newCount });
+                this.updateRatingDisplay(fileId, { average: newAverage, count: newCount });
                 
             } else {
                 // Create new rating
@@ -7116,7 +7441,7 @@ class GlobalRatingSystem {
                 };
                 
                 await setDoc(docRef, newData);
-                this.updateDisplay(fileId, newData);
+                this.updateRatingDisplay(fileId, newData);
             }
             
             // Disable further rating for this user
@@ -7135,7 +7460,7 @@ class GlobalRatingSystem {
         }
     }
 
-    updateDisplay(fileId, data) {
+    updateRatingDisplay(fileId, data) {
         const item = document.querySelector(`[data-file-id="${fileId}"]`);
         if (!item) return;
 
@@ -7143,8 +7468,13 @@ class GlobalRatingSystem {
         const countElement = item.querySelector('.rating-count');
         const stars = item.querySelectorAll('.star');
 
-        scoreElement.textContent = (data.average || 0).toFixed(1);
-        countElement.textContent = `(${data.count || 0} تقييم)`;
+        if (scoreElement) {
+            scoreElement.textContent = (data.average || 0).toFixed(1);
+        }
+        
+        if (countElement) {
+            countElement.textContent = `(${data.count || 0} تقييم)`;
+        }
 
         // Update stars display
         stars.forEach((star, index) => {
@@ -7153,6 +7483,27 @@ class GlobalRatingSystem {
                 star.classList.add('filled');
             }
         });
+    }
+
+    updateDownloadDisplay(fileId, count) {
+        const item = document.querySelector(`[data-file-id="${fileId}"]`);
+        if (!item) return;
+
+        // Check if download count element exists, if not create it
+        let downloadCountElement = item.querySelector('.download-count');
+        if (!downloadCountElement) {
+            downloadCountElement = document.createElement('div');
+            downloadCountElement.className = 'download-count';
+            
+            // Insert it before the download button
+            const downloadBtn = item.querySelector('.download-btn');
+            if (downloadBtn && downloadBtn.parentNode) {
+                downloadBtn.parentNode.insertBefore(downloadCountElement, downloadBtn);
+            }
+        }
+
+        downloadCountElement.innerHTML = `تم تحميله ${count} مرة <span style="display:inline-block; width:20px;"></span>`;
+
     }
 
     disableRating(fileId) {
@@ -7170,11 +7521,13 @@ class GlobalRatingSystem {
         if (!item) return;
 
         const scoreElement = item.querySelector('.rating-score');
-        scoreElement.innerHTML = '<div class="rating-loading"></div>';
+        if (scoreElement) {
+            scoreElement.innerHTML = '<div class="rating-loading"></div>';
+        }
     }
 
     hideLoadingForFile(fileId) {
-        // Rating will be updated by updateDisplay method
+        // Rating will be updated by updateRatingDisplay method
     }
 
     showMessage(text, type = 'success') {
@@ -7197,7 +7550,11 @@ class GlobalRatingSystem {
         // Hide message after 3 seconds
         setTimeout(() => {
             messageEl.classList.remove('show');
-            setTimeout(() => messageEl.remove(), 300);
+            setTimeout(() => {
+                if (messageEl.parentNode) {
+                    messageEl.remove();
+                }
+            }, 300);
         }, 3000);
     }
 }
@@ -7210,5 +7567,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
 </script>
+
 </body>
 </html>
