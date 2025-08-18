@@ -9015,20 +9015,16 @@ function toggleSection(header) {
   content.classList.toggle("collapsed");
 }
 </script>
-
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyABiYwT5EkZpGgt03v-qLRsZtZhqLieZrI",
-    authDomain: "csdocsfiles.firebaseapp.com",
-    projectId: "csdocsfiles",
-    storageBucket: "csdocsfiles.firebasestorage.app",
-    messagingSenderId: "750949427920",
-    appId: "1:750949427920:web:192b819b32526bb48fccd5"
-  };
+// Supabase Configuration - Replace with your actual values
+const supabaseConfig = {
+    url: 'https://ksuolzzhpssazyfwbkeg.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA' 
+};
 
 class GlobalRatingSystem {
     constructor() {
-        this.db = null;
+        this.supabase = null;
         this.userFingerprint = null;
         this.lastDownloadTime = 0;
         this.downloadCooldown = 10000; // 10 seconds in milliseconds
@@ -9046,14 +9042,11 @@ class GlobalRatingSystem {
 
     async init() {
         try {
-            // Import Firebase
-            const { initializeApp } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js');
-            const { getFirestore, collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs, documentId } = await import('https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js');
+            // Import Supabase
+            const { createClient } = await import('https://cdn.skypack.dev/@supabase/supabase-js@2');
             
-            // Initialize Firebase
-            const app = initializeApp(firebaseConfig);
-            this.db = getFirestore(app);
-            this.firestoreFunctions = { collection, doc, setDoc, getDoc, updateDoc, increment, query, where, getDocs, documentId };
+            // Initialize Supabase client
+            this.supabase = createClient(supabaseConfig.url, supabaseConfig.anonKey);
             
             // Generate user fingerprint
             this.userFingerprint = await this.generateUserFingerprint();
@@ -9104,7 +9097,7 @@ class GlobalRatingSystem {
         return validIds;
     }
 
-    // NEW: Optimized data loading with better batching and caching
+    // Optimized data loading with Supabase
     async loadAllDataOptimized(fileIds) {
         if (fileIds.length === 0) return;
 
@@ -9119,10 +9112,10 @@ class GlobalRatingSystem {
         }
 
         try {
-            // Load data in larger, more efficient batches
+            // Load data in parallel
             await Promise.all([
-                this.loadDataBatchOptimized(fileIds, 'ratings'),
-                this.loadDataBatchOptimized(fileIds, 'downloads')
+                this.loadRatingsData(fileIds),
+                this.loadDownloadsData(fileIds)
             ]);
             
             // Update cache timestamp
@@ -9138,36 +9131,70 @@ class GlobalRatingSystem {
         }
     }
 
-    // NEW: More efficient batch loading with up to 10 items per request
-    async loadDataBatchOptimized(fileIds, collectionName) {
-        const { collection, query, where, getDocs, documentId } = this.firestoreFunctions;
-        const cacheMap = collectionName === 'ratings' ? this.cache.ratings : this.cache.downloads;
-        
-        // Use maximum batch size of 10 (Firestore limit)
-        const chunks = this.chunkArray(fileIds, 10);
-        
-        const promises = chunks.map(async (chunk) => {
-            try {
-                const collectionRef = collection(this.db, collectionName);
-                const q = query(collectionRef, where(documentId(), 'in', chunk));
-                const querySnapshot = await getDocs(q);
+    // Load ratings data from Supabase
+    async loadRatingsData(fileIds) {
+        try {
+            // Supabase can handle large IN queries better than Firestore
+            const chunks = this.chunkArray(fileIds, 100); // Larger chunks possible
+            
+            const promises = chunks.map(async (chunk) => {
+                const { data, error } = await this.supabase
+                    .from('ratings')
+                    .select('*')
+                    .in('id', chunk);
+                
+                if (error) {
+                    console.warn('Error loading ratings batch:', error);
+                    return [];
+                }
                 
                 // Cache the results
-                querySnapshot.forEach((doc) => {
-                    cacheMap.set(doc.id, doc.data());
+                data.forEach(rating => {
+                    this.cache.ratings.set(rating.id, rating);
                 });
                 
-                return querySnapshot.size;
-            } catch (error) {
-                console.warn(`Error loading ${collectionName} batch:`, error);
-                return 0;
-            }
-        });
-        
-        await Promise.all(promises);
+                return data;
+            });
+            
+            await Promise.all(promises);
+            
+        } catch (error) {
+            console.error('Error loading ratings data:', error);
+        }
     }
 
-    // NEW: Minimal fallback loading
+    // Load downloads data from Supabase
+    async loadDownloadsData(fileIds) {
+        try {
+            const chunks = this.chunkArray(fileIds, 100);
+            
+            const promises = chunks.map(async (chunk) => {
+                const { data, error } = await this.supabase
+                    .from('downloads')
+                    .select('*')
+                    .in('id', chunk);
+                
+                if (error) {
+                    console.warn('Error loading downloads batch:', error);
+                    return [];
+                }
+                
+                // Cache the results
+                data.forEach(download => {
+                    this.cache.downloads.set(download.id, download);
+                });
+                
+                return data;
+            });
+            
+            await Promise.all(promises);
+            
+        } catch (error) {
+            console.error('Error loading downloads data:', error);
+        }
+    }
+
+    // Minimal fallback loading
     async loadDataMinimal(fileIds) {
         console.warn('Using minimal fallback loading');
         
@@ -9176,8 +9203,8 @@ class GlobalRatingSystem {
         
         try {
             await Promise.all([
-                this.loadDataBatchOptimized(visibleFileIds, 'ratings'),
-                this.loadDataBatchOptimized(visibleFileIds, 'downloads')
+                this.loadRatingsData(visibleFileIds),
+                this.loadDownloadsData(visibleFileIds)
             ]);
             
             this.updateAllDisplays(visibleFileIds);
@@ -9186,8 +9213,8 @@ class GlobalRatingSystem {
             if (fileIds.length > 20) {
                 setTimeout(() => {
                     const remainingIds = fileIds.slice(20);
-                    this.loadDataBatchOptimized(remainingIds, 'ratings');
-                    this.loadDataBatchOptimized(remainingIds, 'downloads');
+                    this.loadRatingsData(remainingIds);
+                    this.loadDownloadsData(remainingIds);
                 }, 2000);
             }
             
@@ -9198,7 +9225,7 @@ class GlobalRatingSystem {
         }
     }
 
-    // NEW: Update displays from cache
+    // Update displays from cache
     updateDisplaysFromCache(fileIds) {
         fileIds.forEach(fileId => {
             // Update ratings
@@ -9217,7 +9244,7 @@ class GlobalRatingSystem {
         });
     }
 
-    // NEW: Update all displays after loading
+    // Update all displays after loading
     updateAllDisplays(fileIds) {
         fileIds.forEach(fileId => {
             // Update ratings
@@ -9236,7 +9263,7 @@ class GlobalRatingSystem {
         });
     }
 
-    // NEW: Set default values when loading fails
+    // Set default values when loading fails
     setDefaultValues(fileIds) {
         fileIds.forEach(fileId => {
             this.updateRatingDisplay(fileId, { average: 0, count: 0 });
@@ -9397,7 +9424,7 @@ class GlobalRatingSystem {
         }
     }
 
-    // NEW: Optimized download count increment with immediate UI update
+    // Optimized download count increment with Supabase
     async incrementDownloadCountOptimized(fileId) {
         try {
             // Update UI immediately (optimistic update)
@@ -9410,31 +9437,25 @@ class GlobalRatingSystem {
             // Update display immediately
             this.updateDownloadDisplay(fileId, newCount);
             
-            // Update database in background
-            const { doc, getDoc, setDoc, updateDoc, increment } = this.firestoreFunctions;
-            const docRef = doc(this.db, 'downloads', fileId);
+            // Update database in background using Supabase upsert
+            const { data, error } = await this.supabase
+                .from('downloads')
+                .upsert({ 
+                    id: fileId,
+                    count: newCount,
+                    last_download: new Date().toISOString()
+                }, { 
+                    onConflict: 'id',
+                    ignoreDuplicates: false 
+                })
+                .select();
             
-            try {
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    await updateDoc(docRef, {
-                        count: increment(1),
-                        lastDownload: new Date()
-                    });
-                } else {
-                    await setDoc(docRef, {
-                        count: 1,
-                        firstDownload: new Date(),
-                        lastDownload: new Date()
-                    });
-                }
-            } catch (dbError) {
+            if (error) {
                 // Revert optimistic update on database error
-                console.warn('Database update failed, reverting UI update:', dbError);
+                console.warn('Database update failed, reverting UI update:', error);
                 this.cache.downloads.set(fileId, currentData);
                 this.updateDownloadDisplay(fileId, currentData.count);
-                throw dbError;
+                throw error;
             }
             
         } catch (error) {
@@ -9543,49 +9564,65 @@ class GlobalRatingSystem {
             // Show loading
             this.showLoadingForFile(fileId);
             
-            const { doc, getDoc, setDoc, updateDoc } = this.firestoreFunctions;
-            const docRef = doc(this.db, 'ratings', fileId);
-            const docSnap = await getDoc(docRef);
+            // Get current rating data
+            const { data: currentData, error: selectError } = await this.supabase
+                .from('ratings')
+                .select('*')
+                .eq('id', fileId)
+                .single();
             
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                
+            if (selectError && selectError.code !== 'PGRST116') { // PGRST116 = not found
+                throw selectError;
+            }
+            
+            if (currentData) {
                 // Check if user already rated
-                if (data.raters && data.raters.includes(this.userFingerprint)) {
+                if (currentData.raters && currentData.raters.includes(this.userFingerprint)) {
                     this.showMessage('لقد قمت بتقييم هذا الملف مسبقاً!', 'warning');
                     this.hideLoadingForFile(fileId);
                     return;
                 }
                 
                 // Update existing rating
-                const newTotal = data.total + rating;
-                const newCount = data.count + 1;
+                const newTotal = currentData.total + rating;
+                const newCount = currentData.count + 1;
                 const newAverage = newTotal / newCount;
-                const newRaters = [...(data.raters || []), this.userFingerprint];
+                const newRaters = [...(currentData.raters || []), this.userFingerprint];
                 
                 const newData = {
                     total: newTotal,
                     count: newCount,
                     average: newAverage,
-                    raters: newRaters
+                    raters: newRaters,
+                    updated_at: new Date().toISOString()
                 };
                 
-                await updateDoc(docRef, newData);
+                const { error: updateError } = await this.supabase
+                    .from('ratings')
+                    .update(newData)
+                    .eq('id', fileId);
+                
+                if (updateError) throw updateError;
                 
                 // Update cache
-                this.cache.ratings.set(fileId, newData);
+                this.cache.ratings.set(fileId, { id: fileId, ...newData });
                 this.updateRatingDisplay(fileId, newData);
                 
             } else {
                 // Create new rating
                 const newData = {
+                    id: fileId,
                     total: rating,
                     count: 1,
                     average: rating,
                     raters: [this.userFingerprint]
                 };
                 
-                await setDoc(docRef, newData);
+                const { error: insertError } = await this.supabase
+                    .from('ratings')
+                    .insert([newData]);
+                
+                if (insertError) throw insertError;
                 
                 // Update cache
                 this.cache.ratings.set(fileId, newData);
@@ -9705,14 +9742,14 @@ class GlobalRatingSystem {
         }, 3000);
     }
 
-    // NEW: Method to clear cache manually if needed
+    // Method to clear cache manually if needed
     clearCache() {
         this.cache.ratings.clear();
         this.cache.downloads.clear();
         this.cache.lastUpdate = 0;
     }
 
-    // NEW: Method to refresh data
+    // Method to refresh data
     async refreshData() {
         this.clearCache();
         const validFileIds = this.getValidFileIds();
@@ -9720,11 +9757,51 @@ class GlobalRatingSystem {
             await this.loadAllDataOptimized(validFileIds);
         }
     }
+
+    // BONUS: Real-time updates (optional)
+    enableRealTimeUpdates() {
+        // Subscribe to ratings changes
+        this.supabase
+            .channel('ratings-changes')
+            .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'ratings' }, 
+                (payload) => {
+                    console.log('Rating updated:', payload);
+                    if (payload.new) {
+                        this.cache.ratings.set(payload.new.id, payload.new);
+                        this.updateRatingDisplay(payload.new.id, payload.new);
+                    }
+                }
+            )
+            .subscribe();
+
+        // Subscribe to downloads changes
+        this.supabase
+            .channel('downloads-changes')
+            .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'downloads' }, 
+                (payload) => {
+                    console.log('Download updated:', payload);
+                    if (payload.new) {
+                        this.cache.downloads.set(payload.new.id, payload.new);
+                        this.updateDownloadDisplay(payload.new.id, payload.new.count);
+                    }
+                }
+            )
+            .subscribe();
+    }
 }
 
 // Initialize the rating system when page loads
 document.addEventListener('DOMContentLoaded', () => {
     window.ratingSystem = new GlobalRatingSystem();
+    
+    // Optional: Enable real-time updates after 5 seconds
+    setTimeout(() => {
+        if (window.ratingSystem) {
+            window.ratingSystem.enableRealTimeUpdates();
+        }
+    }, 5000);
 });
 
 // Export for use in other scripts if needed
