@@ -143,7 +143,7 @@
 	<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    twemoji.parse(document.body); // يحوّل كل الإيموجي إلى SVG
+    twemoji.parse(document.body); 
   });
 </script>
 
@@ -528,16 +528,16 @@ window.addEventListener('DOMContentLoaded', function() {
     </div>
 
     <!-- Title -->
-    <h1>🖥️ وثائق أستاذ المعلوماتية للتعليم الثانوي</h1>
+    <h1> وثائق أستاذ المعلوماتية للتعليم الثانوي</h1>
     <p class="subtitle">جميع الوثائق والملفات الرسمية التي يحتاجها أستاذ المعلوماتية في التعليم الثانوي</p>
     <p class="tagline">
-    📘 مذكرات دروس · 🎤 عروض تقديمية · 📝 اختبارات وفروض · 🧪 وثائق المخبر · 📂 موارد أخرى أساسية
+مذكرات دروس، عروض تقديمية، اختبارات وفروض، وثائق المخبر، وموارد أخرى.
 </p>
 
     <!-- Buttons -->
     <div class="header-buttons">
-        <button class="notice-button-header" onclick="showNotice()">⚠️ معلومات مهمة حول التوثيق</button> <p></p>
-        <button class="notice-button-header highlight" onclick="window.open('files/التوثيق.pdf', '_blank')">📝 عرض تقديمي لنماذج من الوثائق</button>
+        <button class="notice-button-header" onclick="showNotice()"> معلومات مهمة حول التوثيق</button> <p></p>
+        <button class="notice-button-header highlight" onclick="window.open('files/التوثيق.pdf', '_blank')"> عرض تقديمي لنماذج من الوثائق</button>
     </div>
 </div>
   <!--
@@ -7295,10 +7295,22 @@ window.addEventListener('DOMContentLoaded', function() {
                     <div class="file-name">نموذج مخطط الجلوس – خاص بالأستاذ– (وثيقة رقم 1)</div>
                     <div class="file-size">DOC - 21 KB</div>
                 </div>
-
-							<button class="download-btn" onclick="window.open('files/مخطط الجلوس للمخبر.docx', '_blank')">
-                                تحميل
-                            </button>
+				<div class="rating-section">
+					<div class="rating-display">
+						<span class="rating-score">0.0</span>
+						<span class="rating-count">(0 تقييم)</span>
+					</div>
+					<div class="rating-stars">
+						<span class="star" data-rating="1">★</span>
+						<span class="star" data-rating="2">★</span>
+						<span class="star" data-rating="3">★</span>
+						<span class="star" data-rating="4">★</span>
+						<span class="star" data-rating="5">★</span>
+					</div>
+				</div>
+					<button class="download-btn" onclick="window.open('files/مخطط الجلوس للمخبر.docx', '_blank')">
+						تحميل
+					</button>
             </div>
 			<div class="file-item" data-file-id="SP0002">
 			<div class="file-icon doc">DOC</div>
@@ -7306,10 +7318,22 @@ window.addEventListener('DOMContentLoaded', function() {
                     <div class="file-name">نموذج مخطط الجلوس – خاص بالمحطات – (وثيقة رقم 2)</div>
                     <div class="file-size">DOC - 138 KB</div>
                 </div>
-
-							<button class="download-btn" onclick="window.open('files/ورقة الحاسوب.docx', '_blank')">
-                                تحميل
-                            </button>
+				<div class="rating-section">
+					<div class="rating-display">
+						<span class="rating-score">0.0</span>
+						<span class="rating-count">(0 تقييم)</span>
+					</div>
+					<div class="rating-stars">
+						<span class="star" data-rating="1">★</span>
+						<span class="star" data-rating="2">★</span>
+						<span class="star" data-rating="3">★</span>
+						<span class="star" data-rating="4">★</span>
+						<span class="star" data-rating="5">★</span>
+					</div>
+				</div>
+			    <button class="download-btn" onclick="window.open('files/ورقة الحاسوب.docx', '_blank')">
+                    تحميل
+                </button>
             </div>
 			<div class="file-item" data-file-id="SP0003">
 			<div class="file-icon doc">DOC</div>
@@ -7317,10 +7341,22 @@ window.addEventListener('DOMContentLoaded', function() {
                     <div class="file-name">مخطط جلوس مبسط - خاص بكل حاسوب</div>
                     <div class="file-size">DOC - 48 KB</div>
                 </div>
-
-							<button class="download-btn" onclick="window.open('files/مخطط-الجلوس-سهل-و-رائع-مع-توصيات.docx', '_blank')">
-                                تحميل
-                            </button>
+				<div class="rating-section">
+					<div class="rating-display">
+						<span class="rating-score">0.0</span>
+						<span class="rating-count">(0 تقييم)</span>
+					</div>
+					<div class="rating-stars">
+						<span class="star" data-rating="1">★</span>
+						<span class="star" data-rating="2">★</span>
+						<span class="star" data-rating="3">★</span>
+						<span class="star" data-rating="4">★</span>
+						<span class="star" data-rating="5">★</span>
+					</div>
+				</div>
+				<button class="download-btn" onclick="window.open('files/مخطط-الجلوس-سهل-و-رائع-مع-توصيات.docx', '_blank')">
+                    تحميل
+                </button>
             </div>
 			<div class="file-item" data-file-id="SP0004">
 			<div class="file-icon doc">DOC</div>
@@ -7384,6 +7420,19 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div class="file-name">نموذج 01 لجرد عتاد مخبر المعلوماتية</div>
                 <div class="file-size">DOCX - 18 kB</div>
             </div>
+				<div class="rating-section">
+					<div class="rating-display">
+						<span class="rating-score">0.0</span>
+						<span class="rating-count">(0 تقييم)</span>
+					</div>
+					<div class="rating-stars">
+						<span class="star" data-rating="1">★</span>
+						<span class="star" data-rating="2">★</span>
+						<span class="star" data-rating="3">★</span>
+						<span class="star" data-rating="4">★</span>
+						<span class="star" data-rating="5">★</span>
+					</div>
+				</div>
 				<button class="download-btn" onclick="window.open('files/ورقة الجرد.docx', '_blank')">
                     تحميل
                 </button>
@@ -7394,9 +7443,22 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div class="file-name">نموذج 02 لجرد عتاد مخبر المعلوماتية</div>
                 <div class="file-size">DOCX - 24 kB</div>
             </div>
-				<button class="download-btn" onclick="window.open('files/جرد الاجهزة.docx', '_blank')">
-                    تحميل
-                </button>
+				<div class="rating-section">
+					<div class="rating-display">
+						<span class="rating-score">0.0</span>
+						<span class="rating-count">(0 تقييم)</span>
+					</div>
+					<div class="rating-stars">
+						<span class="star" data-rating="1">★</span>
+						<span class="star" data-rating="2">★</span>
+						<span class="star" data-rating="3">★</span>
+						<span class="star" data-rating="4">★</span>
+						<span class="star" data-rating="5">★</span>
+					</div>
+				</div>
+			<button class="download-btn" onclick="window.open('files/جرد الاجهزة.docx', '_blank')">
+				تحميل
+			</button>
         </div>
 			   <div class="file-item" data-file-id="OD0006">
 	   <div class="file-icon docx">DOC</div>
@@ -7461,6 +7523,7 @@ window.addEventListener('DOMContentLoaded', function() {
     <div class="section">
         <h3>قائمة المواقع</h3>
         <div class="file-list">
+		
             <div class="file-item">
                 <div class="file-icon link">🔗</div>
                 <div class="file-info">
@@ -7487,7 +7550,14 @@ window.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <button class="download-btn" onclick="window.open('https://www.joradp.dz/HAR/Index.htm', '_blank')">زيارة</button>
             </div>
-
+            <div class="file-item">
+                <div class="file-icon link">🔗</div>
+                <div class="file-info">
+                    <div class="file-name">قناة الأستاذ موساوي للمعلوماتية على اليوتوب</div>
+                    <div class="file-size">شروحات ودروس التعليم الثانوي و المتوسط</div>
+                </div>
+                <button class="download-btn" onclick="window.open('https://www.youtube.com/@prof_moussaoui', '_blank')">زيارة</button>
+            </div>
             <div class="file-item">
                 <div class="file-icon link">🔗</div>
                 <div class="file-info">
@@ -8932,7 +9002,7 @@ window.addEventListener('DOMContentLoaded', function() {
 <button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
 
 <div class="container">
-    <footer class="footer">
+    <footer class ="footer">
         <div class="footer-container">
             <div class="footer-content">
                 <!-- Brand Section -->
@@ -8967,7 +9037,8 @@ window.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <!-- Support -->
-                <div class="footer-section">
+               
+			   <div class="footer-section">
                     <h3>الدعم والمساعدة</h3>
                     <ul class="footer-links">
                       <!--  <li><a href="#contact">اتصل بنا</a></li>
@@ -8979,8 +9050,8 @@ window.addEventListener('DOMContentLoaded', function() {
 					</br>
 					<div class="jump-buttons">
 					<a href="contact.html"> لديك اقتراح لتحسين الموقع</a>
-					</div>
-                </div>
+					
+                </div></div>
             </div>
 
             <div class="footer-bottom">
@@ -9841,5 +9912,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.GlobalRatingSystem = GlobalRatingSystem;
 </script>
 </body>
-
 </html>
