@@ -140,7 +140,31 @@
         }
     }
     </script>
+	<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    twemoji.parse(document.body); // يحوّل كل الإيموجي إلى SVG
+  });
+</script>
+
 <style>
+.emoji {
+  height: 1em;       /* يساوي حجم النص */
+  width: 1em;        /* يحافظ على التناسق */
+  margin: 0 .2em;    /* تباعد بسيط */
+  vertical-align: -0.2em; /* يوازن مكانها مع النص */
+}
+span .emoji {
+  height: 1.4em;
+  width: 1.4em;
+}
+
+    .logo img {
+      max-width: 240px;   
+      width: 100%;        
+      height: auto;       
+      margin-bottom: 15px;
+    }
         .main-content {
             flex: 1;
             padding: 4rem 2rem;
@@ -468,7 +492,6 @@
 
 
 
-
 	</style>
 <script>
 window.addEventListener('DOMContentLoaded', function() {
@@ -498,15 +521,25 @@ window.addEventListener('DOMContentLoaded', function() {
     <div class="container">
         <!-- الصفحة الرئيسية -->
         <div id="home-view" class="home-view">
-            <div class="header">
-                <h1>🖥️ وثائق أستاذ مادة المعلوماتية</h1>
-                <p>جميع الوثائق والملفات التي يحتاجها أستاذ المعلوماتية في مكان واحد</p>
-			    <button class="notice-button-header" onclick="showNotice()">⚠️ معلومات مهمة حول التوثيق</button>
-				<p></p>
-                <button class="notice-button-header" onclick="window.open('files/التوثيق.pdf', '_blank')"> 📝 عرض تقديمي لنماذج من الوثائق </button>
+<div class="header">
+    <!-- Logo -->
+    <div class="logo">
+        <img src="imgs/favicon.png" alt="شعار الموقع">
+    </div>
 
-  
-  </div>
+    <!-- Title -->
+    <h1>🖥️ وثائق أستاذ المعلوماتية للتعليم الثانوي</h1>
+    <p class="subtitle">جميع الوثائق والملفات الرسمية التي يحتاجها أستاذ المعلوماتية في التعليم الثانوي</p>
+    <p class="tagline">
+    📘 مذكرات دروس · 🎤 عروض تقديمية · 📝 اختبارات وفروض · 🧪 وثائق المخبر · 📂 موارد أخرى أساسية
+</p>
+
+    <!-- Buttons -->
+    <div class="header-buttons">
+        <button class="notice-button-header" onclick="showNotice()">⚠️ معلومات مهمة حول التوثيق</button> <p></p>
+        <button class="notice-button-header highlight" onclick="window.open('files/التوثيق.pdf', '_blank')">📝 عرض تقديمي لنماذج من الوثائق</button>
+    </div>
+</div>
   <!--
 <div class="search-container">
     <div class="search-box">
