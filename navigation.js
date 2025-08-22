@@ -40,3 +40,38 @@ document.addEventListener('DOMContentLoaded', function() {
         card.style.animation = 'fadeIn 0.6s ease forwards';
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+    
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+function toggleSection(element) {
+    const content = element.nextElementSibling;
+    const isCollapsed = content.classList.contains('collapsed');
+    
+    if (isCollapsed) {
+        content.classList.remove('collapsed');
+        element.classList.remove('collapsed');
+    } else {
+        content.classList.add('collapsed');
+        element.classList.add('collapsed');
+    }
+}
+function toggleSection(header) {
+  header.classList.toggle("collapsed");
+  const content = header.nextElementSibling;
+  content.classList.toggle("collapsed");
+}
