@@ -141,9 +141,11 @@
     </script>
 	<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    twemoji.parse(document.body); 
+document.addEventListener("DOMContentLoaded", function() {
+  requestAnimationFrame(() => {
+    twemoji.parse(document.body);
   });
+});
 </script>
 
 <script>
@@ -497,4 +499,5 @@ window.addEventListener('DOMContentLoaded', function() {
 <script src="navigation.js"></script>
 <script src="popup.js" defer></script>
 </body>
+
 </html>
