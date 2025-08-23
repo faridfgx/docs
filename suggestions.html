@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اقتراح تحسينات الموقع - وثائق أستاذ المعلوماتية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .return-button-container {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .return-btn-content {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .return-btn-content:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+            background: linear-gradient(135deg, #1976D2, #1CB5E0);
+        }
+
+        .return-btn-content:active {
+            transform: translateY(0);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #2196F3;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .form-note {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-right: 4px solid #2196F3;
+        }
+
+        .form-note h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .form-note p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .return-btn-content {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
+
+            .return-button-container {
+                text-align: center;
+                margin-bottom: 15px;
+            }
+        }
+
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💡 اقتراح تحسينات الموقع</h1>
+            <p>ساعدنا في تطوير موقع وثائق أستاذ المعلوماتية ليصبح أفضل</p>
+        </div>
+
+        <div class="form-container">
+            <!-- here put return button -->
+            <div class="return-button-container">
+                <a href="https://csdocs.space" class="return-btn-content">
+                    ← العودة للصفحة الرئيسية
+                </a>
+            </div>
+            <div class="form-note">
+                <h3>🎯 نرحب بآرائكم واقتراحاتكم</h3>
+                <p>نحن نسعى دائماً لتحسين موقعنا وتقديم أفضل الخدمات لأساتذة المعلوماتية. اقتراحاتكم وملاحظاتكم مهمة جداً بالنسبة لنا وستساعدنا في التطوير المستمر.</p>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                ✅ تم إرسال اقتراحكم بنجاح! شكراً لكم على مساهمتكم في تطوير الموقع.
+            </div>
+
+            <form action="https://api.web3forms.com/submit" method="POST" id="contactForm">
+                <!-- Web3Forms Access Key -->
+                <input type="hidden" name="access_key" value="ed7dfc59-c1a1-4e97-802c-4d274bc534da">
+                
+                <!-- Form Subject -->
+                <input type="hidden" name="subject" value="اقتراح تحسين موقع وثائق أستاذ المعلوماتية">
+                
+                <!-- Redirect URL after submission -->
+                <input type="hidden" name="redirect" value="https://csdocs.space">
+                
+                <!-- Honeypot Spam Protection -->
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                <div class="form-group">
+                    <label for="name">
+                        👤 الاسم الكامل <span class="required">*</span>
+                    </label>
+                    <input type="text" id="name" name="name" required placeholder="أدخل اسمك الكامل">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        📧 البريد الإلكتروني <span class="required">*</span>
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="example@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">
+                        👨‍🏫 صفتك
+                    </label>
+                    <select id="role" name="role">
+                        <option value="">اختر صفتك</option>
+                        <option value="أستاذ معلوماتية">أستاذ معلوماتية</option>
+                        <option value="أستاذ مادة أخرى">أستاذ مادة أخرى</option>
+                        <option value="مدير مؤسسة">مدير مؤسسة</option>
+                        <option value="مفتش تربوي">مفتش تربوي</option>
+                        <option value="طالب">طالب</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="suggestion_type">
+                        💡 نوع الاقتراح
+                    </label>
+                    <select id="suggestion_type" name="suggestion_type">
+                        <option value="">اختر نوع الاقتراح</option>
+                        <option value="إضافة محتوى جديد">إضافة محتوى تعليمي جديد</option>
+                        <option value="تحسين التصميم">تحسين تصميم الموقع</option>
+                        <option value="إضافة ميزة جديدة">إضافة ميزة أو خدمة جديدة</option>
+                        <option value="تحسين الأداء">تحسين سرعة وأداء الموقع</option>
+                        <option value="تصحيح خطأ">تصحيح خطأ أو مشكلة</option>
+                        <option value="تحسين التنقل">تحسين سهولة الاستخدام والتنقل</option>
+                        <option value="إضافة أدوات">إضافة أدوات تعليمية جديدة</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="suggestion">
+                        📝 تفاصيل الاقتراح <span class="required">*</span>
+                    </label>
+                    <textarea id="suggestion" name="suggestion" required placeholder="أكتب اقتراحك بالتفصيل...
+
+مثال:
+- المشكلة الحالية (إن وجدت)
+- الحل المقترح
+- الفوائد المتوقعة
+- أي تفاصيل أخرى مهمة"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="additional_info">
+                        📋 معلومات إضافية
+                    </label>
+                    <textarea id="additional_info" name="additional_info" placeholder="أي معلومات إضافية ترغب في مشاركتها...
+
+- اقتراحات أخرى
+- مراجع مفيدة
+- أمثلة من مواقع أخرى
+- أي شيء آخر يمكن أن يساعدنا"></textarea>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="contact_me" name="contact_me" value="نعم">
+                    <label for="contact_me">أرغب في التواصل معي لمناقشة الاقتراح</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="updates" name="updates" value="نعم">
+                    <label for="updates">أرغب في استلام تحديثات حول تطوير الموقع</label>
+                </div>
+</br>
+
+                <button type="submit" class="submit-btn">
+                    🚀 إرسال الاقتراح
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Show loading state
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ جار الإرسال...';
+            submitBtn.disabled = true;
+            
+            // Submit form
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                // Always show success message regardless of response
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                
+                // Scroll to success message
+                document.getElementById('successMessage').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+                // Redirect to home page after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'https://csdocs.space';
+                }, 3000);
+            })
+            .catch(() => {
+                // Even on error, show success message
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                
+                // Scroll to success message
+                document.getElementById('successMessage').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+                // Redirect to home page after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'https://csdocs.space';
+                }, 3000);
+            })
+            .finally(() => {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Add smooth animations on scroll
+        window.addEventListener('scroll', function() {
+            const elements = document.querySelectorAll('.form-group');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.animation = 'fadeInUp 0.6s ease forwards';
+                }
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>

@@ -939,7 +939,7 @@ span .emoji {
 }
 
 .collapsible-content {
-    max-height: 3000px;
+    max-height: 4000px;
     overflow: hidden;
     transition: max-height 0.3s ease;
 }
@@ -1260,18 +1260,14 @@ span .emoji {
 .footer-bottom {
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+    text-align: center; /* Add this */
 }
 
 .copyright {
     color: #4b5563;
     font-size: 0.85rem;
+    /* Remove the flex properties */
 }
-
 .footer-bottom-links {
     display: flex;
     gap: 1.5rem;
