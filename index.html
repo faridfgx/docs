@@ -163,8 +163,11 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<!--<link rel="stylesheet" href="transition.css">-->
+
 </head>
-<body>
+<body data-page="main">
     <div class="container">
         <!-- الصفحة الرئيسية -->
         <div id="home-view" class="home-view">
@@ -302,7 +305,7 @@ window.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
 
-  
+  </div>
 <!-- Notice Modal -->
 <div id="noticeModal" class="notice-modal">
     <div class="notice-content">
@@ -395,10 +398,11 @@ window.addEventListener('DOMContentLoaded', function() {
         </ol>
     </div>
 </div>
-<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+
 <div class="container">
 <div id="footer-container"></div>
 </div>
+<button id="backToTop" class="back-to-top">↑</button>
 <!-- Popup -->
 <div id="popup" 
      style="display:none; position:fixed; inset:0; 
@@ -427,8 +431,6 @@ window.addEventListener('DOMContentLoaded', function() {
     </button>
   </div>
 </div>
-
-<script src="modal.js"></script>
 <script src="navigation.js"></script>
 <script src="footer.js"></script>
 <script src="popup.js" defer></script>
@@ -440,5 +442,6 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 </script>
+
 </body>
 </html>

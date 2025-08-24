@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </head>
-<body>
+<body data-page="sub">
 <div class="container">
 
 			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
@@ -190,10 +190,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
             <div class="section">
             <h3 id="firsttri" class="section-title-simple" >1️⃣ الفصل الأول</h3> 
+			
+			<div class="collapsible-section">
+			<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;التقويم التشخيصي </h4>
+			<div class="collapsible-content collapsed">
 			<div class="file-list">
-				<div class="collapsible-section">
-					<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;التقويم التشخيصي </h4>
-					<div class="collapsible-content collapsed">
                     <div class="file-item" data-file-id="AT0001">
 					<div class="file-icon doc">DOC</div>
                         <div class="file-info">
@@ -240,8 +241,56 @@ window.addEventListener('DOMContentLoaded', function() {
                             تحميل
                         </button>
                     </div>
-					</div>
-				</div>
+                    <div class="file-item" data-file-id="AT0052">
+					<div class="file-icon doc">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">تقويم تشخيصي 2023-2024</div>
+                            <div class="file-size">DOCX - 520 KB</div>
+                        </div>
+						<div class="rating-section">
+								<div class="rating-display">
+									<span class="rating-score">0.0</span>
+									<span class="rating-count">(0 تقييم)</span>
+								</div>
+								<div class="rating-stars">
+									<span class="star" data-rating="1">★</span>
+									<span class="star" data-rating="2">★</span>
+									<span class="star" data-rating="3">★</span>
+									<span class="star" data-rating="4">★</span>
+									<span class="star" data-rating="5">★</span>
+								</div>
+							</div>
+                        <button class="download-btn" onclick="window.open('files/assessments/Lx _Sx _ Diagnostic Evaluation _ 2024-2025.docx', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+                    <div class="file-item" data-file-id="AT0053">
+					<div class="file-icon doc">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">تقويم تشخيصي 2022-2023</div>
+                            <div class="file-size">DOCX - 452 KB</div>
+                        </div>
+						<div class="rating-section">
+								<div class="rating-display">
+									<span class="rating-score">0.0</span>
+									<span class="rating-count">(0 تقييم)</span>
+								</div>
+								<div class="rating-stars">
+									<span class="star" data-rating="1">★</span>
+									<span class="star" data-rating="2">★</span>
+									<span class="star" data-rating="3">★</span>
+									<span class="star" data-rating="4">★</span>
+									<span class="star" data-rating="5">★</span>
+								</div>
+							</div>
+                        <button class="download-btn" onclick="window.open('files/assessments/Lx _Sx _ Diagnostic Evaluation _ 2022-2023.docx', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+			</div>
+			</div>
+			</div>
+				
 				<div class="collapsible-section">
 					<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;الفرض </h4>
 					<div class="collapsible-content collapsed">
@@ -533,6 +582,7 @@ window.addEventListener('DOMContentLoaded', function() {
 					</div>
 			    </div>
 			</div>
+			<div class="section">
             <h3 id="secondtri" class="section-title-simple" >2️⃣ الفصل الثاني ج م ع ت</h3>
 			<div class="file-list">
 				<div class="collapsible-section">
@@ -780,6 +830,7 @@ window.addEventListener('DOMContentLoaded', function() {
 					</div>
 			    </div>
 			</div>
+
 			<h3  class="section-title-simple" >2️⃣ الفصل الثاني ج م أ</h3>	
 			<div class="file-list">
 				<div class="collapsible-section">
@@ -956,6 +1007,8 @@ window.addEventListener('DOMContentLoaded', function() {
 					</div>
 			    </div>
 			</div>
+			</div>
+			<div class="section">
             <h3 id="thirdtri" class="section-title-simple" >3️⃣ الفصل الثالث ج م ع ت</h3>
 			<div class="file-list">
 				<div class="collapsible-section">
@@ -1454,7 +1507,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			    </div>
 			</div>
 		    </div>
-<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+<button id="backToTop" class="back-to-top">↑</button>
 <div class="container">
 <div id="footer-container"></div>
 </div>
@@ -1492,5 +1545,6 @@ window.addEventListener('DOMContentLoaded', function() {
 <script src="footer.js"></script>
 <script src="main.js" defer></script>
 <script src="popup.js" defer></script>
+
 </body>
 </html>

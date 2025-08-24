@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </head>
-<body>
+<body data-page="sub">
 <div class="container">
 
 			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
@@ -177,7 +177,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 <p>الكتب المقررة وملحقاتها</p>
             </div>
             <div class="section">
-                <h3>الكتب المدرسية</h3>
+                <h3 class="section-title-simple">الكتاب المدرسي</h3>
                 <div class="file-list">
                     <div class="file-item"  data-file-id="TB0001">
 					<div class="file-icon pdf">PDF</div>
@@ -193,12 +193,13 @@ window.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+
 
 <div class="container">
 <div id="footer-container"></div>
 </div>
 </div>
+<button id="backToTop" class="back-to-top">↑</button>
 <!-- Popup -->
 <div id="popup" 
      style="display:none; position:fixed; inset:0; 

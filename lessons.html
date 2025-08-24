@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </head>
-<body>
+<body data-page="sub">
 <div class="container">
 			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
 
@@ -199,10 +199,27 @@ window.addEventListener('DOMContentLoaded', function() {
 								تحميل
 							</button>
 					</div>
+					
 				</div>
                 
 				<h3 id="computer-envc" class="section-title-simple" >🖥️ دروس  تقديمية بيئة التعامل مع الحاسوب</h3>
-				    <div class="file-list">
+				    <div class="collapsible-section">
+					<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;كل دروس المجال الأول في ملف واحد </h4>
+					<div class="collapsible-content collapsed">
+						<div class="file-list">
+							<div class="file-item" data-file-id="LS0020">
+							<div class="file-icon doc">DOC</div>
+								<div class="file-info">
+									<div class="file-name">دروس المجال التعلمي الأول </div>
+									<div class="file-size">DOCX - 320 KB</div>
+								</div>
+									<button class="download-btn" onclick="window.open('files/lessons/دروس المجال التعلمي الأول  .docx', '_blank')">
+										تحميل
+									</button>
+							</div>
+						</div>
+					</div>
+					</div>
 				    <div class="collapsible-section">
 					<h4 class="collapsed" onclick="toggleSection(this)" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;تقنية المعلومات </h4>
 					<div class="collapsible-content collapsed">
@@ -426,10 +443,14 @@ window.addEventListener('DOMContentLoaded', function() {
 						</div>
 					</div>
 					</div>
-				    </div>
+				    
                 
-				<h3 id="flowchartsc" class="section-title-simple">🔁 دروس المخططات الإنسيابية والخوارزميات</h3>
+				<h3 id="flowchartsc" class="section-title-simple">🔁 دروس المخططات الإنسيابية والخوارزميات</h3> <!-- LS1009--> 
 				<div class="file-list">
+					<div class="collapsible-section">
+					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; تمارين، أنشطة و تطبيقات المخطط الانسيابي و الخوارزميات</h4>
+					<div class="collapsible-content collapsed">
+					<div class="file-list">
 							<div class="file-item"  data-file-id="LS1003">
 							<div class="file-icon doc">DOC</div>
 								<div class="file-info">
@@ -440,35 +461,23 @@ window.addEventListener('DOMContentLoaded', function() {
 										تحميل
 									</button>
 							</div>
-							
-					<div class="collapsible-section">
-					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;المخطط الإنسيابي وانشاء المخطط الانسيابي</h4>
-					<div class="collapsible-content collapsed">
-						<div class="file-list">
-							<div class="file-item" data-file-id="LS1001">
+							<div class="file-item"  data-file-id="LS1006">
 							<div class="file-icon doc">DOC</div>
 								<div class="file-info">
-									<div class="file-name">المخططات الإنسيابية الأستاذ: زراولية</div>
-									<div class="file-size">DOCX - 448 KB</div>
+									<div class="file-name">تمارين مختلفة حول المخططات الانسيابية</div>
+									<div class="file-size">DOCX - 96 KB</div>
 								</div>
-									<button class="download-btn" onclick="window.open('files/lessons/02-درس المخططات الانسيابية.docx', '_blank')">
+									<button class="download-btn" onclick="window.open('files/lessons/تمارين مختلفة حول المخططات الانسيابية.docx', '_blank')">
 										تحميل
 									</button>
 							</div>
-						</div>
-					</div>
-					</div>
-					<div class="collapsible-section">		
-					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدخل الى الخوازمية و التعليمات الأساسية</h4>
-					<div class="collapsible-content collapsed">
-						<div class="file-list">
-							<div class="file-item"  data-file-id="LS1002">
+							<div class="file-item"  data-file-id="LS1007">
 							<div class="file-icon doc">DOC</div>
 								<div class="file-info">
-									<div class="file-name">الخوارزميات الأستاذ: زراولية</div>
-									<div class="file-size">DOCX - 596 KB</div>
+									<div class="file-name">واجب منزلي حول المخططات الانسيابية</div>
+									<div class="file-size">DOCX - 44 KB</div>
 								</div>
-									<button class="download-btn" onclick="window.open('files/lessons/01-درس الخورزميات.docx', '_blank')">
+									<button class="download-btn" onclick="window.open('files/lessons/واجب منزلي حول المخططات.docx', '_blank')">
 										تحميل
 									</button>
 							</div>
@@ -492,6 +501,54 @@ window.addEventListener('DOMContentLoaded', function() {
 										تحميل
 									</button>
 							</div>
+							<div class="file-item"  data-file-id="LS1008">
+							<div class="file-icon pdf">PDF</div>
+								<div class="file-info">
+									<div class="file-name">سلسلة تمارين الخوارزميات 02</div>
+									<div class="file-size">DOCX - 372 KB</div>
+								</div>
+									<button class="download-btn" onclick="window.open('files/lessons/exercices_ semilaire.pdf', '_blank')">
+										تحميل
+									</button>
+							</div>
+					</div>
+					</div>
+					</div>
+
+							
+					<div class="collapsible-section">
+					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;المخطط الإنسيابي وانشاء المخطط الانسيابي</h4>
+					<div class="collapsible-content collapsed">
+						<div class="file-list">
+							<div class="file-item" data-file-id="LS1001">
+							<div class="file-icon doc">DOC</div>
+								<div class="file-info">
+									<div class="file-name">المخططات الإنسيابية الأستاذ: زراولية</div>
+									<div class="file-size">DOCX - 448 KB</div>
+								</div>
+									<button class="download-btn" onclick="window.open('files/lessons/02-درس المخططات الانسيابية.docx', '_blank')">
+										تحميل
+									</button>
+							</div>
+							
+						</div>
+					</div>
+					</div>
+					<div class="collapsible-section">		
+					<h4 class="collapsed" onclick="toggleSection(this)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;مدخل الى الخوازمية و التعليمات الأساسية</h4>
+					<div class="collapsible-content collapsed">
+						<div class="file-list">
+							<div class="file-item"  data-file-id="LS1002">
+							<div class="file-icon doc">DOC</div>
+								<div class="file-info">
+									<div class="file-name">الخوارزميات الأستاذ: زراولية</div>
+									<div class="file-size">DOCX - 596 KB</div>
+								</div>
+									<button class="download-btn" onclick="window.open('files/lessons/01-درس الخورزميات.docx', '_blank')">
+										تحميل
+									</button>
+							</div>
+
 						</div>
 					</div>
 					</div>
@@ -565,6 +622,18 @@ window.addEventListener('DOMContentLoaded', function() {
 									<div class="file-size">DOCX - 1.38 MB</div>
 								</div>
 									<button class="download-btn" onclick="window.open('files/lessons/03- htmlدرس لغة.docx', '_blank')">
+										تحميل
+									</button>
+							</div>
+						</div>
+						<div class="file-list">
+							<div class="file-item"  data-file-id="LS2005">
+							<div class="file-icon doc">DOC</div>
+								<div class="file-info">
+									<div class="file-name">ملخص وسوم درس انشاء صفحة ويب</div>
+									<div class="file-size">DOCX - 216 KB</div>
+								</div>
+									<button class="download-btn" onclick="window.open('files/lessons/ملخص وسوم html.docx', '_blank')">
 										تحميل
 									</button>
 							</div>
@@ -717,8 +786,7 @@ window.addEventListener('DOMContentLoaded', function() {
         
 
 
-<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
-
+<button id="backToTop" class="back-to-top">↑</button>
 <div class="container">
 <div id="footer-container"></div>
 </div>

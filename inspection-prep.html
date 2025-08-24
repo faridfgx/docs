@@ -169,7 +169,7 @@ window.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </head>
-<body>
+<body data-page="sub">
 <div class="container">
         
 			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
@@ -181,7 +181,7 @@ window.addEventListener('DOMContentLoaded', function() {
 				</div>	
 			</div>
 			<div class="section">
-				<h3>ملفات التحضير للتثبيت والزيارات</h3>
+				<h3 class="section-title-simple">ملفات التحضير للتثبيت والزيارات</h3>
 				<div class="file-list">
 					<div class="file-item" data-file-id="INS001">
 						<div class="file-icon pdf">PDF</div>
@@ -203,9 +203,19 @@ window.addEventListener('DOMContentLoaded', function() {
                                 تحميل
                             </button>
                     </div>
+                    <div class="file-item" data-file-id="INS003">
+					<div class="file-icon docx">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">وثائق وسير يوم التثبيت</div>
+                            <div class="file-size">DOCX - 68 KB</div>
+                        </div>
+							<button class="download-btn" onclick="window.open('files/وثائق وسير يوم التثبيت.docx', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
 				</div>
 			</div>
-<button class="back-to-top" id="backToTop" title="العودة للأعلى"></button>
+<button id="backToTop" class="back-to-top">↑</button>
 
 <div class="container">
 <div id="footer-container"></div>
