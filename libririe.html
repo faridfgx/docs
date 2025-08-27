@@ -145,7 +145,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-
+<!--
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     // Check if user is returning from welcome page
@@ -166,14 +166,14 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
+-->
 </head>
 <body data-page="sub">
 <div class="container">
 
 			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
             <div class="header">
-                <h1>مكتبة الأستاذ 📚</h1>
+                <h1> 📚 مكتبة الأستاذ</h1>
                 <p>مجموعة كتب ومراجع مختارة</p>
             </div>
             <div class="section">
@@ -245,7 +245,16 @@ window.addEventListener('DOMContentLoaded', function() {
                             تحميل
                         </button>
                     </div>
-
+                    <div class="file-item"  data-file-id="BKS007">
+					<div class="file-icon pdf">PDF</div>
+                        <div class="file-info">
+                            <div class="file-name">تلخيص شامل وموجز لعلوم التربية بصفة عامة</div>
+                            <div class="file-size">PDF - 284 KB</div>
+                        </div>
+						<button class="download-btn" onclick="window.open('files/books/تلخيص شامل وموجز لعلوم التربية بصفة عامة.pdf', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
                     <div class="file-item"  data-file-id="BKS008">
 					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
@@ -302,16 +311,6 @@ window.addEventListener('DOMContentLoaded', function() {
 				</div>	
                 <h3 class="section-title-simple">علوم التربية وعلم النفس</h3>
                 <div class="file-list">
-                    <div class="file-item"  data-file-id="BKS007">
-					<div class="file-icon pdf">PDF</div>
-                        <div class="file-info">
-                            <div class="file-name">تلخيص شامل وموجز لعلوم التربية بصفة عامة</div>
-                            <div class="file-size">PDF - 284 KB</div>
-                        </div>
-						<button class="download-btn" onclick="window.open('files/books/تلخيص شامل وموجز لعلوم التربية بصفة عامة.pdf', '_blank')">
-                            تحميل
-                        </button>
-                    </div>
                     <div class="file-item"  data-file-id="BKS013">
 					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
@@ -400,5 +399,4 @@ window.addEventListener('DOMContentLoaded', function() {
 <script src="main.js" defer></script>
 <script src="popup.js" defer></script>
 </body>
-
 </html>
