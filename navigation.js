@@ -82,67 +82,196 @@ function initBackToTopButton() {
 }
 
 // -------------------------
-// Initialize everything
+// Enhanced Mobile Navigation
 // -------------------------
-document.addEventListener('DOMContentLoaded', function() {
-    initCardAnimations();
-    initBackToTopButton();
-});
+let isInteracting = false;
+let touchStartY = 0;
+let touchStartX = 0;
+let dropdownScrollTop = 0;
+let interactionTimeout;
 
 function toggleDropdown() {
     const dropdown = document.getElementById('dropdownMenu');
-    dropdown.classList.toggle('show');
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const navMenu = document.querySelector('.nav-menu');
-    const dropdown = document.getElementById('dropdownMenu');
+    const isOpen = dropdown.classList.contains('show');
     
-    if (!navMenu.contains(event.target)) {
+    if (isOpen) {
         dropdown.classList.remove('show');
-    }
-});
-
-// Prevent dropdown from closing when clicking inside it on mobile
-document.getElementById('dropdownMenu').addEventListener('click', function(event) {
-    event.stopPropagation();
-});
-
-// Handle touch events for better mobile interaction
-let touchStartY = 0;
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.touches[0].clientY;
-}, { passive: true });
-
-// Close dropdown on swipe up
-document.addEventListener('touchend', function(e) {
-    const dropdown = document.getElementById('dropdownMenu');
-    if (dropdown.classList.contains('show')) {
-        const touchEndY = e.changedTouches[0].clientY;
-        const swipeDistance = touchStartY - touchEndY;
-        
-        // If swipe up more than 50px, close dropdown
-        if (swipeDistance > 50) {
-            dropdown.classList.remove('show');
+        document.body.style.overflow = '';
+    } else {
+        dropdown.classList.add('show');
+        // Prevent body scroll when dropdown is open on mobile
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = 'hidden';
         }
     }
-}, { passive: true });
+}
 
-// Better keyboard support
-document.addEventListener('keydown', function(event) {
-    const dropdown = document.getElementById('dropdownMenu');
-    
-    if (event.key === 'Escape' && dropdown.classList.contains('show')) {
-        dropdown.classList.remove('show');
-        document.querySelector('.nav-toggle').focus();
-    }
-});
+// Initialize dropdown functionality
+function initDropdownFunctionality() {
+    // Get the dropdown element
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    if (!dropdownMenu) return; // Exit if dropdown doesn't exist
 
-// Focus management for accessibility
-document.querySelector('.nav-toggle').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleDropdown();
+    // Track interaction state
+    function setInteracting(value) {
+        isInteracting = value;
+        clearTimeout(interactionTimeout);
+        if (value) {
+            interactionTimeout = setTimeout(() => {
+                isInteracting = false;
+            }, 300);
+        }
     }
+
+    // Handle touch start
+    dropdownMenu.addEventListener('touchstart', function(e) {
+        touchStartY = e.touches[0].clientY;
+        touchStartX = e.touches[0].clientX;
+        dropdownScrollTop = this.scrollTop;
+        setInteracting(true);
+        e.stopPropagation();
+    }, { passive: true });
+
+    // Handle touch move (scrolling)
+    dropdownMenu.addEventListener('touchmove', function(e) {
+        setInteracting(true);
+        
+        const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+        const deltaY = touchStartY - touchY;
+        const deltaX = Math.abs(touchStartX - touchX);
+        
+        // If horizontal swipe is detected, prevent vertical scroll
+        if (deltaX > Math.abs(deltaY)) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Prevent closing when scrolling
+        const isAtTop = this.scrollTop <= 0;
+        const isAtBottom = this.scrollTop + this.clientHeight >= this.scrollHeight - 1;
+        
+        // Prevent pull-to-refresh or bounce effect
+        if ((isAtTop && deltaY < 0) || (isAtBottom && deltaY > 0)) {
+            e.preventDefault();
+        }
+        
+        e.stopPropagation();
+    }, { passive: false });
+
+    // Handle touch end
+    dropdownMenu.addEventListener('touchend', function(e) {
+        e.stopPropagation();
+        // Keep interaction state for a bit longer
+        setTimeout(() => {
+            setInteracting(false);
+        }, 100);
+    }, { passive: true });
+
+    // Handle mouse events for desktop
+    dropdownMenu.addEventListener('mousedown', function(e) {
+        setInteracting(true);
+        e.stopPropagation();
+    });
+
+    dropdownMenu.addEventListener('mouseup', function(e) {
+        e.stopPropagation();
+        setTimeout(() => {
+            setInteracting(false);
+        }, 100);
+    });
+
+    // Handle scroll events
+    dropdownMenu.addEventListener('scroll', function(e) {
+        setInteracting(true);
+        e.stopPropagation();
+    }, { passive: true });
+
+    // Prevent clicks inside dropdown from closing it
+    dropdownMenu.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}
+
+// Initialize dropdown items functionality
+function initDropdownItems() {
+    // Prevent dropdown from closing when interacting with links
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    if (dropdownItems.length > 0) {
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Allow navigation but close dropdown
+                const dropdown = document.getElementById('dropdownMenu');
+                if (dropdown) {
+                    dropdown.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    }
+}
+
+// -------------------------
+// Global event listeners
+// -------------------------
+function initGlobalEventListeners() {
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (isInteracting) return;
+        
+        const navMenu = document.querySelector('.nav-menu');
+        const dropdown = document.getElementById('dropdownMenu');
+        
+        if (navMenu && dropdown && !navMenu.contains(e.target) && dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Handle touch outside on mobile
+    document.addEventListener('touchstart', function(e) {
+        if (isInteracting) return;
+        
+        const navMenu = document.querySelector('.nav-menu');
+        const dropdown = document.getElementById('dropdownMenu');
+        
+        if (navMenu && dropdown && !navMenu.contains(e.target) && !dropdown.contains(e.target) && dropdown.classList.contains('show')) {
+            // Add a small delay to ensure it's not accidental
+            setTimeout(() => {
+                if (!isInteracting) {
+                    dropdown.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }, 50);
+        }
+    }, { passive: true });
+
+    // Keyboard support
+    document.addEventListener('keydown', function(e) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown && e.key === 'Escape' && dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (dropdown && dropdown.classList.contains('show') && window.innerWidth > 768) {
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// -------------------------
+// Initialization
+// -------------------------
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all functionality when DOM is ready
+    initCardAnimations();
+    initBackToTopButton();
+    initDropdownFunctionality();
+    initDropdownItems();
+    initGlobalEventListeners();
 });
