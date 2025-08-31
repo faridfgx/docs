@@ -145,28 +145,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-<!--
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    // Check if user is returning from welcome page
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromWelcome = urlParams.get('from') === 'welcome';
-    
-    if (fromWelcome) {
-        // Mark as seen if coming from welcome page
-        localStorage.setItem('hasSeenWelcomeModal', 'true');
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-        // Check if user has seen welcome modal
-        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (!hasSeenModal) { //(true){ //
-            window.location.href = 'welcome.html';
-        }
-    }
-});
-</script>
--->
+
 </head>
 <body data-page="sub">
 <div class="container">
@@ -330,8 +309,68 @@ window.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 <button id="backToTop" class="back-to-top">↑</button>
-<div class="container">
-<div id="footer-container"></div>
+ <div class="container">
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Brand Section -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">CS</div>
+                        <div class="logo-text">CSdocs.space</div>
+                    </div>
+                    <p class="footer-description">
+                        منصة تعليمية متخصصة توفر مصادر شاملة لأساتذة المعلوماتية.
+                    </p>
+                    <!--
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="فيسبوك" onclick="openPopup('facebook')">📘</a>
+                        <a href="#" class="social-link" title="يوتيوب" onclick="openPopup('youtube')">📺</a>
+                        <a href="#" class="social-link" title="تيليجرام" onclick="openPopup('telegram')">📱</a>
+						
+                    </div>
+					-->
+                </div>
+                <div class="footer-section">
+                    <h3>روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html" >الصفحة الرئيسية</a></li>
+                        <li><a href="notes.html" >المذكرات</a></li>
+                        <li><a href="presentations.html" >العروض التقديمية</a></li>
+                        <li><a href="assessment-templates.html" >الاختبارات</a></li>
+                        <li><a href="programs.html" >البرامج</a></li>
+                    </ul>
+                </div>
+                <!-- Support -->
+                <div class="footer-section">
+                    <h3>الدعم والمساعدة</h3>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick="openPopup('contact')">اتصل بنا</a></li>
+                        <li><a href="javascript:void(0)" onclick="openPopup('faq')">الأسئلة الشائعة</a></li>
+                        <li><p>faridmezane@gmail.com</p></li>
+                    </ul>
+                    <br>
+                    
+                        <a href="contact.html" class="suggestion-btn">لديك اقتراح لتحسين الموقع</a>
+                    
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2025 CSdocs.space - جميع الحقوق محفوظة
+
+                
+                <ul class="footer-bottom-links">
+                    <li><a href="javascript:void(0)" onclick="openPopup('privacy')">سياسة الخصوصية</a></li>
+                    <li><a href="javascript:void(0)" onclick="openPopup('terms')">شروط الاستخدام</a></li>
+                    <li><a href="javascript:void(0)" onclick="openPopup('sitemap')">خريطة الموقع</a></li>
+                </ul>
+				</div>
+            </div>
+        </div>
+    </footer>
+	</div>
 </div>
 </div>
 <!-- Popup -->
@@ -361,6 +400,13 @@ window.addEventListener('DOMContentLoaded', function() {
       تم الاطلاع
     </button>
   </div>
+</div>
+<!-- Footer popup overlay (for footer links) -->
+<div class="popup-overlay" id="popup-overlay">
+    <div class="popup" id="popup-content">
+        <button class="close-popup" onclick="closeFooterPopup()">&times;</button>
+        <div id="popup-body"></div>
+    </div>
 </div>
 <script src="modal.js"></script>
 <script src="navigation.js"></script>
