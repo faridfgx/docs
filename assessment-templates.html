@@ -170,8 +170,96 @@ window.addEventListener('DOMContentLoaded', function() {
 </head>
 <body data-page="sub">
 <div class="container">
-
-			<a class="back-btn" href="index.html">← العودة للرئيسية</a>
+<nav class="navbar">
+    <div class="nav-content">
+        <a href="index.html" class="nav-brand">
+            🏠 الصفحة الرئيسية
+        </a>
+        <div class="nav-menu">
+            <button class="nav-toggle" onclick="toggleDropdown()">
+                📋 جميع الصفحات ▼
+            </button>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="notes.html" class="dropdown-item">
+                    <span class="icon">📋</span>
+                    المذكرات
+                </a>
+                <a href="lessons.html" class="dropdown-item">
+                    <span class="icon">✍🏻</span>
+                    الدروس والتطبيقات
+                </a>
+                <a href="presentations.html" class="dropdown-item">
+                    <span class="icon">🎯</span>
+                    العروض التقديمية
+                </a>
+                <a href="assessment-templates.html" class="dropdown-item">
+                    <span class="icon">📝</span>
+                    نماذج لفروض و اختبارات
+                </a>
+                <a href="annual-progression.html" class="dropdown-item">
+                    <span class="icon">📅</span>
+                    التدرج السنوي
+                </a>
+                <a href="textbook.html" class="dropdown-item">
+                    <span class="icon">📖</span>
+                    الكتاب المدرسي
+                </a>
+                <a href="annual-distribution.html" class="dropdown-item">
+                    <span class="icon">🗓️</span>
+                    التوزيع السنوي
+                </a>
+                <a href="grade-book.html" class="dropdown-item">
+                    <span class="icon">📊</span>
+                    دفتر التنقيط
+                </a>
+                <a href="training-book.html" class="dropdown-item">
+                    <span class="icon">🎓</span>
+                    دفتر التكوين و ملخصات التكوين
+                </a>
+                <a href="inspection-prep.html" class="dropdown-item">
+                    <span class="icon">✅</span>
+                    امتحان التثبيت والزيارات التفتيشية
+                </a>
+                <a href="daily-journal.html" class="dropdown-item">
+                    <span class="icon">📒</span>
+                    الدفتر اليومي
+                </a>
+                <a href="lab-tracking.html" class="dropdown-item">
+                    <span class="icon">🔬</span>
+                    دفتر متابعة المخبر
+                </a>
+                <a href="programs.html" class="dropdown-item">
+                    <span class="icon">💻</span>
+                    البرامج
+                </a>
+                <a href="lab-rules.html" class="dropdown-item">
+                    <span class="icon">⚖️</span>
+                    القانون الداخلي للمخبر
+                </a>
+                <a href="lab-guide.html" class="dropdown-item">
+                    <span class="icon">🖥️</span>
+                    دليل تسيير مخبر المعلوماتية
+                </a>
+                <a href="seating-plan.html" class="dropdown-item">
+                    <span class="icon">🪑</span>
+                    مخطط الجلوس
+                </a>
+                <a href="other-docs.html" class="dropdown-item">
+                    <span class="icon">📎</span>
+                    وثائق أخرى
+                </a>
+                <a href="libririe.html" class="dropdown-item">
+                    <span class="icon">📚</span>
+                    مكتبة الأستاذ
+                </a>
+                <a href="useful-websites.html" class="dropdown-item">
+                    <span class="icon">🌐</span>
+                    مواقع مفيدة
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
     <div class="header">
         <h1>📝 نماذج فروض واختبارات</h1>
         <p>فروض واختبارات لكل الفصول والشعب في مادة المعلوماتية للتعليم الثانوي</p>
