@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Analytics Dashboard</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .lock-form {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .lock-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        
+        .lock-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .lock-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .lock-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .lock-btn:hover {
+            background: #2563eb;
+        }
+        
+        .lock-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lock-error.show {
+            opacity: 1;
+        }
+        
+        .main-content {
+            display: none;
+        }
+        
+        .main-content.unlocked {
+            display: block;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: #1e293b;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #334155;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .status {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }
+        
+        .status.success { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
+        .status.error { background: #7f1d1d; color: #fca5a5; border: 1px solid #dc2626; }
+        .status.loading { background: #451a03; color: #fed7aa; border: 1px solid #ea580c; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-title {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .stat-change.positive { color: #6ee7b7; }
+        .stat-change.negative { color: #fca5a5; }
+        .stat-change.neutral { color: #94a3b8; }
+        
+        .chart-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-card, .list-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #f1f5f9;
+        }
+        
+        .visits-chart {
+            height: 200px;
+            background: #0f172a;
+            border-radius: 4px;
+            padding: 1rem;
+            display: flex;
+            align-items: end;
+            gap: 2px;
+        }
+        
+        .chart-bar {
+            background: #3b82f6;
+            border-radius: 2px 2px 0 0;
+            min-height: 2px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-bar:hover {
+            background: #60a5fa;
+        }
+        
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-label {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+        }
+        
+        .list-value {
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        
+        .recent-visits {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .visit-entry {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #334155;
+            font-size: 0.875rem;
+        }
+        
+        .visit-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .visit-page {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+        
+        .visit-referrer {
+            color: #94a3b8;
+        }
+        
+        .visit-time {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        
+        .refresh-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-left: auto;
+            display: block;
+            margin-top: 1rem;
+        }
+        
+        .refresh-btn:hover {
+            background: #2563eb;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .chart-section { grid-template-columns: 1fr; }
+            .visit-entry { grid-template-columns: 1fr; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div id="lockScreen" class="lock-screen">
+        <div class="lock-form">
+            <div class="lock-title">🔐 Analytics Access</div>
+            <p style="color: #94a3b8; margin-bottom: 1rem;">Enter your access key to view analytics</p>
+            <input type="password" id="keyInput" class="lock-input" placeholder="Enter access key" autocomplete="off">
+            <button onclick="checkKey()" class="lock-btn">Unlock Dashboard</button>
+            <div id="lockError" class="lock-error">Invalid access key. Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+        <div class="header">
+            <h1>📊 Website Analytics</h1>
+            <button onclick="lockDashboard()" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; float: right; margin-top: 0.25rem;">🔒 Lock</button>
+        </div>
+        
+        <div class="container">
+            <div id="status" class="status loading">Loading analytics data...</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Total Visits</div>
+                <div class="stat-number" id="totalVisits">--</div>
+                <div class="stat-change neutral" id="totalChange">--</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Today's Visits</div>
+                <div class="stat-number" id="todayVisits">--</div>
+                <div class="stat-change neutral" id="todayChange">--</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">This Week</div>
+                <div class="stat-number" id="weekVisits">--</div>
+                <div class="stat-change neutral" id="weekChange">--</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Unique Visitors</div>
+                <div class="stat-number" id="uniqueVisitors">--</div>
+                <div class="stat-change neutral" id="uniqueChange">--</div>
+            </div>
+        </div>
+        
+        <div class="chart-section">
+            <div class="chart-card">
+                <div class="card-title">Daily Visits (Last 14 Days)</div>
+                <div class="visits-chart" id="visitsChart"></div>
+            </div>
+            
+            <div class="list-card">
+                <div class="card-title">Top Pages</div>
+                <div id="topPages">Loading...</div>
+            </div>
+        </div>
+        
+        <div class="recent-visits">
+            <div class="card-title">Recent Activity</div>
+            <div id="recentVisits">Loading...</div>
+            <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
+        </div>
+    </div>
+
+    <script>
+        // Security configuration
+        const ACCESS_KEY = 'ih8C9TbLP2Km6G4Yfar4UShak2AM7jsxHJAaDToU';
+        const SESSION_KEY = 'analytics_unlocked';
+        
+        // Check if already unlocked
+        function isUnlocked() {
+            const session = sessionStorage.getItem(SESSION_KEY);
+            const unlocked = localStorage.getItem(SESSION_KEY);
+            return session === ACCESS_KEY || unlocked === ACCESS_KEY;
+        }
+        
+        // Lock/unlock functions
+        function checkKey() {
+            const inputKey = document.getElementById('keyInput').value;
+            const errorEl = document.getElementById('lockError');
+            
+            if (inputKey === ACCESS_KEY) {
+                sessionStorage.setItem(SESSION_KEY, ACCESS_KEY);
+                localStorage.setItem(SESSION_KEY, ACCESS_KEY);
+                unlockDashboard();
+            } else {
+                errorEl.classList.add('show');
+                document.getElementById('keyInput').value = '';
+                setTimeout(() => errorEl.classList.remove('show'), 3000);
+            }
+        }
+        
+        function unlockDashboard() {
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('mainContent').classList.add('unlocked');
+            initDashboard();
+        }
+        
+        function lockDashboard() {
+            sessionStorage.removeItem(SESSION_KEY);
+            localStorage.removeItem(SESSION_KEY);
+            document.getElementById('lockScreen').style.display = 'flex';
+            document.getElementById('mainContent').classList.remove('unlocked');
+            document.getElementById('keyInput').value = '';
+        }
+        
+        // Handle Enter key in password field
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.getElementById('keyInput') === document.activeElement) {
+                checkKey();
+            }
+        });
+        
+        // Configuration - Your Supabase credentials
+        const SUPABASE_URL = 'https://ksuolzzhpssazyfwbkeg.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
+        
+        let supabase;
+        
+        // Initialize Supabase with simpler approach
+        function initializeSupabase() {
+            return new Promise((resolve, reject) => {
+                const maxAttempts = 30; // Increased attempts
+                let attempts = 0;
+                
+                const tryInit = () => {
+                    attempts++;
+                    
+                    // Check multiple possible Supabase global locations
+                    const supabaseLib = window.supabase || window.Supabase || 
+                                       (window.supabaseJs && window.supabaseJs.createClient ? window.supabaseJs : null);
+                    
+                    if (supabaseLib && typeof supabaseLib.createClient === 'function') {
+                        try {
+                            supabase = supabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                            console.log('Supabase initialized successfully');
+                            resolve(supabase);
+                            return;
+                        } catch (error) {
+                            console.error('Failed to create Supabase client:', error);
+                        }
+                    }
+                    
+                    if (attempts < maxAttempts) {
+                        console.log(`Waiting for Supabase to load... attempt ${attempts}`);
+                        setTimeout(tryInit, 200); // Shorter interval
+                    } else {
+                        const error = new Error('Supabase library failed to load. Try refreshing the page or check your internet connection.');
+                        console.error(error);
+                        reject(error);
+                    }
+                };
+                
+                // Start immediately, then with delay
+                tryInit();
+            });
+        }
+        
+        // Update status
+        function updateStatus(type, message) {
+            const statusEl = document.getElementById('status');
+            statusEl.className = `status ${type}`;
+            statusEl.textContent = message;
+        }
+        
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+        
+        // Get date range
+        function getDateRange(days) {
+            const end = new Date();
+            const start = new Date();
+            start.setDate(start.getDate() - days);
+            return {
+                start: start.toISOString(),
+                end: end.toISOString()
+            };
+        }
+        
+        // Load dashboard data
+        async function loadDashboard() {
+            if (!supabase) return;
+            
+            updateStatus('loading', 'Refreshing analytics...');
+            
+            try {
+                await Promise.all([
+                    loadStats(),
+                    loadDailyChart(),
+                    loadTopPages(),
+                    loadRecentVisits()
+                ]);
+                
+                updateStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                updateStatus('error', `Error: ${error.message}`);
+            }
+        }
+        
+        // Load main statistics
+        async function loadStats() {
+            const today = new Date().toISOString().split('T')[0];
+            const weekAgo = getDateRange(7).start;
+            const twoWeeksAgo = getDateRange(14).start;
+            
+            // Total visits
+            const { data: totalData } = await supabase
+                .from('visitors')
+                .select('*', { count: 'exact' });
+            
+            // Today's visits
+            const { data: todayData } = await supabase
+                .from('visitors')
+                .select('*', { count: 'exact' })
+                .gte('timestamp', today);
+            
+            // This week's visits
+            const { data: weekData } = await supabase
+                .from('visitors')
+                .select('*', { count: 'exact' })
+                .gte('timestamp', weekAgo);
+            
+            // Last week's visits (for comparison)
+            const { data: lastWeekData } = await supabase
+                .from('visitors')
+                .select('*', { count: 'exact' })
+                .gte('timestamp', twoWeeksAgo)
+                .lt('timestamp', weekAgo);
+            
+            // Unique visitors
+            const { data: uniqueData } = await supabase
+                .from('visitors')
+                .select('visitor_id');
+            
+            const uniqueVisitors = new Set(uniqueData?.map(v => v.visitor_id) || []).size;
+            
+            // Update UI
+            document.getElementById('totalVisits').textContent = formatNumber(totalData?.length || 0);
+            document.getElementById('todayVisits').textContent = formatNumber(todayData?.length || 0);
+            document.getElementById('weekVisits').textContent = formatNumber(weekData?.length || 0);
+            document.getElementById('uniqueVisitors').textContent = formatNumber(uniqueVisitors);
+            
+            // Calculate changes (simplified)
+            const weekChange = (weekData?.length || 0) - (lastWeekData?.length || 0);
+            const weekChangeEl = document.getElementById('weekChange');
+            if (weekChange > 0) {
+                weekChangeEl.textContent = `+${weekChange} from last week`;
+                weekChangeEl.className = 'stat-change positive';
+            } else if (weekChange < 0) {
+                weekChangeEl.textContent = `${weekChange} from last week`;
+                weekChangeEl.className = 'stat-change negative';
+            } else {
+                weekChangeEl.textContent = 'No change from last week';
+                weekChangeEl.className = 'stat-change neutral';
+            }
+        }
+        
+        // Load daily visits chart
+        async function loadDailyChart() {
+            const { start } = getDateRange(14);
+            
+            const { data } = await supabase
+                .from('visitors')
+                .select('timestamp')
+                .gte('timestamp', start)
+                .order('timestamp');
+            
+            // Group by day
+            const dailyCounts = {};
+            for (let i = 13; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateKey = date.toISOString().split('T')[0];
+                dailyCounts[dateKey] = 0;
+            }
+            
+            data?.forEach(visit => {
+                const date = new Date(visit.timestamp).toISOString().split('T')[0];
+                if (dailyCounts.hasOwnProperty(date)) {
+                    dailyCounts[date]++;
+                }
+            });
+            
+            // Create chart bars
+            const chartEl = document.getElementById('visitsChart');
+            const maxCount = Math.max(...Object.values(dailyCounts), 1);
+            
+            chartEl.innerHTML = Object.entries(dailyCounts)
+                .map(([date, count]) => {
+                    const height = (count / maxCount) * 100;
+                    return `<div class="chart-bar" style="height: ${height}%" title="${date}: ${count} visits"></div>`;
+                })
+                .join('');
+        }
+        
+        // Load top pages
+        async function loadTopPages() {
+            const { start } = getDateRange(7);
+            
+            const { data } = await supabase
+                .from('visitors')
+                .select('page_url')
+                .gte('timestamp', start);
+            
+            // Count page visits
+            const pageCounts = {};
+            data?.forEach(visit => {
+                try {
+                    const path = new URL(visit.page_url).pathname;
+                    pageCounts[path] = (pageCounts[path] || 0) + 1;
+                } catch (e) {
+                    pageCounts[visit.page_url] = (pageCounts[visit.page_url] || 0) + 1;
+                }
+            });
+            
+            // Sort and get top 5
+            const topPages = Object.entries(pageCounts)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5);
+            
+            const topPagesEl = document.getElementById('topPages');
+            if (topPages.length > 0) {
+                topPagesEl.innerHTML = topPages
+                    .map(([page, count]) => `
+                        <div class="list-item">
+                            <div class="list-label">${page}</div>
+                            <div class="list-value">${count}</div>
+                        </div>
+                    `).join('');
+            } else {
+                topPagesEl.innerHTML = '<div class="list-item"><div class="list-label">No data available</div></div>';
+            }
+        }
+        
+        // Load recent visits
+        async function loadRecentVisits() {
+            const { data } = await supabase
+                .from('visitors')
+                .select('page_url, timestamp, referrer')
+                .order('timestamp', { ascending: false })
+                .limit(10);
+            
+            const recentVisitsEl = document.getElementById('recentVisits');
+            if (data && data.length > 0) {
+                recentVisitsEl.innerHTML = data.map(visit => {
+                    try {
+                        const path = new URL(visit.page_url).pathname;
+                        const referrer = visit.referrer === 'Direct' ? 'Direct' : 
+                                       visit.referrer ? new URL(visit.referrer).hostname : 'Direct';
+                        const time = new Date(visit.timestamp).toLocaleString();
+                        
+                        return `
+                            <div class="visit-entry">
+                                <div class="visit-page">${path}</div>
+                                <div class="visit-referrer">${referrer}</div>
+                                <div class="visit-time">${time}</div>
+                            </div>
+                        `;
+                    } catch (e) {
+                        return `
+                            <div class="visit-entry">
+                                <div class="visit-page">${visit.page_url}</div>
+                                <div class="visit-referrer">Direct</div>
+                                <div class="visit-time">${new Date(visit.timestamp).toLocaleString()}</div>
+                            </div>
+                        `;
+                    }
+                }).join('') + '<button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>';
+            } else {
+                recentVisitsEl.innerHTML = '<div class="visit-entry"><div class="visit-page">No visits recorded yet</div></div><button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>';
+            }
+        }
+        
+        // Check configuration
+        function isConfigured() {
+            return SUPABASE_URL !== 'YOUR_SUPABASE_URL' && 
+                   SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
+        }
+        
+        // Initialize dashboard
+        async function initDashboard() {
+            if (!isConfigured()) {
+                updateStatus('error', 'Please configure your Supabase credentials.');
+                return;
+            }
+            
+            updateStatus('loading', 'Initializing Supabase...');
+            
+            try {
+                await initializeSupabase();
+                updateStatus('loading', 'Loading dashboard data...');
+                await loadDashboard();
+            } catch (error) {
+                console.error('Dashboard initialization failed:', error);
+                updateStatus('error', `Failed to initialize: ${error.message}`);
+            }
+        }
+        
+        // Page initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isUnlocked()) {
+                unlockDashboard();
+            } else {
+                document.getElementById('lockScreen').style.display = 'flex';
+            }
+        });
+        
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            if (isConfigured() && supabase) {
+                loadDashboard();
+            }
+        }, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
