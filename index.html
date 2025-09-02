@@ -522,7 +522,116 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 </script>
-
-
+<!-- Add this to your website pages for visitor tracking -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+    'use strict';
+    
+    // Your Supabase configuration
+    const SUPABASE_URL = 'https://ksuolzzhpssazyfwbkeg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
+    
+    let supabase;
+    let trackingAttempted = false;
+    
+    // Generate UUID fallback for older browsers
+    function generateUUID() {
+        if (crypto && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        // Fallback for older browsers
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    
+    // Get or create visitor ID
+    function getVisitorId() {
+        let visitorId = localStorage.getItem('visitor_id');
+        if (!visitorId) {
+            visitorId = generateUUID();
+            localStorage.setItem('visitor_id', visitorId);
+        }
+        return visitorId;
+    }
+    
+    // Track the visit
+    async function trackVisit() {
+        if (trackingAttempted) return;
+        trackingAttempted = true;
+        
+        try {
+            const visitorId = getVisitorId();
+            const visitData = {
+                visitor_id: visitorId,
+                page_url: window.location.href,
+                user_agent: navigator.userAgent,
+                referrer: document.referrer || 'Direct'
+            };
+            
+            const { error } = await supabase
+                .from('visitors')
+                .insert([visitData]);
+            
+            if (error) {
+                console.warn('Visitor tracking error:', error.message);
+            } else {
+                console.log('Visit tracked successfully');
+            }
+        } catch (error) {
+            console.warn('Failed to track visit:', error.message);
+        }
+    }
+    
+    // Initialize Supabase and track visit
+    function initializeTracking() {
+        const maxAttempts = 20;
+        let attempts = 0;
+        
+        const tryInit = async () => {
+            attempts++;
+            
+            // Check if Supabase is available
+            if (typeof window.supabase !== 'undefined') {
+                try {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    await trackVisit();
+                    return;
+                } catch (error) {
+                    console.warn('Supabase initialization error:', error);
+                }
+            }
+            
+            // If not ready and haven't exceeded max attempts, try again
+            if (attempts < maxAttempts) {
+                setTimeout(tryInit, 250);
+            } else {
+                console.warn('Visitor tracking failed: Supabase library not loaded');
+            }
+        };
+        
+        tryInit();
+    }
+    
+    // Start tracking when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeTracking);
+    } else {
+        initializeTracking();
+    }
+    
+    // Also track on page visibility change (when user returns to tab)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && supabase && !trackingAttempted) {
+            trackVisit();
+        }
+    });
+    
+})();
+</script>
 </body>
+
 </html>
