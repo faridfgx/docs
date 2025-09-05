@@ -145,28 +145,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-<!--
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    // Check if user is returning from welcome page
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromWelcome = urlParams.get('from') === 'welcome';
-    
-    if (fromWelcome) {
-        // Mark as seen if coming from welcome page
-        localStorage.setItem('hasSeenWelcomeModal', 'true');
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-        // Check if user has seen welcome modal
-        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (!hasSeenModal) { //(true){ //
-            window.location.href = 'welcome.html';
-        }
-    }
-});
-</script>
--->
+
 </head>
 <body data-page="sub">
 <div class="container">
@@ -174,11 +153,11 @@ window.addEventListener('DOMContentLoaded', function() {
 <nav class="navbar">
     <div class="nav-content">
         <a href="index.html" class="nav-brand">
-            🏠 الصفحة الرئيسية
+             الصفحة الرئيسية
         </a>
         <div class="nav-menu">
             <button class="nav-toggle" onclick="toggleDropdown()">
-                📋 جميع الصفحات ▼
+                 جميع الصفحات ▼
             </button>
             <div class="dropdown-menu" id="dropdownMenu">
                 <a href="notes.html" class="dropdown-item">
@@ -268,6 +247,26 @@ window.addEventListener('DOMContentLoaded', function() {
             <div class="section">
                 <h3 class="section-title-simple">استراتيجيات التدريس</h3>
                 <div class="file-list">
+                    <div class="file-item"  data-file-id="BKS018">
+					<div class="file-icon pdf">PDF</div>
+                        <div class="file-info">
+                            <div class="file-name">استراتيجيات ممتعة في التعلم النشط</div>
+                            <div class="file-size">PDF - 488 KB</div>
+                        </div>
+						<button class="download-btn" onclick="window.open('files/books/استراتيجيات-رائعة ومختصرة.pdf', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+                    <div class="file-item"  data-file-id="BKS017">
+					<div class="file-icon pdf">PDF</div>
+                        <div class="file-info">
+                            <div class="file-name">نماذج واستراتيجيات معاصرة في التدري و التقويم</div>
+                            <div class="file-size">PDF - 4.76 MB</div>
+                        </div>
+						<button class="download-btn" onclick="window.open('files/books/نماذج-واستراتيجيات-معاصرة-في-التدريس-والتقويم.pdf', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
                     <div class="file-item"  data-file-id="BKS001">
 					<div class="file-icon pdf">PDF</div>
                         <div class="file-info">
@@ -487,7 +486,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     <ul class="footer-links">
                         <li><a href="javascript:void(0)" onclick="openPopup('contact')">اتصل بنا</a></li>
                         <li><a href="javascript:void(0)" onclick="openPopup('faq')">الأسئلة الشائعة</a></li>
-                        <li><p>faridmezane@gmail.com</p></li>
+                        <!--<li><p>faridmezane@gmail.com</p></li>-->
                     </ul>
                     <br>
                     

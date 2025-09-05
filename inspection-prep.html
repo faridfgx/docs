@@ -146,28 +146,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-<!--
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    // Check if user is returning from welcome page
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromWelcome = urlParams.get('from') === 'welcome';
-    
-    if (fromWelcome) {
-        // Mark as seen if coming from welcome page
-        localStorage.setItem('hasSeenWelcomeModal', 'true');
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-        // Check if user has seen welcome modal
-        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (!hasSeenModal) { //(true){ //
-            window.location.href = 'welcome.html';
-        }
-    }
-});
-</script>
--->
+
 </head>
 <body data-page="sub">
 <div class="container">
@@ -179,7 +158,7 @@ window.addEventListener('DOMContentLoaded', function() {
         </a>
         <div class="nav-menu">
             <button class="nav-toggle" onclick="toggleDropdown()">
-                📋 جميع الصفحات ▼
+                 جميع الصفحات ▼
             </button>
             <div class="dropdown-menu" id="dropdownMenu">
                 <a href="notes.html" class="dropdown-item">
@@ -299,6 +278,26 @@ window.addEventListener('DOMContentLoaded', function() {
                             <div class="file-size">DOCX - 68 KB</div>
                         </div>
 							<button class="download-btn" onclick="window.open('files/وثائق وسير يوم التثبيت.docx', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+                    <div class="file-item" data-file-id="INS004">
+					<div class="file-icon docx">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">أهم أسئلة التشريع المدرسي التي تطرح يوم التثبيت</div>
+                            <div class="file-size">DOCX - 388 KB</div>
+                        </div>
+							<button class="download-btn" onclick="window.open('files/اهم-الاسئلة-الخاصة-بالتشريع-المدرسي-التي-تطح-في-امتحان-التثبيت.pdf', '_blank')">
+                                تحميل
+                            </button>
+                    </div>
+                    <div class="file-item" data-file-id="INS005">
+					<div class="file-icon docx">DOC</div>
+                        <div class="file-info">
+                            <div class="file-name">أسئلة علم النفس</div>
+                            <div class="file-size">DOCX - 2.6 MB</div>
+                        </div>
+							<button class="download-btn" onclick="window.open('files/الأسئلة-الشفوية-علم-النفس.pdf', '_blank')">
                                 تحميل
                             </button>
                     </div>

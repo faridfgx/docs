@@ -145,28 +145,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-<!--
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    // Check if user is returning from welcome page
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromWelcome = urlParams.get('from') === 'welcome';
-    
-    if (fromWelcome) {
-        // Mark as seen if coming from welcome page
-        localStorage.setItem('hasSeenWelcomeModal', 'true');
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-        // Check if user has seen welcome modal
-        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (!hasSeenModal) { //(true){ //
-            window.location.href = 'welcome.html';
-        }
-    }
-});
-</script>
--->
+
 </head>
 <body data-page="sub">
 <div class="container">
@@ -177,7 +156,7 @@ window.addEventListener('DOMContentLoaded', function() {
         </a>
         <div class="nav-menu">
             <button class="nav-toggle" onclick="toggleDropdown()">
-                📋 جميع الصفحات ▼
+                 جميع الصفحات ▼
             </button>
             <div class="dropdown-menu" id="dropdownMenu">
                 <a href="notes.html" class="dropdown-item">
@@ -274,6 +253,16 @@ window.addEventListener('DOMContentLoaded', function() {
                             <div class="file-size">XLSX - 24 KB</div>
                         </div>
 						<button class="download-btn" onclick="window.open('files/توزيع السنوي 2025-2026 ت ن ز ص.xlsx', '_blank')">
+                            تحميل
+                        </button>
+                    </div>
+                    <div class="file-item" data-file-id="AD0011">
+					    <div class="file-icon pdf">PDF</div>
+                        <div class="file-info">
+                            <div class="file-name">التوزيع السنوي جديد - جميع المستويات - نموذج 2025</div>
+                            <div class="file-size">PDF - 508 KB</div>
+                        </div>
+						<button class="download-btn" onclick="window.open('files/ج م ع ج م أ التوزيع-السنوي-النهائي.pdf', '_blank')">
                             تحميل
                         </button>
                     </div>
