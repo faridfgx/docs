@@ -265,11 +265,11 @@
             font-weight: 500;
         }
         
-        .visit-referrer {
+        .visit-count {
             color: #94a3b8;
         }
         
-        .visit-time {
+        .visit-date {
             color: #64748b;
             font-size: 0.75rem;
         }
@@ -324,7 +324,7 @@
             <div class="stat-card">
                 <div class="stat-title">Total Visits</div>
                 <div class="stat-number" id="totalVisits">--</div>
-                <div class="stat-change neutral" id="totalChange">--</div>
+                <div class="stat-change neutral" id="totalChange">All time visits across all pages</div>
             </div>
             
             <div class="stat-card">
@@ -340,9 +340,9 @@
             </div>
             
             <div class="stat-card">
-                <div class="stat-title">Unique Visitors</div>
-                <div class="stat-number" id="uniqueVisitors">--</div>
-                <div class="stat-change neutral" id="uniqueChange">--</div>
+                <div class="stat-title">Active Pages</div>
+                <div class="stat-number" id="activePages">--</div>
+                <div class="stat-change neutral" id="pagesChange">Pages with visits this week</div>
             </div>
         </div>
         
@@ -353,13 +353,13 @@
             </div>
             
             <div class="list-card">
-                <div class="card-title">Top Pages</div>
+                <div class="card-title">Top Pages This Week</div>
                 <div id="topPages">Loading...</div>
             </div>
         </div>
         
         <div class="recent-visits">
-            <div class="card-title">Recent Activity</div>
+            <div class="card-title">Recent Daily Activity</div>
             <div id="recentVisits">Loading...</div>
             <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
         </div>
@@ -420,16 +420,15 @@
         
         let supabase;
         
-        // Initialize Supabase with simpler approach
+        // Initialize Supabase
         function initializeSupabase() {
             return new Promise((resolve, reject) => {
-                const maxAttempts = 30; // Increased attempts
+                const maxAttempts = 30;
                 let attempts = 0;
                 
                 const tryInit = () => {
                     attempts++;
                     
-                    // Check multiple possible Supabase global locations
                     const supabaseLib = window.supabase || window.Supabase || 
                                        (window.supabaseJs && window.supabaseJs.createClient ? window.supabaseJs : null);
                     
@@ -446,7 +445,7 @@
                     
                     if (attempts < maxAttempts) {
                         console.log(`Waiting for Supabase to load... attempt ${attempts}`);
-                        setTimeout(tryInit, 200); // Shorter interval
+                        setTimeout(tryInit, 200);
                     } else {
                         const error = new Error('Supabase library failed to load. Try refreshing the page or check your internet connection.');
                         console.error(error);
@@ -454,7 +453,6 @@
                     }
                 };
                 
-                // Start immediately, then with delay
                 tryInit();
             });
         }
@@ -473,15 +471,11 @@
             return num.toString();
         }
         
-        // Get date range
-        function getDateRange(days) {
-            const end = new Date();
-            const start = new Date();
-            start.setDate(start.getDate() - days);
-            return {
-                start: start.toISOString(),
-                end: end.toISOString()
-            };
+        // Get date for SQL queries
+        function getDateString(daysAgo = 0) {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toISOString().split('T')[0];
         }
         
         // Load dashboard data
@@ -495,7 +489,7 @@
                     loadStats(),
                     loadDailyChart(),
                     loadTopPages(),
-                    loadRecentVisits()
+                    loadRecentActivity()
                 ]);
                 
                 updateStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
@@ -507,85 +501,122 @@
         
         // Load main statistics
         async function loadStats() {
-            const today = new Date().toISOString().split('T')[0];
-            const weekAgo = getDateRange(7).start;
-            const twoWeeksAgo = getDateRange(14).start;
+            const today = getDateString(0);
+            const yesterday = getDateString(1);
+            const weekAgo = getDateString(7);
+            const twoWeeksAgo = getDateString(14);
             
-            // Total visits
-            const { data: totalData } = await supabase
-                .from('visitors')
-                .select('*', { count: 'exact' });
-            
-            // Today's visits
-            const { data: todayData } = await supabase
-                .from('visitors')
-                .select('*', { count: 'exact' })
-                .gte('timestamp', today);
-            
-            // This week's visits
-            const { data: weekData } = await supabase
-                .from('visitors')
-                .select('*', { count: 'exact' })
-                .gte('timestamp', weekAgo);
-            
-            // Last week's visits (for comparison)
-            const { data: lastWeekData } = await supabase
-                .from('visitors')
-                .select('*', { count: 'exact' })
-                .gte('timestamp', twoWeeksAgo)
-                .lt('timestamp', weekAgo);
-            
-            // Unique visitors
-            const { data: uniqueData } = await supabase
-                .from('visitors')
-                .select('visitor_id');
-            
-            const uniqueVisitors = new Set(uniqueData?.map(v => v.visitor_id) || []).size;
-            
-            // Update UI
-            document.getElementById('totalVisits').textContent = formatNumber(totalData?.length || 0);
-            document.getElementById('todayVisits').textContent = formatNumber(todayData?.length || 0);
-            document.getElementById('weekVisits').textContent = formatNumber(weekData?.length || 0);
-            document.getElementById('uniqueVisitors').textContent = formatNumber(uniqueVisitors);
-            
-            // Calculate changes (simplified)
-            const weekChange = (weekData?.length || 0) - (lastWeekData?.length || 0);
-            const weekChangeEl = document.getElementById('weekChange');
-            if (weekChange > 0) {
-                weekChangeEl.textContent = `+${weekChange} from last week`;
-                weekChangeEl.className = 'stat-change positive';
-            } else if (weekChange < 0) {
-                weekChangeEl.textContent = `${weekChange} from last week`;
-                weekChangeEl.className = 'stat-change negative';
-            } else {
-                weekChangeEl.textContent = 'No change from last week';
-                weekChangeEl.className = 'stat-change neutral';
+            try {
+                // Total visits (sum of all visitor_count)
+                const { data: totalData, error: totalError } = await supabase
+                    .from('daily_visitors')
+                    .select('visitor_count');
+                
+                if (totalError) throw totalError;
+                const totalVisits = totalData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // Today's visits
+                const { data: todayData } = await supabase
+                    .from('daily_visitors')
+                    .select('visitor_count')
+                    .eq('visit_date', today);
+                
+                const todayVisits = todayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // Yesterday's visits for comparison
+                const { data: yesterdayData } = await supabase
+                    .from('daily_visitors')
+                    .select('visitor_count')
+                    .eq('visit_date', yesterday);
+                
+                const yesterdayVisits = yesterdayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // This week's visits
+                const { data: weekData } = await supabase
+                    .from('daily_visitors')
+                    .select('visitor_count')
+                    .gte('visit_date', weekAgo);
+                
+                const weekVisits = weekData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // Last week's visits for comparison
+                const { data: lastWeekData } = await supabase
+                    .from('daily_visitors')
+                    .select('visitor_count')
+                    .gte('visit_date', twoWeeksAgo)
+                    .lt('visit_date', weekAgo);
+                
+                const lastWeekVisits = lastWeekData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // Active pages this week
+                const { data: activePagesData } = await supabase
+                    .from('daily_visitors')
+                    .select('page_url')
+                    .gte('visit_date', weekAgo);
+                
+                const activePages = new Set(activePagesData?.map(record => record.page_url) || []).size;
+                
+                // Update UI
+                document.getElementById('totalVisits').textContent = formatNumber(totalVisits);
+                document.getElementById('todayVisits').textContent = formatNumber(todayVisits);
+                document.getElementById('weekVisits').textContent = formatNumber(weekVisits);
+                document.getElementById('activePages').textContent = formatNumber(activePages);
+                
+                // Today's change
+                const todayChange = todayVisits - yesterdayVisits;
+                const todayChangeEl = document.getElementById('todayChange');
+                if (todayChange > 0) {
+                    todayChangeEl.textContent = `+${todayChange} from yesterday`;
+                    todayChangeEl.className = 'stat-change positive';
+                } else if (todayChange < 0) {
+                    todayChangeEl.textContent = `${todayChange} from yesterday`;
+                    todayChangeEl.className = 'stat-change negative';
+                } else {
+                    todayChangeEl.textContent = 'Same as yesterday';
+                    todayChangeEl.className = 'stat-change neutral';
+                }
+                
+                // Week's change
+                const weekChange = weekVisits - lastWeekVisits;
+                const weekChangeEl = document.getElementById('weekChange');
+                if (weekChange > 0) {
+                    weekChangeEl.textContent = `+${weekChange} from last week`;
+                    weekChangeEl.className = 'stat-change positive';
+                } else if (weekChange < 0) {
+                    weekChangeEl.textContent = `${weekChange} from last week`;
+                    weekChangeEl.className = 'stat-change negative';
+                } else {
+                    weekChangeEl.textContent = 'Same as last week';
+                    weekChangeEl.className = 'stat-change neutral';
+                }
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                throw error;
             }
         }
         
         // Load daily visits chart
         async function loadDailyChart() {
-            const { start } = getDateRange(14);
+            const startDate = getDateString(13);
             
             const { data } = await supabase
-                .from('visitors')
-                .select('timestamp')
-                .gte('timestamp', start)
-                .order('timestamp');
+                .from('daily_visitors')
+                .select('visit_date, visitor_count')
+                .gte('visit_date', startDate)
+                .order('visit_date');
             
-            // Group by day
+            // Create array for last 14 days
             const dailyCounts = {};
             for (let i = 13; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                const dateKey = date.toISOString().split('T')[0];
-                dailyCounts[dateKey] = 0;
+                const date = getDateString(i);
+                dailyCounts[date] = 0;
             }
             
-            data?.forEach(visit => {
-                const date = new Date(visit.timestamp).toISOString().split('T')[0];
-                if (dailyCounts.hasOwnProperty(date)) {
-                    dailyCounts[date]++;
+            // Sum visits by date
+            data?.forEach(record => {
+                if (dailyCounts.hasOwnProperty(record.visit_date)) {
+                    dailyCounts[record.visit_date] += record.visitor_count || 0;
                 }
             });
             
@@ -603,21 +634,21 @@
         
         // Load top pages
         async function loadTopPages() {
-            const { start } = getDateRange(7);
+            const weekAgo = getDateString(7);
             
             const { data } = await supabase
-                .from('visitors')
-                .select('page_url')
-                .gte('timestamp', start);
+                .from('daily_visitors')
+                .select('page_url, visitor_count')
+                .gte('visit_date', weekAgo);
             
-            // Count page visits
+            // Sum visits by page
             const pageCounts = {};
-            data?.forEach(visit => {
+            data?.forEach(record => {
                 try {
-                    const path = new URL(visit.page_url).pathname;
-                    pageCounts[path] = (pageCounts[path] || 0) + 1;
+                    const path = new URL(record.page_url).pathname;
+                    pageCounts[path] = (pageCounts[path] || 0) + (record.visitor_count || 0);
                 } catch (e) {
-                    pageCounts[visit.page_url] = (pageCounts[visit.page_url] || 0) + 1;
+                    pageCounts[record.page_url] = (pageCounts[record.page_url] || 0) + (record.visitor_count || 0);
                 }
             });
             
@@ -640,36 +671,36 @@
             }
         }
         
-        // Load recent visits
-        async function loadRecentVisits() {
+        // Load recent daily activity
+        async function loadRecentActivity() {
             const { data } = await supabase
-                .from('visitors')
-                .select('page_url, timestamp, referrer')
-                .order('timestamp', { ascending: false })
-                .limit(10);
+                .from('daily_visitors')
+                .select('page_url, visit_date, visitor_count')
+                .order('visit_date', { ascending: false })
+                .order('updated_at', { ascending: false })
+                .limit(15);
             
             const recentVisitsEl = document.getElementById('recentVisits');
             if (data && data.length > 0) {
-                recentVisitsEl.innerHTML = data.map(visit => {
+                recentVisitsEl.innerHTML = data.map(record => {
                     try {
-                        const path = new URL(visit.page_url).pathname;
-                        const referrer = visit.referrer === 'Direct' ? 'Direct' : 
-                                       visit.referrer ? new URL(visit.referrer).hostname : 'Direct';
-                        const time = new Date(visit.timestamp).toLocaleString();
+                        const path = new URL(record.page_url).pathname;
+                        const date = new Date(record.visit_date).toLocaleDateString();
+                        const count = record.visitor_count || 0;
                         
                         return `
                             <div class="visit-entry">
                                 <div class="visit-page">${path}</div>
-                                <div class="visit-referrer">${referrer}</div>
-                                <div class="visit-time">${time}</div>
+                                <div class="visit-count">${count} visits</div>
+                                <div class="visit-date">${date}</div>
                             </div>
                         `;
                     } catch (e) {
                         return `
                             <div class="visit-entry">
-                                <div class="visit-page">${visit.page_url}</div>
-                                <div class="visit-referrer">Direct</div>
-                                <div class="visit-time">${new Date(visit.timestamp).toLocaleString()}</div>
+                                <div class="visit-page">${record.page_url}</div>
+                                <div class="visit-count">${record.visitor_count || 0} visits</div>
+                                <div class="visit-date">${new Date(record.visit_date).toLocaleDateString()}</div>
                             </div>
                         `;
                     }
