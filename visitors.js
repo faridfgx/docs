@@ -9,12 +9,14 @@
     let tracked = false;
     
     // Check if already tracked today
-    function hasTrackedToday() {
-        const today = new Date().toDateString();
-        const trackedDate = localStorage.getItem('last_tracked_date');
-        const trackedUrl = localStorage.getItem('last_tracked_url');
-        return trackedDate === today && trackedUrl === window.location.href;
-    }
+	function hasTrackedToday() {
+		const today = new Date().toDateString(); // e.g., "Fri Sep 05 2025"
+		const trackedDate = localStorage.getItem('last_tracked_date');
+		const currentUrl = window.location.href;
+		const trackedUrl = localStorage.getItem('last_tracked_url');
+		
+		return trackedDate === today && trackedUrl === currentUrl;
+	}
     
     // Mark as tracked today
     function markTrackedToday() {
