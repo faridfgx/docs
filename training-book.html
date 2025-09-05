@@ -145,28 +145,7 @@
     twemoji.parse(document.body); 
   });
 </script>
-<!--
-<script>
-window.addEventListener('DOMContentLoaded', function() {
-    // Check if user is returning from welcome page
-    const urlParams = new URLSearchParams(window.location.search);
-    const fromWelcome = urlParams.get('from') === 'welcome';
-    
-    if (fromWelcome) {
-        // Mark as seen if coming from welcome page
-        localStorage.setItem('hasSeenWelcomeModal', 'true');
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-        // Check if user has seen welcome modal
-        const hasSeenModal = localStorage.getItem('hasSeenWelcomeModal');
-        if (!hasSeenModal) { //(true){ //
-            window.location.href = 'welcome.html';
-        }
-    }
-});
-</script>
--->
+
 </head>
 <body data-page="sub">
 <div class="container">
@@ -463,7 +442,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     <ul class="footer-links">
                         <li><a href="javascript:void(0)" onclick="openPopup('contact')">اتصل بنا</a></li>
                         <li><a href="javascript:void(0)" onclick="openPopup('faq')">الأسئلة الشائعة</a></li>
-                        <li><p>faridmezane@gmail.com</p></li>
+                       
                     </ul>
                     <br>
                     
@@ -529,5 +508,7 @@ window.addEventListener('DOMContentLoaded', function() {
 <script src="footer.js"></script>
 <script src="main.js" defer></script>
 <script src="popup.js" defer></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="visitors.js"></script>
 </body>
 </html>
