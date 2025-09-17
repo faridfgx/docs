@@ -197,25 +197,48 @@
         }
         
         .visits-chart {
-            height: 200px;
+            height: 250px;
             background: #0f172a;
             border-radius: 4px;
             padding: 1rem;
             display: flex;
             align-items: end;
-            gap: 2px;
+            gap: 3px;
+        }
+        
+        .chart-day {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
         }
         
         .chart-bar {
             background: #3b82f6;
             border-radius: 2px 2px 0 0;
             min-height: 2px;
-            flex: 1;
+            width: 100%;
             transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
         }
         
         .chart-bar:hover {
             background: #60a5fa;
+        }
+        
+        .chart-number {
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            margin-bottom: 0.25rem;
+        }
+        
+        .chart-date {
+            font-size: 0.625rem;
+            color: #94a3b8;
+            writing-mode: horizontal-tb;
+            text-align: center;
         }
         
         .list-item {
@@ -240,40 +263,6 @@
             color: #f1f5f9;
         }
         
-        .recent-visits {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-        
-        .visit-entry {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            gap: 1rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #334155;
-            font-size: 0.875rem;
-        }
-        
-        .visit-entry:last-child {
-            border-bottom: none;
-        }
-        
-        .visit-page {
-            color: #e2e8f0;
-            font-weight: 500;
-        }
-        
-        .visit-count {
-            color: #94a3b8;
-        }
-        
-        .visit-date {
-            color: #64748b;
-            font-size: 0.75rem;
-        }
-        
         .refresh-btn {
             background: #3b82f6;
             color: white;
@@ -294,7 +283,8 @@
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .chart-section { grid-template-columns: 1fr; }
-            .visit-entry { grid-template-columns: 1fr; gap: 0.5rem; }
+            .chart-date { font-size: 0.5rem; }
+            .chart-number { font-size: 0.625rem; }
         }
     </style>
 </head>
@@ -320,47 +310,44 @@
         <div class="container">
             <div id="status" class="status loading">Loading analytics data...</div>
         
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-title">Total Visits</div>
-                <div class="stat-number" id="totalVisits">--</div>
-                <div class="stat-change neutral" id="totalChange">All time visits across all pages</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Visits</div>
+                    <div class="stat-number" id="totalVisits">--</div>
+                    <div class="stat-change neutral" id="totalChange">All time visits across all pages</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">Today's Visits</div>
+                    <div class="stat-number" id="todayVisits">--</div>
+                    <div class="stat-change neutral" id="todayChange">--</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">This Week</div>
+                    <div class="stat-number" id="weekVisits">--</div>
+                    <div class="stat-change neutral" id="weekChange">--</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-title">Active Pages</div>
+                    <div class="stat-number" id="activePages">--</div>
+                    <div class="stat-change neutral" id="pagesChange">Pages with visits this week</div>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-title">Today's Visits</div>
-                <div class="stat-number" id="todayVisits">--</div>
-                <div class="stat-change neutral" id="todayChange">--</div>
+            <div class="chart-section">
+                <div class="chart-card">
+                    <div class="card-title">Daily Visits (Last 14 Days)</div>
+                    <div class="visits-chart" id="visitsChart"></div>
+                </div>
+                
+                <div class="list-card">
+                    <div class="card-title">Top Pages This Week</div>
+                    <div id="topPages">Loading...</div>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-title">This Week</div>
-                <div class="stat-number" id="weekVisits">--</div>
-                <div class="stat-change neutral" id="weekChange">--</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-title">Active Pages</div>
-                <div class="stat-number" id="activePages">--</div>
-                <div class="stat-change neutral" id="pagesChange">Pages with visits this week</div>
-            </div>
-        </div>
-        
-        <div class="chart-section">
-            <div class="chart-card">
-                <div class="card-title">Daily Visits (Last 14 Days)</div>
-                <div class="visits-chart" id="visitsChart"></div>
-            </div>
-            
-            <div class="list-card">
-                <div class="card-title">Top Pages This Week</div>
-                <div id="topPages">Loading...</div>
-            </div>
-        </div>
-        
-        <div class="recent-visits">
-            <div class="card-title">Recent Daily Activity</div>
-            <div id="recentVisits">Loading...</div>
             <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
         </div>
     </div>
@@ -488,8 +475,7 @@
                 await Promise.all([
                     loadStats(),
                     loadDailyChart(),
-                    loadTopPages(),
-                    loadRecentActivity()
+                    loadTopPages()
                 ]);
                 
                 updateStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
@@ -620,14 +606,23 @@
                 }
             });
             
-            // Create chart bars
+            // Create chart bars with visible numbers
             const chartEl = document.getElementById('visitsChart');
             const maxCount = Math.max(...Object.values(dailyCounts), 1);
             
             chartEl.innerHTML = Object.entries(dailyCounts)
                 .map(([date, count]) => {
-                    const height = (count / maxCount) * 100;
-                    return `<div class="chart-bar" style="height: ${height}%" title="${date}: ${count} visits"></div>`;
+                    const height = (count / maxCount) * 180; // Leave space for numbers
+                    const dateObj = new Date(date);
+                    const monthDay = `${(dateObj.getMonth() + 1)}/${dateObj.getDate()}`;
+                    
+                    return `
+                        <div class="chart-day">
+                            <div class="chart-number">${count}</div>
+                            <div class="chart-bar" style="height: ${height}px" title="${date}: ${count} visits"></div>
+                            <div class="chart-date">${monthDay}</div>
+                        </div>
+                    `;
                 })
                 .join('');
         }
@@ -668,45 +663,6 @@
                     `).join('');
             } else {
                 topPagesEl.innerHTML = '<div class="list-item"><div class="list-label">No data available</div></div>';
-            }
-        }
-        
-        // Load recent daily activity
-        async function loadRecentActivity() {
-            const { data } = await supabase
-                .from('daily_visitors')
-                .select('page_url, visit_date, visitor_count')
-                .order('visit_date', { ascending: false })
-                .order('updated_at', { ascending: false })
-                .limit(15);
-            
-            const recentVisitsEl = document.getElementById('recentVisits');
-            if (data && data.length > 0) {
-                recentVisitsEl.innerHTML = data.map(record => {
-                    try {
-                        const path = new URL(record.page_url).pathname;
-                        const date = new Date(record.visit_date).toLocaleDateString();
-                        const count = record.visitor_count || 0;
-                        
-                        return `
-                            <div class="visit-entry">
-                                <div class="visit-page">${path}</div>
-                                <div class="visit-count">${count} visits</div>
-                                <div class="visit-date">${date}</div>
-                            </div>
-                        `;
-                    } catch (e) {
-                        return `
-                            <div class="visit-entry">
-                                <div class="visit-page">${record.page_url}</div>
-                                <div class="visit-count">${record.visitor_count || 0} visits</div>
-                                <div class="visit-date">${new Date(record.visit_date).toLocaleDateString()}</div>
-                            </div>
-                        `;
-                    }
-                }).join('') + '<button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>';
-            } else {
-                recentVisitsEl.innerHTML = '<div class="visit-entry"><div class="visit-page">No visits recorded yet</div></div><button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>';
             }
         }
         
