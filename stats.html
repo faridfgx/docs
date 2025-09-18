@@ -458,7 +458,6 @@
             return num.toString();
         }
         
-
         // Get date for SQL queries (using local timezone)
         function getDateString(daysAgo = 0) {
             const date = new Date();
@@ -497,7 +496,23 @@
             const weekAgo = getDateString(7);
             const twoWeeksAgo = getDateString(14);
             
+            // Log dates for debugging
+            console.log('Calculated dates:', { today, yesterday, weekAgo, twoWeeksAgo });
+            
             try {
+                // First, let's see what dates we actually have in the database
+                const { data: allDatesData, error: datesError } = await supabase
+                    .from('daily_visitors')
+                    .select('visit_date, visitor_count, page_url')
+                    .order('visit_date', { ascending: false })
+                    .limit(20);
+                
+                console.log('Recent database records:', allDatesData);
+                
+                if (datesError) {
+                    console.error('Error fetching dates:', datesError);
+                }
+                
                 // Total visits (sum of all visitor_count)
                 const { data: totalData, error: totalError } = await supabase
                     .from('daily_visitors')
@@ -506,21 +521,43 @@
                 if (totalError) throw totalError;
                 const totalVisits = totalData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
                 
-                // Today's visits
-                const { data: todayData } = await supabase
+                // Today's visits - try multiple approaches
+                let todayData = null;
+                let todayError = null;
+                
+                // Try exact match first
+                const todayQuery1 = await supabase
                     .from('daily_visitors')
-                    .select('visitor_count')
+                    .select('visitor_count, visit_date, page_url')
                     .eq('visit_date', today);
                 
+                console.log(`Today query (${today}):`, todayQuery1);
+                
+                todayData = todayQuery1.data;
+                todayError = todayQuery1.error;
+                
+                if (todayError) console.error('Today data error:', todayError);
                 const todayVisits = todayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
                 
-                // Yesterday's visits for comparison
-                const { data: yesterdayData } = await supabase
+                // Yesterday's visits
+                const { data: yesterdayData, error: yesterdayError } = await supabase
                     .from('daily_visitors')
-                    .select('visitor_count')
+                    .select('visitor_count, visit_date, page_url')
                     .eq('visit_date', yesterday);
                 
+                console.log(`Yesterday query (${yesterday}):`, { data: yesterdayData, error: yesterdayError });
+                
+                if (yesterdayError) console.error('Yesterday data error:', yesterdayError);
                 const yesterdayVisits = yesterdayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                
+                // Log final calculations
+                console.log('Final visit counts:', { 
+                    todayVisits, 
+                    yesterdayVisits, 
+                    difference: todayVisits - yesterdayVisits,
+                    todayRecords: todayData?.length || 0,
+                    yesterdayRecords: yesterdayData?.length || 0
+                });
                 
                 // This week's visits
                 const { data: weekData } = await supabase
@@ -543,7 +580,8 @@
                 const { data: activePagesData } = await supabase
                     .from('daily_visitors')
                     .select('page_url')
-                    .gte('visit_date', weekAgo);
+                    .gte('visit_date', weekAgo)
+                    .gt('visitor_count', 0);
                 
                 const activePages = new Set(activePagesData?.map(record => record.page_url) || []).size;
                 
@@ -553,10 +591,17 @@
                 document.getElementById('weekVisits').textContent = formatNumber(weekVisits);
                 document.getElementById('activePages').textContent = formatNumber(activePages);
                 
-                // Today's change
-                const todayChange = todayVisits - yesterdayVisits;
+                // Today's change calculation with better logic
                 const todayChangeEl = document.getElementById('todayChange');
-                if (todayChange > 0) {
+                const todayChange = todayVisits - yesterdayVisits;
+                
+                if (todayVisits === 0 && yesterdayVisits === 0) {
+                    todayChangeEl.textContent = 'No visits recorded';
+                    todayChangeEl.className = 'stat-change neutral';
+                } else if (yesterdayVisits === 0 && todayVisits > 0) {
+                    todayChangeEl.textContent = `New visits today`;
+                    todayChangeEl.className = 'stat-change positive';
+                } else if (todayChange > 0) {
                     todayChangeEl.textContent = `+${todayChange} from yesterday`;
                     todayChangeEl.className = 'stat-change positive';
                 } else if (todayChange < 0) {
@@ -567,10 +612,17 @@
                     todayChangeEl.className = 'stat-change neutral';
                 }
                 
-                // Week's change
-                const weekChange = weekVisits - lastWeekVisits;
+                // Week's change calculation
                 const weekChangeEl = document.getElementById('weekChange');
-                if (weekChange > 0) {
+                const weekChange = weekVisits - lastWeekVisits;
+                
+                if (weekVisits === 0 && lastWeekVisits === 0) {
+                    weekChangeEl.textContent = 'No visits this period';
+                    weekChangeEl.className = 'stat-change neutral';
+                } else if (lastWeekVisits === 0 && weekVisits > 0) {
+                    weekChangeEl.textContent = `New visits this week`;
+                    weekChangeEl.className = 'stat-change positive';
+                } else if (weekChange > 0) {
                     weekChangeEl.textContent = `+${weekChange} from last week`;
                     weekChangeEl.className = 'stat-change positive';
                 } else if (weekChange < 0) {
@@ -714,4 +766,3 @@
     </script>
 </body>
 </html>
-
