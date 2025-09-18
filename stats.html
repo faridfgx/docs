@@ -133,6 +133,27 @@
         .status.error { background: #7f1d1d; color: #fca5a5; border: 1px solid #dc2626; }
         .status.loading { background: #451a03; color: #fed7aa; border: 1px solid #ea580c; }
         
+        .debug-info {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .debug-info h3 {
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .debug-info pre {
+            color: #94a3b8;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -309,6 +330,11 @@
         
         <div class="container">
             <div id="status" class="status loading">Loading analytics data...</div>
+            
+            <div id="debugInfo" class="debug-info" style="display: none;">
+                <h3>Debug Information</h3>
+                <pre id="debugContent"></pre>
+            </div>
         
             <div class="stats-grid">
                 <div class="stat-card">
@@ -349,6 +375,7 @@
             </div>
             
             <button class="refresh-btn" onclick="loadDashboard()">Refresh Data</button>
+            <button class="refresh-btn" onclick="toggleDebugInfo()" style="background: #6b7280; margin-left: 1rem;">Toggle Debug</button>
         </div>
     </div>
 
@@ -406,6 +433,26 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA';
         
         let supabase;
+        let debugMode = false;
+        
+        // Debug toggle
+        function toggleDebugInfo() {
+            debugMode = !debugMode;
+            const debugEl = document.getElementById('debugInfo');
+            debugEl.style.display = debugMode ? 'block' : 'none';
+            if (debugMode) {
+                loadDashboard(); // Refresh with debug info
+            }
+        }
+        
+        // Debug logger
+        function addDebugInfo(title, data) {
+            if (!debugMode) return;
+            
+            const debugContent = document.getElementById('debugContent');
+            const timestamp = new Date().toLocaleTimeString();
+            debugContent.textContent += `[${timestamp}] ${title}:\n${JSON.stringify(data, null, 2)}\n\n`;
+        }
         
         // Initialize Supabase
         function initializeSupabase() {
@@ -458,20 +505,36 @@
             return num.toString();
         }
         
-        // Get date for SQL queries (using local timezone)
-        function getDateString(daysAgo = 0) {
+        // Fixed date functions - use consistent UTC dates
+        function getUTCDateString(daysAgo = 0) {
+            const date = new Date();
+            date.setUTCDate(date.getUTCDate() - daysAgo);
+            return date.toISOString().split('T')[0]; // YYYY-MM-DD in UTC
+        }
+        
+        function getLocalDateString(daysAgo = 0) {
             const date = new Date();
             date.setDate(date.getDate() - daysAgo);
-            // Use local date to avoid timezone issues
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
             const day = String(date.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
         }
         
+        // Clear debug info
+        function clearDebugInfo() {
+            if (debugMode) {
+                document.getElementById('debugContent').textContent = '';
+            }
+        }
+        
         // Load dashboard data
         async function loadDashboard() {
             if (!supabase) return;
+            
+            if (debugMode) {
+                clearDebugInfo();
+            }
             
             updateStatus('loading', 'Refreshing analytics...');
             
@@ -485,19 +548,28 @@
                 updateStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
             } catch (error) {
                 console.error('Error loading dashboard:', error);
+                addDebugInfo('Dashboard Error', { error: error.message, stack: error.stack });
                 updateStatus('error', `Error: ${error.message}`);
             }
         }
         
         // Load main statistics
         async function loadStats() {
-            const today = getDateString(0);
-            const yesterday = getDateString(1);
-            const weekAgo = getDateString(7);
-            const twoWeeksAgo = getDateString(14);
+            // Try both UTC and local date strategies
+            const utcToday = getUTCDateString(0);
+            const utcYesterday = getUTCDateString(1);
+            const utcWeekAgo = getUTCDateString(7);
+            const utcTwoWeeksAgo = getUTCDateString(14);
             
-            // Log dates for debugging
-            console.log('Calculated dates:', { today, yesterday, weekAgo, twoWeeksAgo });
+            const localToday = getLocalDateString(0);
+            const localYesterday = getLocalDateString(1);
+            const localWeekAgo = getLocalDateString(7);
+            const localTwoWeeksAgo = getLocalDateString(14);
+            
+            addDebugInfo('Date Calculations', {
+                utc: { today: utcToday, yesterday: utcYesterday, weekAgo: utcWeekAgo },
+                local: { today: localToday, yesterday: localYesterday, weekAgo: localWeekAgo }
+            });
             
             try {
                 // First, let's see what dates we actually have in the database
@@ -507,10 +579,11 @@
                     .order('visit_date', { ascending: false })
                     .limit(20);
                 
-                console.log('Recent database records:', allDatesData);
+                addDebugInfo('Recent Database Records', allDatesData);
                 
                 if (datesError) {
                     console.error('Error fetching dates:', datesError);
+                    addDebugInfo('Database Error', datesError);
                 }
                 
                 // Total visits (sum of all visitor_count)
@@ -521,69 +594,112 @@
                 if (totalError) throw totalError;
                 const totalVisits = totalData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
                 
-                // Today's visits - try multiple approaches
-                let todayData = null;
-                let todayError = null;
+                // Today's visits - try both UTC and local dates
+                const todayQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count, visit_date, page_url')
+                        .eq('visit_date', utcToday),
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count, visit_date, page_url')
+                        .eq('visit_date', localToday)
+                ]);
                 
-                // Try exact match first
-                const todayQuery1 = await supabase
-                    .from('daily_visitors')
-                    .select('visitor_count, visit_date, page_url')
-                    .eq('visit_date', today);
+                const utcTodayData = todayQueries[0].data || [];
+                const localTodayData = todayQueries[1].data || [];
                 
-                console.log(`Today query (${today}):`, todayQuery1);
-                
-                todayData = todayQuery1.data;
-                todayError = todayQuery1.error;
-                
-                if (todayError) console.error('Today data error:', todayError);
-                const todayVisits = todayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
-                
-                // Yesterday's visits
-                const { data: yesterdayData, error: yesterdayError } = await supabase
-                    .from('daily_visitors')
-                    .select('visitor_count, visit_date, page_url')
-                    .eq('visit_date', yesterday);
-                
-                console.log(`Yesterday query (${yesterday}):`, { data: yesterdayData, error: yesterdayError });
-                
-                if (yesterdayError) console.error('Yesterday data error:', yesterdayError);
-                const yesterdayVisits = yesterdayData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
-                
-                // Log final calculations
-                console.log('Final visit counts:', { 
-                    todayVisits, 
-                    yesterdayVisits, 
-                    difference: todayVisits - yesterdayVisits,
-                    todayRecords: todayData?.length || 0,
-                    yesterdayRecords: yesterdayData?.length || 0
+                addDebugInfo('Today Queries', {
+                    utc: { date: utcToday, records: utcTodayData.length, data: utcTodayData },
+                    local: { date: localToday, records: localTodayData.length, data: localTodayData }
                 });
                 
-                // This week's visits
-                const { data: weekData } = await supabase
-                    .from('daily_visitors')
-                    .select('visitor_count')
-                    .gte('visit_date', weekAgo);
+                // Use the dataset that has more records, or UTC as fallback
+                const todayData = utcTodayData.length >= localTodayData.length ? utcTodayData : localTodayData;
+                const todayVisits = todayData.reduce((sum, record) => sum + (record.visitor_count || 0), 0);
                 
-                const weekVisits = weekData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                // Yesterday's visits - try both dates
+                const yesterdayQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count, visit_date, page_url')
+                        .eq('visit_date', utcYesterday),
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count, visit_date, page_url')
+                        .eq('visit_date', localYesterday)
+                ]);
+                
+                const utcYesterdayData = yesterdayQueries[0].data || [];
+                const localYesterdayData = yesterdayQueries[1].data || [];
+                
+                addDebugInfo('Yesterday Queries', {
+                    utc: { date: utcYesterday, records: utcYesterdayData.length, data: utcYesterdayData },
+                    local: { date: localYesterday, records: localYesterdayData.length, data: localYesterdayData }
+                });
+                
+                // Use the dataset that has more records, or UTC as fallback
+                const yesterdayData = utcYesterdayData.length >= localYesterdayData.length ? utcYesterdayData : localYesterdayData;
+                const yesterdayVisits = yesterdayData.reduce((sum, record) => sum + (record.visitor_count || 0), 0);
+                
+                // This week's visits - try both date ranges
+                const weekQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count')
+                        .gte('visit_date', utcWeekAgo),
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count')
+                        .gte('visit_date', localWeekAgo)
+                ]);
+                
+                const utcWeekData = weekQueries[0].data || [];
+                const localWeekData = weekQueries[1].data || [];
+                
+                const weekData = utcWeekData.length >= localWeekData.length ? utcWeekData : localWeekData;
+                const weekVisits = weekData.reduce((sum, record) => sum + (record.visitor_count || 0), 0);
                 
                 // Last week's visits for comparison
-                const { data: lastWeekData } = await supabase
-                    .from('daily_visitors')
-                    .select('visitor_count')
-                    .gte('visit_date', twoWeeksAgo)
-                    .lt('visit_date', weekAgo);
+                const lastWeekQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count')
+                        .gte('visit_date', utcTwoWeeksAgo)
+                        .lt('visit_date', utcWeekAgo),
+                    supabase
+                        .from('daily_visitors')
+                        .select('visitor_count')
+                        .gte('visit_date', localTwoWeeksAgo)
+                        .lt('visit_date', localWeekAgo)
+                ]);
                 
-                const lastWeekVisits = lastWeekData?.reduce((sum, record) => sum + (record.visitor_count || 0), 0) || 0;
+                const utcLastWeekData = lastWeekQueries[0].data || [];
+                const localLastWeekData = lastWeekQueries[1].data || [];
+                
+                const lastWeekData = utcLastWeekData.length >= localLastWeekData.length ? utcLastWeekData : localLastWeekData;
+                const lastWeekVisits = lastWeekData.reduce((sum, record) => sum + (record.visitor_count || 0), 0);
                 
                 // Active pages this week
-                const { data: activePagesData } = await supabase
+                const activePagesQuery = await supabase
                     .from('daily_visitors')
                     .select('page_url')
-                    .gte('visit_date', weekAgo)
+                    .gte('visit_date', utcWeekAgo.length >= localWeekAgo.length ? utcWeekAgo : localWeekAgo)
                     .gt('visitor_count', 0);
                 
-                const activePages = new Set(activePagesData?.map(record => record.page_url) || []).size;
+                const activePagesData = activePagesQuery.data || [];
+                const activePages = new Set(activePagesData.map(record => record.page_url)).size;
+                
+                addDebugInfo('Final Calculations', {
+                    totalVisits,
+                    todayVisits,
+                    yesterdayVisits,
+                    weekVisits,
+                    lastWeekVisits,
+                    activePages,
+                    todayChange: todayVisits - yesterdayVisits,
+                    weekChange: weekVisits - lastWeekVisits
+                });
                 
                 // Update UI
                 document.getElementById('totalVisits').textContent = formatNumber(totalVisits);
@@ -591,7 +707,7 @@
                 document.getElementById('weekVisits').textContent = formatNumber(weekVisits);
                 document.getElementById('activePages').textContent = formatNumber(activePages);
                 
-                // Today's change calculation with better logic
+                // Today's change calculation
                 const todayChangeEl = document.getElementById('todayChange');
                 const todayChange = todayVisits - yesterdayVisits;
                 
@@ -635,91 +751,159 @@
                 
             } catch (error) {
                 console.error('Error loading stats:', error);
+                addDebugInfo('Stats Error', { error: error.message, stack: error.stack });
                 throw error;
             }
         }
         
         // Load daily visits chart
         async function loadDailyChart() {
-            const startDate = getDateString(13);
+            // Try both UTC and local date ranges
+            const utcStartDate = getUTCDateString(13);
+            const localStartDate = getLocalDateString(13);
             
-            const { data } = await supabase
-                .from('daily_visitors')
-                .select('visit_date, visitor_count')
-                .gte('visit_date', startDate)
-                .order('visit_date');
-            
-            // Create array for last 14 days
-            const dailyCounts = {};
-            for (let i = 13; i >= 0; i--) {
-                const date = getDateString(i);
-                dailyCounts[date] = 0;
-            }
-            
-            // Sum visits by date
-            data?.forEach(record => {
-                if (dailyCounts.hasOwnProperty(record.visit_date)) {
-                    dailyCounts[record.visit_date] += record.visitor_count || 0;
-                }
+            addDebugInfo('Chart Date Range', {
+                utc: utcStartDate,
+                local: localStartDate
             });
             
-            // Create chart bars with visible numbers
-            const chartEl = document.getElementById('visitsChart');
-            const maxCount = Math.max(...Object.values(dailyCounts), 1);
-            
-            chartEl.innerHTML = Object.entries(dailyCounts)
-                .map(([date, count]) => {
-                    const height = (count / maxCount) * 180; // Leave space for numbers
-                    const dateObj = new Date(date);
-                    const monthDay = `${(dateObj.getMonth() + 1)}/${dateObj.getDate()}`;
-                    
-                    return `
-                        <div class="chart-day">
-                            <div class="chart-number">${count}</div>
-                            <div class="chart-bar" style="height: ${height}px" title="${date}: ${count} visits"></div>
-                            <div class="chart-date">${monthDay}</div>
-                        </div>
-                    `;
-                })
-                .join('');
+            try {
+                // Try both date ranges and use the one with more data
+                const chartQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('visit_date, visitor_count')
+                        .gte('visit_date', utcStartDate)
+                        .order('visit_date'),
+                    supabase
+                        .from('daily_visitors')
+                        .select('visit_date, visitor_count')
+                        .gte('visit_date', localStartDate)
+                        .order('visit_date')
+                ]);
+                
+                const utcData = chartQueries[0].data || [];
+                const localData = chartQueries[1].data || [];
+                
+                addDebugInfo('Chart Data Comparison', {
+                    utc: { count: utcData.length, data: utcData },
+                    local: { count: localData.length, data: localData }
+                });
+                
+                // Use the dataset with more records
+                const data = utcData.length >= localData.length ? utcData : localData;
+                const useUTC = utcData.length >= localData.length;
+                
+                // Create array for last 14 days using the same date strategy
+                const dailyCounts = {};
+                for (let i = 13; i >= 0; i--) {
+                    const date = useUTC ? getUTCDateString(i) : getLocalDateString(i);
+                    dailyCounts[date] = 0;
+                }
+                
+                // Sum visits by date
+                data.forEach(record => {
+                    if (dailyCounts.hasOwnProperty(record.visit_date)) {
+                        dailyCounts[record.visit_date] += record.visitor_count || 0;
+                    }
+                });
+                
+                addDebugInfo('Chart Daily Counts', dailyCounts);
+                
+                // Create chart bars with visible numbers
+                const chartEl = document.getElementById('visitsChart');
+                const maxCount = Math.max(...Object.values(dailyCounts), 1);
+                
+                chartEl.innerHTML = Object.entries(dailyCounts)
+                    .map(([date, count]) => {
+                        const height = (count / maxCount) * 180; // Leave space for numbers
+                        const dateObj = new Date(date);
+                        const monthDay = `${(dateObj.getMonth() + 1)}/${dateObj.getDate()}`;
+                        
+                        return `
+                            <div class="chart-day">
+                                <div class="chart-number">${count}</div>
+                                <div class="chart-bar" style="height: ${height}px" title="${date}: ${count} visits"></div>
+                                <div class="chart-date">${monthDay}</div>
+                            </div>
+                        `;
+                    })
+                    .join('');
+                
+            } catch (error) {
+                console.error('Error loading chart:', error);
+                addDebugInfo('Chart Error', { error: error.message, stack: error.stack });
+                throw error;
+            }
         }
         
         // Load top pages
         async function loadTopPages() {
-            const weekAgo = getDateString(7);
+            // Try both UTC and local date ranges
+            const utcWeekAgo = getUTCDateString(7);
+            const localWeekAgo = getLocalDateString(7);
             
-            const { data } = await supabase
-                .from('daily_visitors')
-                .select('page_url, visitor_count')
-                .gte('visit_date', weekAgo);
-            
-            // Sum visits by page
-            const pageCounts = {};
-            data?.forEach(record => {
-                try {
-                    const path = new URL(record.page_url).pathname;
-                    pageCounts[path] = (pageCounts[path] || 0) + (record.visitor_count || 0);
-                } catch (e) {
-                    pageCounts[record.page_url] = (pageCounts[record.page_url] || 0) + (record.visitor_count || 0);
+            try {
+                // Try both date ranges
+                const pageQueries = await Promise.all([
+                    supabase
+                        .from('daily_visitors')
+                        .select('page_url, visitor_count')
+                        .gte('visit_date', utcWeekAgo),
+                    supabase
+                        .from('daily_visitors')
+                        .select('page_url, visitor_count')
+                        .gte('visit_date', localWeekAgo)
+                ]);
+                
+                const utcData = pageQueries[0].data || [];
+                const localData = pageQueries[1].data || [];
+                
+                // Use the dataset with more records
+                const data = utcData.length >= localData.length ? utcData : localData;
+                
+                addDebugInfo('Top Pages Data', {
+                    utc: { count: utcData.length, weekAgo: utcWeekAgo },
+                    local: { count: localData.length, weekAgo: localWeekAgo },
+                    selected: utcData.length >= localData.length ? 'utc' : 'local',
+                    data: data
+                });
+                
+                // Sum visits by page
+                const pageCounts = {};
+                data.forEach(record => {
+                    try {
+                        const path = new URL(record.page_url).pathname;
+                        pageCounts[path] = (pageCounts[path] || 0) + (record.visitor_count || 0);
+                    } catch (e) {
+                        pageCounts[record.page_url] = (pageCounts[record.page_url] || 0) + (record.visitor_count || 0);
+                    }
+                });
+                
+                // Sort and get top 5
+                const topPages = Object.entries(pageCounts)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 5);
+                
+                addDebugInfo('Top Pages Results', { pageCounts, topPages });
+                
+                const topPagesEl = document.getElementById('topPages');
+                if (topPages.length > 0) {
+                    topPagesEl.innerHTML = topPages
+                        .map(([page, count]) => `
+                            <div class="list-item">
+                                <div class="list-label">${page}</div>
+                                <div class="list-value">${count}</div>
+                            </div>
+                        `).join('');
+                } else {
+                    topPagesEl.innerHTML = '<div class="list-item"><div class="list-label">No data available</div></div>';
                 }
-            });
-            
-            // Sort and get top 5
-            const topPages = Object.entries(pageCounts)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5);
-            
-            const topPagesEl = document.getElementById('topPages');
-            if (topPages.length > 0) {
-                topPagesEl.innerHTML = topPages
-                    .map(([page, count]) => `
-                        <div class="list-item">
-                            <div class="list-label">${page}</div>
-                            <div class="list-value">${count}</div>
-                        </div>
-                    `).join('');
-            } else {
-                topPagesEl.innerHTML = '<div class="list-item"><div class="list-label">No data available</div></div>';
+                
+            } catch (error) {
+                console.error('Error loading top pages:', error);
+                addDebugInfo('Top Pages Error', { error: error.message, stack: error.stack });
+                throw error;
             }
         }
         
