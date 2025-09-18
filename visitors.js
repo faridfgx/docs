@@ -33,13 +33,13 @@
         const today = getLocalDateString();
         localStorage.setItem('last_tracked_date', today);
         localStorage.setItem('last_tracked_url', window.location.href);
-        console.log('Marked tracked:', { today, url: window.location.href });
+        //console.log('Marked tracked:', { today, url: window.location.href });
     }
     
     // Track daily visit
     async function trackDailyVisit() {
         if (tracked || hasTrackedToday()) {
-            console.log('Already tracked today, skipping...');
+            //console.log('Already tracked today, skipping...');
             return;
         }
         tracked = true;
@@ -48,7 +48,7 @@
             const today = getLocalDateString(); // Use local date consistently
             const pageUrl = window.location.href;
             
-            console.log('Tracking visit:', { today, pageUrl });
+            //console.log('Tracking visit:', { today, pageUrl });
             
             // Try to insert new record or update existing one
             const { data, error } = await supabase.rpc('increment_daily_visitor', {
@@ -57,7 +57,7 @@
             });
             
             if (error) {
-                console.warn('Daily visitor tracking error:', error.message);
+                //console.warn('Daily visitor tracking error:', error.message);
                 
                 // Fallback: try direct insert/upsert
                 const { data: fallbackData, error: fallbackError } = await supabase
@@ -72,17 +72,17 @@
                     });
                 
                 if (fallbackError) {
-                    console.error('Fallback tracking failed:', fallbackError);
+                    //console.error('Fallback tracking failed:', fallbackError);
                 } else {
-                    console.log('Fallback tracking successful:', fallbackData);
+                    //console.log('Fallback tracking successful:', fallbackData);
                     markTrackedToday();
                 }
             } else {
-                console.log('Daily visit tracked successfully:', data);
+               // console.log('Daily visit tracked successfully:', data);
                 markTrackedToday();
             }
         } catch (error) {
-            console.warn('Failed to track daily visit:', error.message);
+            //console.warn('Failed to track daily visit:', error.message);
         }
     }
     
@@ -93,12 +93,12 @@
         
         const tryInit = async () => {
             attempts++;
-            console.log(`Tracking initialization attempt ${attempts}`);
+            //console.log(`Tracking initialization attempt ${attempts}`);
             
             if (typeof window.supabase !== 'undefined') {
                 try {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    console.log('Supabase client created successfully');
+                    //console.log('Supabase client created successfully');
                     await trackDailyVisit();
                     return;
                 } catch (error) {
@@ -109,7 +109,7 @@
             if (attempts < maxAttempts) {
                 setTimeout(tryInit, 250);
             } else {
-                console.warn('Daily visitor tracking failed: Supabase library not loaded');
+                //console.warn('Daily visitor tracking failed: Supabase library not loaded');
             }
         };
         
@@ -124,3 +124,4 @@
     }
     
 })();
+
