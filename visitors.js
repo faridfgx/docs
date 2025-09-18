@@ -24,7 +24,7 @@
         const currentUrl = window.location.href;
         const trackedUrl = localStorage.getItem('last_tracked_url');
         
-        console.log('Tracking check:', { today, trackedDate, currentUrl, trackedUrl });
+        //console.log('Tracking check:', { today, trackedDate, currentUrl, trackedUrl });
         return trackedDate === today && trackedUrl === currentUrl;
     }
     
@@ -102,7 +102,7 @@
                     await trackDailyVisit();
                     return;
                 } catch (error) {
-                    console.warn('Supabase initialization error:', error);
+                    //console.warn('Supabase initialization error:', error);
                 }
             }
             
@@ -124,4 +124,5 @@
     }
     
 })();
+
 
