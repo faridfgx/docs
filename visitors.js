@@ -8,43 +8,78 @@
     let supabase;
     let tracked = false;
     
-    // Check if already tracked today
-	function hasTrackedToday() {
-		const today = new Date().toDateString(); // e.g., "Fri Sep 05 2025"
-		const trackedDate = localStorage.getItem('last_tracked_date');
-		const currentUrl = window.location.href;
-		const trackedUrl = localStorage.getItem('last_tracked_url');
-		
-		return trackedDate === today && trackedUrl === currentUrl;
-	}
+    // Get local date string (matching dashboard logic)
+    function getLocalDateString() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
     
-    // Mark as tracked today
+    // Check if already tracked today (using local date)
+    function hasTrackedToday() {
+        const today = getLocalDateString();
+        const trackedDate = localStorage.getItem('last_tracked_date');
+        const currentUrl = window.location.href;
+        const trackedUrl = localStorage.getItem('last_tracked_url');
+        
+        console.log('Tracking check:', { today, trackedDate, currentUrl, trackedUrl });
+        return trackedDate === today && trackedUrl === currentUrl;
+    }
+    
+    // Mark as tracked today (using local date)
     function markTrackedToday() {
-        const today = new Date().toDateString();
+        const today = getLocalDateString();
         localStorage.setItem('last_tracked_date', today);
         localStorage.setItem('last_tracked_url', window.location.href);
+        console.log('Marked tracked:', { today, url: window.location.href });
     }
     
     // Track daily visit
     async function trackDailyVisit() {
-        if (tracked || hasTrackedToday()) return;
+        if (tracked || hasTrackedToday()) {
+            console.log('Already tracked today, skipping...');
+            return;
+        }
         tracked = true;
         
         try {
-            const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+            const today = getLocalDateString(); // Use local date consistently
             const pageUrl = window.location.href;
             
+            console.log('Tracking visit:', { today, pageUrl });
+            
             // Try to insert new record or update existing one
-            const { error } = await supabase.rpc('increment_daily_visitor', {
+            const { data, error } = await supabase.rpc('increment_daily_visitor', {
                 p_page_url: pageUrl,
                 p_visit_date: today
             });
             
             if (error) {
                 console.warn('Daily visitor tracking error:', error.message);
+                
+                // Fallback: try direct insert/upsert
+                const { data: fallbackData, error: fallbackError } = await supabase
+                    .from('daily_visitors')
+                    .upsert({
+                        page_url: pageUrl,
+                        visit_date: today,
+                        visitor_count: 1
+                    }, {
+                        onConflict: 'page_url,visit_date',
+                        ignoreDuplicates: false
+                    });
+                
+                if (fallbackError) {
+                    console.error('Fallback tracking failed:', fallbackError);
+                } else {
+                    console.log('Fallback tracking successful:', fallbackData);
+                    markTrackedToday();
+                }
             } else {
+                console.log('Daily visit tracked successfully:', data);
                 markTrackedToday();
-                console.log('Daily visit tracked successfully');
             }
         } catch (error) {
             console.warn('Failed to track daily visit:', error.message);
@@ -58,10 +93,12 @@
         
         const tryInit = async () => {
             attempts++;
+            console.log(`Tracking initialization attempt ${attempts}`);
             
             if (typeof window.supabase !== 'undefined') {
                 try {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    console.log('Supabase client created successfully');
                     await trackDailyVisit();
                     return;
                 } catch (error) {
