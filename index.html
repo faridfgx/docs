@@ -402,17 +402,23 @@
 <script src="footer.js"></script>
 <script src="modal.js"></script>
 <script src="popup.js" defer></script>
-<script defer src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-<script defer>
-	document.addEventListener("DOMContentLoaded", function() {
-		if (window.twemoji) {
-			twemoji.parse(document.body);
-		}
-	});
+<script>
+window.addEventListener("load", function() {
+  var s = document.createElement("script");
+  s.src = "https://twemoji.maxcdn.com/v/latest/twemoji.min.js";
+  s.onload = function() {
+    twemoji.parse(document.body);
+  };
+  s.onerror = function() {
+    console.warn("Twemoji failed to load");
+  };
+  document.body.appendChild(s);
+});
 </script>
 <!-- Add this to your website pages for visitor tracking -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="visitors.js"></script>
 
 </body>
+
 </html>
