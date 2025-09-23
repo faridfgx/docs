@@ -140,11 +140,18 @@
         }
     }
     </script>
-	<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    twemoji.parse(document.body); 
-  });
+window.addEventListener("load", function() {
+  var s = document.createElement("script");
+  s.src = "https://twemoji.maxcdn.com/v/latest/twemoji.min.js";
+  s.onload = function() {
+    twemoji.parse(document.body);
+  };
+  s.onerror = function() {
+    console.warn("Twemoji failed to load");
+  };
+  document.body.appendChild(s);
+});
 </script>
 
 </head>
@@ -589,4 +596,5 @@
 <script src="popup.js" defer></script>
 
 </body>
+
 </html>
