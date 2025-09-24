@@ -11,30 +11,51 @@ document.addEventListener('DOMContentLoaded', function() {
             const fileIcon = item.querySelector('.file-icon');
             const downloadBtn = item.querySelector('.download-btn');
             
-            // Check if it's a PDF file
-            if (fileIcon && fileIcon.classList.contains('pdf')) {
+            // Check if it's a PDF file - look for both 'pdf' class and 'PDF' text content
+            const isPDF = (fileIcon && fileIcon.classList.contains('pdf')) || 
+                         (fileIcon && fileIcon.textContent && fileIcon.textContent.includes('PDF'));
+            
+            if (isPDF && downloadBtn) {
                 // Check if device is mobile or mobile view
                 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                                 window.innerWidth <= 768;
                 
                 // Only add view button if NOT mobile
                 if (!isMobile) {
-                    // Create view button with same style as download button
-                    const viewBtn = document.createElement('button');
-                    viewBtn.className = 'download-btn';
-                    viewBtn.textContent = 'معاينة';
-                    
-                    // Get PDF URL from download button
-                    const pdfUrl = downloadBtn.getAttribute('onclick').match(/window\.open\('([^']+)'/)[1];
-                    
-                    // Add click event
-                    viewBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        openPDFViewer(pdfUrl, item.querySelector('.file-name').textContent);
-                    });
-                    
-                    // Insert view button before download button
-                    downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn);
+                    // Check if view button already exists to avoid duplicates
+                    if (!item.querySelector('.view-btn')) {
+                        // Create view button with same style as download button
+                        const viewBtn = document.createElement('button');
+                        viewBtn.className = 'download-btn view-btn';
+                        viewBtn.textContent = 'معاينة';
+                        
+                        // Get PDF URL from download button - handle different onclick patterns
+                        const onclickAttr = downloadBtn.getAttribute('onclick');
+                        let pdfUrl = null;
+                        
+                        if (onclickAttr) {
+                            // Try to extract URL from different patterns
+                            const urlMatch = onclickAttr.match(/window\.open\(['"]([^'"]+)['"]/) || 
+                                           onclickAttr.match(/open\(['"]([^'"]+)['"]/) ||
+                                           onclickAttr.match(/href=['"]([^'"]+)['"]/);
+                            
+                            if (urlMatch && urlMatch[1]) {
+                                pdfUrl = urlMatch[1];
+                            }
+                        }
+                        
+                        if (pdfUrl) {
+                            // Add click event
+                            viewBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const fileName = item.querySelector('.file-name').textContent || 'ملف PDF';
+                                openPDFViewer(pdfUrl, fileName);
+                            });
+                            
+                            // Insert view button before download button
+                            downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn);
+                        }
+                    }
                 }
             }
         });
@@ -102,7 +123,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             onerror="showPDFError('${pdfUrl}', '${fileName}')">
                         </iframe>
                         <div class="pdf-popup-controls">
-
+                            <button onclick="window.open('${pdfUrl}', '_blank')" class="pdf-control-btn">
+                                🔗 فتح في نافذة جديدة
+                            </button>
+                            <button onclick="downloadPDF('${pdfUrl}', '${fileName}')" class="pdf-control-btn">
+                                💾 تحميل
+                            </button>
                             <button onclick="closePDFPopup()" class="pdf-control-btn secondary">
                                 ❌ إغلاق
                             </button>
@@ -443,6 +469,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function init() {
         addStyles();
         addViewButtons();
+        
+        // Re-run addViewButtons when collapsible sections are opened (for notes page)
+        const collapsibleHeaders = document.querySelectorAll('.collapsible-section h4');
+        collapsibleHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                // Wait for the section to expand, then add view buttons
+                setTimeout(() => {
+                    addViewButtons();
+                }, 300);
+            });
+        });
         
         // Add keyboard support for closing popup
         document.addEventListener('keydown', function(e) {
