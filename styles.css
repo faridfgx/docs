@@ -1684,9 +1684,21 @@ span .emoji {
     font-weight: bold;
     color: #333;
     text-decoration: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+
+    /* Button-like styles */
+    padding: 6px 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-brand:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .nav-menu {
@@ -1938,4 +1950,5 @@ body.dropdown-open {
     .dropdown-overlay.show {
         display: block;
     }
+
 }
