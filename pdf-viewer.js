@@ -123,12 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             onerror="showPDFError('${pdfUrl}', '${fileName}')">
                         </iframe>
                         <div class="pdf-popup-controls">
-                            <button onclick="window.open('${pdfUrl}', '_blank')" class="pdf-control-btn">
-                                🔗 فتح في نافذة جديدة
-                            </button>
-                            <button onclick="downloadPDF('${pdfUrl}', '${fileName}')" class="pdf-control-btn">
-                                💾 تحميل
-                            </button>
+
                             <button onclick="closePDFPopup()" class="pdf-control-btn secondary">
                                 ❌ إغلاق
                             </button>
@@ -546,3 +541,4 @@ window.PDFViewer = {
         `;
     }
 };
+
