@@ -22,39 +22,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Only add view button if NOT mobile
                 if (!isMobile) {
-                    // Check if view button already exists to avoid duplicates
-                    if (!item.querySelector('.view-btn')) {
-                        // Create view button with same style as download button
-                        const viewBtn = document.createElement('button');
-                        viewBtn.className = 'viewpdf-btn';
-                        viewBtn.textContent = 'معاينة';
+                    // Enhanced duplicate check - remove ALL existing view buttons first
+                    const existingViewBtns = item.querySelectorAll('.viewpdf-btn');
+                    existingViewBtns.forEach(btn => btn.remove());
+                    
+                    // Create view button with same style as download button
+                    const viewBtn = document.createElement('button');
+                    viewBtn.className = 'viewpdf-btn';
+                    viewBtn.textContent = 'معاينة';
+                    
+                    // Add unique identifier to prevent duplicates
+                    viewBtn.setAttribute('data-pdf-viewer-btn', 'true');
+                    
+                    // Get PDF URL from download button - handle different onclick patterns
+                    const onclickAttr = downloadBtn.getAttribute('onclick');
+                    let pdfUrl = null;
+                    
+                    if (onclickAttr) {
+                        // Try to extract URL from different patterns
+                        const urlMatch = onclickAttr.match(/window\.open\(['"]([^'"]+)['"]/) || 
+                                       onclickAttr.match(/open\(['"]([^'"]+)['"]/) ||
+                                       onclickAttr.match(/href=['"]([^'"]+)['"]/);
                         
-                        // Get PDF URL from download button - handle different onclick patterns
-                        const onclickAttr = downloadBtn.getAttribute('onclick');
-                        let pdfUrl = null;
-                        
-                        if (onclickAttr) {
-                            // Try to extract URL from different patterns
-                            const urlMatch = onclickAttr.match(/window\.open\(['"]([^'"]+)['"]/) || 
-                                           onclickAttr.match(/open\(['"]([^'"]+)['"]/) ||
-                                           onclickAttr.match(/href=['"]([^'"]+)['"]/);
-                            
-                            if (urlMatch && urlMatch[1]) {
-                                pdfUrl = urlMatch[1];
-                            }
+                        if (urlMatch && urlMatch[1]) {
+                            pdfUrl = urlMatch[1];
                         }
+                    }
+                    
+                    if (pdfUrl) {
+                        // Add click event
+                        viewBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const fileName = item.querySelector('.file-name').textContent || 'ملف PDF';
+                            openPDFViewer(pdfUrl, fileName);
+                        });
                         
-                        if (pdfUrl) {
-                            // Add click event
-                            viewBtn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                const fileName = item.querySelector('.file-name').textContent || 'ملف PDF';
-                                openPDFViewer(pdfUrl, fileName);
-                            });
-                            
-                            // Insert view button before download button
-                            downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn);
-                        }
+                        // Insert view button before download button (consistent position)
+                        downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn);
+                        
+                        // Mark this item as processed
+                        item.setAttribute('data-pdf-viewer-processed', 'true');
                     }
                 }
             }
@@ -123,7 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             onerror="showPDFError('${pdfUrl}', '${fileName}')">
                         </iframe>
                         <div class="pdf-popup-controls">
-
                             <button onclick="closePDFPopup()" class="pdf-control-btn secondary">
                                 ❌ إغلاق
                             </button>
@@ -387,15 +393,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 font-weight: 600;
             }
             
-            /* View Button Styling */
-            .view-btn {
+            /* View Button Styling - FIXED CLASS NAME */
+            .viewpdf-btn {
                 background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
                 margin-left: 8px !important;
+                color: white !important;
+                border: none !important;
+                padding: 6px 12px !important;
+                border-radius: 4px !important;
+                cursor: pointer !important;
+                font-size: 12px !important;
+                transition: all 0.3s ease !important;
             }
             
-            .view-btn:hover {
+            .viewpdf-btn:hover {
                 background: linear-gradient(135deg, #218838 0%, #1abc9c 100%) !important;
-                transform: translateY(-2px);
+                transform: translateY(-2px) !important;
             }
             
             /* Responsive Design */
@@ -433,10 +446,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     min-width: 120px;
                 }
                 
-                .view-btn {
+                .viewpdf-btn {
                     margin-left: 5px !important;
-                    font-size: 12px !important;
-                    padding: 6px 12px !important;
+                    font-size: 11px !important;
+                    padding: 5px 10px !important;
                 }
             }
             
@@ -463,6 +476,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the script
     function init() {
         addStyles();
+        
+        // Add buttons on initial load
         addViewButtons();
         
         // Re-run addViewButtons when collapsible sections are opened (for notes page)
@@ -471,9 +486,37 @@ document.addEventListener('DOMContentLoaded', function() {
             header.addEventListener('click', function() {
                 // Wait for the section to expand, then add view buttons
                 setTimeout(() => {
-                    addViewButtons();
+                    addViewButtons(); // Now has proper duplicate prevention
                 }, 300);
             });
+        });
+        
+        // Watch for dynamic content changes (if content is loaded via AJAX)
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    // Check if new file items were added
+                    const hasNewFileItems = Array.from(mutation.addedNodes).some(node => 
+                        node.nodeType === 1 && (
+                            node.classList?.contains('file-item') || 
+                            node.querySelector?.('.file-item')
+                        )
+                    );
+                    
+                    if (hasNewFileItems) {
+                        // Delay to ensure DOM is fully updated
+                        setTimeout(() => {
+                            addViewButtons();
+                        }, 100);
+                    }
+                }
+            });
+        });
+        
+        // Start observing
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
         
         // Add keyboard support for closing popup
@@ -541,5 +584,3 @@ window.PDFViewer = {
         `;
     }
 };
-
-
