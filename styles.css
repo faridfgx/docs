@@ -511,7 +511,38 @@ span .emoji {
     background-color: #ccc !important;
     transform: none !important;
 }
+.viewpdf-btn {
+    background: var(--success-color);
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-left: 0.5rem;
+    box-shadow: var(--shadow-sm);
+}
 
+.viewpdf-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.viewpdf-btn.disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    transform: none !important;
+}
+
+.viewpdf-btn.disabled:hover {
+    background-color: #ccc !important;
+    transform: none !important;
+}
 /* ===== RATING SYSTEM ===== */
 .rating-section {
     display: flex;
@@ -1952,3 +1983,4 @@ body.dropdown-open {
     }
 
 }
+
