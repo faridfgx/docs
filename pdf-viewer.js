@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                         
                         // Insert view button before download button (consistent position)
-                        downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn);
+                        downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn.nextSibling);
                         
                         // Mark this item as processed
                         item.setAttribute('data-pdf-viewer-processed', 'true');
@@ -568,4 +568,5 @@ window.PDFViewer = {
         `;
     }
 };
+
 
