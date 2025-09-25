@@ -512,7 +512,7 @@ span .emoji {
     transform: none !important;
 }
 .viewpdf-btn {
-    background: var(--success-color);
+    background: var(--primary-color, #3b82f6); /* Blue instead of success-color */
     color: var(--white);
     border: none;
     padding: 0.75rem 1.25rem;
@@ -524,13 +524,11 @@ span .emoji {
     margin-left: 0.5rem;
     box-shadow: var(--shadow-sm);
 }
-
 .viewpdf-btn:hover {
-    background: #059669;
+    background: #2563eb; /* Darker blue hover state */
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
 }
-
 .viewpdf-btn.disabled {
     background-color: #ccc !important;
     color: #666 !important;
@@ -538,7 +536,6 @@ span .emoji {
     opacity: 0.6;
     transform: none !important;
 }
-
 .viewpdf-btn.disabled:hover {
     background-color: #ccc !important;
     transform: none !important;
@@ -1983,4 +1980,5 @@ body.dropdown-open {
     }
 
 }
+
 
