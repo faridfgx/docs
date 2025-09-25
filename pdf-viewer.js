@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!item.querySelector('.view-btn')) {
                         // Create view button with same style as download button
                         const viewBtn = document.createElement('button');
-                        viewBtn.className = 'download-btn view-btn';
+                        viewBtn.className = 'viewpdf-btn';
                         viewBtn.textContent = 'معاينة';
                         
                         // Get PDF URL from download button - handle different onclick patterns
@@ -541,4 +541,5 @@ window.PDFViewer = {
         `;
     }
 };
+
 
