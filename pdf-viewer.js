@@ -393,23 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 font-weight: 600;
             }
             
-            /* View Button Styling - FIXED CLASS NAME */
-            .viewpdf-btn {
-                background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
-                margin-left: 8px !important;
-                color: white !important;
-                border: none !important;
-                padding: 6px 12px !important;
-                border-radius: 4px !important;
-                cursor: pointer !important;
-                font-size: 12px !important;
-                transition: all 0.3s ease !important;
-            }
-            
-            .viewpdf-btn:hover {
-                background: linear-gradient(135deg, #218838 0%, #1abc9c 100%) !important;
-                transform: translateY(-2px) !important;
-            }
+
             
             /* Responsive Design */
             @media (max-width: 768px) {
@@ -584,3 +568,4 @@ window.PDFViewer = {
         `;
     }
 };
+
