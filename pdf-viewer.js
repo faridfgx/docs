@@ -22,46 +22,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Only add view button if NOT mobile
                 if (!isMobile) {
-                    // Enhanced duplicate check - remove ALL existing view buttons first
-                    const existingViewBtns = item.querySelectorAll('.viewpdf-btn');
-                    existingViewBtns.forEach(btn => btn.remove());
+                    // Check if this item already has a view button (prevent duplicates)
+                    const existingViewBtn = item.querySelector('.viewpdf-btn[data-pdf-viewer-btn="true"]');
                     
-                    // Create view button with same style as download button
-                    const viewBtn = document.createElement('button');
-                    viewBtn.className = 'viewpdf-btn';
-                    viewBtn.textContent = 'معاينة';
-                    
-                    // Add unique identifier to prevent duplicates
-                    viewBtn.setAttribute('data-pdf-viewer-btn', 'true');
-                    
-                    // Get PDF URL from download button - handle different onclick patterns
-                    const onclickAttr = downloadBtn.getAttribute('onclick');
-                    let pdfUrl = null;
-                    
-                    if (onclickAttr) {
-                        // Try to extract URL from different patterns
-                        const urlMatch = onclickAttr.match(/window\.open\(['"]([^'"]+)['"]/) || 
-                                       onclickAttr.match(/open\(['"]([^'"]+)['"]/) ||
-                                       onclickAttr.match(/href=['"]([^'"]+)['"]/);
+                    if (!existingViewBtn) {
+                        // Create view button with same style as download button
+                        const viewBtn = document.createElement('button');
+                        viewBtn.className = 'viewpdf-btn';
+                        viewBtn.textContent = 'معاينة';
                         
-                        if (urlMatch && urlMatch[1]) {
-                            pdfUrl = urlMatch[1];
+                        // Add unique identifier to prevent duplicates
+                        viewBtn.setAttribute('data-pdf-viewer-btn', 'true');
+                        
+                        // Get PDF URL from download button - handle different onclick patterns
+                        const onclickAttr = downloadBtn.getAttribute('onclick');
+                        let pdfUrl = null;
+                        
+                        if (onclickAttr) {
+                            // Try to extract URL from different patterns
+                            const urlMatch = onclickAttr.match(/window\.open\(['"]([^'"]+)['"]/) || 
+                                           onclickAttr.match(/open\(['"]([^'"]+)['"]/) ||
+                                           onclickAttr.match(/href=['"]([^'"]+)['"]/);
+                            
+                            if (urlMatch && urlMatch[1]) {
+                                pdfUrl = urlMatch[1];
+                            }
                         }
-                    }
-                    
-                    if (pdfUrl) {
-                        // Add click event
-                        viewBtn.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            const fileName = item.querySelector('.file-name').textContent || 'ملف PDF';
-                            openPDFViewer(pdfUrl, fileName);
-                        });
                         
-                        // Insert view button before download button (consistent position)
-                        downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn.nextSibling);
-                        
-                        // Mark this item as processed
-                        item.setAttribute('data-pdf-viewer-processed', 'true');
+                        if (pdfUrl) {
+                            // Add click event
+                            viewBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const fileName = item.querySelector('.file-name').textContent || 'ملف PDF';
+                                openPDFViewer(pdfUrl, fileName);
+                            });
+                            
+                            // Insert view button before download button (consistent position)
+                            downloadBtn.parentNode.insertBefore(viewBtn, downloadBtn.nextSibling);
+                            
+                            // Mark this item as processed
+                            item.setAttribute('data-pdf-viewer-processed', 'true');
+                        }
                     }
                 }
             }
@@ -470,7 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
             header.addEventListener('click', function() {
                 // Wait for the section to expand, then add view buttons
                 setTimeout(() => {
-                    addViewButtons(); // Now has proper duplicate prevention
+                    addViewButtons(); // Now properly prevents duplicates
                 }, 300);
             });
         });
@@ -568,5 +569,3 @@ window.PDFViewer = {
         `;
     }
 };
-
-
