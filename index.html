@@ -370,7 +370,7 @@
             backdrop-filter: blur(6px);">
   <div id="popup-box" 
        style="background:linear-gradient(145deg,#ffffff,#f4f7fb); padding:35px; border-radius:20px; 
-              max-width:460px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.25);
+              max-width:500px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.25);
               transform:scale(0.85); opacity:0; transition:all 0.4s ease;">
     <h2 style="margin-bottom:15px; color:#1e3c72; font-size:22px; font-weight:700;">
       تنبيه هام
@@ -379,17 +379,45 @@
       جميع الوثائق المتوفرة في هذا الموقع هي نماذج فقط، وقد تتضمن بعض الأخطاء. 
       يُرجى مراجعتها والتأكد من صحتها قبل الاستعمال.
     </p>
+    
+    <div style="background:#e8f4f8; padding:20px; border-radius:12px; margin-bottom:25px; direction:rtl; text-align:right;">
+      <p style="font-size:16px; color:#1e3c72; margin:0 0 12px; font-weight:600;">
+        إذا أعجبك الموقع أو استفدت منه �
+      </p>
+      <p style="font-size:15px; line-height:1.7; color:#2c3e50; margin:0 0 15px;">
+        أرجو التصويت لي في مسابقة درع كليك لدعمي:
+      </p>
+      <div style="direction:rtl; text-align:right; color:#2c3e50; font-size:14px; margin:0 0 15px;">
+        <div style="margin-bottom:8px;">1. أدخل بريدك الإلكتروني وولايتك</div>
+        <div style="margin-bottom:8px;">2. اختر اسمي من القائمة (الأستاذ: مزان فريد)</div>
+        <div>3. اضغط على زر الإرسال ✓</div>
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfQSOrHS44sK7P_mRLU7lzuOUcuMJN7HhQsJHNSH6ojI0m7BA/viewform?fbclid=IwVERDUANbENJleHRuA2FlbQIxMAABHigeBaR7UDEcY9D_URDZfKlWPovc1JibSEk9NAHBo5pkVi0lJGdWekfXKPaW_aem_0YdFf656OGckLMROfBkBMw" 
+         target="_blank"
+         style="display:inline-block; padding:12px 24px; background:linear-gradient(135deg,#27ae60,#229954); 
+                color:white; text-decoration:none; border-radius:8px; font-weight:600; font-size:15px;
+                box-shadow:0 4px 12px rgba(39,174,96,0.3); transition:transform 0.2s, box-shadow 0.2s;"
+         onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(39,174,96,0.4)';"
+         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(39,174,96,0.3)';">
+        رابط التصويت
+      </a>
+    </div>
+    
     <button onclick="closePopup()" 
             style="padding:12px 28px; 
                    background:linear-gradient(135deg,#1e3c72,#2a5298); 
                    color:white; border:none; border-radius:10px; 
                    cursor:pointer; font-size:16px; font-weight:600;
                    box-shadow:0 4px 12px rgba(30,60,114,0.3);
-                   transition:transform 0.2s, box-shadow 0.2s;">
+                   transition:transform 0.2s, box-shadow 0.2s;"
+            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(30,60,114,0.4)';"
+            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(30,60,114,0.3)';">
       تم الاطلاع
     </button>
   </div>
 </div>
+
+
 
 <!-- Footer popup overlay (for footer links) -->
 <div class="popup-overlay" id="popup-overlay">
@@ -423,5 +451,6 @@ window.addEventListener("load", function() {
 </body>
 
 </html>
+
 
 
