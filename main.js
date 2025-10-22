@@ -2,12 +2,25 @@ const supabaseConfig = {
     url: 'https://ksuolzzhpssazyfwbkeg.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzdW9senpocHNzYXp5Zndia2VnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU1NTcxMDQsImV4cCI6MjA3MTEzMzEwNH0.6ltEPGMJyOZbXmRjNCGZJxYmDDwkiFZy4WzawSTCpFA' 
 };
+
 class GlobalRatingSystem {
     constructor() {
         this.supabase = null;
         this.userFingerprint = null;
         this.lastDownloadTime = 0;
         this.downloadCooldown = 10000; // 10 seconds in milliseconds
+        
+        // Ad configuration
+        this.adConfig = {
+            publisherId: 'ca-pub-3226170133878150',
+            adSlotId: '2205854958',
+            minWaitTime: 6000,  // Minimum 5 seconds
+            maxWaitTime: 10000, // Maximum 10 seconds (auto-close)
+            skipAfter: 6000     // Can close after 5 seconds
+        };
+        
+        this.pendingDownload = null;
+        this.adModalCreated = false;
         
         // Cache system
         this.cache = {
@@ -22,14 +35,17 @@ class GlobalRatingSystem {
 
     async init() {
         try {
-            // Import Supabase
-            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm')
+            // Import Supabase from CDN with better dependency resolution
+            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
             
             // Initialize Supabase client
             this.supabase = createClient(supabaseConfig.url, supabaseConfig.anonKey);
             
             // Generate user fingerprint
             this.userFingerprint = await this.generateUserFingerprint();
+            
+            // Create ad modal
+            this.createAdModal();
             
             // Wait for DOM to be fully loaded
             if (document.readyState === 'loading') {
@@ -41,6 +57,253 @@ class GlobalRatingSystem {
         } catch (error) {
             console.error('Error initializing rating system:', error);
             this.showMessage('خطأ في تحميل نظام التقييم', 'error');
+        }
+    }
+
+    createAdModal() {
+        if (this.adModalCreated) return;
+        
+        const modalHTML = `
+            <div id="download-ad-modal" class="ad-modal" style="display: none;">
+                <div class="ad-modal-overlay"></div>
+                <div class="ad-modal-content">
+                    <div class="ad-modal-header">
+                        <h3> جاري تحضير التحميل...</h3>
+                        <p class="countdown-text">
+                            سيبدأ التحميل تلقائياً بعد <span id="auto-countdown" class="countdown-number">10</span> ثواني
+                        </p>
+                    </div>
+                    
+                    <!-- AdSense Ad Unit -->
+                    <div class="ad-container">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="${this.adConfig.publisherId}"
+                             data-ad-slot="${this.adConfig.adSlotId}"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                    </div>
+                    
+                    <div class="ad-modal-footer">
+                        <button id="close-ad-btn" class="close-ad-btn" disabled>
+                            <span class="btn-icon">⏱️</span>
+                            <span id="close-countdown-text">يمكنك الإغلاق بعد <span id="close-countdown">5</span> ثواني</span>
+                        </button>
+                        <p class="ad-info"> دعم الموقع من خلال مشاهدة الإعلان</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.addAdModalStyles();
+        this.attachAdModalListeners();
+        this.adModalCreated = true;
+    }
+
+    addAdModalStyles() {
+        const styles = `
+            <style>
+                .ad-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 999999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'Noto Sans Arabic', sans-serif;
+                }
+                
+                .ad-modal-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.85);
+                    backdrop-filter: blur(8px);
+                }
+                
+                .ad-modal-content {
+                    position: relative;
+                    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+                    border-radius: 20px;
+                    padding: 35px;
+                    max-width: 800px;
+                    width: 90%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+                    animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    direction: rtl;
+                }
+                
+                @keyframes modalSlideIn {
+                    from {
+                        transform: translateY(-100px) scale(0.9);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0) scale(1);
+                        opacity: 1;
+                    }
+                }
+                
+                .ad-modal-header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                }
+                
+                .ad-modal-header h3 {
+                    color: #1e3c72;
+                    font-size: 26px;
+                    margin-bottom: 12px;
+                    font-weight: 700;
+                }
+                
+                .countdown-text {
+                    color: #555;
+                    font-size: 17px;
+                    line-height: 1.6;
+                }
+                
+                .countdown-number {
+                    color: #e74c3c;
+                    font-weight: bold;
+                    font-size: 20px;
+                    display: inline-block;
+                    min-width: 30px;
+                    text-align: center;
+                }
+                
+                .ad-container {
+                    min-height: 280px;
+                    margin: 25px 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f5f7fa;
+                    border-radius: 12px;
+                    padding: 25px;
+                    border: 2px dashed #cbd5e0;
+                    position: relative;
+                }
+                
+                .ad-container::before {
+                    content: "📢 إعلان";
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    background: rgba(255, 255, 255, 0.9);
+                    padding: 4px 12px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    color: #666;
+                    font-weight: 600;
+                }
+                
+                .ad-modal-footer {
+                    text-align: center;
+                    margin-top: 25px;
+                }
+                
+                .close-ad-btn {
+                    width: 100%;
+                    padding: 15px 30px;
+                    border: none;
+                    border-radius: 12px;
+                    font-size: 18px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                }
+                
+                .close-ad-btn:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
+                    transform: scale(0.98);
+                }
+                
+                .close-ad-btn:not(:disabled) {
+                    background: linear-gradient(135deg, #27ae60, #229954);
+                    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+                    animation: pulseButton 2s infinite;
+                }
+                
+                .close-ad-btn:not(:disabled):hover {
+                    background: linear-gradient(135deg, #229954, #1e8449);
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
+                }
+                
+                @keyframes pulseButton {
+                    0%, 100% {
+                        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+                    }
+                    50% {
+                        box-shadow: 0 4px 25px rgba(39, 174, 96, 0.6);
+                    }
+                }
+                
+                .btn-icon {
+                    font-size: 22px;
+                }
+                
+                .ad-info {
+                    margin-top: 15px;
+                    color: #7f8c8d;
+                    font-size: 14px;
+                }
+                
+                /* Responsive */
+                @media (max-width: 768px) {
+                    .ad-modal-content {
+                        padding: 25px 20px;
+                        width: 95%;
+                    }
+                    
+                    .ad-modal-header h3 {
+                        font-size: 22px;
+                    }
+                    
+                    .countdown-text {
+                        font-size: 15px;
+                    }
+                    
+                    .close-ad-btn {
+                        font-size: 16px;
+                        padding: 12px 20px;
+                    }
+                }
+            </style>
+        `;
+        
+        if (!document.getElementById('ad-modal-styles')) {
+            const styleEl = document.createElement('div');
+            styleEl.id = 'ad-modal-styles';
+            styleEl.innerHTML = styles;
+            document.head.appendChild(styleEl);
+        }
+    }
+
+    attachAdModalListeners() {
+        const closeBtn = document.getElementById('close-ad-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                if (!closeBtn.disabled) {
+                    this.startDownload();
+                }
+            });
         }
     }
 
@@ -77,11 +340,9 @@ class GlobalRatingSystem {
         return validIds;
     }
 
-    // Optimized data loading with Supabase
     async loadAllDataOptimized(fileIds) {
         if (fileIds.length === 0) return;
 
-        // Check cache first
         const now = Date.now();
         const isCacheValid = (now - this.cache.lastUpdate) < this.cache.cacheDuration;
         
@@ -92,30 +353,23 @@ class GlobalRatingSystem {
         }
 
         try {
-            // Load data in parallel
             await Promise.all([
                 this.loadRatingsData(fileIds),
                 this.loadDownloadsData(fileIds)
             ]);
             
-            // Update cache timestamp
             this.cache.lastUpdate = now;
-            
-            // Update all displays
             this.updateAllDisplays(fileIds);
             
         } catch (error) {
             console.error('Error loading data optimized:', error);
-            // Fallback to minimal requests
             await this.loadDataMinimal(fileIds);
         }
     }
 
-    // Load ratings data from Supabase
     async loadRatingsData(fileIds) {
         try {
-            // Supabase can handle large IN queries better than Firestore
-            const chunks = this.chunkArray(fileIds, 100); // Larger chunks possible
+            const chunks = this.chunkArray(fileIds, 100);
             
             const promises = chunks.map(async (chunk) => {
                 const { data, error } = await this.supabase
@@ -128,7 +382,6 @@ class GlobalRatingSystem {
                     return [];
                 }
                 
-                // Cache the results
                 data.forEach(rating => {
                     this.cache.ratings.set(rating.id, rating);
                 });
@@ -143,7 +396,6 @@ class GlobalRatingSystem {
         }
     }
 
-    // Load downloads data from Supabase
     async loadDownloadsData(fileIds) {
         try {
             const chunks = this.chunkArray(fileIds, 100);
@@ -159,7 +411,6 @@ class GlobalRatingSystem {
                     return [];
                 }
                 
-                // Cache the results
                 data.forEach(download => {
                     this.cache.downloads.set(download.id, download);
                 });
@@ -174,11 +425,9 @@ class GlobalRatingSystem {
         }
     }
 
-    // Minimal fallback loading
     async loadDataMinimal(fileIds) {
         console.warn('Using minimal fallback loading');
         
-        // Only load data for visible files (first 20)
         const visibleFileIds = fileIds.slice(0, 20);
         
         try {
@@ -189,7 +438,6 @@ class GlobalRatingSystem {
             
             this.updateAllDisplays(visibleFileIds);
             
-            // Load remaining files in background with delay
             if (fileIds.length > 20) {
                 setTimeout(() => {
                     const remainingIds = fileIds.slice(20);
@@ -200,50 +448,40 @@ class GlobalRatingSystem {
             
         } catch (error) {
             console.error('Minimal loading failed:', error);
-            // Set default values for all files
             this.setDefaultValues(fileIds);
         }
     }
 
-    // Update displays from cache
     updateDisplaysFromCache(fileIds) {
         fileIds.forEach(fileId => {
-            // Update ratings
             const ratingData = this.cache.ratings.get(fileId) || { average: 0, count: 0 };
             this.updateRatingDisplay(fileId, ratingData);
             
-            // Check if user has already rated
             if (ratingData.raters && ratingData.raters.includes(this.userFingerprint)) {
                 this.disableRating(fileId);
             }
             
-            // Update downloads
             const downloadData = this.cache.downloads.get(fileId);
             const count = downloadData ? (downloadData.count || 0) : 0;
             this.updateDownloadDisplay(fileId, count);
         });
     }
 
-    // Update all displays after loading
     updateAllDisplays(fileIds) {
         fileIds.forEach(fileId => {
-            // Update ratings
             const ratingData = this.cache.ratings.get(fileId) || { average: 0, count: 0 };
             this.updateRatingDisplay(fileId, ratingData);
             
-            // Check if user has already rated
             if (ratingData.raters && ratingData.raters.includes(this.userFingerprint)) {
                 this.disableRating(fileId);
             }
             
-            // Update downloads
             const downloadData = this.cache.downloads.get(fileId);
             const count = downloadData ? (downloadData.count || 0) : 0;
             this.updateDownloadDisplay(fileId, count);
         });
     }
 
-    // Set default values when loading fails
     setDefaultValues(fileIds) {
         fileIds.forEach(fileId => {
             this.updateRatingDisplay(fileId, { average: 0, count: 0 });
@@ -252,7 +490,6 @@ class GlobalRatingSystem {
     }
 
     async generateUserFingerprint() {
-        // Create a simple fingerprint based on browser characteristics
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         ctx.textBaseline = 'top';
@@ -267,12 +504,11 @@ class GlobalRatingSystem {
             canvas.toDataURL()
         ].join('|');
         
-        // Simple hash function
         let hash = 0;
         for (let i = 0; i < fingerprint.length; i++) {
             const char = fingerprint.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // Convert to 32-bit integer
+            hash = hash & hash;
         }
         
         return Math.abs(hash).toString();
@@ -287,13 +523,11 @@ class GlobalRatingSystem {
     }
 
     attachEventListeners() {
-        // Only attach to files with valid file IDs
         const fileItems = document.querySelectorAll('.file-item[data-file-id]');
         
         fileItems.forEach(item => {
             const fileId = item.dataset.fileId;
             
-            // Skip if no file ID or empty file ID
             if (!fileId || fileId.trim() === '') {
                 return;
             }
@@ -301,7 +535,6 @@ class GlobalRatingSystem {
             const stars = item.querySelectorAll('.star');
             
             stars.forEach(star => {
-                // Remove existing listeners to prevent duplicates
                 const newStar = star.cloneNode(true);
                 star.parentNode.replaceChild(newStar, star);
                 
@@ -336,62 +569,139 @@ class GlobalRatingSystem {
         downloadButtons.forEach(button => {
             const fileItem = button.closest('.file-item');
             
-            // Skip if no file item found
             if (!fileItem) {
                 return;
             }
             
             const fileId = fileItem.dataset.fileId;
             
-            // Skip if no file ID or empty file ID
             if (!fileId || fileId.trim() === '') {
                 return;
             }
             
             const originalOnclick = button.getAttribute('onclick');
             
-            // Skip if no onclick attribute
             if (!originalOnclick) {
                 return;
             }
             
-            // Remove original onclick to prevent conflicts
             button.removeAttribute('onclick');
             
-            // Create new click handler
             const clickHandler = (e) => {
                 e.preventDefault();
-                this.handleDownload(fileId.trim(), originalOnclick);
+                e.stopPropagation();
+                
+                // Store the download action
+                this.pendingDownload = {
+                    fileId: fileId.trim(),
+                    action: originalOnclick
+                };
+                
+                // Show ad modal
+                this.showAdModal();
             };
             
-            // Remove existing listeners and add new one
             button.removeEventListener('click', clickHandler);
             button.addEventListener('click', clickHandler);
         });
     }
 
-    async handleDownload(fileId, originalOnclick) {
+    showAdModal() {
+        const modal = document.getElementById('download-ad-modal');
+        if (!modal) return;
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        modal.style.display = 'flex';
+        
+        // Load AdSense ad
+        this.loadAd();
+        
+        // Start countdown timers
+        this.startAdCountdowns();
+    }
+
+    loadAd() {
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.warn('AdSense not loaded:', e);
+        }
+    }
+
+    startAdCountdowns() {
+        const autoCountdownEl = document.getElementById('auto-countdown');
+        const closeCountdownEl = document.getElementById('close-countdown');
+        const closeCountdownText = document.getElementById('close-countdown-text');
+        const closeBtn = document.getElementById('close-ad-btn');
+        
+        let autoCounter = Math.floor(this.adConfig.maxWaitTime / 1000); // 10 seconds
+        let closeCounter = Math.floor(this.adConfig.skipAfter / 1000);  // 5 seconds
+        
+        // Update initial display
+        if (autoCountdownEl) autoCountdownEl.textContent = autoCounter;
+        if (closeCountdownEl) closeCountdownEl.textContent = closeCounter;
+        
+        // Auto-close countdown (10 seconds)
+        const autoInterval = setInterval(() => {
+            autoCounter--;
+            if (autoCountdownEl) {
+                autoCountdownEl.textContent = autoCounter;
+            }
+            
+            if (autoCounter <= 0) {
+                clearInterval(autoInterval);
+                this.startDownload();
+            }
+        }, 1000);
+        
+        // Close button countdown (5 seconds)
+        const closeInterval = setInterval(() => {
+            closeCounter--;
+            if (closeCountdownEl) {
+                closeCountdownEl.textContent = closeCounter;
+            }
+            
+            if (closeCounter <= 0) {
+                clearInterval(closeInterval);
+                if (closeBtn) {
+                    closeBtn.disabled = false;
+                    closeBtn.querySelector('.btn-icon').textContent = '';
+                    closeCountdownText.innerHTML = 'ابدأ التحميل الآن';
+                }
+            }
+        }, 1000);
+    }
+
+    startDownload() {
+        if (!this.pendingDownload) return;
+        
         const now = Date.now();
         const timeRemaining = this.downloadCooldown - (now - this.lastDownloadTime);
 
+        // Check cooldown
         if (timeRemaining > 0 && this.lastDownloadTime > 0) {
             const seconds = Math.ceil(timeRemaining / 1000);
+            this.closeAdModal();
             this.showMessage(`يرجى الانتظار ${seconds} ثانية قبل تحميل ملف آخر`, 'warning');
             this.startCooldownTimer(timeRemaining);
             return;
         }
 
         try {
-            // Set last download time first
             this.lastDownloadTime = now;
             
             // Execute original download
-            eval(originalOnclick);
+            eval(this.pendingDownload.action);
             
-            // Update download count with optimized approach
-            this.incrementDownloadCountOptimized(fileId).catch(error => {
+            // Update download count
+            this.incrementDownloadCountOptimized(this.pendingDownload.fileId).catch(error => {
                 console.warn('Could not update download count:', error.message);
             });
+            
+            // Close modal
+            this.closeAdModal();
             
             // Start cooldown timer
             this.startCooldownTimer(this.downloadCooldown);
@@ -400,24 +710,32 @@ class GlobalRatingSystem {
             
         } catch (error) {
             console.error('Error handling download:', error);
+            this.closeAdModal();
             this.showMessage('خطأ في تسجيل التحميل', 'error');
         }
+        
+        // Clear pending download
+        this.pendingDownload = null;
     }
 
-    // Optimized download count increment with Supabase
+    closeAdModal() {
+        const modal = document.getElementById('download-ad-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+
     async incrementDownloadCountOptimized(fileId) {
         try {
-            // Update UI immediately (optimistic update)
             const currentData = this.cache.downloads.get(fileId) || { count: 0 };
             const newCount = currentData.count + 1;
             
-            // Update cache
             this.cache.downloads.set(fileId, { ...currentData, count: newCount });
-            
-            // Update display immediately
             this.updateDownloadDisplay(fileId, newCount);
             
-            // Update database in background using Supabase upsert
             const { data, error } = await this.supabase
                 .from('downloads')
                 .upsert({ 
@@ -431,7 +749,6 @@ class GlobalRatingSystem {
                 .select();
             
             if (error) {
-                // Revert optimistic update on database error
                 console.warn('Database update failed, reverting UI update:', error);
                 this.cache.downloads.set(fileId, currentData);
                 this.updateDownloadDisplay(fileId, currentData.count);
@@ -458,13 +775,12 @@ class GlobalRatingSystem {
                 this.enableAllDownloadButtons();
                 this.updateDownloadButtonsText('تحميل');
             } else {
-                this.updateDownloadButtonsText(`انتظر ${seconds} ثواني `);
+                this.updateDownloadButtonsText(`انتظر ${seconds} ثواني`);
             }
         }, 100);
     }
 
     disableAllDownloadButtons() {
-        // Only disable buttons for files with valid IDs
         const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
         validFileItems.forEach(item => {
             const fileId = item.dataset.fileId;
@@ -479,7 +795,6 @@ class GlobalRatingSystem {
     }
 
     enableAllDownloadButtons() {
-        // Only enable buttons for files with valid IDs
         const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
         validFileItems.forEach(item => {
             const fileId = item.dataset.fileId;
@@ -494,7 +809,6 @@ class GlobalRatingSystem {
     }
 
     updateDownloadButtonsText(text) {
-        // Only update buttons for files with valid IDs
         const validFileItems = document.querySelectorAll('.file-item[data-file-id]');
         validFileItems.forEach(item => {
             const fileId = item.dataset.fileId;
@@ -541,29 +855,25 @@ class GlobalRatingSystem {
 
     async rateFile(fileId, rating) {
         try {
-            // Show loading
             this.showLoadingForFile(fileId);
             
-            // Get current rating data
             const { data: currentData, error: selectError } = await this.supabase
                 .from('ratings')
                 .select('*')
                 .eq('id', fileId)
                 .single();
             
-            if (selectError && selectError.code !== 'PGRST116') { // PGRST116 = not found
+            if (selectError && selectError.code !== 'PGRST116') {
                 throw selectError;
             }
             
             if (currentData) {
-                // Check if user already rated
                 if (currentData.raters && currentData.raters.includes(this.userFingerprint)) {
                     this.showMessage('لقد قمت بتقييم هذا الملف مسبقاً!', 'warning');
                     this.hideLoadingForFile(fileId);
                     return;
                 }
                 
-                // Update existing rating
                 const newTotal = currentData.total + rating;
                 const newCount = currentData.count + 1;
                 const newAverage = newTotal / newCount;
@@ -584,12 +894,10 @@ class GlobalRatingSystem {
                 
                 if (updateError) throw updateError;
                 
-                // Update cache
                 this.cache.ratings.set(fileId, { id: fileId, ...newData });
                 this.updateRatingDisplay(fileId, newData);
                 
             } else {
-                // Create new rating
                 const newData = {
                     id: fileId,
                     total: rating,
@@ -604,18 +912,12 @@ class GlobalRatingSystem {
                 
                 if (insertError) throw insertError;
                 
-                // Update cache
                 this.cache.ratings.set(fileId, newData);
                 this.updateRatingDisplay(fileId, newData);
             }
             
-            // Disable further rating for this user
             this.disableRating(fileId);
-            
-            // Hide loading
             this.hideLoadingForFile(fileId);
-            
-            // Show success message
             this.showMessage('شكراً لك على التقييم!', 'success');
             
         } catch (error) {
@@ -641,7 +943,6 @@ class GlobalRatingSystem {
             countElement.textContent = `(${data.count || 0} تقييم)`;
         }
 
-        // Update stars display
         stars.forEach((star, index) => {
             star.classList.remove('filled');
             if (index < Math.round(data.average || 0)) {
@@ -654,13 +955,11 @@ class GlobalRatingSystem {
         const item = document.querySelector(`[data-file-id="${fileId}"]`);
         if (!item) return;
 
-        // Check if download count element exists, if not create it
         let downloadCountElement = item.querySelector('.download-count');
         if (!downloadCountElement) {
             downloadCountElement = document.createElement('div');
             downloadCountElement.className = 'download-count';
             
-            // Insert it before the download button
             const downloadBtn = item.querySelector('.download-btn');
             if (downloadBtn && downloadBtn.parentNode) {
                 downloadBtn.parentNode.insertBefore(downloadCountElement, downloadBtn);
@@ -695,23 +994,19 @@ class GlobalRatingSystem {
     }
 
     showMessage(text, type = 'success') {
-        // Remove existing message
         const existingMessage = document.getElementById('ratingMessage');
         if (existingMessage) {
             existingMessage.remove();
         }
 
-        // Create new message
         const messageEl = document.createElement('div');
         messageEl.id = 'ratingMessage';
         messageEl.className = `rating-message ${type}`;
         messageEl.textContent = text;
         document.body.appendChild(messageEl);
 
-        // Show message
         setTimeout(() => messageEl.classList.add('show'), 100);
 
-        // Hide message after 3 seconds
         setTimeout(() => {
             messageEl.classList.remove('show');
             setTimeout(() => {
@@ -722,14 +1017,12 @@ class GlobalRatingSystem {
         }, 3000);
     }
 
-    // Method to clear cache manually if needed
     clearCache() {
         this.cache.ratings.clear();
         this.cache.downloads.clear();
         this.cache.lastUpdate = 0;
     }
 
-    // Method to refresh data
     async refreshData() {
         this.clearCache();
         const validFileIds = this.getValidFileIds();
@@ -738,9 +1031,7 @@ class GlobalRatingSystem {
         }
     }
 
-    // BONUS: Real-time updates (optional)
     enableRealTimeUpdates() {
-        // Subscribe to ratings changes
         this.supabase
             .channel('ratings-changes')
             .on('postgres_changes', 
@@ -755,7 +1046,6 @@ class GlobalRatingSystem {
             )
             .subscribe();
 
-        // Subscribe to downloads changes
         this.supabase
             .channel('downloads-changes')
             .on('postgres_changes', 
