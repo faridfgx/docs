@@ -450,9 +450,298 @@ window.addEventListener("load", function() {
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="visitors.js"></script>
 -->
+<script>
+	// Add this JavaScript to your website
+function createCSDocsNotification() {
+  const sections = [
+    { 
+      name: 'مذكرات', 
+      weight: 20,
+      message: 'هل أنت في حاجة إلى مذكرة؟ بإمكانك الإطلاع على النماذج الموجودة من',
+      link: 'https://csdocs.space/notes.html',
+      color: '#3b82f6'
+    },
+    { 
+      name: 'دروس', 
+      weight: 15,
+      message: 'هل تبحث عن دروس؟ يمكنك الوصول إليها من',
+      link: 'https://csdocs.space/lessons.html',
+      color: '#10b981'
+    },
+    { 
+      name: 'نماذج لفروض واختبارات', 
+      weight: 20,
+      message: 'هل تحتاج إلى نماذج فروض واختبارات؟ تصفح المجموعة الكاملة من',
+      link: 'https://csdocs.space/assessment-templates.html',
+      color: '#8b5cf6'
+    },
+    { 
+      name: 'برامج وتطبيقات', 
+      weight: 14,
+      message: 'هل تحتاج إلى برامج وتطبيقات تعليمية؟ اكتشفها من',
+      link: 'https://csdocs.space/programs.html',
+      color: '#f97316'
+    },
+    { 
+      name: 'كتب', 
+      weight: 9,
+      message: 'هل تبحث عن كتب مفيدة؟ تصفح المكتبة من',
+      link: 'https://csdocs.space/libririe.html',
+      color: '#ef4444'
+    },
+    { 
+      name: 'وثائق إضافية', 
+      weight: 9,
+      message: 'هل تحتاج إلى وثائق وتقارير إضافية؟ يمكنك الإطلاع عليها من',
+      link: 'https://csdocs.space/other-docs.html',
+      color: '#eab308'
+    },
+    { 
+      name: 'قوانين المخبر', 
+      weight: 8,
+      message: 'هل تحتاج إلى قوانين وتنظيمات المخبر؟ راجعها من',
+      link: 'https://csdocs.space/lab-rules.html',
+      color: '#14b8a6'
+    },
+    { 
+      name: 'دليل تسيير المخبر', 
+      weight: 5,
+      message: 'دليل تسيير المخبر يقدم لك كل ماتحتاجه لتنظيم مخبرك يمكنك الإطلاع عليه من',
+      link: 'https://csdocs.space/lab-guide.html',
+      color: '#14b8a6'
+    }
+  ];
+
+  const motivationalQuotes = [
+    "التعليم هو أقوى سلاح يمكنك استخدامه لتغيير العالم - نيلسون مانديلا",
+    "المعلم الناجح هو الذي يلهم طلابه ليصبحوا أفضل مما كان يحلم به",
+    "التدريس مهنة تخلق جميع المهن الأخرى",
+    "كل طفل يستحق معلماً يؤمن به ويرى فيه الإمكانات",
+    "التعليم ليس ملء دلو، بل إشعال نار ",
+    "المعلم العظيم يعلم من القلب وليس من الكتاب",
+    "الهدف من التعليم هو تحويل المرايا إلى نوافذ",
+    "أفضل معلم هو الذي يقترح بدلاً من أن يفرض ويلهم التلميذ بدلاً من أن يملي عليه",
+    "التعليم الجيد يستطيع أن يغير كل شيء",
+    "المعلم يؤثر في الأبدية، لا يمكن أن تعرف أين ينتهي تأثيره",
+    "ليس هناك مهنة أنبل من أن تزرع الأمل في عقول الآخرين ",
+    "المعلم الحقيقي هو من يجعل طلابه يحبون التعلم أكثر مما يحبون الدرجات",
+    " العلم هو بذرة تزرعها في عقول و ستثمر يوماً ما ",
+    "العقول العظيمة تبدأ من معلمين يؤمنون بقدرتهم على التغيير",
+    "التعليم يبدأ من لحظة إيمان المعلم بقدرة الطالب على النجاح",
+    "المعلمون لا يصنعون الاختبارات، بل يصنعون المستقبل",
+    "الطلاب قد ينسون ما قلت، لكنهم لن ينسوا كيف جعلتهم يشعرون  ",
+    "العلم نور، والمعلم هو من يشعل المصباح",
+    "المدرسة ليست جدراناً، بل قلوباً تنبض بالعلم والحياة",
+    "النجاح في التعليم لا يقاس بالدرجات، بل بقدرة المعلم على الإلهام",
+    "المعلم هو المهندس الذي يبني عقول الأجيال القادمة",
+    "وراء كل طبيب ومهندس وقائد، كان هناك معلم آمن به",
+    "التدريس فن قبل أن يكون مهنة، ورسالة قبل أن يكون وظيفة",
+    "المعلم هو المرآة التي يرى فيها الطالب مستقبله",
+    "الفرق بين المعلم الجيد والعظيم هو أن العظيم يزرع الشغف في طلابه",
+    "النجاح لا يصنعه الذكاء وحده، بل من يوجه الذكاء نحو هدف نبيل - معلم عظيم",
+    "المعلم الذي يزرع الثقة يحصد الإبداع",
+    "التعليم هو المفتاح، والمعلم هو اليد التي تفتحه",
+    "المعلم هو بطل صامت يصنع الأبطال",
+    "كل يوم في الفصل هو فرصة لتغيير حياة أحدهم"
+  ];
+
+  function getAlgeriaDateTime() {
+    const now = new Date();
+    // Convert to Algeria time (GMT+1)
+    const algeriaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Algiers' }));
+    return algeriaTime;
+  }
+
+  function getArabicDate() {
+    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    const months = [
+      'جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان',
+      'جويلية', 'اوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+    ];
+    
+    const date = getAlgeriaDateTime();
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${dayName} ${day} ${month} ${year}`;
+  }
+
+  function getGreeting() {
+    const date = getAlgeriaDateTime();
+    const hour = date.getHours();
+    const dayOfWeek = date.getDay();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    // Check if weekend (Friday or Saturday in Algeria)
+    const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+
+    // Check if exam period (November 15 - December 15)
+    const isExamPeriod = (month === 10 && day >= 15) || (month === 11 && day <= 15);
+
+    // Priority 1: Exam period
+    if (isExamPeriod) {
+      return "فترة الامتحانات قريبة! راجع نماذج الاختبارات";
+    }
+
+    // Priority 2: Weekend
+    if (isWeekend) {
+      return "عطلة سعيدة! وقت مثالي لتحضير الأسبوع القادم";
+    }
+
+    // Priority 3: Time of day
+    if (hour >= 4 && hour < 13) {
+      return "صباح الخير! ابدأ يومك بمراجعة المذكرات";
+    } else if (hour >= 13 && hour <= 20) {
+      return "مساء الخير! استمر في العمل الرائع";
+    } else {
+      return "مساء الخير! لا تنسَ أخذ قسط من الراحة";
+    }
+  }
+
+  function getRandomMotivation() {
+    return motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  }
+
+  function selectRandomSection() {
+    const totalWeight = sections.reduce((sum, s) => sum + s.weight, 0);
+    let random = Math.random() * totalWeight;
+    
+    for (let section of sections) {
+      random -= section.weight;
+      if (random <= 0) {
+        return section;
+      }
+    }
+    return sections[0];
+  }
+
+  const selectedSection = selectRandomSection();
+  const arabicDate = getArabicDate();
+  const greeting = getGreeting();
+  const motivation = getRandomMotivation();
+
+  // Create notification HTML
+  const notificationHTML = `
+    <div id="cs-notification" style="
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      width: 90%;
+      max-width: 650px;
+      background: white;
+      border: 2px solid ${selectedSection.color};
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 20px;
+      animation: slideDown 0.5s ease-out;
+    ">
+      <button onclick="document.getElementById('cs-notification').remove()" style="
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+        padding: 5px 10px;
+        line-height: 1;
+      ">×</button>
+      
+      <div style="text-align: center; direction: rtl;">
+        <div style="
+          font-size: 14px;
+          font-weight: bold;
+          color: ${selectedSection.color};
+          margin-bottom: 8px;
+        ">${arabicDate}</div>
+        
+        <div style="
+          font-size: 18px;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 10px;
+        ">${greeting}</div>
+        
+        <div style="
+          font-size: 14px;
+          font-style: italic;
+          color: #666;
+          margin-bottom: 15px;
+          padding: 10px;
+          background: #f9f9f9;
+          border-radius: 8px;
+          border-right: 3px solid ${selectedSection.color};
+        ">${motivation}</div>
+        
+        <div style="
+          padding-top: 15px;
+          border-top: 2px solid ${selectedSection.color}33;
+          text-align: right;
+        ">
+          <p style="
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+            margin: 0;
+          ">
+            ${selectedSection.message} 
+            <a href="${selectedSection.link}" style="
+              color: ${selectedSection.color};
+              font-weight: bold;
+              text-decoration: none;
+              border-bottom: 2px solid ${selectedSection.color};
+            ">هنا</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <style>
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+      
+      #cs-notification a:hover {
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+      
+      #cs-notification button:hover {
+        color: #333;
+        transform: scale(1.1);
+        transition: all 0.2s ease;
+      }
+    </style>
+  `;
+
+  // Insert notification into page
+  document.body.insertAdjacentHTML('beforeend', notificationHTML);
+}
+
+// Call the function when page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', createCSDocsNotification);
+} else {
+  createCSDocsNotification();
+}
+</script>	
 </body>
 
 </html>
+
 
 
 
