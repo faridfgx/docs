@@ -15,7 +15,7 @@ class GlobalRatingSystem {
             publisherId: 'ca-pub-3226170133878150',
             adSlotId: '2205854958',
             minWaitTime: 6000,  // Minimum 5 seconds
-            maxWaitTime: 20000, // Maximum 10 seconds (auto-close)
+            maxWaitTime: 10000, // Maximum 10 seconds (auto-close)
             skipAfter: 6000     // Can close after 5 seconds
         };
         
@@ -1076,4 +1076,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
