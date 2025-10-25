@@ -451,7 +451,7 @@ window.addEventListener("load", function() {
 <script src="visitors.js"></script>
 -->
 <script>
-	// Add this JavaScript to your website
+// Add this JavaScript to your website
 function createCSDocsNotification() {
   const sections = [
     { 
@@ -547,7 +547,6 @@ function createCSDocsNotification() {
 
   function getAlgeriaDateTime() {
     const now = new Date();
-    // Convert to Algeria time (GMT+1)
     const algeriaTime = new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Algiers' }));
     return algeriaTime;
   }
@@ -575,23 +574,17 @@ function createCSDocsNotification() {
     const month = date.getMonth();
     const day = date.getDate();
 
-    // Check if weekend (Friday or Saturday in Algeria)
     const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
-
-    // Check if exam period (November 15 - December 15)
     const isExamPeriod = (month === 10 && day >= 15) || (month === 11 && day <= 15);
 
-    // Priority 1: Exam period
     if (isExamPeriod) {
       return "فترة الامتحانات قريبة! راجع نماذج الاختبارات";
     }
 
-    // Priority 2: Weekend
     if (isWeekend) {
       return "عطلة نهاية أسبوع سعيدة! وقت مثالي لتحضير ملفاتك للأسبوع القادم";
     }
 
-    // Priority 3: Time of day
     if (hour >= 4 && hour < 13) {
       return "صباح الخير! ابدأ يومك بمراجعة المذكرات";
     } else if (hour >= 13 && hour <= 20) {
@@ -623,24 +616,21 @@ function createCSDocsNotification() {
   const greeting = getGreeting();
   const motivation = getRandomMotivation();
 
-  // Create notification HTML
+  // Create notification HTML as top banner
   const notificationHTML = `
     <div id="cs-notification" style="
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      width: 90%;
-      max-width: 650px;
+      width: calc(100% - 40px);
+      max-width: 1150px;
+      margin: 20px auto;
       background: white;
       border: 2px solid ${selectedSection.color};
       border-radius: 12px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       padding: 20px;
+      position: relative;
       animation: slideDown 0.5s ease-out;
     ">
-      <button onclick="document.getElementById('cs-notification').remove()" style="
+      <button onclick="this.parentElement.style.display='none'" style="
         position: absolute;
         top: 10px;
         left: 10px;
@@ -653,7 +643,7 @@ function createCSDocsNotification() {
         line-height: 1;
       ">×</button>
       
-      <div style="text-align: center; direction: rtl;">
+      <div style="max-width: 650px; margin: 0 auto; text-align: center; direction: rtl;">
         <div style="
           font-size: 14px;
           font-weight: bold;
@@ -671,12 +661,13 @@ function createCSDocsNotification() {
         <div style="
           font-size: 14px;
           font-style: italic;
-          color: #666;
+          color: #555;
           margin-bottom: 15px;
-          padding: 10px;
-          background: #f9f9f9;
+          padding: 12px;
+          background: white;
           border-radius: 8px;
-          border-right: 3px solid ${selectedSection.color};
+          border-right: 4px solid ${selectedSection.color};
+          box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         ">${motivation}</div>
         
         <div style="
@@ -696,6 +687,7 @@ function createCSDocsNotification() {
               font-weight: bold;
               text-decoration: none;
               border-bottom: 2px solid ${selectedSection.color};
+              transition: opacity 0.3s ease;
             ">هنا</a>
           </p>
         </div>
@@ -706,17 +698,16 @@ function createCSDocsNotification() {
       @keyframes slideDown {
         from {
           opacity: 0;
-          transform: translateX(-50%) translateY(-20px);
+          transform: translateY(-20px);
         }
         to {
           opacity: 1;
-          transform: translateX(-50%) translateY(0);
+          transform: translateY(0);
         }
       }
       
       #cs-notification a:hover {
-        opacity: 0.8;
-        transition: opacity 0.3s ease;
+        opacity: 0.7;
       }
       
       #cs-notification button:hover {
@@ -727,8 +718,8 @@ function createCSDocsNotification() {
     </style>
   `;
 
-  // Insert notification into page
-  document.body.insertAdjacentHTML('beforeend', notificationHTML);
+  // Insert notification at the top of the body
+  document.body.insertAdjacentHTML('afterbegin', notificationHTML);
 }
 
 // Call the function when page loads
@@ -741,6 +732,7 @@ if (document.readyState === 'loading') {
 </body>
 
 </html>
+
 
 
 
