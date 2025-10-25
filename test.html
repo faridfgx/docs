@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSDocs Notification System with AI Assistant</title>
+    <title>نظام إشعارات CS Docs</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        #cs-notification {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.5s ease-out;
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -15,116 +39,100 @@
                 transform: translateY(0);
             }
         }
-        
-        #cs-notification {
-            width: calc(100% - 40px);
-            max-width: 1150px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            padding: 20px;
-            position: relative;
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        #cs-notification .close-btn {
+
+        .close-btn {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: transparent;
+            background: #ff4757;
+            color: white;
             border: none;
-            font-size: 24px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
             cursor: pointer;
-            color: #666;
-            padding: 5px 10px;
-            line-height: 1;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        #cs-notification .close-btn:hover {
-            color: #333;
-            transform: scale(1.1);
+
+        .close-btn:hover {
+            background: #ff3838;
+            transform: rotate(90deg);
         }
-        
-        #cs-notification a:hover {
-            opacity: 0.7;
-        }
-        
+
         .ai-assistant-section {
             margin-top: 20px;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
-            text-align: center;
+            color: white;
         }
-        
+
         .ai-assistant-input {
             display: flex;
             gap: 10px;
-            max-width: 500px;
-            margin: 15px auto 0;
-            direction: rtl;
+            margin-top: 10px;
         }
-        
+
         .ai-assistant-input input {
             flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #667eea;
-            border-radius: 25px;
-            font-size: 14px;
-            outline: none;
-            text-align: right;
-            font-family: 'Segoe UI', 'Arial', 'Tahoma', sans-serif;
-        }
-        
-        .ai-assistant-input button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 10px 15px;
             border: none;
-            padding: 12px 25px;
             border-radius: 25px;
-            cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-            white-space: nowrap;
+            direction: rtl;
         }
-        
+
+        .ai-assistant-input button {
+            padding: 10px 25px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
         .ai-assistant-input button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        
+
         /* Modal Styles */
         .ai-modal {
             display: none;
             position: fixed;
-            z-index: 10000;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
+
         .ai-modal-content {
             background: white;
             margin: 5% auto;
-            border-radius: 20px;
-            max-width: 800px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s ease;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
         }
-        
+
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -135,65 +143,63 @@
                 transform: translateY(0);
             }
         }
-        
+
         .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 25px;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
             text-align: center;
             position: relative;
         }
-        
+
         .modal-header h2 {
-            font-size: 24px;
             margin-bottom: 5px;
+            font-size: 24px;
         }
-        
+
         .modal-header p {
             font-size: 14px;
             opacity: 0.9;
         }
-        
+
         .modal-close {
             position: absolute;
-            top: 15px;
-            left: 20px;
-            background: rgba(255,255,255,0.2);
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            font-size: 28px;
-            cursor: pointer;
+            border-radius: 50%;
             width: 35px;
             height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
+
         .modal-close:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             transform: rotate(90deg);
         }
-        
+
         .chat-container {
-            height: 400px;
-            overflow-y: auto;
             padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 400px;
             background: #f8f9fa;
         }
-        
+
         .message {
             margin-bottom: 15px;
             padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 80%;
-            word-wrap: break-word;
-            animation: messageSlide 0.3s ease;
+            border-radius: 15px;
+            max-width: 85%;
             line-height: 1.6;
+            animation: messageSlide 0.3s ease;
         }
-        
+
         @keyframes messageSlide {
             from {
                 opacity: 0;
@@ -204,94 +210,122 @@
                 transform: translateY(0);
             }
         }
-        
+
         .user-message {
             background: #667eea;
             color: white;
             margin-right: auto;
-            text-align: right;
+            border-bottom-right-radius: 5px;
         }
-        
+
         .ai-message {
             background: white;
             color: #333;
+            margin-left: auto;
             border: 1px solid #e0e0e0;
-            text-align: right;
+            border-bottom-left-radius: 5px;
         }
-        
-        .modal-input-container {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .modal-input-container input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
-            text-align: right;
-            font-family: 'Segoe UI', 'Arial', 'Tahoma', sans-serif;
-        }
-        
-        .modal-input-container input:focus {
-            border-color: #667eea;
-        }
-        
-        .modal-input-container button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .modal-input-container button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .modal-input-container button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
+
         .loading {
             display: inline-block;
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: #667eea;
-            animation: pulse 1.5s ease-in-out infinite;
             margin: 0 2px;
+            animation: bounce 1.4s infinite ease-in-out both;
         }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+
+        .loading:nth-child(1) { animation-delay: -0.32s; }
+        .loading:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { 
+                transform: scale(0);
+            } 
+            40% { 
+                transform: scale(1);
+            }
         }
-        
+
+        .modal-input-container {
+            padding: 15px;
+            background: white;
+            border-radius: 0 0 15px 15px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-input-container input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            direction: rtl;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-input-container input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-input-container button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-input-container button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal-input-container button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         .error {
-            background: #ff6b6b;
+            background: #ff4757;
             color: white;
             padding: 12px;
-            border-radius: 8px;
-            margin: 10px 20px;
-            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 600px) {
+            .ai-modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .chat-container {
+                max-height: 300px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
         }
     </style>
 </head>
 <body>
+
     <script>
         function createCSDocsNotification() {
             const sections = [
@@ -434,7 +468,6 @@
             const greeting = getGreeting();
             const motivation = getRandomMotivation();
 
-            // Create notification HTML
             const notificationHTML = `
                 <div id="cs-notification" style="border: 2px solid ${selectedSection.color};">
                     <button class="close-btn" onclick="document.getElementById('cs-notification').style.display='none'">×</button>
@@ -460,10 +493,10 @@
                         </div>
                         
                         <div class="ai-assistant-section">
-                            <div style="font-size: 16px; font-weight: bold; color: #667eea; margin-bottom: 10px;">
+                            <div style="font-size: 16px; font-weight: bold; color: white; margin-bottom: 10px;">
                                 🤖 مساعد الأستاذ الذكي
                             </div>
-                            <div style="font-size: 13px; color: #666; margin-bottom: 10px;">
+                            <div style="font-size: 13px; color: rgba(255,255,255,0.9); margin-bottom: 10px;">
                                 اسأل عن استراتيجيات التدريس، إدارة الصف، تصميم المناهج أو أي موضوع تعليمي
                             </div>
                             <div class="ai-assistant-input">
@@ -474,7 +507,6 @@
                     </div>
                 </div>
                 
-                <!-- AI Modal -->
                 <div id="aiModal" class="ai-modal">
                     <div class="ai-modal-content">
                         <div class="modal-header">
@@ -501,7 +533,6 @@
         }
 
         // AI Assistant Functions
-
         const part1 = 'AIzaSy';
         const part2 = 'Dd11yo';
         const part3 = 'KKg7Uc';
@@ -512,12 +543,13 @@
         const API_KEY = part1 + part2 + part3 + part4 + part5 + part6 + part7;
         const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
         
+        const SYSTEM_PROMPT = "أنت مساعد ذكي مصمم لمساعدة المعلمين. قدم إجابات باللغة العربية مبنية على البحث الأكاديمي والمنهجيات التعليمية المثبتة والممارسات القائمة على الأدلة. عندما يكون ذلك ممكناً، أشر إلى النظريات التعليمية المعروفة أو نتائج البحوث أو الأطر التربوية. كن واضحاً ودقيقاً ومهنياً. عند مناقشة استراتيجيات التدريس، أعط الأولوية للطرق المدعومة بالبحث التربوي. حافظ دائماً على نبرة موضوعية وأكاديمية مناسبة للمعلمين. تأكد من الإجابة باللغة العربية الفصحى.";
+        
         const CONFIG = {
             temperature: 0.4,
             topK: 30,
             topP: 0.90,
             maxOutputTokens: 2048,
-            systemInstruction: "أنت مساعد ذكي مصمم لمساعدة المعلمين. قدم إجابات باللغة العربية مبنية على البحث الأكاديمي والمنهجيات التعليمية المثبتة والممارسات القائمة على الأدلة. عندما يكون ذلك ممكناً، أشر إلى النظريات التعليمية المعروفة أو نتائج البحوث أو الأطر التربوية. كن واضحاً ودقيقاً ومهنياً. عند مناقشة استراتيجيات التدريس، أعط الأولوية للطرق المدعومة بالبحث التربوي. حافظ دائماً على نبرة موضوعية وأكاديمية مناسبة للمعلمين. تأكد من الإجابة باللغة العربية الفصحى.",
             safetySettings: [
                 { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
                 { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_MEDIUM_AND_ABOVE" },
@@ -578,15 +610,17 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: message }] }],
+                        contents: [{ 
+                            role: "user",
+                            parts: [{ text: SYSTEM_PROMPT + "\n\n" + message }] 
+                        }],
                         generationConfig: {
                             temperature: CONFIG.temperature,
                             topK: CONFIG.topK,
                             topP: CONFIG.topP,
                             maxOutputTokens: CONFIG.maxOutputTokens,
                         },
-                        safetySettings: CONFIG.safetySettings,
-                        systemInstruction: { parts: [{ text: CONFIG.systemInstruction }] }
+                        safetySettings: CONFIG.safetySettings
                     })
                 });
                 
@@ -628,12 +662,12 @@
             setTimeout(() => errorDiv.remove(), 5000);
         }
 
-        // Initialize
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', createCSDocsNotification);
         } else {
             createCSDocsNotification();
         }
     </script>
+
 </body>
 </html>
