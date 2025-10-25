@@ -541,7 +541,8 @@
         const part6 = 'FR5RV4';
         const part7 = 'EY8';
         const API_KEY = part1 + part2 + part3 + part4 + part5 + part6 + part7;
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
+        const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent`;
+
         
         const SYSTEM_PROMPT = "أنت مساعد ذكي مصمم لمساعدة المعلمين. قدم إجابات باللغة العربية مبنية على البحث الأكاديمي والمنهجيات التعليمية المثبتة والممارسات القائمة على الأدلة. عندما يكون ذلك ممكناً، أشر إلى النظريات التعليمية المعروفة أو نتائج البحوث أو الأطر التربوية. كن واضحاً ودقيقاً ومهنياً. عند مناقشة استراتيجيات التدريس، أعط الأولوية للطرق المدعومة بالبحث التربوي. حافظ دائماً على نبرة موضوعية وأكاديمية مناسبة للمعلمين. تأكد من الإجابة باللغة العربية الفصحى.";
         
@@ -608,12 +609,10 @@
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'x-goog-api-key': API_KEY
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         contents: [{ 
+                            role: "user",
                             parts: [{ text: SYSTEM_PROMPT + "\n\n" + message }] 
                         }],
                         generationConfig: {
