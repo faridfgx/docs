@@ -75,14 +75,18 @@ class GlobalRatingSystem {
                     </div>
                     
                     <!-- AdSense Ad Unit -->
-                    <div class="ad-container">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="${this.adConfig.publisherId}"
-                             data-ad-slot="${this.adConfig.adSlotId}"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                    </div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3226170133878150"
+     crossorigin="anonymous"></script>
+<!-- Downloadad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3226170133878150"
+     data-ad-slot="2205854958"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
                     
                     <div class="ad-modal-footer">
                         <button id="close-ad-btn" class="close-ad-btn" disabled>
@@ -1076,5 +1080,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
