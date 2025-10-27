@@ -64,7 +64,7 @@ class GlobalRatingSystem {
         if (this.adModalCreated) return;
         
         const modalHTML = `
-            <div id="download-ad-modal" class="ad-modal" style="display: none;">
+            <div id="download-ad-modal" class="ad-modal" style="display: none; height: 100vh;">
                 <div class="ad-modal-overlay"></div>
                 <div class="ad-modal-content">
                     <div class="ad-modal-header">
@@ -1080,6 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
