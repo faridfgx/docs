@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Chat Assistant</h1>
+        
+        <!-- Authentication Section -->
+        <div class="auth-section" id="authSection">
+            <h2>Welcome! Please Sign In</h2>
+            <input type="email" id="emailInput" placeholder="Enter your email">
+            <input type="password" id="passwordInput" placeholder="Enter your password">
+            <div class="button-group">
+                <button onclick="signUp()" class="btn-primary">Sign Up</button>
+                <button onclick="signIn()" class="btn-secondary">Sign In</button>
+            </div>
+            <p class="info-text">Note: Check your email for verification after signing up</p>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section" id="chatSection" style="display: none;">
+            <div class="user-info">
+                <span id="userEmail"></span>
+                <button onclick="signOut()" class="btn-logout">Sign Out</button>
+            </div>
+            
+            <div id="chatHistory" class="chat-history">
+                <div class="welcome-message">
+                    <p>👋 Hello! I'm your AI assistant. How can I help you today?</p>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <textarea id="messageInput" placeholder="Type your message here..." rows="3"></textarea>
+                <button onclick="sendMessage()" class="btn-send" id="sendBtn">
+                    <span>Send</span>
+                    <span class="loading" style="display: none;">⏳</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
