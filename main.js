@@ -611,21 +611,23 @@ class GlobalRatingSystem {
         });
     }
 
-    showAdModal() {
-        const modal = document.getElementById('download-ad-modal');
-        if (!modal) return;
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-        
-        modal.style.display = 'flex';
-        
-        // Load AdSense ad
-        this.loadAd();
-        
-        // Start countdown timers
-        this.startAdCountdowns();
-    }
+showAdModal() {
+    const modal = document.getElementById('download-ad-modal');
+    if (!modal) return;
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+    
+    // Set both display and height directly
+    modal.style.display = 'flex';
+    modal.style.height = '100vh'; // <-- force full height
+
+    // Load AdSense ad
+    this.loadAd();
+
+    // Start countdown timers
+    this.startAdCountdowns();
+}
 
     loadAd() {
         try {
@@ -1081,6 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
