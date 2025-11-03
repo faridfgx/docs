@@ -121,15 +121,16 @@ class GlobalRatingSystem {
                     font-family: 'Noto Sans Arabic', sans-serif;
                 }
                 
-                .ad-modal-overlay {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0, 0, 0, 0.85);
-                    backdrop-filter: blur(8px);
-                }
+.ad-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
                 
                 .ad-modal-content {
                     position: relative;
@@ -1080,6 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
