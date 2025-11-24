@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام بناء المذكرات التعاوني</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>نظام بناء المذكرات التعاوني</h1>
+            <p>شارك في بناء مذكرات دروس شاملة مع زملائك الأساتذة</p>
+            <button class="btn" onclick="showCreateModal()">+ إنشاء مذكرة جديدة</button>
+        </div>
+
+        <div id="loading" class="loading">جاري التحميل...</div>
+        <div id="plansContainer" class="plans-grid" style="display: none;"></div>
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h2>لا توجد مذكرات بعد</h2>
+            <p>ابدأ بإنشاء مذكرتك الأولى!</p>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeCreateModal()">×</button>
+            <h2 style="margin-bottom: 30px; color: #333;">إنشاء مذكرة درس جديدة</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>المجال التعلمي</label>
+                    <select id="area" onchange="updateUnits()">
+                        <option value="">اختر المجال</option>
+                        <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
+                        <option value="المخططات الانسيابية والخوارزمية">المخططات الانسيابية والخوارزمية</option>
+                        <option value="تقنيات الويب">تقنيات الويب</option>
+                        <option value="المكتبية">المكتبية</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>الوحدة التعلمية</label>
+                    <select id="unit">
+                        <option value="">اختر المجال أولاً</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>الشعبة</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="classType" value="ج م ع ت" checked>
+                            ج م ع ت
+                        </label>
+                        <label>
+                            <input type="radio" name="classType" value="ج م أ">
+                            ج م أ
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>نوع المذكرة</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="planType" value="تطبيقية" checked>
+                            تطبيقية
+                        </label>
+                        <label>
+                            <input type="radio" name="planType" value="نظرية">
+                            نظرية
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>عنوان ورقم المذكرة</label>
+                <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة">
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>الأهداف التعلمية</label>
+                    <textarea id="objectives" placeholder="أدخل الأهداف التعلمية"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>الكفاءة المستهدفة</label>
+                    <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة"></textarea>
+                </div>
+            </div>
+
+            <div class="table-actions">
+                <h3>السير المنهجي للدرس</h3>
+                <button class="btn btn-secondary" onclick="addTableRow()">+ إضافة صف</button>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table id="lessonTable">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">الوضعيات التعليمية</th>
+                            <th colspan="3">السير المنهجي للدرس</th>
+                            <th rowspan="2">مستوى بلوم/<br>المهارة المستهدفة</th>
+                            <th rowspan="2">التقويم المرحلي</th>
+                            <th rowspan="2">المدة<br>(دقيقة)</th>
+                            <th rowspan="2">حذف</th>
+                        </tr>
+                        <tr>
+                            <th>الموارد</th>
+                            <th>دور المعلم</th>
+                            <th>دور المتعلم</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td><input type="text" value="وضعية الانطلاق" data-field="situation"></td>
+                            <td><textarea data-field="resources"></textarea></td>
+                            <td><textarea data-field="teacherRole"></textarea></td>
+                            <td><textarea data-field="studentRole"></textarea></td>
+                            <td><input type="text" data-field="bloomLevel"></td>
+                            <td><textarea data-field="evaluation"></textarea></td>
+                            <td><input type="text" data-field="duration" placeholder="مثال: 10"></td>
+                            <td style="text-align: center;">
+                                <button class="btn-danger" onclick="removeTableRow(this)" disabled>✕</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button class="btn" onclick="saveCoursePlan()" style="flex: 1;">حفظ المذكرة</button>
+                <button class="btn" onclick="closeCreateModal()" style="flex: 1; background: #6b7280;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeDetailModal()">×</button>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
