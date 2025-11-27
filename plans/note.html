@@ -13,7 +13,17 @@
             <p>شارك في بناء مذكرات دروس شاملة مع زملائك الأساتذة</p>
             <button class="btn" onclick="showCreateModal()">+ إنشاء مذكرة جديدة</button>
         </div>
-
+    <!-- ADD THIS SECTION -->
+    <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+        <label for="areaFilter" style="display: block; font-weight: 600; margin-bottom: 10px; color: #1e293b;">تصفية حسب المجال التعليمي:</label>
+        <select id="areaFilter" onchange="filterByArea()" style="width: 100%; max-width: 400px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1em;">
+            <option value="">جميع المجالات</option>
+            <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
+            <option value="المخططات الانسيابية والخوارزمية">المخططات الانسيابية والخوارزمية</option>
+            <option value="تقنيات الويب">تقنيات الويب</option>
+            <option value="المكتبية">المكتبية</option>
+        </select>
+    </div>
         <div id="loading" class="loading">جاري التحميل...</div>
         <div id="plansContainer" class="plans-grid" style="display: none;"></div>
         <div id="emptyState" class="empty-state" style="display: none;">

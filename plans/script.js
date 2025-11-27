@@ -338,8 +338,9 @@ function showDetailModal(plan) {
             
             ${lockWarning}
             
-            <div style="margin-bottom: 20px;">
-                <button class="btn" onclick='editPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})' ${editButtonDisabled}>✏️ تعديل المذكرة</button>
+			<div style="margin-bottom: 20px; display: flex; gap: 10px;">
+				<button class="btn" onclick='editPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})' ${editButtonDisabled}>✏️ تعديل المذكرة</button>
+				<button class="btn btn-secondary" onclick='printPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})'>🖨️ طباعة المذكرة</button>
                 <!--<button class="btn btn-danger" onclick="deletePlan('${plan.id}')" style="margin-right: 10px;">🗑️ حذف المذكرة</button>-->
             </div>
             
@@ -559,9 +560,16 @@ async function deletePlan(planId) {
     }
 }
 
-async function loadCoursePlans() {
+async function loadCoursePlans(filterArea = '') {
     try {
-        const data = await supabaseRequest('course_plans?order=created_at.desc');
+        let endpoint = 'course_plans?order=created_at.desc';
+        
+        // Add filter if area is selected
+        if (filterArea) {
+            endpoint = `course_plans?area=eq.${encodeURIComponent(filterArea)}&order=created_at.desc`;
+        }
+        
+        const data = await supabaseRequest(endpoint);
         
         const container = document.getElementById('plansContainer');
         const emptyState = document.getElementById('emptyState');
@@ -596,13 +604,19 @@ async function loadCoursePlans() {
         } else {
             container.style.display = 'none';
             emptyState.style.display = 'block';
+            if (filterArea) {
+                document.querySelector('#emptyState h2').textContent = 'لا توجد مذكرات في هذا المجال';
+                document.querySelector('#emptyState p').textContent = 'جرب تصفية مجال آخر أو أنشئ مذكرة جديدة';
+            } else {
+                document.querySelector('#emptyState h2').textContent = 'لا توجد مذكرات بعد';
+                document.querySelector('#emptyState p').textContent = 'ابدأ بإنشاء مذكرتك الأولى!';
+            }
         }
     } catch (error) {
         console.error('Error loading plans:', error);
         document.getElementById('loading').textContent = 'حدث خطأ في التحميل';
     }
 }
-
 // Close modals on outside click
 window.onclick = function(event) {
     const createModal = document.getElementById('createModal');
@@ -614,6 +628,225 @@ window.onclick = function(event) {
         closeDetailModal();
     }
 };
+function filterByArea() {
+    const selectedArea = document.getElementById('areaFilter').value;
+    loadCoursePlans(selectedArea);
+}
 
-// Load plans on page load
+function printPlan(plan) {
+    const printWindow = window.open('', '_blank');
+    
+    let tableRows = '';
+    if (plan.table_data) {
+        plan.table_data.forEach(row => {
+            tableRows += `
+                <tr>
+                    <td style="font-weight: bold; padding: 10px; border: 1px solid #333;">${row.situation || ''}</td>
+                    <td style="padding: 10px; border: 1px solid #333;">${row.resources || ''}</td>
+                    <td style="padding: 10px; border: 1px solid #333;">${row.teacherRole || ''}</td>
+                    <td style="padding: 10px; border: 1px solid #333;">${row.studentRole || ''}</td>
+                    <td style="padding: 10px; border: 1px solid #333;">${row.bloomLevel || ''}</td>
+                    <td style="padding: 10px; border: 1px solid #333;">${row.evaluation || ''}</td>
+                    <td style="text-align: center; padding: 10px; border: 1px solid #333;">${row.duration || ''}</td>
+                </tr>
+            `;
+        });
+    }
+    
+    const printContent = `
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <title>طباعة - ${plan.lesson_name}</title>
+            <style>
+                @media print {
+                    @page {
+                        size: A4;
+                        margin: 15mm;
+                    }
+                }
+                
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+                
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    line-height: 1.6;
+                    color: #000;
+                    padding: 20px;
+                }
+                
+                .header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    border-bottom: 3px solid #000;
+                    padding-bottom: 20px;
+                }
+                
+                .header h1 {
+                    font-size: 24px;
+                    margin-bottom: 10px;
+                }
+                
+                .header h2 {
+                    font-size: 18px;
+                    font-weight: normal;
+                    color: #333;
+                }
+                
+                .info-grid {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 15px;
+                    margin-bottom: 25px;
+                    border: 2px solid #333;
+                    padding: 15px;
+                }
+                
+                .info-item {
+                    display: flex;
+                    align-items: baseline;
+                }
+                
+                .info-item strong {
+                    min-width: 150px;
+                    font-weight: bold;
+                }
+                
+                .section {
+                    margin-bottom: 20px;
+                    border: 1px solid #333;
+                    padding: 15px;
+                }
+                
+                .section h3 {
+                    font-size: 16px;
+                    margin-bottom: 10px;
+                    color: #000;
+                    border-bottom: 2px solid #333;
+                    padding-bottom: 5px;
+                }
+                
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    page-break-inside: auto;
+                }
+                
+                tr {
+                    page-break-inside: avoid;
+                    page-break-after: auto;
+                }
+                
+                th {
+                    background: #f0f0f0;
+                    color: #000;
+                    padding: 10px;
+                    text-align: center;
+                    font-weight: bold;
+                    border: 2px solid #333;
+                    font-size: 14px;
+                }
+                
+                td {
+                    padding: 10px;
+                    border: 1px solid #333;
+                    vertical-align: top;
+                    font-size: 13px;
+                }
+                
+                .print-button {
+                    display: block;
+                    margin: 20px auto;
+                    padding: 10px 30px;
+                    background: #4f46e5;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+                
+                @media print {
+                    .print-button {
+                        display: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <button class="print-button" onclick="window.print()">🖨️ طباعة</button>
+            
+            <div class="header">
+                <h1>مذكرة درس</h1>
+                <h2>${plan.lesson_name}</h2>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>المجال التعليمي:</strong>
+                    <span>${plan.area}</span>
+                </div>
+                <div class="info-item">
+                    <strong>الوحدة التعليمية:</strong>
+                    <span>${plan.unit}</span>
+                </div>
+                <div class="info-item">
+                    <strong>الشعبة:</strong>
+                    <span>${plan.class_type}</span>
+                </div>
+                <div class="info-item">
+                    <strong>نوع المذكرة:</strong>
+                    <span>${plan.plan_type}</span>
+                </div>
+            </div>
+            
+            ${plan.learning_objectives ? `
+                <div class="section">
+                    <h3>الأهداف التعلمية</h3>
+                    <p>${plan.learning_objectives}</p>
+                </div>
+            ` : ''}
+            
+            ${plan.target_competency ? `
+                <div class="section">
+                    <h3>الكفاءة المستهدفة</h3>
+                    <p>${plan.target_competency}</p>
+                </div>
+            ` : ''}
+            
+            <div class="section">
+                <h3>السير المنهجي للدرس</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">الوضعيات التعليمية</th>
+                            <th colspan="3">السير المنهجي للدرس</th>
+                            <th rowspan="2">مستوى بلوم/<br>المهارة المستهدفة</th>
+                            <th rowspan="2">التقويم المرحلي</th>
+                            <th rowspan="2">المدة<br>(دقيقة)</th>
+                        </tr>
+                        <tr>
+                            <th>الموارد</th>
+                            <th>دور المعلم</th>
+                            <th>دور المتعلم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+}
 loadCoursePlans();
