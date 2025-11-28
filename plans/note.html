@@ -13,17 +13,19 @@
             <p>شارك في بناء مذكرات دروس شاملة مع زملائك الأساتذة</p>
             <button class="btn" onclick="showCreateModal()">+ إنشاء مذكرة جديدة</button>
         </div>
-    <!-- ADD THIS SECTION -->
+    
+    <!-- Filter Section -->
     <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
         <label for="areaFilter" style="display: block; font-weight: 600; margin-bottom: 10px; color: #1e293b;">تصفية حسب المجال التعليمي:</label>
         <select id="areaFilter" onchange="filterByArea()" style="width: 100%; max-width: 400px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1em;">
             <option value="">جميع المجالات</option>
             <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
-            <option value="المخططات الانسيابية والخوارزمية">المخططات الانسيابية والخوارزمية</option>
+            <option value="المخططات الانسيابية والخوارزميات">المخططات الانسيابية والخوارزميات</option>
             <option value="تقنيات الويب">تقنيات الويب</option>
             <option value="المكتبية">المكتبية</option>
         </select>
     </div>
+    
         <div id="loading" class="loading">جاري التحميل...</div>
         <div id="plansContainer" class="plans-grid" style="display: none;"></div>
         <div id="emptyState" class="empty-state" style="display: none;">
@@ -41,10 +43,10 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label>المجال التعلمي</label>
-                    <select id="area" onchange="updateUnits()">
+                    <select id="area" onchange="updateUnits()" required>
                         <option value="">اختر المجال</option>
                         <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
-                        <option value="المخططات الانسيابية والخوارزمية">المخططات الانسيابية والخوارزمية</option>
+                        <option value="المخططات الانسيابية والخوارزميات">المخططات الانسيابية والخوارزميات</option>
                         <option value="تقنيات الويب">تقنيات الويب</option>
                         <option value="المكتبية">المكتبية</option>
                     </select>
@@ -52,7 +54,7 @@
 
                 <div class="form-group">
                     <label>الوحدة التعلمية</label>
-                    <select id="unit">
+                    <select id="unit" onchange="autoFillCurriculumData()" required>
                         <option value="">اختر المجال أولاً</option>
                     </select>
                 </div>
@@ -88,18 +90,18 @@
 
             <div class="form-group">
                 <label>عنوان ورقم المذكرة</label>
-                <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة">
+                <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة" required>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label>الأهداف التعلمية</label>
-                    <textarea id="objectives" placeholder="أدخل الأهداف التعلمية"></textarea>
+                    <label>الأهداف التعلمية <!--<span style="color: #10b981; font-size: 0.9em;">(يتم التعبئة تلقائياً)</span>--></label>
+                    <textarea id="objectives" placeholder="أدخل الأهداف التعلمية" style="transition: background-color 0.3s ease;"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>الكفاءة المستهدفة</label>
-                    <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة"></textarea>
+                    <label>الكفاءة المستهدفة <!--<span style="color: #10b981; font-size: 0.9em;">(يتم التعبئة تلقائياً)</span>--></label>
+                    <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة" style="transition: background-color 0.3s ease;"></textarea>
                 </div>
             </div>
 
@@ -157,6 +159,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+<script src="curriculum-data.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

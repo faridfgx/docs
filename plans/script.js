@@ -8,37 +8,6 @@ let lockCheckInterval = null;
 
 const LOCK_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 
-const AREAS_UNITS = {
-    'بيئة التعامل مع الحاسوب': [
-        'تقنية المعلومات',
-        'تجميع الحاسوب',
-        'نظام التشغيل',
-        'لوحة التحكم',
-        'حماية الحاسوب',
-        'الشبكة المحلية'
-    ],
-    'المخططات الانسيابية والخوارزمية': [
-        'المخطط الإنسيابي',
-        'إنشاء المخطط الإنسيابي',
-        'مدخل للخوارزمية',
-        'التعليمات الأساسية'
-    ],
-    'تقنيات الويب': [
-        'المتصفح',
-        'البريد الإلكتروني',
-        'إنشاء صفحة ويب',
-        'استغلال وسائل التواصل'
-    ],
-    'المكتبية': [
-        'معالج النصوص 1',
-        'معالج النصوص 2',
-        'جداول البيانات 1',
-        'جداول البيانات 2',
-        'العروض التقديمية 1',
-        'العروض التقديمية 2'
-    ]
-};
-
 // Helper functions
 function getUserFingerprint() {
     if (currentUserFingerprint) return currentUserFingerprint;
@@ -204,6 +173,41 @@ function updateUnits() {
             option.textContent = unit;
             unitSelect.appendChild(option);
         });
+    }
+    
+    // Clear objectives and competency when area changes
+    document.getElementById('objectives').value = '';
+    document.getElementById('competency').value = '';
+}
+
+function autoFillCurriculumData() {
+    const area = document.getElementById('area').value;
+    const unit = document.getElementById('unit').value;
+    
+    if (area && unit) {
+        const data = getCurriculumData(area, unit);
+        
+        if (data) {
+            // Auto-fill the fields
+            document.getElementById('competency').value = data.competency;
+            document.getElementById('objectives').value = data.objectives;
+            
+            // Visual feedback
+            const competencyField = document.getElementById('competency');
+            const objectivesField = document.getElementById('objectives');
+            
+            competencyField.style.backgroundColor = '#d1fae5';
+            objectivesField.style.backgroundColor = '#d1fae5';
+            
+            setTimeout(() => {
+                competencyField.style.backgroundColor = '';
+                objectivesField.style.backgroundColor = '';
+            }, 1000);
+        } else {
+            // Clear if no data found
+            document.getElementById('objectives').value = '';
+            document.getElementById('competency').value = '';
+        }
     }
 }
 
