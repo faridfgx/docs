@@ -93,14 +93,32 @@
                 <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة" required>
             </div>
 
+            <!-- الحقول الجديدة -->
             <div class="form-grid">
                 <div class="form-group">
-                    <label>الأهداف التعلمية <!--<span style="color: #10b981; font-size: 0.9em;">(يتم التعبئة تلقائياً)</span>--></label>
+                    <label>الوسائل المستخدمة</label>
+                    <textarea id="usedResources" placeholder="أدخل الوسائل المستخدمة في الدرس"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>المدة</label>
+                    <input type="text" id="lessonDuration" placeholder="مثال: ساعتان (2 × 45 دقيقة)">
+                </div>
+
+                <div class="form-group">
+                    <label>الاستراتيجيات المستعملة</label>
+                    <textarea id="usedStrategies" placeholder="أدخل الاستراتيجيات المستعملة"></textarea>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>الأهداف التعلمية</label>
                     <textarea id="objectives" placeholder="أدخل الأهداف التعلمية" style="transition: background-color 0.3s ease;"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label>الكفاءة المستهدفة <!--<span style="color: #10b981; font-size: 0.9em;">(يتم التعبئة تلقائياً)</span>--></label>
+                    <label>الكفاءة المستهدفة</label>
                     <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة" style="transition: background-color 0.3s ease;"></textarea>
                 </div>
             </div>
@@ -156,6 +174,29 @@
         <div class="modal-content">
             <button class="close-btn" onclick="closeDetailModal()">×</button>
             <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <!-- Print Info Modal -->
+    <div id="printInfoModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="close-btn" onclick="closePrintInfoModal()">×</button>
+            <h2 style="margin-bottom: 30px; color: #333;">معلومات الطباعة</h2>
+            
+            <div class="form-group">
+                <label>اسم الأستاذ</label>
+                <input type="text" id="teacherName" placeholder="أدخل اسم الأستاذ" required>
+            </div>
+            
+            <div class="form-group">
+                <label>اسم الثانوية</label>
+                <input type="text" id="schoolName" placeholder="أدخل اسم الثانوية" required>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 30px;">
+                <button class="btn" onclick="confirmPrint()" style="flex: 1;">طباعة</button>
+                <button class="btn" onclick="closePrintInfoModal()" style="flex: 1; background: #6b7280;">إلغاء</button>
+            </div>
         </div>
     </div>
 

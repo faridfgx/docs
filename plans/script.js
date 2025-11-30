@@ -5,6 +5,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let currentEditId = null;
 let currentUserFingerprint = null;
 let lockCheckInterval = null;
+let currentPlanForPrint = null;
 
 const LOCK_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 
@@ -17,6 +18,20 @@ function getUserFingerprint() {
     const fingerprint = `${nav.userAgent}-${nav.language}-${screen.width}x${screen.height}`;
     currentUserFingerprint = btoa(fingerprint).substring(0, 32);
     return currentUserFingerprint;
+}
+
+function getAcademicYear() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; // 0-indexed
+    
+    // إذا كان الشهر من سبتمبر إلى ديسمبر، السنة الدراسية تبدأ من السنة الحالية
+    // إذا كان من يناير إلى أغسطس، السنة الدراسية بدأت من السنة الماضية
+    if (month >= 9) {
+        return `${year}-${year + 1}`;
+    } else {
+        return `${year - 1}-${year}`;
+    }
 }
 
 async function supabaseRequest(endpoint, method = 'GET', body = null) {
@@ -42,18 +57,16 @@ async function acquireLock(planId) {
     const userFingerprint = getUserFingerprint();
     const lockExpiry = new Date(Date.now() + LOCK_DURATION).toISOString();
     
-    console.log('Attempting to acquire lock for plan:', planId, 'by user:', userFingerprint); // Debug log
+    console.log('Attempting to acquire lock for plan:', planId, 'by user:', userFingerprint);
     
     try {
-        // First check current lock status
         const currentLockStatus = await checkLockStatus(planId);
         
         if (currentLockStatus.isLocked && !currentLockStatus.isLockedByCurrentUser) {
-            console.log('Lock already held by another user'); // Debug log
+            console.log('Lock already held by another user');
             return false;
         }
         
-        // Try to acquire lock
         const result = await supabaseRequest(
             `course_plans?id=eq.${planId}`,
             'PATCH',
@@ -64,15 +77,14 @@ async function acquireLock(planId) {
             }
         );
         
-        console.log('Lock acquisition result:', result); // Debug log
+        console.log('Lock acquisition result:', result);
         
-        // Verify lock was acquired
-        await new Promise(resolve => setTimeout(resolve, 500)); // Small delay to ensure DB update
+        await new Promise(resolve => setTimeout(resolve, 500));
         const verifyLock = await supabaseRequest(`course_plans?id=eq.${planId}&select=locked_by`);
         
         if (verifyLock && verifyLock.length > 0) {
             const acquired = verifyLock[0].locked_by === userFingerprint;
-            console.log('Lock verification:', acquired ? 'SUCCESS' : 'FAILED'); // Debug log
+            console.log('Lock verification:', acquired ? 'SUCCESS' : 'FAILED');
             return acquired;
         }
         return false;
@@ -102,29 +114,27 @@ async function checkLockStatus(planId) {
     try {
         const plan = await supabaseRequest(`course_plans?id=eq.${planId}&select=locked_by,locked_at,lock_expires_at`);
         
-        console.log('Lock status check for plan:', planId, plan); // Debug log
+        console.log('Lock status check for plan:', planId, plan);
         
         if (plan && plan.length > 0) {
             const lockData = plan[0];
             
-            // Check if lock exists and hasn't expired
             if (lockData.locked_by && lockData.lock_expires_at) {
                 const lockExpiry = new Date(lockData.lock_expires_at);
                 const now = new Date();
                 
-                console.log('Lock expiry:', lockExpiry, 'Now:', now); // Debug log
+                console.log('Lock expiry:', lockExpiry, 'Now:', now);
                 
                 if (lockExpiry > now) {
                     const isLockedByCurrentUser = lockData.locked_by === getUserFingerprint();
-                    console.log('Lock is active. Locked by current user?', isLockedByCurrentUser); // Debug log
+                    console.log('Lock is active. Locked by current user?', isLockedByCurrentUser);
                     return {
                         isLocked: true,
                         lockedBy: lockData.locked_by,
                         isLockedByCurrentUser: isLockedByCurrentUser
                     };
                 } else {
-                    // Lock has expired, release it
-                    console.log('Lock has expired, releasing...'); // Debug log
+                    console.log('Lock has expired, releasing...');
                     await releaseLock(planId);
                 }
             }
@@ -137,12 +147,10 @@ async function checkLockStatus(planId) {
 }
 
 function startLockMonitoring(planId) {
-    // Clear any existing interval
     if (lockCheckInterval) {
         clearInterval(lockCheckInterval);
     }
     
-    // Check lock status every 30 seconds
     lockCheckInterval = setInterval(async () => {
         const lockStatus = await checkLockStatus(planId);
         if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
@@ -150,7 +158,7 @@ function startLockMonitoring(planId) {
             alert('تم قفل هذه المذكرة من قبل مستخدم آخر. سيتم إغلاق النموذج.');
             closeCreateModal();
         }
-    }, 30000); // Check every 30 seconds
+    }, 30000);
 }
 
 function stopLockMonitoring() {
@@ -175,7 +183,6 @@ function updateUnits() {
         });
     }
     
-    // Clear objectives and competency when area changes
     document.getElementById('objectives').value = '';
     document.getElementById('competency').value = '';
 }
@@ -188,11 +195,9 @@ function autoFillCurriculumData() {
         const data = getCurriculumData(area, unit);
         
         if (data) {
-            // Auto-fill the fields
             document.getElementById('competency').value = data.competency;
             document.getElementById('objectives').value = data.objectives;
             
-            // Visual feedback
             const competencyField = document.getElementById('competency');
             const objectivesField = document.getElementById('objectives');
             
@@ -204,7 +209,6 @@ function autoFillCurriculumData() {
                 objectivesField.style.backgroundColor = '';
             }, 1000);
         } else {
-            // Clear if no data found
             document.getElementById('objectives').value = '';
             document.getElementById('competency').value = '';
         }
@@ -218,7 +222,6 @@ function showCreateModal() {
 }
 
 function closeCreateModal() {
-    // Release lock if editing
     if (currentEditId) {
         releaseLock(currentEditId);
     }
@@ -230,7 +233,6 @@ function closeCreateModal() {
 }
 
 async function showEditModal(plan) {
-    // Check if the lesson is locked
     const lockStatus = await checkLockStatus(plan.id);
     
     if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
@@ -238,7 +240,6 @@ async function showEditModal(plan) {
         return;
     }
     
-    // Try to acquire lock
     const lockAcquired = await acquireLock(plan.id);
     
     if (!lockAcquired) {
@@ -249,7 +250,6 @@ async function showEditModal(plan) {
     currentEditId = plan.id;
     document.querySelector('#createModal h2').textContent = 'تعديل مذكرة الدرس';
     
-    // Add lock indicator
     const lockIndicator = document.createElement('div');
     lockIndicator.id = 'lockIndicator';
     lockIndicator.style.cssText = 'background: #10b981; color: white; padding: 12px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 600;';
@@ -260,17 +260,18 @@ async function showEditModal(plan) {
     if (existingIndicator) existingIndicator.remove();
     modalContent.insertBefore(lockIndicator, modalContent.children[1]);
     
-    // Fill form with existing data
     document.getElementById('area').value = plan.area;
     updateUnits();
     document.getElementById('unit').value = plan.unit;
     document.getElementById('lessonName').value = plan.lesson_name;
     document.getElementById('objectives').value = plan.learning_objectives || '';
     document.getElementById('competency').value = plan.target_competency || '';
+    document.getElementById('usedResources').value = plan.used_resources || '';
+    document.getElementById('lessonDuration').value = plan.lesson_duration || '';
+    document.getElementById('usedStrategies').value = plan.used_strategies || '';
     document.querySelector(`input[name="classType"][value="${plan.class_type}"]`).checked = true;
     document.querySelector(`input[name="planType"][value="${plan.plan_type}"]`).checked = true;
     
-    // Fill table data
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
     
@@ -297,8 +298,6 @@ async function showEditModal(plan) {
     
     updateDeleteButtons();
     document.getElementById('createModal').style.display = 'block';
-    
-    // Start monitoring the lock
     startLockMonitoring(plan.id);
 }
 
@@ -306,7 +305,6 @@ function showDetailModal(plan) {
     const modal = document.getElementById('detailModal');
     const content = document.getElementById('detailContent');
     
-    // Check lock status for the edit button
     checkLockStatus(plan.id).then(lockStatus => {
         let lockWarning = '';
         let editButtonDisabled = '';
@@ -342,10 +340,9 @@ function showDetailModal(plan) {
             
             ${lockWarning}
             
-			<div style="margin-bottom: 20px; display: flex; gap: 10px;">
-				<button class="btn" onclick='editPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})' ${editButtonDisabled}>✏️ تعديل المذكرة</button>
-				<button class="btn btn-secondary" onclick='printPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})'>🖨️ طباعة المذكرة</button>
-                <!--<button class="btn btn-danger" onclick="deletePlan('${plan.id}')" style="margin-right: 10px;">🗑️ حذف المذكرة</button>-->
+            <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                <button class="btn" onclick='editPlan(${JSON.stringify(plan).replace(/'/g, "&apos;")})' ${editButtonDisabled}>✏️ تعديل المذكرة</button>
+                <button class="btn btn-secondary" onclick='showPrintModal(${JSON.stringify(plan).replace(/'/g, "&apos;")})'>🖨️ طباعة المذكرة</button>
             </div>
             
             <div class="detail-section">
@@ -371,6 +368,24 @@ function showDetailModal(plan) {
 
             <div class="detail-section">
                 <div class="detail-grid">
+                    ${plan.used_resources ? `
+                    <div class="detail-item" style="grid-column: 1 / -1;">
+                        <strong>الوسائل المستخدمة</strong>
+                        ${plan.used_resources}
+                    </div>
+                    ` : ''}
+                    ${plan.lesson_duration ? `
+                    <div class="detail-item">
+                        <strong>المدة</strong>
+                        ${plan.lesson_duration}
+                    </div>
+                    ` : ''}
+                    ${plan.used_strategies ? `
+                    <div class="detail-item" style="grid-column: 1 / -1;">
+                        <strong>الاستراتيجيات المستعملة</strong>
+                        ${plan.used_strategies}
+                    </div>
+                    ` : ''}
                     <div class="detail-item" style="grid-column: 1 / -1;">
                         <strong>الأهداف التعلمية</strong>
                         ${plan.learning_objectives || 'غير محدد'}
@@ -414,6 +429,37 @@ function closeDetailModal() {
     document.getElementById('detailModal').style.display = 'none';
 }
 
+function showPrintModal(plan) {
+    // تخزين نسخة عميقة من الخطة
+    currentPlanForPrint = JSON.parse(JSON.stringify(plan));
+    document.getElementById('printInfoModal').style.display = 'block';
+}
+
+function closePrintInfoModal() {
+    document.getElementById('printInfoModal').style.display = 'none';
+    document.getElementById('teacherName').value = '';
+    document.getElementById('schoolName').value = '';
+    currentPlanForPrint = null;
+}
+
+function confirmPrint() {
+    const teacherName = document.getElementById('teacherName').value.trim();
+    const schoolName = document.getElementById('schoolName').value.trim();
+    
+    if (!teacherName || !schoolName) {
+        alert('الرجاء إدخال جميع البيانات المطلوبة');
+        return;
+    }
+    
+    if (!currentPlanForPrint) {
+        alert('حدث خطأ في تحميل بيانات المذكرة');
+        return;
+    }
+    
+    printPlan(currentPlanForPrint, teacherName, schoolName);
+    closePrintInfoModal();
+}
+
 function addTableRow() {
     const tbody = document.getElementById('tableBody');
     const row = document.createElement('tr');
@@ -452,6 +498,9 @@ function resetForm() {
     document.getElementById('lessonName').value = '';
     document.getElementById('objectives').value = '';
     document.getElementById('competency').value = '';
+    document.getElementById('usedResources').value = '';
+    document.getElementById('lessonDuration').value = '';
+    document.getElementById('usedStrategies').value = '';
     document.querySelector('input[name="classType"][value="ج م ع ت"]').checked = true;
     document.querySelector('input[name="planType"][value="تطبيقية"]').checked = true;
     
@@ -478,6 +527,9 @@ async function saveCoursePlan() {
     const lessonName = document.getElementById('lessonName').value.trim();
     const objectives = document.getElementById('objectives').value;
     const competency = document.getElementById('competency').value;
+    const usedResources = document.getElementById('usedResources').value;
+    const lessonDuration = document.getElementById('lessonDuration').value;
+    const usedStrategies = document.getElementById('usedStrategies').value;
     const classType = document.querySelector('input[name="classType"]:checked').value;
     const planType = document.querySelector('input[name="planType"]:checked').value;
 
@@ -486,7 +538,6 @@ async function saveCoursePlan() {
         return;
     }
 
-    // If editing, verify we still have the lock
     if (currentEditId) {
         const lockStatus = await checkLockStatus(currentEditId);
         if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
@@ -496,7 +547,6 @@ async function saveCoursePlan() {
         }
     }
 
-    // Collect table data
     const rows = document.querySelectorAll('#tableBody tr');
     const tableData = [];
     rows.forEach(row => {
@@ -515,13 +565,15 @@ async function saveCoursePlan() {
         lesson_name: lessonName,
         learning_objectives: objectives,
         target_competency: competency,
+        used_resources: usedResources,
+        lesson_duration: lessonDuration,
+        used_strategies: usedStrategies,
         table_data: tableData,
         created_by: getUserFingerprint()
     };
 
     try {
         if (currentEditId) {
-            // Update existing plan and release lock
             await supabaseRequest(`course_plans?id=eq.${currentEditId}`, 'PATCH', {
                 ...coursePlan,
                 locked_by: null,
@@ -530,7 +582,6 @@ async function saveCoursePlan() {
             });
             alert('تم تحديث المذكرة بنجاح!');
         } else {
-            // Create new plan
             await supabaseRequest('course_plans', 'POST', [coursePlan]);
             alert('تم حفظ المذكرة بنجاح!');
         }
@@ -568,7 +619,6 @@ async function loadCoursePlans(filterArea = '') {
     try {
         let endpoint = 'course_plans?order=created_at.desc';
         
-        // Add filter if area is selected
         if (filterArea) {
             endpoint = `course_plans?area=eq.${encodeURIComponent(filterArea)}&order=created_at.desc`;
         }
@@ -621,27 +671,39 @@ async function loadCoursePlans(filterArea = '') {
         document.getElementById('loading').textContent = 'حدث خطأ في التحميل';
     }
 }
-// Close modals on outside click
+
 window.onclick = function(event) {
     const createModal = document.getElementById('createModal');
     const detailModal = document.getElementById('detailModal');
+    const printInfoModal = document.getElementById('printInfoModal');
+    
     if (event.target === createModal) {
         closeCreateModal();
     }
     if (event.target === detailModal) {
         closeDetailModal();
     }
+    if (event.target === printInfoModal) {
+        closePrintInfoModal();
+    }
 };
+
 function filterByArea() {
     const selectedArea = document.getElementById('areaFilter').value;
     loadCoursePlans(selectedArea);
 }
-
-function printPlan(plan) {
+function printPlan(plan, teacherName, schoolName) {
+    // التحقق من وجود البيانات
+    if (!plan) {
+        alert('خطأ: لا توجد بيانات للطباعة');
+        return;
+    }
+    
     const printWindow = window.open('', '_blank');
+    const academicYear = getAcademicYear();
     
     let tableRows = '';
-    if (plan.table_data) {
+    if (plan.table_data && Array.isArray(plan.table_data)) {
         plan.table_data.forEach(row => {
             tableRows += `
                 <tr>
@@ -657,200 +719,181 @@ function printPlan(plan) {
         });
     }
     
-    const printContent = `
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <title>طباعة - ${plan.lesson_name}</title>
-            <style>
-                @media print {
-                    @page {
-                        size: A4;
-                        margin: 15mm;
-                    }
-                }
-                
-                * {
-                    margin: 0;
-                    padding: 0;
-                    box-sizing: border-box;
-                }
-                
-                body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    line-height: 1.6;
-                    color: #000;
-                    padding: 20px;
-                }
-                
-                .header {
-                    text-align: center;
-                    margin-bottom: 30px;
-                    border-bottom: 3px solid #000;
-                    padding-bottom: 20px;
-                }
-                
-                .header h1 {
-                    font-size: 24px;
-                    margin-bottom: 10px;
-                }
-                
-                .header h2 {
-                    font-size: 18px;
-                    font-weight: normal;
-                    color: #333;
-                }
-                
-                .info-grid {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 15px;
-                    margin-bottom: 25px;
-                    border: 2px solid #333;
-                    padding: 15px;
-                }
-                
-                .info-item {
-                    display: flex;
-                    align-items: baseline;
-                }
-                
-                .info-item strong {
-                    min-width: 150px;
-                    font-weight: bold;
-                }
-                
-                .section {
-                    margin-bottom: 20px;
-                    border: 1px solid #333;
-                    padding: 15px;
-                }
-                
-                .section h3 {
-                    font-size: 16px;
-                    margin-bottom: 10px;
-                    color: #000;
-                    border-bottom: 2px solid #333;
-                    padding-bottom: 5px;
-                }
-                
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
-                    page-break-inside: auto;
-                }
-                
-                tr {
-                    page-break-inside: avoid;
-                    page-break-after: auto;
-                }
-                
-                th {
-                    background: #f0f0f0;
-                    color: #000;
-                    padding: 10px;
-                    text-align: center;
-                    font-weight: bold;
-                    border: 2px solid #333;
-                    font-size: 14px;
-                }
-                
-                td {
-                    padding: 10px;
-                    border: 1px solid #333;
-                    vertical-align: top;
-                    font-size: 13px;
-                }
-                
-                .print-button {
-                    display: block;
-                    margin: 20px auto;
-                    padding: 10px 30px;
-                    background: #4f46e5;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    cursor: pointer;
-                }
-                
-                @media print {
-                    .print-button {
-                        display: none;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <button class="print-button" onclick="window.print()">🖨️ طباعة</button>
-            
-            <div class="header">
-                <h1>مذكرة درس</h1>
-                <h2>${plan.lesson_name}</h2>
-            </div>
-            
-            <div class="info-grid">
-                <div class="info-item">
-                    <strong>المجال التعليمي:</strong>
-                    <span>${plan.area}</span>
-                </div>
-                <div class="info-item">
-                    <strong>الوحدة التعليمية:</strong>
-                    <span>${plan.unit}</span>
-                </div>
-                <div class="info-item">
-                    <strong>الشعبة:</strong>
-                    <span>${plan.class_type}</span>
-                </div>
-                <div class="info-item">
-                    <strong>نوع المذكرة:</strong>
-                    <span>${plan.plan_type}</span>
-                </div>
-            </div>
-            
-            ${plan.learning_objectives ? `
-                <div class="section">
-                    <h3>الأهداف التعلمية</h3>
-                    <p>${plan.learning_objectives}</p>
-                </div>
-            ` : ''}
-            
-            ${plan.target_competency ? `
-                <div class="section">
-                    <h3>الكفاءة المستهدفة</h3>
-                    <p>${plan.target_competency}</p>
-                </div>
-            ` : ''}
-            
-            <div class="section">
-                <h3>السير المنهجي للدرس</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th rowspan="2">الوضعيات التعليمية</th>
-                            <th colspan="3">السير المنهجي للدرس</th>
-                            <th rowspan="2">مستوى بلوم/<br>المهارة المستهدفة</th>
-                            <th rowspan="2">التقويم المرحلي</th>
-                            <th rowspan="2">المدة<br>(دقيقة)</th>
-                        </tr>
-                        <tr>
-                            <th>الموارد</th>
-                            <th>دور المعلم</th>
-                            <th>دور المتعلم</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableRows}
-                    </tbody>
-                </table>
-            </div>
-        </body>
-        </html>
+    const printContent = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>طباعة - ${plan.lesson_name || 'مذكرة'}</title>
+
+<style>
+    @media print {
+        @page { size: A4; margin: 12mm; }
+            .print-btn {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        color: #000;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    /* ======= INFO BOX ======= */
+    .info-box {
+        border: 2px solid #000;
+        padding: 15px 20px;
+        border-radius: 6px;
+        margin-bottom: 25px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px 25px;
+        font-size: 15px;
+    }
+.section h3 {
+    text-align: center !important;
+}
+    .info-item strong {
+        display: inline-block;
+        min-width: 140px;
+        font-weight: bold;
+    }
+
+    /* ===== SECTION HALF/HALF ===== */
+    .two-col-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section {
+        border: 1.5px solid #333;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .section h3 {
+        font-size: 16px;
+        border-bottom: 2px solid #222;
+        padding-bottom: 5px;
+        margin-bottom: 8px;
+    }
+
+    /* ===== TABLE ===== */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+    th, td {
+        border: 1px solid #333;
+        padding: 8px 10px;
+        vertical-align: top;
+    }
+    th {
+        background: #ececec;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    tr { page-break-inside: avoid; }
+
+    .print-button {
+        display: block;
+        margin: 20px auto;
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ طباعة</button>
+<!-- TITLE -->
+<div style="text-align:center; margin-bottom:25px;">
+    <h1 style="font-size:22px; margin-bottom:5px;"> مذكرة ${plan.plan_type || ''} </h1>
+    <!--<h2 style="font-size:18px; color:#555;">${plan.lesson_name || ''}</h2>-->
+</div>
+<!-- COMBINED INFORMATION BOX -->
+<div class="info-box">
+    <div class="info-grid">
+
+        <!-- TOP SCHOOL INFO -->
+        <div class="info-item"><strong>الثانوية:</strong> ${schoolName}</div>
+        <div class="info-item"><strong>المجال التعليمي:</strong> ${plan.area || ''}</div>
+        <div class="info-item"><strong>الأستاذ:</strong> ${teacherName}</div>
+        <div class="info-item"><strong>الوحدة التعليمية:</strong> ${plan.unit || ''}</div>
+        <div class="info-item"><strong>المادة:</strong> المعلوماتية</div>
+        <div class="info-item"><strong>المدة:</strong> ${plan.lesson_duration}</div>
+		<div class="info-item"><strong>الشعبة:</strong> ${plan.class_type || ''}</div>
+		<div class="info-item"><strong>الوسائل:</strong> ${plan.used_resources}</div>
+        <div class="info-item"><strong>السنة الدراسية:</strong> ${academicYear}</div>
+		<div class="info-item"><strong>الاستراتيجيات:</strong> ${plan.used_strategies}</div>
+       
+    </div>
+</div>
+
+
+
+
+
+<!-- الكفاءة + الأهداف (SIDE BY SIDE) -->
+<div class="two-col-section">
+    ${plan.target_competency ? `
+    <div class="section">
+        <h3>الكفاءة المستهدفة</h3>
+        <p>${plan.target_competency}</p>
+    </div>` : ''}
+
+    ${plan.learning_objectives ? `
+    <div class="section">
+        <h3>الأهداف التعلمية</h3>
+        <p>${plan.learning_objectives}</p>
+    </div>` : ''}
+</div>
+
+<!-- TABLE -->
+<div class="section">
+    <h3>السير المنهجي للدرس</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">الوضعيات التعليمية</th>
+                <th colspan="3">السير المنهجي</th>
+                <th rowspan="2">بلوم/مهارة</th>
+                <th rowspan="2">التقويم</th>
+                <th rowspan="2">المدة</th>
+            </tr>
+            <tr>
+                <th>الموارد</th>
+                <th>دور المعلم</th>
+                <th>دور المتعلم</th>
+            </tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+    </table>
+</div>
+
+</body>
+</html>
+
     `;
     
     printWindow.document.write(printContent);
     printWindow.document.close();
 }
+
 loadCoursePlans();
