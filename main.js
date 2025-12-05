@@ -36,8 +36,9 @@ class GlobalRatingSystem {
     async init() {
         try {
             // Import Supabase from CDN with better dependency resolution
-            const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-            
+            //const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+            const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+
             // Initialize Supabase client
             this.supabase = createClient(supabaseConfig.url, supabaseConfig.anonKey);
             
@@ -1081,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
