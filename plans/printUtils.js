@@ -49,7 +49,7 @@ function printPlan(plan, teacherName, schoolName) {
 
 <style>
     @media print {
-        @page { size: A4; margin: 12mm; }
+        @page { size: A4; margin: 12mm; size: landscape; }
         .print-btn {
             display: none !important;
             visibility: hidden !important;
@@ -59,23 +59,23 @@ function printPlan(plan, teacherName, schoolName) {
     body {
         font-family: 'Segoe UI', Tahoma, sans-serif;
         color: #000;
-        padding: 10px;
-        line-height: 1.6;
+        padding: 5px;
+        line-height: 1.5;
     }
 
     /* ======= INFO BOX ======= */
     .info-box {
         border: 2px solid #000;
-        padding: 15px 20px;
-        border-radius: 6px;
-        margin-bottom: 10px;
+        padding: 5px 5px;
+        border-radius: 5px;
+        margin-bottom: 5px;
     }
 
     .info-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 5px 15px;
-        font-size: 13px;
+        gap: 5px 5px;
+        font-size: 12px;
     }
 
     .section h3 {
@@ -84,7 +84,7 @@ function printPlan(plan, teacherName, schoolName) {
 
     .info-item strong {
         display: inline-block;
-        min-width: 140px;
+        min-width: 100px;
         font-weight: bold;
     }
 
@@ -93,12 +93,12 @@ function printPlan(plan, teacherName, schoolName) {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
     .section {
         border: 1.5px solid #333;
-        padding: 12px;
+        padding: 5px;
         border-radius: 6px;
     }
 
@@ -106,7 +106,7 @@ function printPlan(plan, teacherName, schoolName) {
         font-size: 14px;
         border-bottom: 2px solid #222;
         padding-bottom: 5px;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
 		margin-top: 5px;
     }
 
@@ -114,20 +114,29 @@ function printPlan(plan, teacherName, schoolName) {
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 15px;
+        margin-top: 5px;
         font-size: 12px;
     }
     th, td {
         border: 1px solid #333;
-        padding: 8px 10px;
+        padding: 5px 5px;
         vertical-align: top;
     }
+	td:first-child {
+		text-align: center;
+		vertical-align: middle;
+	}
     th {
         background: #ececec;
         text-align: center;
         font-weight: bold;
+		vertical-align: middle;
     }
-
+	ul {
+	    margin-top: 5px;
+        margin-bottom: 5px;
+        padding-right: 20px;
+	}
     tr { page-break-inside: avoid; }
 
     .print-btn {
@@ -136,11 +145,19 @@ function printPlan(plan, teacherName, schoolName) {
         background: #4f46e5;
         color: white;
         border: none;
-        padding: 10px 25px;
+        padding: 5px 5px;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 14px;
+        font-size: 12px;
     }
+	p {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	h3 {
+		margin-top: 1px;
+	}
+
 </style>
 </head>
 <body>
@@ -149,7 +166,7 @@ function printPlan(plan, teacherName, schoolName) {
 
 <!-- TITLE -->
 <div style="text-align:center; margin-bottom:5px;">
-    <h1 style="font-size:20px;margin-bottom:5px;margin-top: 5px;">مذكرة ${plan.plan_type || ''}</h1>
+    <h1 style="font-size:18px;margin-bottom:5px;margin-top: 3px;">مذكرة ${plan.plan_type || ''}</h1>
 </div>
 
 <!-- COMBINED INFORMATION BOX -->
@@ -172,20 +189,20 @@ function printPlan(plan, teacherName, schoolName) {
 <div class="two-col-section">
     ${plan.target_competency ? `
     <div class="section">
-        <h3>الكفاءة المستهدفة</h3>
-        <p>${plan.target_competency}</p>
+        <h3 style=" margin-top: 1px;">الكفاءة المستهدفة</h3>
+        <p style="font-size:12px; margin-top: 5px; margin-bottom: 5px;">${plan.target_competency}</p>
     </div>` : ''}
 
     ${plan.learning_objectives ? `
     <div class="section">
-        <h3>الأهداف التعلمية</h3>
-        <p>${plan.learning_objectives}</p>
+        <h3 style=" margin-top: 1px;">الأهداف التعلمية</h3>
+        <p style="font-size:12px;margin-top: 5px; margin-bottom: 5px;">${plan.learning_objectives}</p>
     </div>` : ''}
 </div>
 
 <!-- TABLE -->
 <div class="section">
-    <h3>السير المنهجي للدرس</h3>
+    <h3 style=" margin-top: 1px;">السير المنهجي للدرس</h3>
 
     <table>
         <thead>
