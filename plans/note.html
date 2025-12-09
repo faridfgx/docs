@@ -35,140 +35,157 @@
     </div>
 
     <!-- Create/Edit Modal -->
-    <div id="createModal" class="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeCreateModal()">×</button>
-            <h2 style="margin-bottom: 30px; color: #333;">إنشاء مذكرة درس جديدة</h2>
+<div id="createModal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeCreateModal()">×</button>
+        <h2 style="margin-bottom: 30px; color: #333;">إنشاء مذكرة درس جديدة</h2>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>المجال التعلمي</label>
-                    <select id="area" onchange="updateUnits()" required>
-                        <option value="">اختر المجال</option>
-                        <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
-                        <option value="المخططات الانسيابية والخوارزميات">المخططات الانسيابية والخوارزميات</option>
-                        <option value="تقنيات الويب">تقنيات الويب</option>
-                        <option value="المكتبية">المكتبية</option>
-                    </select>
-                </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>المجال التعلمي</label>
+                <select id="area" onchange="updateUnits()" required>
+                    <option value="">اختر المجال</option>
+                    <option value="بيئة التعامل مع الحاسوب">بيئة التعامل مع الحاسوب</option>
+                    <option value="المخططات الانسيابية والخوارزميات">المخططات الانسيابية والخوارزميات</option>
+                    <option value="تقنيات الويب">تقنيات الويب</option>
+                    <option value="المكتبية">المكتبية</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label>الوحدة التعلمية</label>
-                    <select id="unit" onchange="autoFillCurriculumData()" required>
-                        <option value="">اختر المجال أولاً</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label>الوحدة التعلمية</label>
+                <select id="unit" onchange="autoFillCurriculumData()" required>
+                    <option value="">اختر المجال أولاً</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label>الشعبة</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="classType" value="ج م ع ت" checked>
-                            ج م ع ت
-                        </label>
-                        <label>
-                            <input type="radio" name="classType" value="ج م أ">
-                            ج م أ
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>نوع المذكرة</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="planType" value="تطبيقية" checked>
-                            تطبيقية
-                        </label>
-                        <label>
-                            <input type="radio" name="planType" value="نظرية">
-                            نظرية
-                        </label>
-                    </div>
+            <div class="form-group">
+                <label>الشعبة</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="classType" value="ج م ع ت" checked>
+                        ج م ع ت
+                    </label>
+                    <label>
+                        <input type="radio" name="classType" value="ج م أ">
+                        ج م أ
+                    </label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>عنوان ورقم المذكرة</label>
-                <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة" required>
-            </div>
-
-            <!-- الحقول الجديدة -->
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>الوسائل المستخدمة</label>
-                    <textarea id="usedResources" placeholder="أدخل الوسائل المستخدمة في الدرس"></textarea>
+                <label>نوع المذكرة</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="planType" value="تطبيقية" checked>
+                        تطبيقية
+                    </label>
+                    <label>
+                        <input type="radio" name="planType" value="نظرية">
+                        نظرية
+                    </label>
                 </div>
-
-                <div class="form-group">
-                    <label>المدة</label>
-                    <input type="text" id="lessonDuration" placeholder="مثال: 1 ساعة">
-                </div>
-
-                <div class="form-group">
-                    <label>الاستراتيجيات المستعملة</label>
-                    <textarea id="usedStrategies" placeholder="أدخل الاستراتيجيات المستعملة"></textarea>
-                </div>
-            </div>
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>الأهداف التعلمية</label>
-                    <textarea id="objectives" placeholder="أدخل الأهداف التعلمية" style="transition: background-color 0.3s ease;"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>الكفاءة المستهدفة</label>
-                    <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة" style="transition: background-color 0.3s ease;"></textarea>
-                </div>
-            </div>
-
-            <div class="table-actions">
-                <h3>السير المنهجي للدرس</h3>
-                <button class="btn btn-secondary" onclick="addTableRow()">+ إضافة صف</button>
-            </div>
-
-            <div style="overflow-x: auto;">
-                <table id="lessonTable">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">الوضعيات التعليمية</th>
-                            <th colspan="3">السير المنهجي للدرس</th>
-                            <th rowspan="2">مستوى بلوم/<br>المهارة المستهدفة</th>
-                            <th rowspan="2">التقويم المرحلي</th>
-                            <th rowspan="2">المدة<br>(دقيقة)</th>
-                            <th rowspan="2">حذف</th>
-                        </tr>
-                        <tr>
-                            <th>الموارد</th>
-                            <th>دور المعلم</th>
-                            <th>دور المتعلم</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td><input type="text" value="وضعية الانطلاق" data-field="situation"></td>
-                            <td><textarea data-field="resources"></textarea></td>
-                            <td><textarea data-field="teacherRole"></textarea></td>
-                            <td><textarea data-field="studentRole"></textarea></td>
-                            <td><input type="text" data-field="bloomLevel"></td>
-                            <td><textarea data-field="evaluation"></textarea></td>
-                            <td><input type="text" data-field="duration" placeholder="مثال: 10"></td>
-                            <td style="text-align: center;">
-                                <button class="btn-danger" onclick="removeTableRow(this)" disabled>✕</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="display: flex; gap: 15px; margin-top: 30px;">
-                <button class="btn" onclick="saveCoursePlan()" style="flex: 1;">حفظ المذكرة</button>
-                <button class="btn" onclick="closeCreateModal()" style="flex: 1; background: #6b7280;">إلغاء</button>
             </div>
         </div>
-    </div>
 
+        <!-- AI GENERATION SECTION -->
+        <div class="ai-generation-section">
+            <p style="color: white; margin-bottom: 15px; font-size: 1.1em;">
+                💡 استخدم الذكاء الاصطناعي لإنشاء خطة الدرس تلقائياً بناءً على المنهاج
+            </p>
+            <button 
+                id="generateWithAI" 
+                class="btn" 
+                onclick="generateLessonPlanWithAI()" 
+                style="background: #8b5cf6; border: none; padding: 12px 30px; font-size: 1.1em; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);"
+                disabled>
+                🤖 إنشاء بواسطة AI
+            </button>
+            <p style="color: rgba(255, 255, 255, 0.8); margin-top: 10px; font-size: 0.9em;">
+                ⚠️ يمكن استخدام هذه الميزة مرة واحدة فقط لكل مذكرة
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label>عنوان ورقم المذكرة</label>
+            <input type="text" id="lessonName" placeholder="أدخل عنوان المذكرة" required>
+        </div>
+
+        <!-- الحقول الجديدة -->
+        <div class="form-grid">
+            <div class="form-group">
+                <label>الوسائل المستخدمة</label>
+                <textarea id="usedResources" placeholder="أدخل الوسائل المستخدمة في الدرس"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>المدة</label>
+                <input type="text" id="lessonDuration" placeholder="مثال: 1 ساعة">
+            </div>
+
+            <div class="form-group">
+                <label>الاستراتيجيات المستعملة</label>
+                <textarea id="usedStrategies" placeholder="أدخل الاستراتيجيات المستعملة"></textarea>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>الأهداف التعلمية</label>
+                <textarea id="objectives" placeholder="أدخل الأهداف التعلمية" style="transition: background-color 0.3s ease;"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>الكفاءة المستهدفة</label>
+                <textarea id="competency" placeholder="أدخل الكفاءة المستهدفة" style="transition: background-color 0.3s ease;"></textarea>
+            </div>
+        </div>
+
+        <div class="table-actions">
+            <h3>السير المنهجي للدرس</h3>
+            <button class="btn btn-secondary" onclick="addTableRow()">+ إضافة صف</button>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table id="lessonTable">
+                <thead>
+                    <tr>
+                        <th rowspan="2">الوضعيات التعليمية</th>
+                        <th colspan="3">السير المنهجي للدرس</th>
+                        <th rowspan="2">مستوى بلوم/<br>المهارة المستهدفة</th>
+                        <th rowspan="2">التقويم المرحلي</th>
+                        <th rowspan="2">المدة<br>(دقيقة)</th>
+                        <th rowspan="2">حذف</th>
+                    </tr>
+                    <tr>
+                        <th>الموارد</th>
+                        <th>دور المعلم</th>
+                        <th>دور المتعلم</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td><input type="text" value="وضعية الانطلاق" data-field="situation"></td>
+                        <td><textarea data-field="resources"></textarea></td>
+                        <td><textarea data-field="teacherRole"></textarea></td>
+                        <td><textarea data-field="studentRole"></textarea></td>
+                        <td><input type="text" data-field="bloomLevel"></td>
+                        <td><textarea data-field="evaluation"></textarea></td>
+                        <td><input type="text" data-field="duration" placeholder="مثال: 10"></td>
+                        <td style="text-align: center;">
+                            <button class="btn-danger" onclick="removeTableRow(this)" disabled>✕</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <button class="btn" onclick="saveCoursePlan()" style="flex: 1;">حفظ المذكرة</button>
+            <button class="btn" onclick="closeCreateModal()" style="flex: 1; background: #6b7280;">إلغاء</button>
+        </div>
+    </div>
+</div>
     <!-- Detail Modal -->
     <div id="detailModal" class="modal">
         <div class="modal-content">
