@@ -1,7 +1,24 @@
+
+function showToast(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+// Initialize Supabase client
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Global variables
 let currentEditId = null;
 let currentUserFingerprint = null;
 let lockCheckInterval = null;
 let currentPlanForPrint = null;
+let aiButtonUsed = false;
 
 // Helper functions
 function getUserFingerprint() {
@@ -135,7 +152,7 @@ function startLockMonitoring(planId) {
         const lockStatus = await checkLockStatus(planId);
         if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
             clearInterval(lockCheckInterval);
-            alert('تم قفل هذه المذكرة من قبل مستخدم آخر. سيتم إغلاق النموذج.');
+            showToast("تم قفل هذه المذكرة من قبل مستخدم آخر. سيتم إغلاق النموذج.");
             closeCreateModal();
         }
     }, 30000);
@@ -165,6 +182,7 @@ function updateUnits() {
     
     document.getElementById('objectives').value = '';
     document.getElementById('competency').value = '';
+    updateAIButtonState();
 }
 
 function autoFillCurriculumData() {
@@ -193,12 +211,15 @@ function autoFillCurriculumData() {
             document.getElementById('competency').value = '';
         }
     }
+    updateAIButtonState();
 }
 
 function showCreateModal() {
     currentEditId = null;
+    aiButtonUsed = false;
     document.querySelector('#createModal h2').textContent = 'إنشاء مذكرة درس جديدة';
     document.getElementById('createModal').style.display = 'block';
+    setTimeout(updateAIButtonState, 100);
 }
 
 function closeCreateModal() {
@@ -216,18 +237,19 @@ async function showEditModal(plan) {
     const lockStatus = await checkLockStatus(plan.id);
     
     if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
-        alert('هذه المذكرة قيد التعديل حالياً من قبل مستخدم آخر. يرجى المحاولة لاحقاً.');
+        showToast("هذه المذكرة قيد التعديل حالياً من قبل مستخدم آخر. يرجى المحاولة لاحقاً.");
         return;
     }
     
     const lockAcquired = await acquireLock(plan.id);
     
     if (!lockAcquired) {
-        alert('لم نتمكن من قفل المذكرة للتعديل. يرجى المحاولة مرة أخرى.');
+        showToast("لم نتمكن من قفل المذكرة للتعديل. يرجى المحاولة مرة أخرى.");
         return;
     }
     
     currentEditId = plan.id;
+    aiButtonUsed = true;
     document.querySelector('#createModal h2').textContent = 'تعديل مذكرة الدرس';
     
     const lockIndicator = document.createElement('div');
@@ -279,6 +301,7 @@ async function showEditModal(plan) {
     updateDeleteButtons();
     document.getElementById('createModal').style.display = 'block';
     startLockMonitoring(plan.id);
+    updateAIButtonState();
 }
 
 function showDetailModal(plan) {
@@ -410,7 +433,6 @@ function closeDetailModal() {
 }
 
 function showPrintModal(plan) {
-    // تخزين نسخة عميقة من الخطة
     currentPlanForPrint = JSON.parse(JSON.stringify(plan));
     document.getElementById('printInfoModal').style.display = 'block';
 }
@@ -422,23 +444,7 @@ function closePrintInfoModal() {
     currentPlanForPrint = null;
 }
 
-function confirmPrint() {
-    const teacherName = document.getElementById('teacherName').value.trim();
-    const schoolName = document.getElementById('schoolName').value.trim();
-    
-    if (!teacherName || !schoolName) {
-        alert('الرجاء إدخال جميع البيانات المطلوبة');
-        return;
-    }
-    
-    if (!currentPlanForPrint) {
-        alert('حدث خطأ في تحميل بيانات المذكرة');
-        return;
-    }
-    
-    printPlan(currentPlanForPrint, teacherName, schoolName);
-    closePrintInfoModal();
-}
+
 
 function addTableRow() {
     const tbody = document.getElementById('tableBody');
@@ -514,14 +520,14 @@ async function saveCoursePlan() {
     const planType = document.querySelector('input[name="planType"]:checked').value;
 
     if (!area || !unit || !lessonName) {
-        alert('الرجاء إدخال جميع البيانات المطلوبة (المجال، الوحدة، عنوان الدرس)');
+        showToast("الرجاء إدخال جميع البيانات المطلوبة (المجال، الوحدة، عنوان الدرس)");
         return;
     }
 
     if (currentEditId) {
         const lockStatus = await checkLockStatus(currentEditId);
         if (lockStatus.isLocked && !lockStatus.isLockedByCurrentUser) {
-            alert('لقد فقدت القفل على هذه المذكرة. تم تعديلها من قبل مستخدم آخر.');
+            showToast("لقد فقدت القفل على هذه المذكرة. تم تعديلها من قبل مستخدم آخر.");
             closeCreateModal();
             return;
         }
@@ -560,17 +566,17 @@ async function saveCoursePlan() {
                 locked_at: null,
                 lock_expires_at: null
             });
-            alert('تم تحديث المذكرة بنجاح!');
+            showToast("تم تحديث المذكرة بنجاح!");
         } else {
             await supabaseRequest('course_plans', 'POST', [coursePlan]);
-            alert('تم حفظ المذكرة بنجاح!');
+            showToast("تم حفظ المذكرة بنجاح!");
         }
         closeCreateModal();
         closeDetailModal();
         loadCoursePlans();
     } catch (error) {
         console.error('Error saving plan:', error);
-        alert('حدث خطأ أثناء الحفظ');
+        showToast("حدث خطأ أثناء الحفظ");
     }
 }
 
@@ -586,12 +592,12 @@ async function deletePlan(planId) {
 
     try {
         await supabaseRequest(`course_plans?id=eq.${planId}`, 'DELETE');
-        alert('تم حذف المذكرة بنجاح!');
+        showToast("تم حذف المذكرة بنجاح!");
         closeDetailModal();
         loadCoursePlans();
     } catch (error) {
         console.error('Error deleting plan:', error);
-        alert('حدث خطأ أثناء الحذف');
+        showToast("حدث خطأ أثناء الحذف");
     }
 }
 
@@ -673,12 +679,7 @@ function filterByArea() {
     loadCoursePlans(selectedArea);
 }
 
-// Initialize on page load
-loadCoursePlans();
-
-// ==================== AI LESSON PLAN GENERATOR ====================
-
-let aiButtonUsed = false;
+// ==================== AI GENERATION FUNCTIONS ====================
 
 function updateAIButtonState() {
     const aiButton = document.getElementById('generateWithAI');
@@ -692,10 +693,10 @@ function updateAIButtonState() {
             aiButton.textContent = '✓ تم إنشاء الخطة بواسطة AI';
             aiButton.style.background = '#10b981';
         } else if (!area || !unit) {
-            aiButton.textContent = '🤖 إنشاء بواسطة AI';
+            aiButton.textContent = ' إنشاء بواسطة AI';
             aiButton.style.background = '#6b7280';
         } else {
-            aiButton.textContent = '🤖 إنشاء بواسطة AI';
+            aiButton.textContent = ' إنشاء بواسطة AI';
             aiButton.style.background = '#8b5cf6';
         }
     }
@@ -706,19 +707,19 @@ async function generateLessonPlanWithAI() {
     const unit = document.getElementById('unit').value;
     
     if (!area || !unit) {
-        alert('الرجاء اختيار المجال والوحدة أولاً');
+        showToast("الرجاء اختيار المجال والوحدة أولاً");
         return;
     }
     
     if (aiButtonUsed) {
-        alert('تم استخدام AI مسبقاً لهذه المذكرة');
+        showToast("تم استخدام AI مسبقاً لهذه المذكرة");
         return;
     }
     
     const curriculumData = getCurriculumData(area, unit);
     
     if (!curriculumData) {
-        alert('لا توجد بيانات متاحة لهذه الوحدة');
+        showToast("لا توجد بيانات متاحة لهذه الوحدة");
         return;
     }
     
@@ -726,7 +727,8 @@ async function generateLessonPlanWithAI() {
     aiButton.disabled = true;
     aiButton.textContent = '⏳ جاري الإنشاء...';
     aiButton.classList.add('loading');
-    
+    document.getElementById("loadingOverlay").style.display = "flex";
+
     try {
         const prompt = `أنت خبير تربوي متخصص في إعداد مذكرات الدروس للتعليم الثانوي في الجزائر.
 
@@ -777,30 +779,27 @@ ${curriculumData.final_task ? `- المهمة النهائية: ${curriculumData
   ]
 }`;
 
-        const response = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                model: "claude-sonnet-4-20250514",
-                max_tokens: 4000,
-                messages: [{ role: "user", content: prompt }],
-            })
+        // Use Supabase Edge Function
+        const { data, error } = await supabaseClient.functions.invoke('chat-with-ai', {
+            body: {
+                prompt: prompt,
+                history: []
+            }
         });
 
-        const data = await response.json();
-        
-        if (!data.content || !data.content[0] || !data.content[0].text) {
+        if (error) throw error;
+
+        // Extract response from Gemini API structure
+        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
             throw new Error('استجابة غير صالحة من AI');
         }
 
-        let aiResponse = data.content[0].text.trim();
+        let aiResponse = data.candidates[0].content.parts[0].text.trim();
         aiResponse = aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         
         const lessonPlan = JSON.parse(aiResponse);
         
-        // Fill form fields with animation
+        // Fill form fields
         if (lessonPlan.usedResources) {
             const field = document.getElementById('usedResources');
             field.value = lessonPlan.usedResources;
@@ -853,41 +852,17 @@ ${curriculumData.final_task ? `- المهمة النهائية: ${curriculumData
         updateAIButtonState();
         aiButton.classList.remove('loading');
         aiButton.classList.add('success');
-        
-        alert('✓ تم إنشاء خطة الدرس بنجاح بواسطة AI!');
+        document.getElementById("loadingOverlay").style.display = "none";
+        showToast("✓ تم إنشاء خطة الدرس بنجاح بواسطة AI!");
         
     } catch (error) {
         console.error('Error generating lesson plan:', error);
-        alert('حدث خطأ أثناء إنشاء خطة الدرس: ' + error.message);
+        showToast("حدث خطأ أثناء إنشاء خطة الدرس: " + error.message);
         aiButton.disabled = false;
         aiButton.textContent = '🤖 إنشاء بواسطة AI';
         aiButton.classList.remove('loading');
     }
 }
 
-// Override existing functions
-const originalShowCreateModal = window.showCreateModal;
-window.showCreateModal = function() {
-    aiButtonUsed = false;
-    originalShowCreateModal();
-    setTimeout(updateAIButtonState, 100);
-};
-
-const originalShowEditModal = window.showEditModal;
-window.showEditModal = async function(plan) {
-    await originalShowEditModal(plan);
-    aiButtonUsed = true;
-    updateAIButtonState();
-};
-
-const originalUpdateUnits = window.updateUnits;
-window.updateUnits = function() {
-    originalUpdateUnits();
-    updateAIButtonState();
-};
-
-const originalAutoFillCurriculumData = window.autoFillCurriculumData;
-window.autoFillCurriculumData = function() {
-    originalAutoFillCurriculumData();
-    updateAIButtonState();
-};
+// Initialize on page load
+loadCoursePlans();
