@@ -421,7 +421,7 @@ td textarea {
 .ai-generation-section {
     margin: 20px 0;
     padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #5f7cff 0%, #38c6a6 100%);
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
@@ -434,7 +434,7 @@ td textarea {
 }
 
 #generateWithAI {
-    background: #8b5cf6 !important;
+    background: # !important;
     border: none;
     padding: 12px 30px;
     font-size: 1.1em;

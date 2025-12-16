@@ -690,13 +690,13 @@ function updateAIButtonState() {
         aiButton.disabled = aiButtonUsed || !area || !unit;
         
         if (aiButtonUsed) {
-            aiButton.textContent = '✓ تم إنشاء الخطة بواسطة AI';
+            aiButton.textContent = '✓  تم اضافة النص من قبل المساعد الذكي';
             aiButton.style.background = '#10b981';
         } else if (!area || !unit) {
-            aiButton.textContent = ' إنشاء بواسطة AI';
+            aiButton.textContent = '✓ حدد المجال والوحدة ونوع المذكرة اولا';
             aiButton.style.background = '#6b7280';
         } else {
-            aiButton.textContent = ' إنشاء بواسطة AI';
+            aiButton.textContent = '  انشاء بواسطة المساعد الذكي';
             aiButton.style.background = '#8b5cf6';
         }
     }
@@ -712,7 +712,7 @@ async function generateLessonPlanWithAI() {
     }
     
     if (aiButtonUsed) {
-        showToast("تم استخدام AI مسبقاً لهذه المذكرة");
+        showToast("تم استخدام المساعد الذكي مسبقا لهاته المذكرة");
         return;
     }
     
@@ -723,144 +723,25 @@ async function generateLessonPlanWithAI() {
         return;
     }
     
+    const promptText = customPromptText || buildPromptText(area, unit, curriculumData);
+    await executeAIGeneration(promptText);
+}
+
+function updateAIButton() {
     const aiButton = document.getElementById('generateWithAI');
-    aiButton.disabled = true;
-    aiButton.textContent = '⏳ جاري الإنشاء...';
-    aiButton.classList.add('loading');
-    document.getElementById("loadingOverlay").style.display = "flex";
-
-    try {
-        const prompt = `أنت خبير تربوي متخصص في إعداد مذكرات الدروس للتعليم الثانوي في الجزائر.
-
-المعطيات المتوفرة:
-- المجال التعلمي: ${area}
-- الوحدة التعلمية: ${unit}
-- الكفاءة المستهدفة: ${curriculumData.competency}
-- الأهداف التعلمية: ${curriculumData.objectives}
-${curriculumData.targeted_ressourses ? `- الموارد المستهدفة: ${curriculumData.targeted_ressourses.join(', ')}` : ''}
-${curriculumData.progression ? `- التدرج البيداغوجي: ${curriculumData.progression.join(', ')}` : ''}
-${curriculumData.duration ? `- المدة المقترحة: ${curriculumData.duration}` : ''}
-${curriculumData.stage_evaluation ? `- التقويم المرحلي: ${curriculumData.stage_evaluation}` : ''}
-${curriculumData.final_task ? `- المهمة النهائية: ${curriculumData.final_task}` : ''}
-
-المطلوب منك:
-1. اقترح الوسائل المستخدمة (أدوات، تجهيزات، برمجيات)
-2. اقترح المدة المناسبة للدرس
-3. اقترح الاستراتيجيات البيداغوجية المستعملة
-4. أنشئ جدول السير المنهجي للدرس بـ 4 مراحل:
-   - وضعية الانطلاق
-   - بناء التعلمات
-   - وضعية التطبيق
-   - التقويم الختامي
-
-لكل مرحلة، قدم:
-- الموارد المستخدمة
-- دور المعلم (بشكل واضح ومحدد)
-- دور المتعلم (بشكل واضح ومحدد)
-- مستوى بلوم أو المهارة المستهدفة
-- التقويم المرحلي
-- المدة بالدقائق
-
-الرجاء الإجابة بصيغة JSON فقط بهذا الشكل بدون أي نص إضافي:
-{
-  "usedResources": "نص الوسائل المستخدمة",
-  "lessonDuration": "المدة",
-  "usedStrategies": "الاستراتيجيات المستعملة",
-  "stages": [
-    {
-      "situation": "وضعية الانطلاق",
-      "resources": "الموارد",
-      "teacherRole": "دور المعلم",
-      "studentRole": "دور المتعلم",
-      "bloomLevel": "مستوى بلوم",
-      "evaluation": "التقويم",
-      "duration": "5"
-    }
-  ]
-}`;
-
-        // Use Supabase Edge Function
-        const { data, error } = await supabaseClient.functions.invoke('chat-with-ai', {
-            body: {
-                prompt: prompt,
-                history: []
-            }
-        });
-
-        if (error) throw error;
-
-        // Extract response from Gemini API structure
-        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-            throw new Error('استجابة غير صالحة من AI');
+    if (aiButton && !aiButtonUsed) {
+        aiButton.innerHTML = '🤖 اقتراح المحتوى بواسطة المساعد الذكي';
+        
+        // Add edit button next to AI button
+        if (!document.getElementById('editPromptBtn')) {
+            const editBtn = document.createElement('button');
+            editBtn.id = 'editPromptBtn';
+            editBtn.className = 'btn-secondary';
+            editBtn.innerHTML = '✏️ تعديل النص';
+            editBtn.onclick = openPromptEditor;
+            editBtn.style.marginRight = '10px';
+            aiButton.parentElement.insertBefore(editBtn, aiButton);
         }
-
-        let aiResponse = data.candidates[0].content.parts[0].text.trim();
-        aiResponse = aiResponse.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-        
-        const lessonPlan = JSON.parse(aiResponse);
-        
-        // Fill form fields
-        if (lessonPlan.usedResources) {
-            const field = document.getElementById('usedResources');
-            field.value = lessonPlan.usedResources;
-            field.classList.add('ai-filled');
-            setTimeout(() => field.classList.remove('ai-filled'), 2000);
-        }
-        
-        if (lessonPlan.lessonDuration) {
-            const field = document.getElementById('lessonDuration');
-            field.value = lessonPlan.lessonDuration;
-            field.classList.add('ai-filled');
-            setTimeout(() => field.classList.remove('ai-filled'), 2000);
-        }
-        
-        if (lessonPlan.usedStrategies) {
-            const field = document.getElementById('usedStrategies');
-            field.value = lessonPlan.usedStrategies;
-            field.classList.add('ai-filled');
-            setTimeout(() => field.classList.remove('ai-filled'), 2000);
-        }
-        
-        // Fill table
-        if (lessonPlan.stages && lessonPlan.stages.length > 0) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-            
-            lessonPlan.stages.forEach((stage, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'ai-generated-row';
-                tr.style.animationDelay = `${index * 0.1}s`;
-                tr.innerHTML = `
-                    <td><input type="text" value="${stage.situation || ''}" data-field="situation"></td>
-                    <td><textarea data-field="resources">${stage.resources || ''}</textarea></td>
-                    <td><textarea data-field="teacherRole">${stage.teacherRole || ''}</textarea></td>
-                    <td><textarea data-field="studentRole">${stage.studentRole || ''}</textarea></td>
-                    <td><input type="text" value="${stage.bloomLevel || ''}" data-field="bloomLevel"></td>
-                    <td><textarea data-field="evaluation">${stage.evaluation || ''}</textarea></td>
-                    <td><input type="text" value="${stage.duration || ''}" data-field="duration" placeholder="مثال: 10"></td>
-                    <td style="text-align: center;">
-                        <button class="btn-danger" onclick="removeTableRow(this)">✕</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            
-            updateDeleteButtons();
-        }
-        
-        aiButtonUsed = true;
-        updateAIButtonState();
-        aiButton.classList.remove('loading');
-        aiButton.classList.add('success');
-        document.getElementById("loadingOverlay").style.display = "none";
-        showToast("✓ تم إنشاء خطة الدرس بنجاح بواسطة AI!");
-        
-    } catch (error) {
-        console.error('Error generating lesson plan:', error);
-        showToast("حدث خطأ أثناء إنشاء خطة الدرس: " + error.message);
-        aiButton.disabled = false;
-        aiButton.textContent = '🤖 إنشاء بواسطة AI';
-        aiButton.classList.remove('loading');
     }
 }
 
