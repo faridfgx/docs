@@ -1,4 +1,4 @@
-// Print Utilities with Style Selection
+// Print Utilities with Style Selection and Download Options
 
 function getAcademicYear() {
     const now = new Date();
@@ -196,10 +196,15 @@ function executePrint(plan, teacherName, schoolName, printStyle) {
 <style>
     ${getStyleCSS(printStyle)}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
 </head>
 <body>
 
-<button class="print-btn" onclick="window.print()">🖨️ طباعة</button>
+<div class="action-buttons">
+    <button class="print-btn" style="width: 120px;" onclick="window.print()">🖨️ طباعة</button>
+    <button class="download-btn" style="width: 120px;" onclick="downloadPDF()">📄 تحميل PDF</button>
+    <button class="download-btn" style="width: 120px;" onclick="downloadDOCX()">📝 تحميل DOCX</button>
+</div>
 
 <!-- TITLE -->
 <div style="text-align:center; margin-bottom:5px;">
@@ -260,6 +265,70 @@ function executePrint(plan, teacherName, schoolName, printStyle) {
     </table>
 </div>
 
+<script>
+function downloadPDF() {
+    const element = document.body;
+    const opt = {
+        margin: 12,
+        filename: '${plan.lesson_name || 'مذكرة'}.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2, 
+            useCORS: true,
+            letterRendering: true,
+            allowTaint: true,
+            logging: false,
+            scrollY: 0,
+            scrollX: 0,
+            windowWidth: document.documentElement.scrollWidth,
+            windowHeight: document.documentElement.scrollHeight
+        },
+        jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'landscape',
+            compress: true
+        },
+        pagebreak: { mode: 'avoid-all' }
+    };
+    
+    // Hide buttons before generating PDF
+    const buttons = document.querySelector('.action-buttons');
+    if (buttons) buttons.style.display = 'none';
+    
+    html2pdf().set(opt).from(element).save().then(() => {
+        if (buttons) buttons.style.display = 'flex';
+    }).catch(err => {
+        console.error('PDF generation error:', err);
+        if (buttons) buttons.style.display = 'flex';
+        alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى.');
+    });
+}
+
+function downloadDOCX() {
+    // Get the main content
+    const title = '${plan.lesson_name || 'مذكرة'}';
+    const schoolName = '${schoolName}';
+    const teacherName = '${teacherName}';
+    const academicYear = '${academicYear}';
+    
+    // Create a simple HTML structure for Word
+    let content = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/1999/xhtml">';
+    content += '<head><meta charset="utf-8"><style>body{direction:rtl;font-family:Arial;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid black;padding:8px;text-align:center;}</style></head>';
+    content += '<body>';
+    content += document.body.innerHTML.replace(/<button[^>]*>.*?<\\/button>/g, '').replace(/<script[^>]*>.*?<\\/script>/g, '');
+    content += '</body></html>';
+    
+    const blob = new Blob([content], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = title + '.doc';
+    link.click();
+    URL.revokeObjectURL(url);
+}
+<\/script>
+
 </body>
 </html>`;
     
@@ -271,10 +340,40 @@ function getStyleCSS(style) {
     const baseStyles = `
     @media print {
         @page { size: A4; margin: 12mm; size: landscape; }
-        .print-btn {
+        .print-btn, .download-btn, .action-buttons {
             display: none !important;
             visibility: hidden !important;
         }
+    }
+    
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 5px auto;
+    }
+    
+    .print-btn, .download-btn {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s;
+    }
+    
+    .download-btn {
+        background: #10b981;
+    }
+    
+    .print-btn:hover {
+        background: #4338ca;
+    }
+    
+    .download-btn:hover {
+        background: #059669;
     }
     
     p {
@@ -290,18 +389,6 @@ function getStyleCSS(style) {
         padding-right: 20px;
     }
     tr { page-break-inside: avoid; }
-    
-    .print-btn {
-        display: block;
-        margin: 5px auto;
-        background: #4f46e5;
-        color: white;
-        border: none;
-        padding: 5px 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 12px;
-    }
     `;
     
     if (style === 'colorful') {
@@ -312,6 +399,12 @@ function getStyleCSS(style) {
         padding: 8px;
         line-height: 1.6;
         background: #fff;
+    }
+    
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
 
     .info-box {
@@ -412,6 +505,12 @@ function getStyleCSS(style) {
         line-height: 1.6;
         background: #fff;
     }
+    
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
 
     .info-box {
         border: 1px solid #d1d5db;
@@ -496,6 +595,12 @@ function getStyleCSS(style) {
         padding: 5px;
         line-height: 1.5;
         background: #fff;
+    }
+    
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
 
     .info-box {
@@ -583,6 +688,12 @@ function getStyleCSS(style) {
         color: #000;
         padding: 5px;
         line-height: 1.5;
+    }
+    
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
 
     .info-box {
