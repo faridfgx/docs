@@ -181,27 +181,31 @@
         }
 
         .user-message {
-            flex-direction: row-reverse;
+            flex-direction: row;
         }
 
         .user-message .message-content {
             background: #2c5282;
             color: white;
-            border-radius: 12px 12px 0 12px;
+            border-radius: 12px 12px 12px 0;
+        }
+
+        .ai-message {
+            flex-direction: row-reverse;
         }
 
         .ai-message .message-content {
             background: #f7fafc;
             color: #2d3748;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-            border-radius: 12px 12px 12px 0;
-            border-right: 3px solid #2c5282;
+            border-radius: 12px 12px 0 12px;
+            border-left: 3px solid #2c5282;
         }
 
         .system-message .message-content {
             background: #fef5e7;
             color: #975a16;
-            border-right: 3px solid #f59e0b;
+            border-left: 3px solid #f59e0b;
         }
 
         .citation {
@@ -430,7 +434,7 @@
     <div class="container">
         <div class="chat-header">
             <h1>
-                <span></span>
+                <span>💻</span>
                 مساعد أستاذ المعلوماتية
             </h1>
             <p>مساعد ذكاء اصطناعي متخصص - إجابات أكاديمية موثوقة مع مصادر علمية</p>
@@ -438,7 +442,7 @@
 
         <div class="academic-controls">
             <div class="control-group">
-                <label for="subjectSelect"> المجال:</label>
+                <label for="subjectSelect">📖 المجال:</label>
                 <select id="subjectSelect" class="control-select">
                     <option value="general">عام</option>
                     <option value="programming">البرمجة</option>
@@ -453,7 +457,7 @@
                 </select>
             </div>
             <div class="control-group">
-                <label for="gradeSelect"> المستوى:</label>
+                <label for="gradeSelect">🎯 المستوى:</label>
                 <select id="gradeSelect" class="control-select">
                     <option value="general">جميع المستويات</option>
                     <option value="beginner">مبتدئ</option>
@@ -463,14 +467,14 @@
                     <option value="university">جامعي</option>
                 </select>
             </div>
-            <button class="clear-btn" onclick="clearChat()"> مسح المحادثة</button>
+            <button class="clear-btn" onclick="clearChat()">🗑️ مسح المحادثة</button>
         </div>
 
         <div id="chatHistory">
             <div class="welcome-message">
-                <p> مرحباً بك في مساعد أستاذ المعلوماتية!</p>
-                <p> أنا مساعد ذكاء اصطناعي متخصص في علوم الحاسوب والمعلوماتية</p>
-                <p> أقدم إجابات أكاديمية موثوقة مع مصادر علمية معتمدة</p>
+                <p>👋 مرحباً بك في مساعد أستاذ المعلوماتية!</p>
+                <p>💡 أنا مساعد ذكاء اصطناعي متخصص في علوم الحاسوب والمعلوماتية</p>
+                <p>📚 أقدم إجابات أكاديمية موثوقة مع مصادر علمية معتمدة</p>
                 <p>اسألني عن البرمجة، الخوارزميات، قواعد البيانات، الشبكات، أو أي موضوع في المعلوماتية</p>
             </div>
         </div>
@@ -685,7 +689,7 @@
             if (sources && sources.length > 0) {
                 contentHtml += `
                     <div class="message-sources">
-                        <div class="sources-header"> المصادر:</div>
+                        <div class="sources-header">📚 المصادر:</div>
                         <ul class="sources-list">
                             ${sources.map(source => `
                                 <li class="source-item">
@@ -722,7 +726,7 @@
             conversationHistory = [];
             document.getElementById('chatHistory').innerHTML = `
                 <div class="welcome-message">
-                    <p> تم مسح المحادثة. كيف يمكنني مساعدتك اليوم؟</p>
+                    <p>🎓 تم مسح المحادثة. كيف يمكنني مساعدتك اليوم؟</p>
                 </div>
             `;
         }
