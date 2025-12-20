@@ -428,7 +428,7 @@ function getStyleCSS(style) {
 
     .info-item strong {
         display: inline-block;
-        min-width: 100px;
+        min-width: 20px;
         font-weight: 600;
         color: #1e40af;
     }
@@ -529,7 +529,7 @@ function getStyleCSS(style) {
 
     .info-item strong {
         display: inline-block;
-        min-width: 100px;
+        min-width: 20px;
         font-weight: 600;
         color: #374151;
     }
@@ -615,12 +615,12 @@ function getStyleCSS(style) {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 6px 10px;
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .info-item strong {
         display: inline-block;
-        min-width: 100px;
+        min-width: 20px;
         font-weight: bold;
         text-decoration: underline;
     }
@@ -640,7 +640,7 @@ function getStyleCSS(style) {
     }
 
     .section h3 {
-        font-size: 14px;
+        font-size: 15px;
         border-bottom: 3px double #000;
         padding-bottom: 4px;
         margin-bottom: 6px;
@@ -655,7 +655,7 @@ function getStyleCSS(style) {
         width: 100%;
         border-collapse: collapse;
         margin-top: 5px;
-        font-size: 11px;
+        font-size: 13px;
         border: 2px solid #000;
     }
     
@@ -716,7 +716,7 @@ function getStyleCSS(style) {
 
     .info-item strong {
         display: inline-block;
-        min-width: 100px;
+        min-width: 20px;
         font-weight: bold;
     }
 
@@ -745,7 +745,7 @@ function getStyleCSS(style) {
         width: 100%;
         border-collapse: collapse;
         margin-top: 5px;
-        font-size: 12px;
+        font-size: 11px;
     }
     th, td {
         border: 1px solid #333;
