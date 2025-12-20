@@ -607,8 +607,13 @@ const motivationalQuotes = [
 
     const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
     const isExamPeriod = (month === 10 && day >= 15) || (month === 11 && day <= 15);
-
-    if (isExamPeriod) {
+    const vacation = (month === 12 && day >= 15) || (month === 12 && day <= 31);
+   	
+	  if (vacation) {
+      return "عطلة سعيدة! خذ قسطاً من الراحة، ولا تنسى التحضير قبل العودة إلى العمل";
+    }
+	  
+	if (isExamPeriod) {
       return "فترة الامتحانات قريبة! راجع نماذج الاختبارات";
     }
 
@@ -763,6 +768,7 @@ if (document.readyState === 'loading') {
 </body>
 
 </html>
+
 
 
 
