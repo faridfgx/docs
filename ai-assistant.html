@@ -147,9 +147,11 @@
 
    <style>
 
-
-
-
+		body {
+    		display: flex;
+    		flex-direction: column;
+    		min-height: 100vh;
+		}
         .containerc {
             width: 100%;
             max-width: 900px;
@@ -560,8 +562,8 @@
 </head>
 
 <body data-page="sub">
+
 <div class="container">
-	
 <nav class="navbar">
     <div class="nav-content">
         <a href="index.html" class="nav-brand">
@@ -664,7 +666,7 @@
         </div>
     </div>
 </nav> 
-
+</div>
 			
         <div class="chat-header">
             <h1>
@@ -783,7 +785,6 @@
         </div>
     </footer>
 	</div>
-</div>
 <button id="backToTop" class="back-to-top">↑</button>
 <!-- Popup -->
 <div id="popup" 
