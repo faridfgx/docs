@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlgoFX Interpreter</title>
+    <link rel="stylesheet" href="afx.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AlgoFX WebVersion</h1>
+            <p>Exécuteur d'algorithmes</p>
+        </div>
+
+        <div class="menu-bar">
+            <button class="menu-btn" onclick="newFile()">📄 Nouveau</button>
+            <button class="menu-btn" onclick="document.getElementById('fileInput').click()">📂 Ouvrir</button>
+            <button class="menu-btn" onclick="saveFile()">💾 Sauvegarder</button>
+            <input type="file" id="fileInput" accept=".algo" onchange="openFile(event)">
+            
+            <div class="menu-divider"></div>
+            
+            <button class="menu-btn" onclick="undo()">↶ Annuler</button>
+            <button class="menu-btn" onclick="redo()">↷ Refaire</button>
+            
+            <div class="menu-divider"></div>
+            
+            <select class="menu-select" id="templateSelect" onchange="loadTemplate()">
+                <option value="">📚 Sélectionner un modèle</option>
+            </select>
+        </div>
+
+        <div class="main-content">
+            <div class="editor-section">
+                <div class="section-title">✏️ Éditeur d'Algorithme</div>
+                <div class="editor-wrapper">
+                    <div id="highlightLayer"></div>
+                    <textarea id="codeEditor" spellcheck="false"></textarea>
+                </div>
+                <div class="controls">
+                    <button class="btn-run" onclick="runAlgorithm()">▶ Exécuter</button>
+                    <button class="btn-clear" onclick="clearEditor()">🗑️ Effacer</button>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="section-title">📺 Console de Sortie</div>
+                <div id="output"></div>
+                <div id="inputArea" class="input-container">
+                    <div id="inputPrompt"></div>
+                    <div class="input-row">
+                        <input type="text" id="userInput" placeholder="Entrez une valeur...">
+                        <button id="submitInput" onclick="submitInput()">Envoyer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="templates.js"></script>
+	<script src="afx.js"></script>
+</body>
+</html>

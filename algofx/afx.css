@@ -1,0 +1,423 @@
+/* ===== FONT ===== */
+@font-face {
+    font-family: 'Cascadia';
+    src: url('Cascadia.ttf') format('truetype');
+}
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== ROOT COLORS ===== */
+:root {
+    --bg-main: #0f172a;
+    --bg-panel: #111827;
+    --bg-editor: #020617;
+    --bg-output: #020617;
+
+    --border-soft: #1e293b;
+    --border-strong: #334155;
+
+    --text-main: #e5e7eb;
+    --text-muted: #94a3b8;
+    --text-title: #f8fafc;
+
+    --accent-primary: #3b82f6;
+    --accent-success: #10b981;
+    --accent-danger: #ef4444;
+    --accent-warning: #f59e0b;
+}
+
+/* ===== BODY ===== */
+body {
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 24px;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    max-width: 1400px;
+    margin: auto;
+    background: var(--bg-panel);
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.header {
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--border-soft);
+    background: #020617;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-title);
+    letter-spacing: 0.3px;
+}
+
+.header p {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ===== MENU BAR ===== */
+.menu-bar {
+    background: #0a0f1e;
+    border-bottom: 1px solid var(--border-soft);
+    padding: 8px 16px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.menu-btn, .menu-select {
+    padding: 8px 14px;
+    background: #020617;
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-btn:hover, .menu-select:hover {
+    border-color: var(--accent-primary);
+    background: #0f172a;
+}
+
+.menu-select {
+    min-width: 180px;
+}
+
+.menu-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-soft);
+    margin: 0 4px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* ===== LAYOUT ===== */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 620px;
+}
+
+/* ===== SECTIONS ===== */
+.editor-section,
+.output-section {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-section {
+    border-right: 1px solid var(--border-soft);
+}
+
+/* ===== TITLES ===== */
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text-title);
+    letter-spacing: 0.2px;
+}
+
+/* ===== EDITOR ===== */
+.editor-wrapper {
+    flex: 1;
+    position: relative;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+    background: var(--bg-editor);
+    overflow: hidden;
+}
+
+#codeEditor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Cascadia', "JetBrains Mono", "Fira Code", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 16px;
+    border: none;
+    background: transparent;
+    color: transparent;  /* CHANGED: Make text transparent */
+    resize: none;
+    outline: none;
+    z-index: 2;
+    caret-color: #e5e7eb;
+    /*-webkit-text-fill-color: transparent;  /* ADD: For better browser support */
+}
+
+#highlightLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    font-family: 'Cascadia', "JetBrains Mono", "Fira Code", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e5e7eb;
+    pointer-events: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+    z-index: 1;
+}
+
+.editor-wrapper:focus-within {
+    border-color: var(--accent-primary);
+}
+
+/* ===== SYNTAX HIGHLIGHTING (VS Code Dark+ Theme) ===== */
+
+#highlightLayer .keyword {
+    color: #569cd6;      /* blue - keywords like if, while, return */
+    font-weight: normal;
+}
+
+#highlightLayer .control {
+    color: #c586c0;      /* purple - control flow */
+    font-weight: normal;
+}
+
+#highlightLayer .type {
+    color: #4ec9b0;      /* cyan - types and classes */
+    font-weight: normal;
+}
+
+#highlightLayer .string {
+    color: #ce9178;      /* orange-brown - strings */
+    font-weight: normal;
+}
+
+#highlightLayer .number {
+    color: #b5cea8;      /* light green - numbers */
+    font-weight: normal;
+}
+
+#highlightLayer .operator {
+    color: #d4d4d4;      /* light gray - operators */
+    font-weight: normal;
+}
+
+#highlightLayer .comment {
+    color: #6a9955;      /* green - comments */
+    font-style: italic;
+}
+
+#highlightLayer .function {
+    color: #dcdcaa;      /* yellow - function names */
+    font-weight: normal;
+}
+
+#highlightLayer .variable {
+    color: #9cdcfe;      /* light blue - variables */
+    font-weight: normal;
+}
+
+#highlightLayer .constant {
+    color: #4fc1ff;      /* bright blue - constants */
+    font-weight: normal;
+}
+
+#highlightLayer .preprocessor {
+    color: #c586c0;      /* purple - preprocessor directives */
+    font-weight: normal;
+}
+
+#highlightLayer .punctuation {
+    color: #d4d4d4;      /* light gray - brackets, parentheses */
+    font-weight: normal;
+}
+
+/* ===== OUTPUT ===== */
+#output {
+    flex: 1;
+    background: var(--bg-output);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Cascadia', "JetBrains Mono", monospace;
+    font-size: 14px;
+    color: #e5e7eb;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    max-height: 550px;
+}
+
+/* ===== INPUT AREA ===== */
+.input-container {
+    display: none;
+    margin-top: 14px;
+}
+
+.input-container.active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#inputPrompt {
+    color: var(--accent-warning);
+    font-weight: 600;
+    font-family: 'Cascadia', "JetBrains Mono", monospace;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+#userInput {
+    flex: 1;
+    padding: 10px;
+    background: #020617;
+    color: var(--text-main);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    font-family: 'Cascadia', "JetBrains Mono", monospace;
+}
+
+#userInput:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+#submitInput {
+    padding: 10px 20px;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#submitInput:hover {
+    background: #2563eb;
+}
+
+/* ===== BUTTONS ===== */
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border-soft);
+    background: #020617;
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.btn-run {
+    background: var(--accent-success);
+    border: none;
+    color: white;
+}
+
+.btn-run:hover {
+    background: #059669;
+}
+
+.btn-clear {
+    background: var(--accent-danger);
+    border: none;
+    color: white;
+}
+
+.btn-clear:hover {
+    background: #dc2626;
+}
+
+.btn-example {
+    background: var(--accent-primary);
+    border: none;
+    color: white;
+}
+
+.btn-example:hover {
+    background: #2563eb;
+}
+
+/* ===== MESSAGES ===== */
+.error {
+    color: #f87171;
+}
+
+.success {
+    color: #34d399;
+}
+
+.info {
+    color: #60a5fa;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-section {
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+    }
+}
