@@ -70,16 +70,33 @@ body {
     font-size: 13px;
     color: var(--text-muted);
 }
-
+.footer {
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.5;
+    margin-top: 20px;
+}
 /* ===== MENU BAR ===== */
 .menu-bar {
-    background: #0a0f1e;
-    border-bottom: 1px solid var(--border-soft);
-    padding: 8px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
+
+    padding: 8px 16px;
+
+    background: rgba(10, 15, 30, 0.85); /* blur-friendly */
+    border-bottom: 1px solid var(--border-soft);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); /* Safari */
+
+    min-height: 48px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .menu-btn, .menu-select {
@@ -133,6 +150,31 @@ input[type="file"] {
 
 .editor-section {
     border-right: 1px solid var(--border-soft);
+}
+
+/* ===== HEADER LOGO ===== */
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.app-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.title-text h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.title-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.8;
 }
 
 /* ===== TITLES ===== */
