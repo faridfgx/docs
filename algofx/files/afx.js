@@ -108,7 +108,9 @@ function undo() {
     if (historyIndex > 0) {
         isUndoRedo = true;
         historyIndex--;
-        document.getElementById('codeEditor').value = history[historyIndex];
+        const editor = document.getElementById('codeEditor');
+        editor.value = history[historyIndex];
+        highlightCode(); // Update syntax highlighting
         isUndoRedo = false;
     }
 }
@@ -117,7 +119,9 @@ function redo() {
     if (historyIndex < history.length - 1) {
         isUndoRedo = true;
         historyIndex++;
-        document.getElementById('codeEditor').value = history[historyIndex];
+        const editor = document.getElementById('codeEditor');
+        editor.value = history[historyIndex];
+        highlightCode(); // Update syntax highlighting
         isUndoRedo = false;
     }
 }
@@ -286,14 +290,51 @@ document.addEventListener('DOMContentLoaded', function() {
         editor.value = highlightLayer.textContent;
     }
     
+    // Load templates
+    initTemplates();
+    if (typeof templates !== 'undefined' && templates.length > 0 && !editor.value) {
+        setEditorContent(templates[0].code);
+    } else {
+        // Save initial state to history if not loading template
+        saveHistory();
+    }
+    
     // Initial highlight
     highlightCode();
     
-    // Update highlighting on input
-    editor.addEventListener('input', highlightCode);
+    // Update highlighting and save history on input
+    let inputTimeout;
+    editor.addEventListener('input', function() {
+        highlightCode();
+        
+        // Debounce history saving to avoid too many entries while typing
+        clearTimeout(inputTimeout);
+        inputTimeout = setTimeout(() => {
+            saveHistory();
+        }, 300);
+    });
     
     // Sync scrolling
     editor.addEventListener('scroll', syncScroll);
+    
+    // Add keyboard shortcuts for undo/redo
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+Z or Cmd+Z for undo
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+            e.preventDefault();
+            undo();
+        }
+        // Ctrl+Shift+Z or Cmd+Shift+Z for redo
+        else if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
+            e.preventDefault();
+            redo();
+        }
+        // Alternative: Ctrl+Y or Cmd+Y for redo
+        else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+            e.preventDefault();
+            redo();
+        }
+    });
 });
 
 // Algorithm execution functions
@@ -500,6 +541,7 @@ async function executeLines(lines, start, end) {
             checkTypeAssignment(varName, value);
             variables[varName] = value;
         }
+
         // Read input
         else if (line.startsWith('lire(')) {
             const varsStr = line.match(/lire\((.*?)\)/)[1];
@@ -511,7 +553,13 @@ async function executeLines(lines, start, end) {
                 const value = await readInput(`Entrez ${varName} (${expectedType}):`);
                 
                 try {
-                    const parsedValue = parseValue(value, expectedType);
+                    let parsedValue;
+                    // For chaine and caractere types, accept raw input without quotes
+                    if (expectedType === TYPES.CHAINE || expectedType === TYPES.CARACTERE) {
+                        parsedValue = value;
+                    } else {
+                        parsedValue = parseValue(value, expectedType);
+                    }
                     checkTypeAssignment(varName, parsedValue);
                     variables[varName] = parsedValue;
                 } catch (e) {
@@ -776,12 +824,3 @@ function clearEditor() {
         output = [];
     }
 }
-
-// Initialize on load
-window.onload = () => {
-    initTemplates();
-    if (typeof templates !== 'undefined' && templates.length > 0) {
-        setEditorContent(templates[0].code);
-    }
-    highlightCode();
-};

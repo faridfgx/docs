@@ -28,7 +28,7 @@ Debut
 Fin`
     },
     {
-        name: "Rectangle - Surface/Périmètre",
+        name: "Rect. : Surf./Périm.",
         code: `Algorithme RectangleSurfacePerimetre;
 Var
     longueur, largeur, surface, perimetre: reel;
@@ -237,6 +237,24 @@ Debut
     ecrire("La somme des", n, "nombres est:", somme);
 Fin`
     },
+	{
+		name: "Mot de passe",
+		code: `Algorithme MotDePasse;
+Var
+    mot : chaine;
+Debut
+    Ecrire("Veuillez saisir le mot de passe :");
+    lire(mot);
+
+    tantque mot != "0000" faire
+        Ecrire("Mot de passe incorrect. Veuillez réessayer :");
+        lire(mot);
+    fintantque
+
+    Ecrire("Mot de passe correct. Bienvenue !");
+Fin`
+		
+	},
     {
         name: "Factoriel",
         code: `Algorithme Factoriel;
@@ -332,6 +350,33 @@ Debut
     ecrire("Représentation binaire:", binaire);
 Fin`
     },
+    {
+        name: "MotDePass 3 Essais",
+        code: `Algorithme MotDePasse;
+Var
+    mot : chaine;
+    essai : entier;
+Debut
+    essai <- 1;
+
+    tantque essai <= 3 et mot != "0000" faire
+        Ecrire("Entrez le mot de passe :");
+        lire(mot);
+
+        si mot != "0000" alors
+            Ecrire("Mot de passe incorrect.");
+        finsi
+
+        essai <- essai + 1;
+    fintantque
+
+    si mot = "0000" alors
+        Ecrire("Accès autorisé.");
+    sinon
+        Ecrire("Accès refusé.");
+    finsi
+Fin`
+	},
     {
         name: "Fibonacci",
         code: `Algorithme SuiteFibonacci;
