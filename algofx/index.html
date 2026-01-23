@@ -7,6 +7,85 @@
 	<link rel="icon" type="image/png" href="files/fxlogo.png">
 	<link rel="apple-touch-icon" href="files/fxlogo.png">
     <link rel="stylesheet" href="files/afx.css">
+	<style>
+.browser-warning {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.browser-warning.active {
+    display: flex;
+}
+
+.warning-box {
+    background: var(--bg-panel);         /* CHANGED */
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 520px;
+    color: var(--text-main);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.warning-box h3 {
+    margin-bottom: 14px;
+    color: var(--accent-warning);
+	text-align: center;
+}
+
+.warning-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.warning-actions {
+    display: flex;
+	justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+.warning-actions .menu-btn {
+    min-width: 140px;
+    text-align: center;
+}
+
+.btn-cancel {
+    background: var(--bg-editor);        /* CHANGED */
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+}
+[data-theme="light"] .browser-warning {
+    background: rgba(248, 250, 252, 0.85);
+}
+
+[data-theme="light"] .warning-box {
+    background: #ffffff;
+    border-color: #e5e7eb;
+    color: #020617;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .warning-box h3 {
+    color: #d97706; /* warning amber */
+}
+
+[data-theme="light"] .warning-box p {
+    color: #1f2937;
+}
+
+[data-theme="light"] .btn-cancel {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #020617;
+}
+	</style>
 </head>
 <body>
     <div class="container">
@@ -69,13 +148,51 @@
             </div>
         </div>
     </div>
+	
     <footer class="footer">
         AlgoFX © 2026 – By FARID MEZANE
     </footer>
+<div id="browserWarning" class="browser-warning">
+    <div class="warning-box">
+        <h3>⚠️ Important / هام</h3>
+        <p dir="rtl">
+            <strong>العربية :</strong><br>النسخة غير المتصلة بالأنترنت من AlgoFX تتطلب متصفحًا حديثًا مثل
+			Chrome أو Edge أو Firefox.<br>
+			المتصفحات القديمة غير مدعومة. </p>
+        <p>
+            <strong>Français :</strong><br>
+            La version hors ligne d’AlgoFX nécessite un navigateur moderne
+            (Chrome, Edge, Firefox, etc.).<br>
+            Les anciens navigateurs ne sont pas pris en charge.
+        </p>
+        <div class="warning-actions">
+            <button class="menu-btn btn-cancel" onclick="closeWarning()">Annuler / إلغاء</button>
+            <button class="menu-btn btn-run" onclick="confirmDownload()">Continuer / متابعة</button>
+        </div>
+    </div>
+</div>
     <script src="files/templates.js"></script>
 	<script src="files/afx.js"></script>
 <script>
+/* ===============================
+   DOWNLOAD WARNING MODAL
+   =============================== */
+
 function downoff() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.add("active");
+}
+
+function closeWarning() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.remove("active");
+}
+
+function confirmDownload() {
+    closeWarning();
+
     const link = document.createElement("a");
     link.href = "algofx_web.zip";   // adjust path if needed
     link.download = "algofx_web.zip";
@@ -83,35 +200,43 @@ function downoff() {
     link.click();
     document.body.removeChild(link);
 }
-        // Theme Toggle Function
+
+/* ===============================
+   THEME TOGGLE (LIGHT / DARK)
+   =============================== */
+
 function toggleTheme() {
-            const root = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
-            const currentTheme = root.getAttribute('data-theme') || 'dark';
-            
-            if (currentTheme === 'dark') {
-                root.setAttribute('data-theme', 'light');
-                themeIcon.textContent = '☀️';
-                localStorage.setItem('theme', 'light');
-            } else {
-                root.setAttribute('data-theme', 'dark');
-                themeIcon.textContent = '🌙';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
+    const root = document.documentElement;
+    const themeIcon = document.getElementById("themeIcon");
+    if (!themeIcon) return;
 
-        // Load saved theme on page load
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            const root = document.documentElement;
-            const themeIcon = document.getElementById('themeIcon');
-            
-            root.setAttribute('data-theme', savedTheme);
-            themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-        }
+    const currentTheme = root.getAttribute("data-theme") || "dark";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
 
-        // Initialize theme on page load
-        loadTheme();
+    root.setAttribute("data-theme", nextTheme);
+    themeIcon.textContent = nextTheme === "light" ? "☀️" : "🌙";
+    localStorage.setItem("theme", nextTheme);
+}
+
+/* ===============================
+   LOAD SAVED THEME (EARLY)
+   =============================== */
+
+(function loadTheme() {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const root = document.documentElement;
+
+    root.setAttribute("data-theme", savedTheme);
+
+    // Update icon after DOM is ready
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeIcon = document.getElementById("themeIcon");
+        if (themeIcon) {
+            themeIcon.textContent = savedTheme === "light" ? "☀️" : "🌙";
+        }
+    });
+})();
 </script>
+
 </body>
 </html>
