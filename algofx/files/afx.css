@@ -137,7 +137,7 @@ input[type="file"] {
 .main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    min-height: 520px;
+    min-height: 496px;
 }
 
 /* ===== SECTIONS ===== */
@@ -479,4 +479,5 @@ button:hover {
     #highlightLayer {
         min-height: 260px;
     }
+
 }
