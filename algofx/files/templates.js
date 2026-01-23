@@ -1,7 +1,18 @@
 
 // Templates data
 const templates = [
-    // NIVEAU 1 - TRÈS FACILE (Calculs simples, pas de boucles)
+    {
+        name: "Example Vide",
+        code: `Algorithme MonAlgorithme;
+Var
+
+Const
+
+Debut
+
+Fin`
+    },
+	// NIVEAU 1 - TRÈS FACILE (Calculs simples, pas de boucles)
     {
         name: "Carré - Surface",
         code: `Algorithme SurfaceCarre;

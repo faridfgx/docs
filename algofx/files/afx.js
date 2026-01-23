@@ -130,7 +130,7 @@ function setEditorContent(content) {
 
 // Define keywords for pseudocode language
 const keywords = [
-    'Algorithme', 'Var', 'Debut', 'Fin', 
+    'Algorithme', 'Var','Const', 'Debut', 'Fin', 
     'ecrire', 'lire', 
     'reel', 'entier', 'chaine', 'booleen', 'caractere', 'Tableau',
     'Si', 'Alors', 'Sinon', 'FinSi',
