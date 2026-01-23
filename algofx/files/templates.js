@@ -2,7 +2,7 @@
 // Templates data
 const templates = [
     {
-        name: "Example Vide",
+        name: "Exemple Vide",
         code: `Algorithme MonAlgorithme;
 Var
 
@@ -28,7 +28,7 @@ Debut
 Fin`
     },
     {
-        name: "Rectangle - Surface et Périmètre",
+        name: "Rectangle - Surface/Périmètre",
         code: `Algorithme RectangleSurfacePerimetre;
 Var
     longueur, largeur, surface, perimetre: reel;

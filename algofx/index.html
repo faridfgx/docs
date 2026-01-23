@@ -10,15 +10,15 @@
 </head>
 <body>
     <div class="container">
-<div class="header">
-    <div class="header-title">
-        <img src="files/fxlogo.png" alt="AlgoFX Logo" class="app-logo">
-        <div class="title-text">
-            <h1>AlgoFX</h1>
-            <p>Exécuteur d'algorithmes</p>
+        <div class="header">
+            <div class="header-title">
+                <img src="files/fxlogo.png" alt="AlgoFX Logo" class="app-logo">
+                <div class="title-text">
+                    <h1>AlgoFX</h1>
+                    <p>Exécuteur d'algorithmes</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
         <div class="menu-bar">
             <button class="menu-btn" onclick="newFile()">📄 Nouveau</button>
@@ -34,9 +34,13 @@
             <div class="menu-divider"></div>
             
             <select class="menu-select" id="templateSelect" onchange="loadTemplate()">
-                <option value="">📚 Sélectionner un modèle</option>
+                <option value="">📚 Exemples</option>
             </select>
-			<button class="menu-btn" onclick="downoff()">Download</button>
+            <button class="menu-btn" onclick="downoff()">Download</button>
+            
+            <button class="theme-toggle" onclick="toggleTheme()" title="Changer le thème">
+                <span id="themeIcon">🌙</span>
+            </button>
         </div>
 
         <div class="main-content">
@@ -65,9 +69,9 @@
             </div>
         </div>
     </div>
-<footer class="footer">
-    AlgoFX © 2026 — By FARID MEZANE
-</footer>
+    <footer class="footer">
+        AlgoFX © 2026 – By FARID MEZANE
+    </footer>
     <script src="files/templates.js"></script>
 	<script src="files/afx.js"></script>
 <script>
@@ -79,6 +83,35 @@ function downoff() {
     link.click();
     document.body.removeChild(link);
 }
+        // Theme Toggle Function
+function toggleTheme() {
+            const root = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = root.getAttribute('data-theme') || 'dark';
+            
+            if (currentTheme === 'dark') {
+                root.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                root.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const root = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            root.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        }
+
+        // Initialize theme on page load
+        loadTheme();
 </script>
 </body>
 </html>
