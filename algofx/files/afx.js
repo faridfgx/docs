@@ -728,6 +728,9 @@ function lowercasePreservingStrings(code) {
 }
 
 async function runAlgorithm() {
+	if (!stepMode) {
+    hideStepUI();
+}
     const code = document.getElementById('codeEditor').value;
     
     variables = {};
