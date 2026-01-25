@@ -40,6 +40,7 @@ function loadTemplate() {
         setEditorContent(templates[index].code);
         select.value = '';
     }
+	updateLineNumbers();
 }
 
 // File operations
@@ -86,6 +87,7 @@ function openFile(event) {
         };
         reader.readAsText(file);
     }
+	updateLineNumbers();
 }
 
 // Undo/Redo functionality
@@ -138,9 +140,7 @@ const keywords = [
     'ecrire', 'lire', 
     'reel', 'entier', 'chaine', 'booleen', 'caractere', 'Tableau',
     'Si', 'Alors', 'Sinon', 'FinSi',
-    'Pour', 'de', 'a', 'faire', 'FinPour', 'finpour',
-    'Tant', 'que', 'FinTantQue', 'TantQue',
-    'Repeter', 'Jusqua', 'retourner'
+    'Pour', 'de', 'a', 'faire', 'FinPour', 'finpour', 'FinTantQue', 'TantQue', 'sortir'
 ];
 
 // Helper function to escape HTML characters
@@ -294,6 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initTemplates();
     if (typeof templates !== 'undefined' && templates.length > 0 && !editor.value) {
         setEditorContent(templates[0].code);
+		updateLineNumbers();
     } else {
         // Save initial state to history if not loading template
         saveHistory();
