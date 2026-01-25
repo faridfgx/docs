@@ -257,7 +257,7 @@
         }
 
 :root {
---editor-lines: 15;
+--editor-lines: 12;
 --editor-line-height: 22.4px;
 }
 /* ===== EDITOR WITH LINE NUMBERS ===== */
@@ -451,6 +451,7 @@ box-sizing: border-box;
         /* ===== OUTPUT ===== */
         #output {
             flex: 1;
+			min-height:260px;
             background: var(--bg-output);
             border: 1px solid var(--border-soft);
             border-radius: 8px;
