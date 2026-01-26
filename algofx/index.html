@@ -7,7 +7,108 @@
 	<link rel="icon" type="image/png" href="files/fxlogo.png">
 	<link rel="apple-touch-icon" href="files/fxlogo.png">
     <link rel="stylesheet" href="files/afx.css">
+    <style>
+		/* ============================================
+		AlgoFX Auto-Save – Refined Theme
+		============================================ */
 
+
+		/* Restore notification banner */
+		.autosave-banner {
+		background: var(--bg-editor, #f9fafb);
+		color: var(--text-primary, #1f2937);
+		padding: 10px 16px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-bottom: 1px solid var(--border-soft, #e5e7eb);
+		font-size: 13px;
+		z-index: 100;
+		}
+
+
+		/* Banner content */
+		.banner-content {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		}
+
+
+		/* Actions */
+		.banner-actions {
+		display: flex;
+		gap: 8px;
+		}
+
+
+		.banner-btn {
+		padding: 4px 12px;
+		font-size: 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		border: 1px solid transparent;
+		transition: background-color 0.15s ease, border-color 0.15s ease;
+		}
+
+
+		/* Restore = primary but subtle */
+		.btn-restore {
+		background: #2563eb;
+		color: white;
+		border-color: #2563eb;
+		}
+
+
+		.btn-restore:hover {
+		background: #1d4ed8;
+		}
+
+
+		/* Ignore = quiet action */
+		.btn-ignore {
+		background: transparent;
+		color: #6b7280;
+		border-color: #d1d5db;
+		}
+
+
+		.btn-ignore:hover {
+		background: #f3f4f6;
+		}
+
+
+		/* ============================================
+		Auto-save status indicator (IDE-style)
+		============================================ */
+		.autosave-indicator {
+		position: absolute;
+		bottom: 6px;
+		right: 10px;
+		font-size: 14px;
+		color: #059669;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+		pointer-events: none;
+		font-family: inherit;
+		}
+
+
+		/* Controls container */
+		.controls {
+		position: relative;
+		padding-bottom: 24px;
+		}
+
+
+		/* ============================================
+		Dark Theme
+		============================================ */
+		[data-theme="dark"] .autosave-banner {
+		background: #0f172a;
+		color: #e5e7eb;
+		}
+    </style>
 </head>
 <body>
     <div class="container">
@@ -34,8 +135,8 @@
             
             <div class="menu-divider"></div>
             <button class="btn-step" onclick="runStepByStep()"> Pas à Pas</button>
-<button class="btn-step" onclick="nextStep()" id="nextStepBtn" disabled> Suivant</button>
-<button class="btn-step" onclick="stopStepExecution()" id="stopStepBtn" disabled> Arrêter</button>
+            <button class="btn-step" onclick="nextStep()" id="nextStepBtn" disabled> Suivant</button>
+            <button class="btn-step" onclick="stopStepExecution()" id="stopStepBtn" disabled> Arrêter</button>
 	        <div class="menu-divider"></div>
             <select class="menu-select" id="templateSelect" onchange="loadTemplate()">
                 <option value="">📚 Exemples</option>
@@ -46,11 +147,15 @@
                 <span id="themeIcon">🌙</span>
             </button>
         </div>
-<!-- Add variable visualizer panel -->
-<div id="variablePanel" class="variable-panel">
-    <div class="panel-title"> Variables</div>
-    <div id="variableList"></div>
-</div>
+
+        <!-- Auto-save banner will be inserted here dynamically -->
+
+        <!-- Add variable visualizer panel -->
+        <div id="variablePanel" class="variable-panel">
+            <div class="panel-title"> Variables</div>
+            <div id="variableList"></div>
+        </div>
+
         <div class="main-content">
             <div class="editor-section">
                 <div class="section-title">✏️ Éditeur d'Algorithme</div>
@@ -65,6 +170,7 @@
                     <button class="btn-check" onclick="checkSyntaxOnly()">⚙️ Compiler</button>
 					<button class="btn-run" onclick="validateAndRun()">▶ Exécuter</button>
                     <button class="btn-clear" onclick="clearEditor()">🗑️ Effacer</button>
+                    <!-- Auto-save indicator will appear here -->
                 </div>
             </div>
 
@@ -79,67 +185,60 @@
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     </div>
 	
     <footer class="footer">
         AlgoFX © 2026 – By FARID MEZANE
     </footer>
-<div id="browserWarning" class="browser-warning">
-<div class="warning-box">
-<h3>⚠️ Important / هام</h3>
 
+    <div id="browserWarning" class="browser-warning">
+        <div class="warning-box">
+            <h3>⚠️ Important / هام</h3>
 
-<p dir="rtl">
-<strong>العربية :</strong><br>
-النسخة غير المتصلة بالأنترنت من AlgoFX تتطلب متصفحًا حديثًا مثل
-Chrome أو Edge أو Firefox.<br>
-المتصفحات القديمة غير مدعومة.
-</p>
+            <p dir="rtl">
+                <strong>العربية :</strong><br>
+                النسخة غير المتصلة بالأنترنت من AlgoFX تتطلب متصفحًا حديثًا مثل
+                Chrome أو Edge أو Firefox.<br>
+                المتصفحات القديمة غير مدعومة.
+            </p>
 
+            <p>
+                <strong>Français :</strong><br>
+                La version hors ligne d'AlgoFX nécessite un navigateur moderne
+                (Chrome, Edge, Firefox, etc.).<br>
+                Les anciens navigateurs ne sont pas pris en charge.
+            </p>
 
-<p>
-<strong>Français :</strong><br>
-La version hors ligne d’AlgoFX nécessite un navigateur moderne
-(Chrome, Edge, Firefox, etc.).<br>
-Les anciens navigateurs ne sont pas pris en charge.
-</p>
+            <!-- Firefox download links -->
+            <div class="firefox-downloads">
+                <p><strong>Mozilla Firefox :</strong></p>
 
+                <a class="menu-btn btn-run"
+                href="https://www.mediafire.com/file/9bpmi2855bfnno5/Firefox_Setup_115.0_%252832%2529.msi/file"
+                target="_blank">
+                Télécharger Firefox 32-bit
+                </a>
 
-<!-- Firefox download links -->
-<div class="firefox-downloads">
-<p><strong>Mozilla Firefox :</strong></p>
+                <a class="menu-btn btn-run"
+                href="https://www.mediafire.com/file/q8uclwrdo2lygxq/Firefox_Setup_115.0_%252864%2529.msi/file"
+                target="_blank">
+                Télécharger Firefox 64-bit
+                </a>
+            </div>
 
+            <!-- Existing actions -->
+            <div class="warning-actions">
+                <button class="menu-btn btn-cancel" onclick="closeWarning()">
+                Annuler / إلغاء
+                </button>
+                <button class="menu-btn btn-run" onclick="confirmDownload()">
+                Continuer / متابعة
+                </button>
+            </div>
+        </div>
+    </div>
 
-<a class="menu-btn btn-run"
-href="https://www.mediafire.com/file/9bpmi2855bfnno5/Firefox_Setup_115.0_%252832%2529.msi/file"
-target="_blank">
-Télécharger Firefox 32-bit
-</a>
-
-
-<a class="menu-btn btn-run"
-href="https://www.mediafire.com/file/q8uclwrdo2lygxq/Firefox_Setup_115.0_%252864%2529.msi/file"
-target="_blank">
-Télécharger Firefox 64-bit
-</a>
-</div>
-
-
-<!-- Existing actions -->
-<div class="warning-actions">
-<button class="menu-btn btn-cancel" onclick="closeWarning()">
-Annuler / إلغاء
-</button>
-<button class="menu-btn btn-run" onclick="confirmDownload()">
-Continuer / متابعة
-</button>
-</div>
-</div>
-</div>
     <!-- Error Modal -->
     <div id="syntaxModal" class="syntax-modal">
         <div class="modal-box" id="modalBox">
@@ -160,28 +259,33 @@ Continuer / متابعة
             </div>
         </div>
     </div>
-<script src="files/templates.js"></script>
-<script src="files/afx.js"></script>
-<script src="files/stepsyntax.js"></script>
+
+    <script src="files/templates.js"></script>
+    <script src="files/afx.js"></script>
+    <script src="files/stepsyntax.js"></script>
+    
     <script>
-const editor = document.getElementById('codeEditor');
-const lineNumbers = document.getElementById('lineNumbers');
+        // ============================================
+        // Line Numbers and Basic Editor Functions
+        // ============================================
+        const editor = document.getElementById('codeEditor');
+        const lineNumbers = document.getElementById('lineNumbers');
 
-function updateLineNumbers() {
-    const lines = editor.value.split('\n').length;
-    lineNumbers.textContent = Array.from({length: lines}, (_, i) => i + 1).join('\n');
-}
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            lineNumbers.textContent = Array.from({length: lines}, (_, i) => i + 1).join('\n');
+        }
 
-// Sync scrolling between editor and line numbers
-editor.addEventListener('scroll', () => {
-    lineNumbers.scrollTop = editor.scrollTop;
-});
+        // Sync scrolling between editor and line numbers
+        editor.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = editor.scrollTop;
+        });
 
-// Update on input
-editor.addEventListener('input', updateLineNumbers);
+        // Update on input
+        editor.addEventListener('input', updateLineNumbers);
 
-// Initialize
-updateLineNumbers();
+        // Initialize
+        updateLineNumbers();
 
         // Theme toggle
         function toggleTheme() {
@@ -191,7 +295,253 @@ updateLineNumbers();
             root.setAttribute('data-theme', newTheme);
             document.getElementById('themeIcon').textContent = newTheme === 'light' ? '☀️' : '🌙';
         }
+
+        // ============================================
+        // AUTO-SAVE SYSTEM
+        // ============================================
+        
+        // Auto-save configuration
+        const AUTOSAVE_DELAY = 2000; // 2 seconds after typing stops
+        let autoSaveTimer = null;
+        let lastManualSave = '';
+        let isOpenedFile = false; // Track if current content is from an opened file
+
+        // ============================================
+        // 1. Check for auto-save on page load
+        // ============================================
+        function checkAutoSaveOnLoad() {
+            const savedCode = localStorage.getItem('algofx_autosave');
+            const timestamp = localStorage.getItem('algofx_autosave_timestamp');
+            
+            if (savedCode && savedCode.trim() !== '') {
+                showRestoreNotification(timestamp);
+            }
+        }
+
+        // ============================================
+        // 2. Show restore notification banner
+        // ============================================
+		function showRestoreNotification(timestamp) {
+		const banner = document.createElement('div');
+		banner.id = 'autoSaveBanner';
+		banner.className = 'autosave-banner';
+
+
+		let timeText = 'récemment';
+
+
+		if (timestamp) {
+		const seconds = Math.floor((Date.now() - Number(timestamp)) / 1000);
+
+
+		if (seconds < 30) {
+		timeText = 'il y a quelques secondes';
+		} else {
+		const minutes = Math.floor(seconds / 60);
+
+
+		if (minutes < 60) {
+		timeText = `il y a ${minutes} minute${minutes > 1 ? 's' : ''}`;
+		} else {
+		const hours = Math.floor(minutes / 60);
+
+
+		if (hours < 24) {
+		timeText = `il y a ${hours} heure${hours > 1 ? 's' : ''}`;
+		} else {
+		const days = Math.floor(hours / 24);
+		timeText = `il y a ${days} jour${days > 1 ? 's' : ''}`;
+		}
+		}
+		}
+		}
+
+
+		banner.innerHTML = `
+		<div class="banner-content">
+		<span>Code non sauvegardé détecté (${timeText})</span>
+		<div class="banner-actions">
+		<button class="banner-btn btn-restore" onclick="restoreAutoSave()">Restaurer</button>
+		<button class="banner-btn btn-ignore" onclick="ignoreAutoSave()">Ignorer</button>
+		</div>
+		</div>
+		`;
+
+
+		const menuBar = document.querySelector('.menu-bar');
+		menuBar.parentNode.insertBefore(banner, menuBar.nextSibling);
+		}
+
+        // ============================================
+        // 3. Restore auto-saved content
+        // ============================================
+        function restoreAutoSave() {
+            const savedCode = localStorage.getItem('algofx_autosave');
+            if (savedCode) {
+                document.getElementById('codeEditor').value = savedCode;
+                updateLineNumbers(); // Update line numbers
+                isOpenedFile = false;
+                lastManualSave = ''; // Mark as unsaved
+            }
+            removeRestoreBanner();
+            showAutoSaveStatus('Code restauré');
+			refreshEditor();
+        }
+
+        // ============================================
+        // 4. Ignore auto-save and clear it
+        // ============================================
+        function ignoreAutoSave() {
+            clearAutoSaveStorage();
+            removeRestoreBanner();
+        }
+
+        function removeRestoreBanner() {
+            const banner = document.getElementById('autoSaveBanner');
+            if (banner) banner.remove();
+        }
+
+        // ============================================
+        // 5. Setup auto-save on typing
+        // ============================================
+        function setupAutoSave() {
+            const editor = document.getElementById('codeEditor');
+            
+            editor.addEventListener('input', () => {
+                // Only auto-save if it's new work (not an opened file)
+                if (!isOpenedFile) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(() => {
+                        saveToLocalStorage();
+                    }, AUTOSAVE_DELAY);
+                }
+            });
+        }
+
+        // ============================================
+        // 6. Save to localStorage
+        // ============================================
+        function saveToLocalStorage() {
+            const code = document.getElementById('codeEditor').value;
+            
+            // Only save if there's content and it's different from last manual save
+            if (code.trim() !== '' && code !== lastManualSave) {
+                localStorage.setItem('algofx_autosave', code);
+                localStorage.setItem('algofx_autosave_timestamp', Date.now().toString());
+                showAutoSaveStatus('Auto-sauvegardé');
+            }
+        }
+
+        // ============================================
+        // 7. Show auto-save status indicator
+        // ============================================
+        function showAutoSaveStatus(message) {
+            let indicator = document.getElementById('autoSaveIndicator');
+            
+            if (!indicator) {
+                indicator = document.createElement('div');
+                indicator.id = 'autoSaveIndicator';
+                indicator.className = 'autosave-indicator';
+                document.querySelector('.controls').appendChild(indicator);
+            }
+            
+            indicator.textContent = `✓ ${message}`;
+            indicator.style.opacity = '1';
+            
+            // Fade out after 3 seconds
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 3000);
+        }
+
+        // ============================================
+        // 8. Clear auto-save storage
+        // ============================================
+        function clearAutoSaveStorage() {
+            localStorage.removeItem('algofx_autosave');
+            localStorage.removeItem('algofx_autosave_timestamp');
+        }
+
+        // ============================================
+        // 9. Handle page close warning
+        // ============================================
+        function setupBeforeUnload() {
+            window.addEventListener('beforeunload', (e) => {
+                const currentCode = document.getElementById('codeEditor').value;
+                
+                // Check if there are unsaved changes
+                if (currentCode.trim() !== '' && currentCode !== lastManualSave) {
+                    // Save to localStorage before leaving
+                    saveToLocalStorage();
+                    
+                    // Show browser warning
+                    e.preventDefault();
+                    e.returnValue = 'Vous avez des modifications non sauvegardées. Quitter?';
+                    return e.returnValue;
+                }
+            });
+        }
+
+        // ============================================
+        // 10. Wrap existing functions with auto-save logic
+        // ============================================
+        
+        // Store original functions
+        const originalSaveFile = window.saveFile;
+        const originalOpenFile = window.openFile;
+        const originalNewFile = window.newFile;
+
+        // Wrap saveFile
+        if (typeof originalSaveFile === 'function') {
+            window.saveFile = function() {
+                originalSaveFile();
+                // After successful save
+                lastManualSave = document.getElementById('codeEditor').value;
+                clearAutoSaveStorage();
+                isOpenedFile = false;
+                showAutoSaveStatus('Sauvegardé manuellement');
+            };
+        }
+
+        // Wrap openFile
+        if (typeof originalOpenFile === 'function') {
+            window.openFile = function(event) {
+                originalOpenFile(event);
+                // After opening file
+                setTimeout(() => {
+                    lastManualSave = document.getElementById('codeEditor').value;
+                    isOpenedFile = true;
+                    clearAutoSaveStorage();
+                    removeRestoreBanner();
+					refreshEditor();
+                }, 100);
+            };
+        }
+
+        // Wrap newFile
+        if (typeof originalNewFile === 'function') {
+            window.newFile = function() {
+                originalNewFile();
+                // Reset tracking
+                lastManualSave = '';
+                isOpenedFile = false;
+                clearAutoSaveStorage();
+            };
+        }
+
+        // ============================================
+        // 11. Initialize on page load
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAutoSaveOnLoad();
+            setupAutoSave();
+            setupBeforeUnload();
+        });
+function refreshEditor() {
+    updateLineNumbers();
+    editor.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
     </script>
 </body>
-
 </html>
