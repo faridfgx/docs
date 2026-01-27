@@ -95,7 +95,7 @@
 
         /* ===== CONTAINER ===== */
         .container {
-            max-width: 1800px;
+            max-width: 1400px;
             margin: auto;
             background: var(--bg-panel);
             border-radius: 12px;
@@ -287,7 +287,7 @@ max-height: calc(var(--editor-lines) * var(--editor-line-height));
     color: var(--text-muted);
     text-align: right;
     user-select: none;
-    overflow-y: auto;;
+    overflow-y: hidden;
     overflow-x: hidden;
     white-space: pre;
     height: 100%;
@@ -1079,3 +1079,103 @@ display: flex;
 flex-direction: column;
 gap: 8px;
 }
+		/* ============================================
+		AlgoFX Auto-Save – Refined Theme
+		============================================ */
+
+
+		/* Restore notification banner */
+		.autosave-banner {
+		background: var(--bg-editor, #f9fafb);
+		color: var(--text-primary, #1f2937);
+		padding: 10px 16px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-bottom: 1px solid var(--border-soft, #e5e7eb);
+		font-size: 13px;
+		z-index: 100;
+		}
+
+
+		/* Banner content */
+		.banner-content {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		}
+
+
+		/* Actions */
+		.banner-actions {
+		display: flex;
+		gap: 8px;
+		}
+
+
+		.banner-btn {
+		padding: 4px 12px;
+		font-size: 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		border: 1px solid transparent;
+		transition: background-color 0.15s ease, border-color 0.15s ease;
+		}
+
+
+		/* Restore = primary but subtle */
+		.btn-restore {
+		background: #2563eb;
+		color: white;
+		border-color: #2563eb;
+		}
+
+
+		.btn-restore:hover {
+		background: #1d4ed8;
+		}
+
+
+		/* Ignore = quiet action */
+		.btn-ignore {
+		background: transparent;
+		color: #6b7280;
+		border-color: #d1d5db;
+		}
+
+
+		.btn-ignore:hover {
+		background: #f3f4f6;
+		}
+
+
+		/* ============================================
+		Auto-save status indicator (IDE-style)
+		============================================ */
+		.autosave-indicator {
+		position: absolute;
+		bottom: +355px;
+		right: 10px;
+		font-size: 16px;
+		color: #059669;
+		opacity: 0;
+		transition: opacity 0.25s ease;
+		pointer-events: none;
+		font-family: inherit;
+		}
+
+
+		/* Controls container */
+		.controls {
+		position: relative;
+		padding-bottom: 24px;
+		}
+
+
+		/* ============================================
+		Dark Theme
+		============================================ */
+		[data-theme="dark"] .autosave-banner {
+		background: #0f172a;
+		color: #e5e7eb;
+		}

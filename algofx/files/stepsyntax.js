@@ -18,8 +18,8 @@ function confirmDownload() {
     closeWarning();
 
     const link = document.createElement("a");
-    link.href = "algofx_web.zip";   // adjust path if needed
-    link.download = "algofx_web.zip";
+    link.href = "AlgoFX.zip";   // adjust path if needed
+    link.download = "AlgoFX.zip";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -379,6 +379,12 @@ function checkSyntax(code) {
     const processedCode = lowercasePreservingStrings(code);
     const lines = processedCode.split('\n');
     
+	let hasVar = false;
+	let hasConst = false;
+
+	let justSawVar = false;
+	let justSawConst = false;
+	
     // Track block structure
     const blockStack = [];
     let hasAlgorithme = false;
@@ -430,32 +436,42 @@ function checkSyntax(code) {
         }
         
         // 2. Check for Var section
-        if (line === 'var') {
-            if (afterDebut) {
-                return createError('VAR_AFTER_DEBUT', lineNum, line,
-                    'Section "Var" après "Debut"',
-                    'La section "Var" doit être déclarée avant "Debut"',
-                    'Var\n    x: entier;\nDebut');
-            }
-            inVar = true;
-            inConst = false;
-            currentSection = 'var';
-            continue;
-        }
+		if (line === 'var') {
+			if (afterDebut) {
+				return createError('VAR_AFTER_DEBUT', lineNum, line,
+					'Section "Var" après "Debut"',
+					'La section "Var" doit être déclarée avant "Debut"',
+					'Var\n    x: entier;\nDebut');
+			}
+
+			hasVar = true;
+			inVar = true;
+			inConst = false;
+			currentSection = 'var';
+
+			justSawVar = true;
+			justSawConst = false;
+			continue;
+		}
         
         // 3. Check for Const section
-        if (line === 'const') {
-            if (afterDebut) {
-                return createError('CONST_AFTER_DEBUT', lineNum, line,
-                    'Section "Const" après "Debut"',
-                    'La section "Const" doit être déclarée avant "Debut"',
-                    'Const\n    PI = 3.14;\nDebut');
-            }
-            inConst = true;
-            inVar = false;
-            currentSection = 'const';
-            continue;
-        }
+		if (line === 'const') {
+			if (afterDebut) {
+				return createError('CONST_AFTER_DEBUT', lineNum, line,
+					'Section "Const" après "Debut"',
+					'La section "Const" doit être déclarée avant "Debut"',
+					'Const\n    PI = 3.14;\nDebut');
+			}
+
+			hasConst = true;
+			inConst = true;
+			inVar = false;
+			currentSection = 'const';
+
+			justSawConst = true;
+			justSawVar = false;
+			continue;
+		}
         
         // 4. Check for Debut
         if (line === 'debut') {
@@ -510,59 +526,150 @@ function checkSyntax(code) {
             continue;
         }
         
-        // 6. Check variable declarations (in Var section)
-        if (inVar && currentSection === 'var') {
-            const varMatch = line.match(/^([a-z_][a-z0-9_,\s]*)\s*:\s*([a-z]+)\s*;?\s*$/i);
-            if (!varMatch) {
-                return createError('INVALID_VAR_DECLARATION', lineNum, line,
-                    'Déclaration de variable invalide',
-                    'Format attendu: nomVariable: type;',
-                    'x, y: entier;\nnom: chaine;');
-            }
-            
-            const varNames = varMatch[1].split(',').map(v => v.trim());
-            const varType = varMatch[2].trim().toLowerCase();
-            
-            if (!validTypes.includes(varType)) {
-                return createError('INVALID_TYPE', lineNum, line,
-                    `Type "${varType}" invalide`,
-                    `Types valides: ${validTypes.join(', ')}`,
-                    'x: entier;\ny: reel;\nnom: chaine;');
-            }
-            
-            for (let varName of varNames) {
-                if (!varName.match(/^[a-z_][a-z0-9_]*$/i)) {
-                    return createError('INVALID_VAR_NAME', lineNum, line,
-                        `Nom de variable "${varName}" invalide`,
-                        'Les noms doivent commencer par une lettre ou "_" et contenir uniquement lettres, chiffres et "_"',
-                        'maVariable: entier;\n_compteur: entier;');
-                }
-                declaredVars.add(varName);
-            }
-            continue;
-        }
+		// 6. Check variable declarations (in Var section)
+		if (inVar && currentSection === 'var') {
+			const varMatch = line.match(
+				/^([a-z_][a-z0-9_]*(?:\s*,\s*[a-z_][a-z0-9_]*)*)\s*:\s*([a-z]+)\s*;?\s*$/i
+			);
+
+			if (!varMatch) {
+				return createError(
+					'INVALID_VAR_DECLARATION',
+					lineNum,
+					line,
+					'Déclaration de variable invalide',
+					'Format attendu: nomVariable: type;',
+					'x, y: entier;\nnom: chaine;'
+				);
+			}
+
+			const varNames = varMatch[1].split(',').map(v => v.trim());
+			const varType = varMatch[2].toLowerCase();
+
+			if (!validTypes.includes(varType)) {
+				return createError(
+					'INVALID_TYPE',
+					lineNum,
+					line,
+					`Type "${varType}" invalide`,
+					`Types valides: ${validTypes.join(', ')}`,
+					'x: entier;\ny: reel;\nnom: chaine;'
+				);
+			}
+
+			for (const varName of varNames) {
+				if (!/^[a-z_][a-z0-9_]*$/i.test(varName)) {
+					return createError(
+						'INVALID_VAR_NAME',
+						lineNum,
+						line,
+						`Nom de variable "${varName}" invalide`,
+						'Les noms doivent commencer par une lettre ou "_" et contenir uniquement lettres, chiffres et "_"',
+						'maVariable: entier;\n_compteur: entier;'
+					);
+				}
+
+				if (declaredVars.has(varName)) {
+					return createError(
+						'DUPLICATE_VARIABLE',
+						lineNum,
+						line,
+						`Variable "${varName}" déjà déclarée`,
+						'Une variable ne peut être déclarée qu\'une seule fois',
+						'x: entier;'
+					);
+				}
+
+				if (declaredConsts.has(varName)) {
+					return createError(
+						'VAR_CONST_CONFLICT',
+						lineNum,
+						line,
+						`Conflit de nom avec la constante "${varName}"`,
+						'Un identifiant ne peut pas être à la fois variable et constante',
+						'Var\n    x: entier;\nConst\n    PI = 3.14;'
+					);
+				}
+
+				declaredVars.add(varName);
+			}
+
+			continue;
+		}
         
-        // 7. Check constant declarations (in Const section)
-        if (inConst && currentSection === 'const') {
-            const constMatch = line.match(/^([a-z_][a-z0-9_]*)\s*=\s*(.+?)\s*;?\s*$/i);
-            if (!constMatch) {
-                return createError('INVALID_CONST_DECLARATION', lineNum, line,
-                    'Déclaration de constante invalide',
-                    'Format attendu: NOM = valeur;',
-                    'PI = 3.14;\nMAX = 100;');
-            }
-            
-            const constName = constMatch[1].trim();
-            if (!constName.match(/^[a-z_][a-z0-9_]*$/i)) {
-                return createError('INVALID_CONST_NAME', lineNum, line,
-                    `Nom de constante "${constName}" invalide`,
-                    'Les noms doivent commencer par une lettre ou "_"',
-                    'PI = 3.14;\nMAX_VALUE = 100;');
-            }
-            
-            declaredConsts.add(constName);
-            continue;
-        }
+		// 7. Check constant declarations (in Const section)
+		if (inConst && currentSection === 'const') {
+			const constMatch = line.match(
+				/^([a-z_][a-z0-9_]*)\s*=\s*(.+?)\s*;?\s*$/i
+			);
+
+			if (!constMatch) {
+				return createError(
+					'INVALID_CONST_DECLARATION',
+					lineNum,
+					line,
+					'Déclaration de constante invalide',
+					'Format attendu: NOM = valeur;',
+					'PI = 3.14;\nMAX = 100;'
+				);
+			}
+
+			const constName = constMatch[1];
+			const constValue = constMatch[2].trim();
+
+			if (!/^[a-z_][a-z0-9_]*$/i.test(constName)) {
+				return createError(
+					'INVALID_CONST_NAME',
+					lineNum,
+					line,
+					`Nom de constante "${constName}" invalide`,
+					'Les noms doivent commencer par une lettre ou "_"',
+					'PI = 3.14;\nMAX_VALUE = 100;'
+				);
+			}
+
+			if (declaredConsts.has(constName)) {
+				return createError(
+					'DUPLICATE_CONSTANT',
+					lineNum,
+					line,
+					`Constante "${constName}" déjà déclarée`,
+					'Une constante ne peut être déclarée qu\'une seule fois',
+					'PI = 3.14;'
+				);
+			}
+
+			if (declaredVars.has(constName)) {
+				return createError(
+					'CONST_VAR_CONFLICT',
+					lineNum,
+					line,
+					`Conflit de nom avec la variable "${constName}"`,
+					'Un identifiant ne peut pas être à la fois variable et constante',
+					'Const\n    MAX = 100;'
+				);
+			}
+
+			// Basic value validation (number, string, boolean)
+			const isValidValue =
+				/^-?\d+(\.\d+)?$/.test(constValue) ||                  // number
+				/^".*"$/.test(constValue) ||                           // string
+				/^(vrai|faux)$/i.test(constValue);                     // boolean
+
+			if (!isValidValue) {
+				return createError(
+					'INVALID_CONST_VALUE',
+					lineNum,
+					line,
+					`Valeur de constante invalide`,
+					'Une constante doit être un nombre, une chaîne ou un booléen',
+					'PI = 3.14;\nMSG = "Bonjour";\nOK = vrai;'
+				);
+			}
+
+			declaredConsts.add(constName);
+			continue;
+		}
         
         // 8. Check statements (after Debut)
         if (afterDebut && !hasFin) {
@@ -727,7 +834,16 @@ function checkSyntax(code) {
             'Vous devez terminer avec "Fin"',
             'Debut\n    // votre code\nFin');
     }
-    
+	if (!hasVar) {
+		return createError(
+			'MISSING_VAR',
+			1,
+			'',
+			'Section "Var" manquante ou déclarée sur la même ligne',
+			'La section "Var" est obligatoire et doit être déclarée sur une ligne séparée, même si aucune variable n’est définie.',
+			'Algorithme MonAlgorithme;\nVar\n    n: entier;\nDebut\n    // code\nFin'
+		);
+	}
     if (blockStack.length > 0) {
         const unclosed = blockStack[blockStack.length - 1];
         return createError('UNCLOSED_BLOCK_END', unclosed.line, '',
