@@ -1,89 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <!-- Basic -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlgoFX </title>
-	<link rel="icon" type="image/png" href="files/fxlogo.png">
-	<link rel="apple-touch-icon" href="files/fxlogo.png">
-    <link rel="stylesheet" href="files/afx.css">
-<style>
-/* ===== AUTOCOMPLETE BOX (BASE) ===== */
-#autocompleteBox {
-    position: absolute;
-    border-radius: 6px;
-    font-size: 13px;
-    z-index: 2000;
-    display: none;
-    min-width: 220px;
-    max-width: 350px;
-    font-family: Consolas, Monaco, "Courier New", monospace;
-    pointer-events: auto;
-}
 
-/* Items */
-.autocomplete-item {
-    padding: 8px 12px;
-    cursor: pointer;
-    border-bottom: 1px solid;
-    transition: background 0.15s ease;
-}
+    <title>AlgoFX – Exécuteur d’Algorithmes Éducatif</title>
 
-.autocomplete-item:last-child {
-    border-bottom: none;
-}
+    <!-- SEO -->
+    <meta name="description" content="AlgoFX est un exécuteur d’algorithmes éducatif pour élèves et enseignants. Écriture, exécution pas à pas, suivi des variables et auto-complétion intelligente.">
+    <meta name="keywords" content="AlgoFX, algorithmes, algorithmique, pseudo-code, informatique scolaire, apprentissage, éducation">
+    <meta name="author" content="Farid Mezane">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
 
-.autocomplete-item.active {
-    font-weight: 500;
-}
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AlgoFX – Exécuteur d’Algorithmes Éducatif">
+    <meta property="og:description" content="Apprenez les algorithmes pas à pas avec AlgoFX. Visualisation des variables, auto-complétion et exécution ligne par ligne.">
+    <meta property="og:image" content="https://csdocs.space/algofx/assets/og-image.png">
+    <meta property="og:url" content="https://csdocs.space/algofx">
+    <meta property="og:site_name" content="AlgoFX">
 
-/* ===== LIGHT THEME ===== */
-html[data-theme="light"] #autocompleteBox {
-    background: #ffffff;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AlgoFX – Exécuteur d’Algorithmes">
+    <meta name="twitter:description" content="Outil pédagogique pour apprendre les algorithmes pas à pas.">
+    <meta name="twitter:image" content="https://csdocs.space/algofx/assets/og-image.png">
 
-html[data-theme="light"] .autocomplete-item {
-    color: #000;
-    border-bottom-color: #eee;
-}
+    <!-- App / Mobile -->
+    <meta name="theme-color" content="#007acc">
+    <meta name="application-name" content="AlgoFX">
+    <meta name="apple-mobile-web-app-title" content="AlgoFX">
+    <meta name="format-detection" content="telephone=no,email=no">
 
-html[data-theme="light"] .autocomplete-item:hover {
-    background: #f0f0f0;
-}
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="files/fxlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="files/fxlogo.png">
 
-html[data-theme="light"] .autocomplete-item.active {
-    background: #007acc;
-    color: #ffffff;
-}
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AlgoFX",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web, Android",
+      "description": "Exécuteur d’algorithmes éducatif avec exécution pas à pas et visualisation des variables.",
+      "author": {
+        "@type": "Person",
+        "name": "Farid Mezane"
+      }
+    }
+    </script>
 
-/* ===== DARK THEME ===== */
-html[data-theme="dark"] #autocompleteBox {
-    background: #1e1e1e;
-    border: 1px solid #404040;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
+    <!-- Styles -->
+    <link rel="stylesheet" href="files/styles.css">
 
-html[data-theme="dark"] .autocomplete-item {
-    color: #d4d4d4;
-    border-bottom-color: #2d2d30;
-}
-
-html[data-theme="dark"] .autocomplete-item:hover {
-    background: #2d2d30;
-}
-
-html[data-theme="dark"] .autocomplete-item.active {
-    background: #0e639c;
-    color: #ffffff;
-}
-
-/* ===== WRAPPER ===== */
-.editor-wrapper {
-    position: relative;
-}
-</style>
 </head>
 <body>
     <div class="container">
@@ -118,7 +91,7 @@ html[data-theme="dark"] .autocomplete-item.active {
                 <option value="">📚 Exemples</option>
             </select>
             <button class="menu-btn" onclick="downoff()">Download</button>
-            
+            <button class="menu-btn" onclick="window.open('aide.html', '_blank')">📖 Aide</button>
             <button class="theme-toggle" onclick="toggleTheme()" title="Changer le thème">
                 <span id="themeIcon">🌙</span>
             </button>
@@ -239,7 +212,7 @@ html[data-theme="dark"] .autocomplete-item.active {
     </div>
 
     <script src="files/templates.js"></script>
-    <script src="files/afx.js"></script>
+    <script src="files/core.js"></script>
     <script src="files/stepsyntax.js"></script>
     <script src="files/LineNumberAutosave.js"></script>
     <script src="files/indentation.js"></script>

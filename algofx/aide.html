@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide – Apprendre les algorithmes avec AlgoFX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #2980b9;
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .intro {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .tip {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #f8f8f2;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .example-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .keyword {
+            color: #0066cc;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aide – Apprendre les algorithmes avec AlgoFX</h1>
+        
+        <section class="section">
+            <div class="intro">
+                <p><strong>Bienvenue dans AlgoFX !</strong> Cette aide va vous apprendre ce qu'est un algorithme et comment écrire vos premiers programmes. Même si vous n'avez jamais écrit une ligne de code, vous allez comprendre.</p>
+            </div>
+            
+            <h2>1. Introduction</h2>
+            
+            <h3>Qu'est-ce que AlgoFX ?</h3>
+            <p>AlgoFX est un outil pédagogique qui vous permet d'écrire et d'exécuter des algorithmes. Cela signifie que vous pouvez taper des instructions dans l'éditeur, puis cliquer sur "Exécuter" pour voir ce qui se passe.</p>
+            
+            <p>AlgoFX vous aide à apprendre la logique algorithmique. À ce moment-là, vous ne programmez pas dans un vrai langage comme Python ou Java. Vous apprenez à penser comme un ordinateur.</p>
+            
+            <h3>Ce que AlgoFX n'est PAS</h3>
+            <div class="warning">
+                <ul>
+                    <li>AlgoFX n'est <strong>pas</strong> un langage de programmation professionnel</li>
+                    <li>AlgoFX n'est <strong>pas</strong> un compilateur</li>
+                    <li>Les algorithmes écrits dans AlgoFX ne peuvent <strong>pas</strong> être utilisés directement dans des logiciels réels</li>
+                </ul>
+            </div>
+            
+            <h3>Pourquoi apprendre les algorithmes ?</h3>
+            <p>Imaginez que vous voulez expliquer à quelqu'un comment préparer un gâteau. Vous devez donner des étapes précises : mélanger les ingrédients, chauffer le four, cuire pendant 30 minutes. C'est exactement ce qu'est un algorithme : une suite d'instructions claires pour accomplir une tâche.</p>
+            
+            <p>Les algorithmes sont partout : dans les calculatrices, les jeux vidéo, les réseaux sociaux, les GPS. Apprendre à écrire des algorithmes, c'est apprendre à résoudre des problèmes de manière logique et structurée.</p>
+        </section>
+        
+        <section class="section">
+            <h2>2. Comment lire un algorithme</h2>
+            
+            <h3>Structure de base</h3>
+            <p>Tous les algorithmes dans AlgoFX suivent la même structure. Voici un exemple très simple :</p>
+            
+            <pre><code>Algorithme MonPremierAlgo;
+Var
+    nombre: entier;
+Debut
+    ecrire("Bonjour !");
+Fin</code></pre>
+            
+            <p>Regardons chaque partie :</p>
+            
+            <h4>La déclaration de l'algorithme</h4>
+            <p>La première ligne commence toujours par le mot <code>Algorithme</code> suivi du nom que vous donnez à votre programme. Cela signifie simplement : "Voici le début de mon algorithme et il s'appelle MonPremierAlgo".</p>
+            
+            <h4>La section Var</h4>
+            <p>Le mot <code>Var</code> introduit la zone où vous déclarez vos variables. Ne vous inquiétez pas, nous expliquerons les variables juste après. Pour l'instant, retenez que c'est ici que vous dites à l'algorithme : "J'aurai besoin de ces espaces mémoire".</p>
+            
+            <h4>La section Debut et Fin</h4>
+            <p>Entre <code>Debut</code> et <code>Fin</code>, vous écrivez les instructions que l'algorithme doit exécuter. À ce moment-là, l'ordinateur lit chaque ligne dans l'ordre, de haut en bas, comme vous lisez un livre.</p>
+            
+            <h3>L'ordre d'exécution</h3>
+            <div class="important">
+                <p><strong>Règle fondamentale :</strong> L'ordinateur exécute les instructions ligne par ligne, de haut en bas. Il ne saute jamais une ligne sauf si vous lui demandez explicitement.</p>
+            </div>
+            
+            <p>Imaginez que vous suivez une recette de cuisine. Vous ne commencez pas par la cuisson si la recette dit de d'abord mélanger les ingrédients. L'algorithme fonctionne exactement de la même manière.</p>
+            
+            <h3>L'importance de chaque ligne</h3>
+            <p>Chaque instruction dans un algorithme a un rôle précis. Si vous oubliez une ligne ou si vous la placez au mauvais endroit, l'algorithme ne fonctionnera pas correctement. C'est comme oublier d'allumer le four avant de mettre le gâteau à cuire.</p>
+        </section>
+        
+        <section class="section">
+            <h2>3. Les variables</h2>
+            
+            <h3>Qu'est-ce qu'une variable ?</h3>
+            <p>Une variable est comme une boîte avec une étiquette. Dans cette boîte, vous pouvez mettre une valeur. Imaginez que vous avez une boîte étiquetée "âge" et vous y mettez le nombre 15. Plus tard, vous pouvez regarder dans cette boîte pour savoir quel âge est stocké, ou vous pouvez changer la valeur à 16.</p>
+            
+            <h3>Déclaration des variables</h3>
+            <p>Avant d'utiliser une variable, vous devez la déclarer. Cela signifie que vous dites à l'algorithme : "Je vais utiliser une boîte qui s'appelle X et elle contiendra tel type de valeur".</p>
+            
+            <p>Voici comment déclarer des variables dans AlgoFX :</p>
+            
+            <pre><code>Var
+    age: entier;
+    nom: chaine;
+    taille: reel;</code></pre>
+            
+            <p>Dans cet exemple :</p>
+            <ul>
+                <li><code>age</code> est une variable de type <code>entier</code> (un nombre sans virgule comme 5, 10, 100)</li>
+                <li><code>nom</code> est une variable de type <code>chaine</code> (du texte comme "Marie", "Paris")</li>
+                <li><code>taille</code> est une variable de type <code>reel</code> (un nombre avec virgule comme 1.75, 3.14)</li>
+            </ul>
+            
+            <h3>Les types de données dans AlgoFX</h3>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Signification</th>
+                    <th>Exemples</th>
+                </tr>
+                <tr>
+                    <td><code>entier</code></td>
+                    <td>Nombre entier</td>
+                    <td>5, -10, 0, 1000</td>
+                </tr>
+                <tr>
+                    <td><code>reel</code></td>
+                    <td>Nombre à virgule</td>
+                    <td>3.14, -0.5, 2.0</td>
+                </tr>
+                <tr>
+                    <td><code>chaine</code></td>
+                    <td>Texte</td>
+                    <td>"Bonjour", "123"</td>
+                </tr>
+                <tr>
+                    <td><code>caractere</code></td>
+                    <td>Un seul caractère</td>
+                    <td>"a", "5", "!"</td>
+                </tr>
+                <tr>
+                    <td><code>booleen</code></td>
+                    <td>Vrai ou faux</td>
+                    <td>vrai, faux</td>
+                </tr>
+            </table>
+            
+            <h3>Affectation de valeurs</h3>
+            <p>Une fois qu'une variable est déclarée, vous pouvez lui donner une valeur. On utilise la flèche <code>&lt;-</code> pour dire "mettre dans". Lisez toujours cette flèche comme "reçoit la valeur".</p>
+            
+            <pre><code>Debut
+    age &lt;- 15;
+    nom &lt;- "Marie";
+    taille &lt;- 1.65;
+Fin</code></pre>
+            
+            <p>À ce moment-là, la variable <code>age</code> contient 15, <code>nom</code> contient "Marie", et <code>taille</code> contient 1.65.</p>
+            
+            <h3>Changement de valeur</h3>
+            <p>Une variable peut changer de valeur pendant l'exécution de l'algorithme. C'est pour cela qu'on l'appelle "variable" : sa valeur varie.</p>
+            
+            <pre><code>Debut
+    age &lt;- 15;
+    ecrire(age);
+    age &lt;- 16;
+    ecrire(age);
+Fin</code></pre>
+            
+            <p>Ici, l'algorithme affiche d'abord 15, puis 16. La valeur d'<code>age</code> a changé entre les deux affichages.</p>
+            
+            <h3>Visualisation des variables dans AlgoFX</h3>
+            <div class="tip">
+                <p><strong>Astuce :</strong> AlgoFX possède un panneau spécial qui affiche toutes vos variables et leurs valeurs en temps réel. Cela vous permet de voir exactement ce qui se passe dans la mémoire de votre algorithme. Utilisez le mode "Pas à Pas" pour observer comment les variables changent ligne par ligne.</p>
+            </div>
+            
+            <h3>Les constantes</h3>
+            <p>Une constante est comme une variable, mais sa valeur ne peut jamais changer. Imaginez une étiquette collée sur une boîte qui dit "NE PAS MODIFIER". Les constantes sont utiles pour les valeurs fixes comme le nombre Pi.</p>
+            
+            <pre><code>Const
+    PI = 3.14159;
+Debut
+    ecrire(PI);
+Fin</code></pre>
+            
+            <p>Une fois définie, vous ne pouvez plus modifier <code>PI</code>. Si vous essayez, AlgoFX affichera une erreur.</p>
+        </section>
+        
+        <section class="section">
+            <h2>4. Entrées et sorties</h2>
+            
+            <h3>Écrire (afficher des informations)</h3>
+            <p>Pour afficher quelque chose à l'écran, on utilise l'instruction <code>ecrire()</code>. Cela signifie : "Montre ce message à l'utilisateur".</p>
+            
+            <pre><code>Debut
+    ecrire("Bonjour le monde !");
+Fin</code></pre>
+            
+            <p>Vous pouvez afficher du texte (entre guillemets) ou des variables :</p>
+            
+            <pre><code>Var
+    age: entier;
+Debut
+    age &lt;- 20;
+    ecrire("Votre âge est :", age);
+Fin</code></pre>
+            
+            <p>Ce programme affichera : <code>Votre âge est : 20</code></p>
+            
+            <h3>Lire (recevoir des informations de l'utilisateur)</h3>
+            <p>Pour demander à l'utilisateur d'entrer une valeur, on utilise <code>lire()</code>. Cela signifie : "Attends que l'utilisateur tape quelque chose, puis stocke cette valeur dans la variable".</p>
+            
+            <pre><code>Var
+    nom: chaine;
+Debut
+    ecrire("Quel est votre nom ?");
+    lire(nom);
+    ecrire("Bonjour", nom);
+Fin</code></pre>
+            
+            <p>Quand l'algorithme arrive à <code>lire(nom)</code>, il s'arrête et attend. L'utilisateur tape son nom, puis l'algorithme continue et affiche "Bonjour" suivi du nom entré.</p>
+            
+            <h3>Interaction complète avec l'utilisateur</h3>
+            <p>Voici un exemple qui combine lecture et écriture :</p>
+            
+            <pre><code>Var
+    nombre1, nombre2, somme: entier;
+Debut
+    ecrire("Entrez le premier nombre :");
+    lire(nombre1);
+    ecrire("Entrez le deuxième nombre :");
+    lire(nombre2);
+    
+    somme &lt;- nombre1 + nombre2;
+    
+    ecrire("La somme est :", somme);
+Fin</code></pre>
+            
+            <p>L'algorithme demande deux nombres, calcule leur somme, puis affiche le résultat. À ce moment-là, l'utilisateur participe activement au déroulement du programme.</p>
+        </section>
+        
+        <section class="section">
+            <h2>5. Les conditions</h2>
+            
+            <h3>Pourquoi utiliser des conditions ?</h3>
+            <p>Imaginez que vous sortez de chez vous. Si il pleut, vous prenez un parapluie. Sinon, vous n'en prenez pas. C'est exactement ce qu'est une condition : faire quelque chose seulement si une situation est vraie.</p>
+            
+            <h3>La structure Si / Alors</h3>
+            <p>Dans AlgoFX, on écrit les conditions avec <code>si</code>, <code>alors</code>, et <code>finsi</code> :</p>
+            
+            <pre><code>Var
+    age: entier;
+Debut
+    ecrire("Quel est votre âge ?");
+    lire(age);
+    
+    si age >= 18 alors
+        ecrire("Vous êtes majeur");
+    finsi
+Fin</code></pre>
+            
+            <p>Ici, le message "Vous êtes majeur" s'affiche seulement si l'âge est supérieur ou égal à 18. Sinon, l'algorithme ne fait rien et passe directement à la fin.</p>
+            
+            <h3>Si / Sinon</h3>
+            <p>Souvent, on veut faire une chose si la condition est vraie, et une autre chose si elle est fausse :</p>
+            
+            <pre><code>Var
+    age: entier;
+Debut
+    ecrire("Quel est votre âge ?");
+    lire(age);
+    
+    si age >= 18 alors
+        ecrire("Vous êtes majeur");
+    sinon
+        ecrire("Vous êtes mineur");
+    finsi
+Fin</code></pre>
+            
+            <p>Maintenant, l'algorithme affiche toujours un message : soit "majeur" si l'âge est 18 ou plus, soit "mineur" dans le cas contraire.</p>
+            
+            <h3>Les opérateurs de comparaison</h3>
+            <table>
+                <tr>
+                    <th>Opérateur</th>
+                    <th>Signification</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td><code>=</code></td>
+                    <td>Est égal à</td>
+                    <td><code>age = 18</code></td>
+                </tr>
+                <tr>
+                    <td><code>&lt;&gt;</code> ou <code>!=</code></td>
+                    <td>Est différent de</td>
+                    <td><code>age &lt;&gt; 18</code></td>
+                </tr>
+                <tr>
+                    <td><code>&lt;</code></td>
+                    <td>Est inférieur à</td>
+                    <td><code>age &lt; 18</code></td>
+                </tr>
+                <tr>
+                    <td><code>&gt;</code></td>
+                    <td>Est supérieur à</td>
+                    <td><code>age &gt; 18</code></td>
+                </tr>
+                <tr>
+                    <td><code>&lt;=</code></td>
+                    <td>Est inférieur ou égal à</td>
+                    <td><code>age &lt;= 18</code></td>
+                </tr>
+                <tr>
+                    <td><code>&gt;=</code></td>
+                    <td>Est supérieur ou égal à</td>
+                    <td><code>age &gt;= 18</code></td>
+                </tr>
+            </table>
+            
+            <h3>Conditions composées</h3>
+            <p>Vous pouvez combiner plusieurs conditions avec <code>et</code> et <code>ou</code> :</p>
+            
+            <pre><code>si age >= 18 et age &lt; 65 alors
+    ecrire("Vous êtes en âge de travailler");
+finsi</code></pre>
+            
+            <p>Le mot <code>et</code> signifie que les deux conditions doivent être vraies. Le mot <code>ou</code> signifie qu'au moins une des conditions doit être vraie.</p>
+            
+            <h3>Vrai et Faux (booléens)</h3>
+            <p>Dans AlgoFX, <code>vrai</code> et <code>faux</code> sont des valeurs spéciales. Une variable de type <code>booleen</code> peut seulement contenir l'une de ces deux valeurs :</p>
+            
+            <pre><code>Var
+    estMajeur: booleen;
+    age: entier;
+Debut
+    lire(age);
+    estMajeur &lt;- age >= 18;
+    
+    si estMajeur = vrai alors
+        ecrire("Majeur");
+    finsi
+Fin</code></pre>
+        </section>
+        
+        <section class="section">
+            <h2>6. Les boucles</h2>
+            
+            <h3>Pourquoi répéter une action ?</h3>
+            <p>Imaginez que vous devez écrire les nombres de 1 à 100. Vous ne voulez pas écrire 100 instructions <code>ecrire()</code> ! Les boucles permettent de répéter automatiquement une action plusieurs fois.</p>
+            
+            <h3>La boucle POUR</h3>
+            <p>La boucle <code>pour</code> est utilisée quand vous savez exactement combien de fois vous voulez répéter quelque chose.</p>
+            
+            <pre><code>Var
+    i: entier;
+Debut
+    pour i de 1 a 5 faire
+        ecrire(i);
+    finpour
+Fin</code></pre>
+            
+            <p>Ce programme affiche les nombres 1, 2, 3, 4, 5. À ce moment-là, la variable <code>i</code> prend chaque valeur de 1 à 5, une par une. C'est comme compter sur vos doigts : premier doigt, deuxième doigt, etc.</p>
+            
+            <h4>Boucle avec un pas différent</h4>
+            <p>Vous pouvez changer la vitesse de comptage avec le mot <code>pas</code> :</p>
+            
+            <pre><code>pour i de 0 a 10 pas 2 faire
+    ecrire(i);
+finpour</code></pre>
+            
+            <p>Ici, l'algorithme affiche 0, 2, 4, 6, 8, 10. Il saute de 2 en 2.</p>
+            
+            <h3>La boucle TANT QUE</h3>
+            <p>La boucle <code>tantque</code> répète tant qu'une condition est vraie. Vous ne savez pas forcément combien de fois la boucle va tourner.</p>
+            
+            <pre><code>Var
+    nombre: entier;
+Debut
+    nombre &lt;- 1;
+    
+    tantque nombre &lt;= 5 faire
+        ecrire(nombre);
+        nombre &lt;- nombre + 1;
+    fintantque
+Fin</code></pre>
+            
+            <p>Ce programme affiche aussi 1, 2, 3, 4, 5. Mais cette fois, la boucle continue tant que <code>nombre</code> est inférieur ou égal à 5. À chaque tour, on ajoute 1 à <code>nombre</code>.</p>
+            
+            <div class="warning">
+                <p><strong>Attention :</strong> Si vous oubliez d'augmenter <code>nombre</code> dans la boucle, elle ne s'arrêtera jamais ! C'est ce qu'on appelle une boucle infinie. AlgoFX vous protège en arrêtant les boucles qui durent trop longtemps.</p>
+            </div>
+            
+            <h3>Quand utiliser POUR ou TANT QUE ?</h3>
+            <ul>
+                <li>Utilisez <code>pour</code> quand vous savez combien de fois répéter (par exemple : afficher les 10 premiers nombres)</li>
+                <li>Utilisez <code>tantque</code> quand vous ne savez pas à l'avance (par exemple : demander un mot de passe jusqu'à ce qu'il soit correct)</li>
+            </ul>
+            
+            <h3>L'instruction SORTIR</h3>
+            <p>Parfois, vous voulez arrêter une boucle avant la fin normale. L'instruction <code>sortir</code> permet de quitter immédiatement une boucle :</p>
+            
+            <pre><code>Var
+    i: entier;
+Debut
+    pour i de 1 a 100 faire
+        ecrire(i);
+        
+        si i = 10 alors
+            sortir;
+        finsi
+    finpour
+    
+    ecrire("Boucle terminée");
+Fin</code></pre>
+            
+            <p>Ce programme affiche les nombres de 1 à 10, puis sort de la boucle même si elle devait aller jusqu'à 100.</p>
+        </section>
+        
+        <section class="section">
+            <h2>7. Exécution pas à pas dans AlgoFX</h2>
+            
+            <h3>Qu'est-ce que le mode pas à pas ?</h3>
+            <p>Le mode "Pas à Pas" est une fonctionnalité unique d'AlgoFX qui vous permet d'exécuter votre algorithme ligne par ligne. Au lieu de tout exécuter d'un coup, vous avancez instruction par instruction. Cela signifie que vous pouvez observer exactement ce qui se passe à chaque étape.</p>
+            
+            <h3>Comment utiliser le mode pas à pas</h3>
+            <ol>
+                <li>Écrivez votre algorithme dans l'éditeur</li>
+                <li>Cliquez sur le bouton "⏯ Pas à Pas"</li>
+                <li>L'algorithme se prépare mais ne démarre pas encore</li>
+                <li>Cliquez sur "➡ Suivant" pour exécuter la ligne suivante</li>
+                <li>Continuez à cliquer sur "Suivant" pour avancer ligne par ligne</li>
+                <li>Cliquez sur "⏹ Arrêter" si vous voulez arrêter avant la fin</li>
+            </ol>
+            
+            <h3>Le tableau de visualisation des variables</h3>
+            <p>Pendant l'exécution pas à pas, AlgoFX affiche un panneau spécial à droite de l'écran. Ce panneau montre toutes vos variables et leurs valeurs actuelles. À chaque fois que vous cliquez sur "Suivant", les valeurs se mettent à jour automatiquement.</p>
+            
+            <div class="tip">
+                <p><strong>Astuce :</strong> Utilisez le mode pas à pas pour comprendre exactement comment fonctionne une boucle. Vous verrez la variable de boucle changer à chaque tour, et vous comprendrez pourquoi certaines instructions sont répétées.</p>
+            </div>
+            
+            <h3>Comprendre les erreurs avec le mode pas à pas</h3>
+            <p>Si votre algorithme ne fonctionne pas comme prévu, le mode pas à pas est votre meilleur ami. Vous pouvez voir exactement à quelle ligne le problème apparaît et quelle valeur inattendue apparaît dans une variable.</p>
+            
+            <p>Par exemple, si vous calculez une moyenne et obtenez un résultat bizarre, utilisez le pas à pas pour vérifier que vos variables contiennent bien les bonnes valeurs avant le calcul.</p>
+        </section>
+        
+        <section class="section">
+            <h2>8. Erreurs fréquentes</h2>
+            
+            <h3>Erreurs de syntaxe</h3>
+            <p>Les erreurs de syntaxe sont comme des fautes d'orthographe dans votre algorithme. AlgoFX ne comprend pas ce que vous voulez dire et refuse d'exécuter le programme.</p>
+            
+            <h4>Oubli du point-virgule</h4>
+            <pre><code>age &lt;- 15    // ERREUR : il manque le point-virgule
+age &lt;- 15;   // CORRECT</code></pre>
+            
+            <h4>Mauvaise utilisation de la flèche d'affectation</h4>
+            <pre><code>age = 15;     // ERREUR : il faut &lt;-
+age &lt;- 15;    // CORRECT</code></pre>
+            
+            <h4>Variable non déclarée</h4>
+            <pre><code>Debut
+    age &lt;- 15;  // ERREUR : age n'est pas déclaré dans Var
+Fin</code></pre>
+            
+            <p>Vous devez toujours déclarer vos variables dans la section <code>Var</code> avant de les utiliser.</p>
+            
+            <h4>Oubli de finsi, finpour, ou fintantque</h4>
+            <pre><code>si age >= 18 alors
+    ecrire("Majeur");
+// ERREUR : il manque finsi</code></pre>
+            
+            <h3>Erreurs de logique</h3>
+            <p>Les erreurs de logique sont plus difficiles à détecter. L'algorithme s'exécute sans erreur, mais le résultat n'est pas celui attendu.</p>
+            
+            <h4>Condition inversée</h4>
+            <pre><code>si age &lt; 18 alors
+    ecrire("Vous êtes majeur");  // ERREUR : la logique est inversée
+finsi</code></pre>
+            
+            <h4>Boucle infinie</h4>
+            <pre><code>nombre &lt;- 1;
+tantque nombre &lt;= 10 faire
+    ecrire(nombre);
+    // ERREUR : on oublie d'augmenter nombre
+fintantque</code></pre>
+            
+            <h4>Mauvais ordre d'opérations</h4>
+            <pre><code>somme &lt;- somme + nombre;  // Si utilisé avant d'initialiser somme
+// Il faut d'abord : somme &lt;- 0;</code></pre>
+            
+            <h3>Erreurs des débutants</h3>
+            
+            <h4>Confondre affectation et comparaison</h4>
+            <ul>
+                <li><code>&lt;-</code> signifie "donner une valeur" (affectation)</li>
+                <li><code>=</code> signifie "comparer" (égalité)</li>
+            </ul>
+            
+            <h4>Oublier les guillemets pour le texte</h4>
+            <pre><code>ecrire(Bonjour);   // ERREUR
+ecrire("Bonjour"); // CORRECT</code></pre>
+            
+            <h4>Type incompatible</h4>
+            <pre><code>Var
+    age: entier;
+Debut
+    age &lt;- "quinze";  // ERREUR : "quinze" est du texte, pas un entier
+Fin</code></pre>
+            
+            <div class="important">
+                <p><strong>Conseil :</strong> Lisez toujours les messages d'erreur d'AlgoFX. Ils vous indiquent exactement où se trouve le problème et souvent suggèrent une solution. N'hésitez pas à utiliser le bouton "⚙️ Compiler" pour vérifier votre syntaxe sans exécuter l'algorithme.</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>9. Exemples expliqués</h2>
+            
+            <article class="example-box">
+                <h3>Exemple 1 : Carré - Surface</h3>
+                <h4>Objectif</h4>
+                <p>Calculer la surface d'un carré à partir de la longueur de son côté. Cela signifie que si l'utilisateur donne 5, le programme calcule 5 × 5 = 25.</p>
+                
+                <pre><code>Algorithme SurfaceCarre;
+Var
+    cote, surface: reel;
+Debut
+    ecrire("Entrez le côté du carré:");
+    lire(cote);
+    
+    surface &lt;- cote * cote;
+    
+    ecrire("La surface du carré est:", surface);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Ligne Var :</strong> On déclare deux variables de type <code>reel</code> (nombre à virgule) : <code>cote</code> pour la longueur du côté et <code>surface</code> pour le résultat</li>
+                    <li><strong>Ligne ecrire :</strong> On demande à l'utilisateur d'entrer la valeur du côté</li>
+                    <li><strong>Ligne lire :</strong> L'algorithme attend que l'utilisateur tape un nombre et le stocke dans <code>cote</code></li>
+                    <li><strong>Ligne surface :</strong> On calcule la surface en multipliant le côté par lui-même (côté × côté)</li>
+                    <li><strong>Ligne ecrire finale :</strong> On affiche le résultat</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Cet algorithme montre comment récupérer une valeur de l'utilisateur, faire un calcul simple, et afficher le résultat. C'est le schéma de base de nombreux programmes : entrée → traitement → sortie.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 2 : Rectangle - Surface et Périmètre</h3>
+                <h4>Objectif</h4>
+                <p>Calculer à la fois la surface et le périmètre d'un rectangle. La surface est longueur × largeur, et le périmètre est 2 × (longueur + largeur).</p>
+                
+                <pre><code>Algorithme RectangleSurfacePerimetre;
+Var
+    longueur, largeur, surface, perimetre: reel;
+Debut
+    ecrire("Entrez la longueur du rectangle:");
+    lire(longueur);
+    ecrire("Entrez la largeur du rectangle:");
+    lire(largeur);
+    
+    surface &lt;- longueur * largeur;
+    perimetre &lt;- 2 * (longueur + largeur);
+    
+    ecrire("Surface du rectangle:", surface);
+    ecrire("Périmètre du rectangle:", perimetre);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Déclarations :</strong> On déclare 4 variables réelles pour stocker longueur, largeur, surface et périmètre</li>
+                    <li><strong>Deux lectures :</strong> On demande d'abord la longueur, puis la largeur. L'ordre est important car l'utilisateur doit entrer les valeurs une par une</li>
+                    <li><strong>Calcul de la surface :</strong> On multiplie longueur par largeur</li>
+                    <li><strong>Calcul du périmètre :</strong> On utilise la formule mathématique 2(L + l). Les parenthèses sont importantes pour calculer d'abord la somme</li>
+                    <li><strong>Affichage :</strong> On montre les deux résultats</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>On peut faire plusieurs calculs dans un même algorithme. Chaque calcul utilise les bonnes variables et la bonne formule mathématique.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 3 : Calcul de Moyenne</h3>
+                <h4>Objectif</h4>
+                <p>Calculer la moyenne de trois notes et afficher un message selon que l'élève a réussi ou non. Cela montre comment utiliser une condition pour prendre une décision.</p>
+                
+                <pre><code>Algorithme CalculMoyenne;
+Var
+    note1, note2, note3, moyenne: reel;
+Debut
+    ecrire("Entrez trois notes:");
+    lire(note1, note2, note3);
+    
+    moyenne &lt;- (note1 + note2 + note3) / 3;
+    
+    ecrire("La moyenne est:", moyenne);
+    
+    si moyenne >= 10 alors
+        ecrire("Félicitations, vous avez réussi!");
+    sinon
+        ecrire("Vous devez vous améliorer.");
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Lecture multiple :</strong> La ligne <code>lire(note1, note2, note3)</code> demande trois valeurs à l'utilisateur, une après l'autre</li>
+                    <li><strong>Calcul de moyenne :</strong> On additionne les trois notes et on divise par 3. Les parenthèses garantissent qu'on additionne d'abord avant de diviser</li>
+                    <li><strong>Condition :</strong> On vérifie si la moyenne est supérieure ou égale à 10</li>
+                    <li><strong>Deux chemins possibles :</strong> Si oui, on félicite. Si non, on encourage à s'améliorer</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Les conditions permettent à l'algorithme de s'adapter selon le résultat. C'est ce qui rend les programmes intelligents : ils peuvent réagir différemment selon la situation.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 4 : Conversion de Température</h3>
+                <h4>Objectif</h4>
+                <p>Convertir une température de Celsius vers Fahrenheit ou l'inverse, selon le choix de l'utilisateur. Cela montre comment utiliser des conditions imbriquées (des conditions dans des conditions).</p>
+                
+                <pre><code>Algorithme ConversionTemperature;
+Var
+    choix: entier;
+    celsius, fahrenheit: reel;
+Debut
+    ecrire("Conversion de température");
+    ecrire("1- Celsius vers Fahrenheit");
+    ecrire("2- Fahrenheit vers Celsius");
+    ecrire("Entrez votre choix (1 ou 2):");
+    
+    lire(choix);
+    
+    si choix = 1 alors
+        ecrire("Entrez la température en Celsius:");
+        lire(celsius);
+        fahrenheit &lt;- (celsius * 9/5) + 32;
+        ecrire(celsius, "°C équivaut à", fahrenheit, "°F");
+    sinon
+        si choix = 2 alors
+            ecrire("Entrez la température en Fahrenheit:");
+            lire(fahrenheit);
+            celsius &lt;- (fahrenheit - 32) * 5/9;
+            ecrire(fahrenheit, "°F équivaut à", celsius, "°C");
+        sinon
+            ecrire("Choix invalide");
+        finsi
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Menu :</strong> On affiche d'abord un menu avec les options disponibles</li>
+                    <li><strong>Lecture du choix :</strong> L'utilisateur entre 1 ou 2</li>
+                    <li><strong>Première condition :</strong> Si choix = 1, on fait la conversion Celsius → Fahrenheit</li>
+                    <li><strong>Sinon imbriqué :</strong> Si choix ≠ 1, on vérifie si choix = 2 pour faire l'autre conversion</li>
+                    <li><strong>Sinon final :</strong> Si ce n'est ni 1 ni 2, on affiche "Choix invalide"</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>On peut imbriquer plusieurs conditions pour gérer différents cas. Attention à bien fermer chaque <code>finsi</code> au bon endroit. Les formules mathématiques (9/5, 32, 5/9) sont des constantes qu'on utilise directement.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 5 : Calcul Cercle</h3>
+                <h4>Objectif</h4>
+                <p>Calculer la surface et la circonférence d'un cercle à partir de son rayon. Cela montre comment utiliser une constante (PI) dans les calculs.</p>
+                
+                <pre><code>Algorithme CalculCercle;
+Var
+    rayon, surface, circonference: reel;
+Const
+    PI = 3.14159;
+Debut
+    ecrire("Entrez le rayon du cercle:");
+    lire(rayon);
+    
+    surface &lt;- PI * rayon * rayon;
+    circonference &lt;- 2 * PI * rayon;
+    
+    ecrire("Surface du cercle:", surface);
+    ecrire("Circonférence du cercle:", circonference);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Constante PI :</strong> On définit PI = 3.14159 dans la section Const. Cette valeur ne changera jamais</li>
+                    <li><strong>Calcul de surface :</strong> Formule : π × rayon². On écrit rayon × rayon au lieu de rayon²</li>
+                    <li><strong>Calcul de circonférence :</strong> Formule : 2 × π × rayon</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Les constantes sont utiles pour des valeurs fixes qu'on utilise plusieurs fois. On n'a pas besoin de réécrire 3.14159 partout, on utilise simplement PI.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 6 : Équation du 1er Degré</h3>
+                <h4>Objectif</h4>
+                <p>Résoudre une équation du type ax + b = 0. Cela montre comment gérer différents cas mathématiques (pas de solution, une solution, infinité de solutions).</p>
+                
+                <pre><code>Algorithme EquationPremierDegre;
+Var
+    a, b, x: reel;
+Debut
+    ecrire("Résolution de l'équation ax + b = 0");
+    ecrire("Entrez la valeur de a:");
+    lire(a);
+    ecrire("Entrez la valeur de b:");
+    lire(b);
+    
+    si a = 0 alors
+        si b = 0 alors
+            ecrire("L'équation admet une infinité de solutions");
+        sinon
+            ecrire("L'équation n'admet pas de solution");
+        finsi
+    sinon
+        x &lt;- -b / a;
+        ecrire("La solution est x =", x);
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Cas a = 0 et b = 0 :</strong> L'équation devient 0 = 0, qui est toujours vraie. Donc infinité de solutions</li>
+                    <li><strong>Cas a = 0 et b ≠ 0 :</strong> L'équation devient b = 0 où b n'est pas nul. C'est impossible, donc aucune solution</li>
+                    <li><strong>Cas a ≠ 0 :</strong> On peut diviser par a, donc x = -b/a</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Avant de faire un calcul mathématique, il faut toujours vérifier les cas spéciaux (comme la division par zéro). Les conditions imbriquées permettent de gérer ces différents cas.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 7 : Afficher des Nombres</h3>
+                <h4>Objectif</h4>
+                <p>Afficher tous les nombres de 1 jusqu'à une limite donnée. C'est votre première boucle simple.</p>
+                
+                <pre><code>Algorithme AfficherNombres;
+Var
+    nbLimite, i: entier;
+Debut
+    ecrire("Entrer un nombre limite:");
+    lire(nbLimite);
+    
+    pour i de 1 a nbLimite faire
+        ecrire(i);
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Variable i :</strong> C'est la variable de boucle qui prend les valeurs 1, 2, 3... jusqu'à nbLimite</li>
+                    <li><strong>Boucle pour :</strong> La boucle répète <code>ecrire(i)</code> pour chaque valeur de i</li>
+                    <li><strong>Automatique :</strong> Vous n'avez pas besoin d'écrire <code>i &lt;- i + 1</code>, la boucle pour le fait automatiquement</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>La boucle <code>pour</code> est parfaite quand vous savez combien de fois répéter. Ici, on répète exactement nbLimite fois.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 8 : Nombres Pairs</h3>
+                <h4>Objectif</h4>
+                <p>Afficher tous les nombres pairs de 0 à n. Cela montre comment utiliser le paramètre <code>pas</code> dans une boucle.</p>
+                
+                <pre><code>Algorithme NombresPairs;
+Var
+    n, i: entier;
+Debut
+    ecrire("Entrez la valeur limite n:");
+    lire(n);
+    
+    ecrire("Nombres pairs de 0 à", n, ":");
+    
+    pour i de 0 a n pas 2 faire
+        ecrire(i);
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>pas 2 :</strong> Au lieu d'avancer de 1 en 1, la boucle avance de 2 en 2</li>
+                    <li><strong>Départ à 0 :</strong> On commence à 0 (qui est pair) puis 2, 4, 6, 8...</li>
+                    <li><strong>Arrêt :</strong> La boucle s'arrête quand i dépasse n</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Le paramètre <code>pas</code> permet de contrôler le saut entre chaque itération. C'est très utile pour afficher une série régulière de nombres.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 9 : Nombres Impairs</h3>
+                <h4>Objectif</h4>
+                <p>Afficher tous les nombres impairs de 1 à n. Même principe que les nombres pairs, mais en commençant à 1.</p>
+                
+                <pre><code>Algorithme NombresImpairs;
+Var
+    n, i: entier;
+Debut
+    ecrire("Entrez la valeur limite n:");
+    lire(n);
+    
+    ecrire("Nombres impairs de 1 à", n, ":");
+    
+    pour i de 1 a n pas 2 faire
+        ecrire(i);
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Départ à 1 :</strong> On commence à 1 (premier nombre impair)</li>
+                    <li><strong>pas 2 :</strong> On saute de 2 en 2, donc 1, 3, 5, 7...</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>En changeant juste le point de départ (0 ou 1), on obtient soit les pairs soit les impairs. C'est la même logique de boucle.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 10 : Table de Multiplication</h3>
+                <h4>Objectif</h4>
+                <p>Afficher la table de multiplication d'un nombre donné (par exemple : 5 × 1 = 5, 5 × 2 = 10, etc.).</p>
+                
+                <pre><code>Algorithme TableMultiplication;
+Var
+    nombre, i, resultat: entier;
+Debut
+    ecrire("Quelle table voulez-vous afficher?");
+    lire(nombre);
+    
+    pour i de 1 a 10 faire
+        resultat &lt;- nombre * i;
+        ecrire(nombre, "x", i, "=", resultat);
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Boucle de 1 à 10 :</strong> On affiche les 10 premières multiplications</li>
+                    <li><strong>Calcul du résultat :</strong> À chaque tour, on calcule nombre × i</li>
+                    <li><strong>Affichage formaté :</strong> On affiche une ligne complète comme "5 x 3 = 15"</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Dans une boucle, on peut faire des calculs différents à chaque tour en utilisant la variable de boucle (ici i).</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 11 : Somme de 10 Nombres</h3>
+                <h4>Objectif</h4>
+                <p>Demander 10 nombres à l'utilisateur et calculer leur somme totale. Cela montre comment accumuler des valeurs dans une boucle.</p>
+                
+                <pre><code>Algorithme Somme10;
+Var
+    i, valeurEntree, somme: entier;
+Debut
+    somme &lt;- 0;
+    
+    pour i de 1 a 10 faire
+        ecrire("Entrer un nombre:");
+        lire(valeurEntree);
+        somme &lt;- somme + valeurEntree;
+    finpour
+    
+    ecrire("La somme est:", somme);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Initialisation :</strong> <code>somme &lt;- 0</code> est crucial. On commence à zéro avant d'additionner</li>
+                    <li><strong>Accumulation :</strong> <code>somme &lt;- somme + valeurEntree</code> signifie "prendre l'ancienne somme et y ajouter le nouveau nombre"</li>
+                    <li><strong>Répétition :</strong> Cette accumulation se fait 10 fois</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Pour calculer une somme dans une boucle, il faut toujours initialiser la variable à 0 avant la boucle, puis ajouter chaque nouvelle valeur.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 12 : Somme de N Nombres</h3>
+                <h4>Objectif</h4>
+                <p>Même chose que l'exemple précédent, mais cette fois l'utilisateur choisit combien de nombres il veut additionner.</p>
+                
+                <pre><code>Algorithme SommeN;
+Var
+    n, i, nombre, somme: entier;
+Debut
+    ecrire("Combien de nombres voulez-vous additionner?");
+    lire(n);
+    
+    somme &lt;- 0;
+    pour i de 1 a n faire
+        ecrire("Entrez le nombre", i, ":");
+        lire(nombre);
+        somme &lt;- somme + nombre;
+    finpour
+    
+    ecrire("La somme des", n, "nombres est:", somme);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Variable n :</strong> L'utilisateur décide combien de nombres il va entrer</li>
+                    <li><strong>Boucle dynamique :</strong> La boucle s'adapte automatiquement au nombre n choisi</li>
+                    <li><strong>Message personnalisé :</strong> On affiche "Entrez le nombre 1:", "Entrez le nombre 2:", etc.</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>La limite d'une boucle <code>pour</code> peut être une variable. Cela rend l'algorithme plus flexible et réutilisable.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 13 : Mot de Passe</h3>
+                <h4>Objectif</h4>
+                <p>Demander un mot de passe et continuer à demander tant que l'utilisateur n'entre pas le bon mot de passe (ici "0000").</p>
+                
+                <pre><code>Algorithme MotDePasse;
+Var
+    mot : chaine;
+Debut
+    Ecrire("Veuillez saisir le mot de passe :");
+    lire(mot);
+
+    tantque mot != "0000" faire
+        Ecrire("Mot de passe incorrect. Veuillez réessayer :");
+        lire(mot);
+    fintantque
+
+    Ecrire("Mot de passe correct. Bienvenue !");
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Première lecture :</strong> On demande le mot de passe une première fois avant la boucle</li>
+                    <li><strong>tantque mot != "0000" :</strong> Tant que le mot de passe n'est pas "0000", on continue</li>
+                    <li><strong>Nouvelle tentative :</strong> À chaque tour, on redemande le mot de passe</li>
+                    <li><strong>Sortie de boucle :</strong> Quand l'utilisateur entre "0000", la condition devient fausse et on sort</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>La boucle <code>tantque</code> est parfaite pour répéter jusqu'à ce qu'une condition soit satisfaite. On ne sait pas à l'avance combien de tentatives l'utilisateur fera.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 14 : Factorielle</h3>
+                <h4>Objectif</h4>
+                <p>Calculer la factorielle d'un nombre. La factorielle de 5 (notée 5!) est 1 × 2 × 3 × 4 × 5 = 120.</p>
+                
+                <pre><code>Algorithme Factoriel;
+Var
+    n, fact, i: entier;
+Debut
+    ecrire("Entrez un nombre pour calculer sa factorielle:");
+    lire(n);
+    
+    fact &lt;- 1;
+    
+    pour i de 1 a n faire
+        fact &lt;- fact * i;
+    finpour
+    
+    ecrire("La factorielle de", n, "est", fact);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>fact &lt;- 1 :</strong> On commence à 1 (pas à 0) car on va multiplier</li>
+                    <li><strong>Boucle de multiplication :</strong> À chaque tour, on multiplie fact par i</li>
+                    <li><strong>Tour 1 :</strong> fact = 1 × 1 = 1</li>
+                    <li><strong>Tour 2 :</strong> fact = 1 × 2 = 2</li>
+                    <li><strong>Tour 3 :</strong> fact = 2 × 3 = 6, etc.</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Pour multiplier des valeurs successives, on initialise à 1 (pas à 0). C'est le même principe que la somme, mais avec la multiplication.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 15 : Recherche du Maximum</h3>
+                <h4>Objectif</h4>
+                <p>Trouver le plus grand nombre parmi plusieurs nombres entrés par l'utilisateur. Cela montre comment garder en mémoire la meilleure valeur trouvée jusqu'à présent.</p>
+                
+                <pre><code>Algorithme RechercheMaximum;
+Var
+    n, nombre, maximum, i: entier;
+Debut
+    ecrire("Combien de nombres voulez-vous comparer?");
+    lire(n);
+    
+    ecrire("Entrez le nombre 1:");
+    lire(nombre);
+    maximum &lt;- nombre;
+    i &lt;- 2;
+    
+    tantque i &lt;= n faire
+        ecrire("Entrez le nombre", i, ":");
+        lire(nombre);
+        
+        si nombre > maximum alors
+            maximum &lt;- nombre;
+        finsi
+        
+        i &lt;- i + 1;
+    fintantque
+    
+    ecrire("Le maximum est:", maximum);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Premier nombre :</strong> On lit le premier nombre et on le met directement dans maximum</li>
+                    <li><strong>Comparaisons suivantes :</strong> Pour chaque nouveau nombre, si il est plus grand que maximum, il devient le nouveau maximum</li>
+                    <li><strong>Incrémentation manuelle :</strong> Avec tantque, on doit écrire <code>i &lt;- i + 1</code> nous-mêmes</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Pour trouver un maximum, on garde toujours en mémoire le plus grand nombre vu jusqu'à présent, et on le met à jour quand on trouve plus grand.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 16 : Vérification Palindrome</h3>
+                <h4>Objectif</h4>
+                <p>Vérifier si un nombre est un palindrome (se lit pareil à l'envers, comme 121, 1331). Cela montre comment manipuler les chiffres d'un nombre.</p>
+                
+                <pre><code>Algorithme VerificationPalindrome;
+Var
+    nombre, copie, inverse, chiffre: entier;
+Debut
+    ecrire("Entrez un nombre:");
+    lire(nombre);
+    
+    copie &lt;- nombre;
+    inverse &lt;- 0;
+    
+    tantque copie > 0 faire
+        chiffre &lt;- copie mod 10;
+        inverse &lt;- inverse * 10 + chiffre;
+        copie &lt;- copie div 10;
+    fintantque
+    
+    si nombre = inverse alors
+        ecrire(nombre, "est un palindrome");
+    sinon
+        ecrire(nombre, "n'est pas un palindrome");
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>copie mod 10 :</strong> Récupère le dernier chiffre (exemple : 123 mod 10 = 3)</li>
+                    <li><strong>inverse × 10 + chiffre :</strong> Construit le nombre inversé chiffre par chiffre</li>
+                    <li><strong>copie div 10 :</strong> Enlève le dernier chiffre (exemple : 123 div 10 = 12)</li>
+                    <li><strong>Comparaison finale :</strong> Si nombre = inverse, c'est un palindrome</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>L'opérateur <code>mod</code> donne le reste de la division (utile pour obtenir le dernier chiffre). L'opérateur <code>div</code> donne la division entière (utile pour enlever le dernier chiffre).</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 17 : Décimal vers Binaire</h3>
+                <h4>Objectif</h4>
+                <p>Convertir un nombre décimal (base 10) en binaire (base 2). Par exemple, 5 en décimal = 101 en binaire.</p>
+                
+                <pre><code>Algorithme DecimalVersBinaire;
+Var
+    nombreDecimal, binaire, reste, multiplicateur: entier;
+Debut
+    ecrire("Entrez un nombre entier en base décimale:");
+    lire(nombreDecimal);
+    
+    binaire &lt;- 0;
+    multiplicateur &lt;- 1;
+    
+    tantque nombreDecimal &lt;&gt; 0 faire
+        reste &lt;- nombreDecimal mod 2;
+        binaire &lt;- binaire + (reste * multiplicateur);
+        nombreDecimal &lt;- nombreDecimal div 2;
+        multiplicateur &lt;- multiplicateur * 10;
+    fintantque
+    
+    ecrire("Représentation binaire:", binaire);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>mod 2 :</strong> Donne 0 ou 1 (le reste quand on divise par 2)</li>
+                    <li><strong>div 2 :</strong> Divise par 2 en enlevant la partie décimale</li>
+                    <li><strong>multiplicateur :</strong> Permet de placer chaque chiffre binaire à la bonne position (unités, dizaines, centaines)</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>La conversion de base utilise des divisions successives. On récupère les restes et on les assemble dans l'ordre inverse.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 18 : Mot de Passe avec 3 Essais</h3>
+                <h4>Objectif</h4>
+                <p>Demander un mot de passe mais limiter à 3 tentatives maximum. Si l'utilisateur échoue 3 fois, l'accès est refusé.</p>
+                
+                <pre><code>Algorithme MotDePasse;
+Var
+    mot : chaine;
+    essai : entier;
+Debut
+    essai &lt;- 1;
+
+    tantque essai &lt;= 3 et mot != "0000" faire
+        Ecrire("Entrez le mot de passe :");
+        lire(mot);
+
+        si mot != "0000" alors
+            Ecrire("Mot de passe incorrect.");
+        finsi
+
+        essai &lt;- essai + 1;
+    fintantque
+
+    si mot = "0000" alors
+        Ecrire("Accès autorisé.");
+    sinon
+        Ecrire("Accès refusé.");
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Double condition :</strong> <code>essai &lt;= 3 et mot != "0000"</code> signifie qu'on continue SI on a encore des essais ET que le mot de passe n'est pas bon</li>
+                    <li><strong>Compteur d'essais :</strong> On incrémente essai à chaque tentative</li>
+                    <li><strong>Vérification finale :</strong> Après la boucle, on vérifie si c'est le bon mot de passe ou si on a épuisé les essais</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>On peut combiner plusieurs conditions avec <code>et</code>. Les deux doivent être vraies pour continuer la boucle.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 19 : Suite de Fibonacci</h3>
+                <h4>Objectif</h4>
+                <p>Générer les n premiers termes de la suite de Fibonacci (0, 1, 1, 2, 3, 5, 8, 13...). Chaque terme est la somme des deux précédents.</p>
+                
+                <pre><code>Algorithme SuiteFibonacci;
+Var
+    n, i, a, b, c: entier;
+Debut
+    ecrire("Combien de termes de la suite de Fibonacci voulez-vous?");
+    lire(n);
+    
+    ecrire("Suite de Fibonacci:");
+    
+    si n >= 1 alors
+        ecrire(0);
+    finsi
+    
+    si n >= 2 alors
+        ecrire(1);
+    finsi
+    
+    a &lt;- 0;
+    b &lt;- 1;
+    
+    pour i de 3 a n faire
+        c &lt;- a + b;
+        ecrire(c);
+        a &lt;- b;
+        b &lt;- c;
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Cas spéciaux :</strong> Les deux premiers termes (0 et 1) sont affichés directement</li>
+                    <li><strong>Variables glissantes :</strong> a et b représentent les deux termes précédents</li>
+                    <li><strong>Calcul :</strong> c = a + b donne le nouveau terme</li>
+                    <li><strong>Glissement :</strong> Après chaque tour, on décale : a devient b, et b devient c</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Pour une suite où chaque terme dépend des précédents, on garde en mémoire les valeurs nécessaires et on les met à jour à chaque tour.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 20 : PGCD (Plus Grand Commun Diviseur)</h3>
+                <h4>Objectif</h4>
+                <p>Calculer le PGCD de deux nombres en utilisant l'algorithme d'Euclide. C'est un algorithme mathématique célèbre.</p>
+                
+                <pre><code>Algorithme CalculPGCD;
+Var
+    a, b, r: entier;
+Debut
+    ecrire("Entrez le premier nombre:");
+    lire(a);
+    ecrire("Entrez le deuxième nombre:");
+    lire(b);
+    
+    si a &lt; b alors
+        r &lt;- a;
+        a &lt;- b;
+        b &lt;- r;
+    finsi
+    
+    tantque b &lt;&gt; 0 faire
+        r &lt;- a mod b;
+        a &lt;- b;
+        b &lt;- r;
+    fintantque
+    
+    ecrire("Le PGCD est:", a);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Échange :</strong> Si a &lt; b, on échange leurs valeurs pour que a soit toujours le plus grand</li>
+                    <li><strong>Algorithme d'Euclide :</strong> On remplace a par b, et b par le reste de a/b</li>
+                    <li><strong>Arrêt :</strong> Quand b devient 0, le PGCD est dans a</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Certains algorithmes mathématiques utilisent des boucles avec des remplacements de valeurs. C'est une technique puissante pour résoudre des problèmes complexes.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 21 : Équation du 2nd Degré</h3>
+                <h4>Objectif</h4>
+                <p>Résoudre une équation du type ax² + bx + c = 0 en utilisant le discriminant (Δ = b² - 4ac).</p>
+                
+                <pre><code>Algorithme EquationSecondDegre;
+Var
+    a, b, c, delta, x1, x2: reel;
+Debut
+    ecrire("Résolution de l'équation ax² + bx + c = 0");
+    ecrire("Entrez la valeur de a:");
+    lire(a);
+    ecrire("Entrez la valeur de b:");
+    lire(b);
+    ecrire("Entrez la valeur de c:");
+    lire(c);
+    
+    si a = 0 alors
+        si b = 0 alors
+            si c = 0 alors
+                ecrire("L'équation admet une infinité de solutions");
+            sinon
+                ecrire("L'équation n'admet pas de solution");
+            finsi
+        sinon
+            x1 &lt;- -c / b;
+            ecrire("L'équation est du premier degré, la solution est x =", x1);
+        finsi
+    sinon
+        delta &lt;- b * b - 4 * a * c;
+        
+        si delta &lt; 0 alors
+            ecrire("L'équation n'admet pas de solution réelle");
+        sinon
+            si delta = 0 alors
+                x1 &lt;- -b / (2 * a);
+                ecrire("L'équation admet une solution double: x =", x1);
+            sinon
+                x1 &lt;- (-b - racine(delta)) / (2 * a);
+                x2 &lt;- (-b + racine(delta)) / (2 * a);
+                ecrire("L'équation admet deux solutions:");
+                ecrire("x1 =", x1);
+                ecrire("x2 =", x2);
+            finsi
+        finsi
+    finsi
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Cas a = 0 :</strong> Ce n'est plus du 2nd degré, on traite les cas spéciaux</li>
+                    <li><strong>Calcul du delta :</strong> Δ = b² - 4ac</li>
+                    <li><strong>Cas Δ &lt; 0 :</strong> Pas de solution réelle</li>
+                    <li><strong>Cas Δ = 0 :</strong> Une solution double</li>
+                    <li><strong>Cas Δ &gt; 0 :</strong> Deux solutions distinctes calculées avec la formule classique</li>
+                    <li><strong>racine() :</strong> Fonction qui calcule la racine carrée</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Les problèmes mathématiques ont souvent plusieurs cas à traiter. On utilise des conditions imbriquées pour gérer chaque cas correctement. AlgoFX fournit la fonction <code>racine()</code> pour la racine carrée.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 22 : PPCM (Plus Petit Commun Multiple)</h3>
+                <h4>Objectif</h4>
+                <p>Calculer le PPCM de deux nombres. Le PPCM utilise le PGCD : PPCM(a,b) = (a × b) / PGCD(a,b).</p>
+                
+                <pre><code>Algorithme CalculPPCM;
+Var
+    a, b, pgcd, ppcm: entier;
+    temp_a, temp_b, r: entier;
+Debut
+    ecrire("Entrez le premier nombre:");
+    lire(a);
+    ecrire("Entrez le deuxième nombre:");
+    lire(b);
+    
+    temp_a &lt;- a;
+    temp_b &lt;- b;
+    
+    si a &lt; b alors
+        r &lt;- a;
+        a &lt;- b;
+        b &lt;- r;
+    finsi
+    
+    tantque b &lt;&gt; 0 faire
+        r &lt;- a mod b;
+        a &lt;- b;
+        b &lt;- r;
+    fintantque
+    
+    pgcd &lt;- a;
+    ppcm &lt;- (temp_a * temp_b) / pgcd;
+    
+    ecrire("Le PPCM est:", ppcm);
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Sauvegarde :</strong> On garde les valeurs originales dans temp_a et temp_b car l'algorithme du PGCD modifie a et b</li>
+                    <li><strong>Calcul du PGCD :</strong> Même algorithme que l'exemple 20</li>
+                    <li><strong>Formule PPCM :</strong> On utilise la formule mathématique (a × b) / PGCD</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Quand un algorithme modifie des variables mais qu'on a besoin des valeurs originales plus tard, on les sauvegarde dans des variables temporaires.</p>
+            </article>
+            
+            <article class="example-box">
+                <h3>Exemple 23 : Nombres Premiers</h3>
+                <h4>Objectif</h4>
+                <p>Afficher tous les nombres premiers jusqu'à n. Un nombre premier n'est divisible que par 1 et lui-même. Cela montre comment utiliser des boucles imbriquées et l'instruction <code>sortir</code>.</p>
+                
+                <pre><code>Algorithme NombresPremiers;
+var
+    n, i, j, temp: entier;
+    estPremier: booleen;
+debut
+    ecrire("Entrez la limite N:");
+    lire(n);
+    
+    ecrire("Nombres premiers jusqu'à", n, ":");
+    
+    pour i de 2 a n faire
+        estPremier &lt;- vrai;
+        
+        pour j de 2 a i-1 faire
+            temp &lt;- i mod j;
+            si temp = 0 alors
+                estPremier &lt;- faux;
+                sortir;
+            finsi
+        finpour
+        
+        si estPremier = vrai alors
+            ecrire(i);
+        finsi
+    finpour
+Fin</code></pre>
+                
+                <h4>Explication ligne par ligne</h4>
+                <ul>
+                    <li><strong>Boucle externe :</strong> Teste chaque nombre i de 2 à n</li>
+                    <li><strong>Variable booléenne :</strong> estPremier commence à vrai pour chaque nombre</li>
+                    <li><strong>Boucle interne :</strong> Teste si i est divisible par un nombre j entre 2 et i-1</li>
+                    <li><strong>Test de divisibilité :</strong> Si i mod j = 0, alors i est divisible par j, donc pas premier</li>
+                    <li><strong>sortir :</strong> Dès qu'on trouve un diviseur, inutile de continuer, on sort de la boucle interne</li>
+                    <li><strong>Affichage :</strong> Si après tous les tests estPremier est toujours vrai, on affiche le nombre</li>
+                </ul>
+                
+                <h4>Ce que vous devez retenir</h4>
+                <p>Les boucles imbriquées (une boucle dans une autre) permettent de tester toutes les combinaisons. L'instruction <code>sortir</code> optimise en évitant des tests inutiles. Les variables booléennes sont pratiques pour garder un état (vrai/faux) pendant les tests.</p>
+            </article>
+        </section>
+        
+        <section class="section">
+            <h2>10. Conseils pour progresser</h2>
+            
+            <h3>Comment s'entraîner efficacement</h3>
+            
+            <h4>1. Commencez petit</h4>
+            <p>Ne cherchez pas à écrire des algorithmes complexes dès le début. Commencez par des choses simples : afficher du texte, faire une addition, demander un nom. Une fois que vous maîtrisez les bases, passez à des problèmes plus difficiles.</p>
+            
+            <h4>2. Tapez vous-même les exemples</h4>
+            <p>Ne vous contentez pas de lire les exemples. Tapez-les dans AlgoFX, exécutez-les, modifiez-les. Changez les valeurs, ajoutez des instructions, cassez le code et réparez-le. C'est en faisant qu'on apprend vraiment.</p>
+            
+            <h4>3. Utilisez le mode pas à pas</h4>
+            <p>Pour chaque exemple, exécutez-le en mode pas à pas au moins une fois. Observez comment les variables changent. Essayez de prédire ce qui va se passer à la prochaine ligne avant de cliquer sur "Suivant".</p>
+            
+            <h4>4. Modifiez les exemples</h4>
+            <p>Prenez un exemple qui fonctionne et posez-vous des questions : "Et si je voulais afficher aussi le périmètre ?", "Et si je voulais demander 5 nombres au lieu de 3 ?", "Et si je voulais que la boucle compte à l'envers ?". Puis essayez de le faire.</p>
+            
+            <h4>5. Résolvez vos propres problèmes</h4>
+            <p>Inventez vos propres exercices. Par exemple :</p>
+            <ul>
+                <li>Calculer le prix TTC d'un produit (prix HT + TVA)</li>
+                <li>Convertir des kilomètres en miles</li>
+                <li>Afficher votre âge dans 10 ans</li>
+                <li>Calculer combien de jours il y a dans n semaines</li>
+            </ul>
+            
+            <h3>Comment corriger ses erreurs</h3>
+            
+            <h4>Lisez le message d'erreur</h4>
+            <p>AlgoFX vous dit toujours où est le problème. Lisez attentivement le message. Il vous indique souvent la ligne exacte et ce qui ne va pas.</p>
+            
+            <h4>Utilisez le bouton Compiler</h4>
+            <p>Avant d'exécuter, cliquez sur "⚙️ Compiler" pour vérifier qu'il n'y a pas d'erreurs de syntaxe. C'est plus rapide que d'exécuter pour découvrir une faute de frappe.</p>
+            
+            <h4>Comparez avec un exemple qui fonctionne</h4>
+            <p>Si votre algorithme ne marche pas, comparez-le avec un exemple similaire dans cette aide. Regardez les différences : avez-vous oublié un <code>finsi</code> ? Avez-vous mis <code>=</code> au lieu de <code>&lt;-</code> ?</p>
+            
+            <h4>Simplifiez pour isoler le problème</h4>
+            <p>Si votre algorithme est compliqué et ne fonctionne pas, commentez (avec //) la moitié du code pour voir quelle partie pose problème. Ou créez une version plus simple qui teste juste la partie suspecte.</p>
+            
+            <h4>Vérifiez vos variables</h4>
+            <p>Utilisez le tableau des variables en mode pas à pas. Souvent, une erreur vient d'une variable qui contient une valeur inattendue. Si vous voyez que <code>somme</code> vaut 0 alors qu'elle devrait valoir 15, vous savez où chercher.</p>
+            
+            <h3>Comment penser comme un algorithme</h3>
+            
+            <h4>Décomposez le problème</h4>
+            <p>Avant d'écrire une seule ligne de code, décrivez le problème en français simple. Par exemple, pour calculer une moyenne :</p>
+            <ol>
+                <li>Demander combien de notes</li>
+                <li>Demander chaque note et les additionner</li>
+                <li>Diviser la somme par le nombre de notes</li>
+                <li>Afficher le résultat</li>
+            </ol>
+            <p>Une fois que vous avez ces étapes, transformez chacune en code.</p>
+            
+            <h4>Soyez précis</h4>
+            <p>L'ordinateur fait exactement ce que vous lui dites, pas ce que vous voulez. Si vous écrivez <code>si age > 18</code>, cela exclut 18. Si vous voulez inclure 18, écrivez <code>si age >= 18</code>. Chaque détail compte.</p>
+            
+            <h4>Testez avec des exemples</h4>
+            <p>Avant d'exécuter votre algorithme, testez-le mentalement avec des valeurs simples. Si vous calculez une moyenne de 10, 20, 30, vous savez que le résultat doit être 20. Si votre algorithme affiche 60, vous savez qu'il y a un problème.</p>
+            
+            <h4>Une chose à la fois</h4>
+            <p>N'essayez pas de tout faire en même temps. Écrivez d'abord l'algorithme qui lit les valeurs et les affiche. Une fois que ça marche, ajoutez le calcul. Une fois que ça marche, ajoutez les conditions. Construisez progressivement.</p>
+            
+            <h3>Derniers conseils</h3>
+            
+            <div class="tip">
+                <p><strong>La pratique régulière :</strong> Faites un peu d'algorithmes chaque jour plutôt que beaucoup une fois par semaine. Même 15 minutes par jour sont plus efficaces que 2 heures le dimanche.</p>
+            </div>
+            
+            <div class="tip">
+                <p><strong>Ne copiez pas bêtement :</strong> Quand vous regardez un exemple, ne le copiez pas sans comprendre. Lisez chaque ligne, demandez-vous pourquoi elle est là, puis tapez-la en comprenant son rôle.</p>
+            </div>
+            
+            <div class="tip">
+                <p><strong>L'erreur est normale :</strong> Tous les programmeurs font des erreurs. Les débutants en font plus, c'est normal. Chaque erreur corrigée vous rend meilleur. Ne vous découragez pas.</p>
+            </div>
+            
+            <div class="tip">
+                <p><strong>Amusez-vous :</strong> Les algorithmes peuvent être créatifs et amusants. Créez un jeu de devinette, un calculateur d'IMC, un convertisseur de devises. Si vous vous amusez, vous apprendrez sans effort.</p>
+            </div>
+            
+            <h3>Prochaines étapes</h3>
+            <p>Une fois que vous maîtrisez bien AlgoFX, vous serez prêt à apprendre un vrai langage de programmation comme Python, JavaScript, ou Java. Vous verrez que la logique est exactement la même. Tout ce que vous apprenez maintenant avec AlgoFX vous servira pour toute votre vie de programmeur.</p>
+            
+            <p>Bon courage, et surtout, prenez plaisir à créer vos premiers algorithmes !</p>
+        </section>
+        
+        <footer style="margin-top: 60px; padding-top: 20px; border-top: 2px solid #3498db; text-align: center; color: #7f8c8d;">
+            <p>AlgoFX © 2026 – Guide créé pour vous aider à apprendre les algorithmes</p>
+        </footer>
+    </div>
+</body>
+</html>

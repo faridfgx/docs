@@ -253,7 +253,7 @@ function showBox() {
         div.className = "autocomplete-item" + (i === selectedIndex ? " active" : "");
 
         const label = typeof item === "string"
-            ? item.split("\n")[0] + (item.includes("\n") ? " ..." : "")
+            ? item.split("\n")[0] + (item.includes("\n") ? " " : "")
             : item.label;
 
         div.textContent = label;
