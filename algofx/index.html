@@ -7,7 +7,83 @@
 	<link rel="icon" type="image/png" href="files/fxlogo.png">
 	<link rel="apple-touch-icon" href="files/fxlogo.png">
     <link rel="stylesheet" href="files/afx.css">
+<style>
+/* ===== AUTOCOMPLETE BOX (BASE) ===== */
+#autocompleteBox {
+    position: absolute;
+    border-radius: 6px;
+    font-size: 13px;
+    z-index: 2000;
+    display: none;
+    min-width: 220px;
+    max-width: 350px;
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    pointer-events: auto;
+}
 
+/* Items */
+.autocomplete-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid;
+    transition: background 0.15s ease;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item.active {
+    font-weight: 500;
+}
+
+/* ===== LIGHT THEME ===== */
+html[data-theme="light"] #autocompleteBox {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+html[data-theme="light"] .autocomplete-item {
+    color: #000;
+    border-bottom-color: #eee;
+}
+
+html[data-theme="light"] .autocomplete-item:hover {
+    background: #f0f0f0;
+}
+
+html[data-theme="light"] .autocomplete-item.active {
+    background: #007acc;
+    color: #ffffff;
+}
+
+/* ===== DARK THEME ===== */
+html[data-theme="dark"] #autocompleteBox {
+    background: #1e1e1e;
+    border: 1px solid #404040;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+html[data-theme="dark"] .autocomplete-item {
+    color: #d4d4d4;
+    border-bottom-color: #2d2d30;
+}
+
+html[data-theme="dark"] .autocomplete-item:hover {
+    background: #2d2d30;
+}
+
+html[data-theme="dark"] .autocomplete-item.active {
+    background: #0e639c;
+    color: #ffffff;
+}
+
+/* ===== WRAPPER ===== */
+.editor-wrapper {
+    position: relative;
+}
+</style>
 </head>
 <body>
     <div class="container">
@@ -31,7 +107,8 @@
             <button class="menu-btn" onclick="fixIndentation()">Indenter</button>
             <button class="menu-btn" onclick="undo()">↶ Annuler</button>
             <button class="menu-btn" onclick="redo()">↷ Refaire</button>
-            
+            <label class="menu-checkbox">
+            <input type="checkbox" id="autoCompleteToggle" checked>Auto-complétion</label>
             <div class="menu-divider"></div>
             <button class="btn-step" onclick="runStepByStep()"> Pas à Pas</button>
             <button class="btn-step" onclick="nextStep()" id="nextStepBtn" disabled> Suivant</button>
@@ -63,7 +140,9 @@
 				<div class="code-area">
                     <div id="highlightLayer"></div>
                     <textarea id="codeEditor" spellcheck="false"></textarea>
+					
                 </div>
+				<div id="autocompleteBox" class="autocomplete-box"></div>
 				</div>
                 <div class="controls">
                     <button class="btn-check" onclick="checkSyntaxOnly()">⚙️ Compiler</button>
@@ -163,103 +242,25 @@
     <script src="files/afx.js"></script>
     <script src="files/stepsyntax.js"></script>
     <script src="files/LineNumberAutosave.js"></script>
-<script>
-function fixIndentation() {
-    const editor = document.getElementById("codeEditor");
-    const lines = editor.value.split("\n");
-
-    const indentSize = 4;
-    let indentLevel = 0;
-    let section = null; // "var", "const", "debut"
-    const result = [];
-
-    const alwaysLevelZero = [
-        /^algorithme\b/i,
-        /^var$/i,
-        /^const$/i,
-        /^debut$/i,
-        /^fin$/i
-    ];
-
-    const increaseAfter = [
-        /^si .* alors$/i,
-        /^pour .* faire$/i,
-        /^tantque .* faire$/i,
-        /^repeter$/i
-    ];
-
-    const decreaseBefore = [
-        /^finsi$/i,
-        /^finpour$/i,
-        /^fintantque$/i,
-        /^jusqua .*$/i,
-        /^sinon$/i
-    ];
-
-    for (let rawLine of lines) {
-        let line = rawLine.trim();
-
-        if (line === "") {
-            result.push("");
-            continue;
-        }
-
-        /* ===== LEVEL 0 KEYWORDS ===== */
-        if (/^algorithme\b/i.test(line)) {
-            section = null;
-            indentLevel = 0;
-            result.push(line);
-            continue;
-        }
-
-        if (/^var$/i.test(line)) {
-            section = "var";
-            indentLevel = 1;
-            result.push(line);
-            continue;
-        }
-
-        if (/^const$/i.test(line)) {
-            section = "const";
-            indentLevel = 1;
-            result.push(line);
-            continue;
-        }
-
-        if (/^debut$/i.test(line)) {
-            section = "debut";
-            indentLevel = 1;
-            result.push(line);
-            continue;
-        }
-
-        if (/^fin$/i.test(line)) {
-            section = null;
-            indentLevel = 0;
-            result.push(line);
-            continue;
-        }
-
-        /* ===== CONTROL STRUCTURE CLOSING ===== */
-        if (decreaseBefore.some(rx => rx.test(line))) {
-            indentLevel = Math.max(indentLevel - 1, 1);
-        }
-
-        result.push(" ".repeat(indentLevel * indentSize) + line);
-
-        /* ===== CONTROL STRUCTURE OPENING ===== */
-        if (
-            increaseAfter.some(rx => rx.test(line)) ||
-            /^sinon$/i.test(line)
-        ) {
-            indentLevel++;
+    <script src="files/indentation.js"></script>
+	<script src="files/autocomplete.js"></script>
+	<script>
+	if (!document.documentElement.hasAttribute('data-theme')) {
+    document.documentElement.setAttribute('data-theme', 'light');
+}
+	// Fix autocomplete box placement on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const autoBox = document.getElementById('autocompleteBox');
+    const editorWrapper = document.querySelector('.editor-wrapper');
+    
+    if (autoBox && editorWrapper) {
+        // Remove from wrong location if present
+        if (autoBox.parentElement !== editorWrapper) {
+            autoBox.remove();
+            editorWrapper.appendChild(autoBox);
         }
     }
-
-    editor.value = result.join("\n");
-    editor.dispatchEvent(new Event("input"));
-}
-
-</script>
+});
+	</script>
 </body>
 </html>

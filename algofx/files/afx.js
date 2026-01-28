@@ -479,17 +479,37 @@ function parseValue(value, expectedType = null) {
 function evaluateExpression(expr) {
     expr = String(expr).trim();
     
+    // Handle string literals FIRST - extract and protect them
+    const stringLiterals = [];
+    let stringIndex = 0;
+    
+    // Replace all string literals with placeholders
+    expr = expr.replace(/"[^"]*"/g, (match) => {
+        const placeholder = `__STRING_${stringIndex}__`;
+        stringLiterals.push({ placeholder, value: match.slice(1, -1) });
+        stringIndex++;
+        return `"${placeholder}"`;
+    });
+    
+    expr = expr.replace(/'[^']*'/g, (match) => {
+        const placeholder = `__STRING_${stringIndex}__`;
+        stringLiterals.push({ placeholder, value: match.slice(1, -1) });
+        stringIndex++;
+        return `"${placeholder}"`;
+    });
+    
     // Replace boolean keywords
     expr = expr.replace(/\bvrai\b/g, 'true');
     expr = expr.replace(/\bfaux\b/g, 'false');
     
-    // Extract all variable names from expression
+    // Extract all variable names from expression (now strings are protected)
     const varPattern = /\b([a-z_][a-z0-9_]*)\b/gi;
     const matches = expr.match(varPattern);
     
     if (matches) {
         const uniqueVars = [...new Set(matches.filter(v => 
-            !['true', 'false', 'et', 'ou', 'non', 'mod', 'div', 'puissance', 'racine'].includes(v.toLowerCase())
+            !['true', 'false', 'et', 'ou', 'non', 'mod', 'div', 'puissance', 'racine'].includes(v.toLowerCase()) &&
+            !v.startsWith('__STRING_')
         ))];
         
         // Check all variables are declared
@@ -516,6 +536,11 @@ function evaluateExpression(expr) {
     expr = expr.replace(/(\S+)\s+div\s+(\S+)/g, 'Math.floor($1/$2)');
     expr = expr.replace(/\bpuissance\b/g, '**');
     expr = expr.replace(/racine\s*\(/g, 'Math.sqrt(');
+    
+    // Restore string literals
+    for (let { placeholder, value } of stringLiterals) {
+        expr = expr.replace(new RegExp(`"${placeholder}"`, 'g'), JSON.stringify(value));
+    }
     
     try {
         return eval(expr);
