@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Basic -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AlgoFX – Exécuteur d’Algorithmes Éducatif</title>
-
-    <!-- SEO -->
+    <link rel="manifest" href="manifest.json">
+	
     <meta name="description" content="AlgoFX est un exécuteur d’algorithmes éducatif pour élèves et enseignants. Écriture, exécution pas à pas, suivi des variables et auto-complétion intelligente.">
     <meta name="keywords" content="AlgoFX, algorithmes, algorithmique, pseudo-code, informatique scolaire, apprentissage, éducation">
     <meta name="author" content="Farid Mezane">
     <meta name="robots" content="index, follow">
     <meta name="language" content="fr">
-
-    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="AlgoFX – Exécuteur d’Algorithmes Éducatif">
     <meta property="og:description" content="Apprenez les algorithmes pas à pas avec AlgoFX. Visualisation des variables, auto-complétion et exécution ligne par ligne.">
-    <meta property="og:image" content="https://csdocs.space/algofx/assets/og-image.png">
+	<meta property="og:image" content="https://csdocs.space/algofx/assets/og-image.png">
+	<meta property="og:image:secure_url" content="https://csdocs.space/algofx/assets/og-image.png">
+	<meta property="og:image:type" content="image/png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="AlgoFX – Exécuteur d’Algorithmes Éducatif">
     <meta property="og:url" content="https://csdocs.space/algofx">
     <meta property="og:site_name" content="AlgoFX">
+	<meta property="fb:app_id" content="000000000000000">
 
-    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AlgoFX – Exécuteur d’Algorithmes">
     <meta name="twitter:description" content="Outil pédagogique pour apprendre les algorithmes pas à pas.">
     <meta name="twitter:image" content="https://csdocs.space/algofx/assets/og-image.png">
 
-    <!-- App / Mobile -->
     <meta name="theme-color" content="#007acc">
     <meta name="application-name" content="AlgoFX">
     <meta name="apple-mobile-web-app-title" content="AlgoFX">
     <meta name="format-detection" content="telephone=no,email=no">
 
-    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="files/fxlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="files/fxlogo.png">
 
-    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -218,22 +218,31 @@
     <script src="files/indentation.js"></script>
 	<script src="files/autocomplete.js"></script>
 	<script>
-	if (!document.documentElement.hasAttribute('data-theme')) {
-    document.documentElement.setAttribute('data-theme', 'light');
-}
-	// Fix autocomplete box placement on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const autoBox = document.getElementById('autocompleteBox');
-    const editorWrapper = document.querySelector('.editor-wrapper');
-    
-    if (autoBox && editorWrapper) {
-        // Remove from wrong location if present
-        if (autoBox.parentElement !== editorWrapper) {
-            autoBox.remove();
-            editorWrapper.appendChild(autoBox);
-        }
-    }
-});
+			if (!document.documentElement.hasAttribute('data-theme')) {
+			document.documentElement.setAttribute('data-theme', 'light');
+		}
+			// Fix autocomplete box placement on page load
+		document.addEventListener('DOMContentLoaded', function() {
+			const autoBox = document.getElementById('autocompleteBox');
+			const editorWrapper = document.querySelector('.editor-wrapper');
+			
+			if (autoBox && editorWrapper) {
+				// Remove from wrong location if present
+				if (autoBox.parentElement !== editorWrapper) {
+					autoBox.remove();
+					editorWrapper.appendChild(autoBox);
+				}
+			}
+		});
+	</script>
+	<script>
+		if ('serviceWorker' in navigator) {
+		  window.addEventListener('load', () => {
+			navigator.serviceWorker.register('./service-worker.js')
+			  .then(reg => console.log('Service Worker registered:', reg.scope))
+			  .catch(err => console.error('Service Worker failed:', err));
+		  });
+		}
 	</script>
 </body>
 </html>
