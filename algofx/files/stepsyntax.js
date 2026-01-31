@@ -1,66 +1,3 @@
-/* ===============================
-   DOWNLOAD WARNING MODAL
-   =============================== */
-
-function downoff() {
-    const modal = document.getElementById("browserWarning");
-    if (!modal) return;
-    modal.classList.add("active");
-}
-
-function closeWarning() {
-    const modal = document.getElementById("browserWarning");
-    if (!modal) return;
-    modal.classList.remove("active");
-}
-
-function confirmDownload() {
-    closeWarning();
-
-    const link = document.createElement("a");
-    link.href = "AlgoFX.zip";   // adjust path if needed
-    link.download = "AlgoFX.zip";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-/* ===============================
-   THEME TOGGLE (LIGHT / DARK)
-   =============================== */
-
-function toggleTheme() {
-    const root = document.documentElement;
-    const themeIcon = document.getElementById("themeIcon");
-    if (!themeIcon) return;
-
-    const currentTheme = root.getAttribute("data-theme") || "dark";
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
-    root.setAttribute("data-theme", nextTheme);
-    themeIcon.textContent = nextTheme === "light" ? "☀️" : "🌙";
-    localStorage.setItem("theme", nextTheme);
-}
-
-/* ===============================
-   LOAD SAVED THEME (EARLY)
-   =============================== */
-
-(function loadTheme() {
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    const root = document.documentElement;
-
-    root.setAttribute("data-theme", savedTheme);
-
-    // Update icon after DOM is ready
-    document.addEventListener("DOMContentLoaded", () => {
-        const themeIcon = document.getElementById("themeIcon");
-        if (themeIcon) {
-            themeIcon.textContent = savedTheme === "light" ? "☀️" : "🌙";
-        }
-    });
-})();
-
 function showStepUI() {
     document.getElementById('variablePanel').style.display = 'block';
     document.getElementById('nextStepBtn').style.display = 'inline-block';
@@ -210,6 +147,14 @@ async function executeLines(lines, start, end) {
     let i = start;
     
     while (i <= end) {
+        // Global step counter to prevent infinite loops across all contexts
+        globalSteps++;
+        if (globalSteps > MAX_STEPS) {
+            throw new Error(
+                `Exécution interrompue : boucle infinie probable (plus de ${MAX_STEPS} instructions)`
+            );
+        }
+        
         let line = lines[i].trim();
         
         if (!line || line.startsWith('//')) {
@@ -313,6 +258,14 @@ async function executeLines(lines, start, end) {
             const loopEnd = findBlockEnd(lines, i, 'tantque', 'fintantque');
             
             while (true) {
+                // Check global step count before each TantQue iteration
+                globalSteps++;
+                if (globalSteps > MAX_STEPS) {
+                    throw new Error(
+                        `Exécution interrompue : boucle infinie probable dans TantQue (plus de ${MAX_STEPS} instructions)`
+                    );
+                }
+                
                 const result = evaluateExpression(condition);
                 if (typeof result !== 'boolean') {
                     throw new Error(`La condition doit être booléenne, reçu: ${typeof result}`);
@@ -329,9 +282,9 @@ async function executeLines(lines, start, end) {
             
             i = loopEnd;
         }
-        // For loop
+        // For loop - UPDATED to support all syntax variations
         else if (line.startsWith('pour ')) {
-            const match = line.match(/pour\s+(\w+)\s+de\s+(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/);
+            const match = line.match(/pour\s+(\w+)\s*(?:de\s+|<-\s*)(.+?)\s+(?:allant\s+)?a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/);
             const varName = match[1];
             
             checkVariableDeclared(varName);
@@ -347,9 +300,30 @@ async function executeLines(lines, start, end) {
                 throw new Error(`Les bornes de boucle doivent être des entiers`);
             }
             
+            // Detect obvious infinite loop conditions
+            if (step === 0) {
+                throw new Error(`Boucle infinie détectée! Le pas d'incrémentation ne peut pas être 0 (ligne ${i + 1})`);
+            }
+            
+            if (step > 0 && start > end) {
+                throw new Error(`Boucle invalide: début (${start}) > fin (${end}) avec pas positif (${step}) (ligne ${i + 1})`);
+            }
+            
+            if (step < 0 && start < end) {
+                throw new Error(`Boucle invalide: début (${start}) < fin (${end}) avec pas négatif (${step}) (ligne ${i + 1})`);
+            }
+            
             const loopEnd = findBlockEnd(lines, i, 'pour', 'finpour');
             
             for (let val = start; step > 0 ? val <= end : val >= end; val += step) {
+                // Check global step count before each Pour iteration
+                globalSteps++;
+                if (globalSteps > MAX_STEPS) {
+                    throw new Error(
+                        `Exécution interrompue : boucle infinie probable dans Pour (plus de ${MAX_STEPS} instructions)`
+                    );
+                }
+                
                 variables[varName] = val;
                 try {
                     await executeLines(lines, i + 1, loopEnd - 1);
@@ -480,7 +454,7 @@ function checkSyntax(code) {
     const keywords = new Set([
         'algorithme', 'var', 'const', 'debut', 'fin', 'si', 'alors', 'sinon', 'finsi',
         'pour', 'de', 'a', 'pas', 'faire', 'finpour', 'tantque', 'fintantque',
-        'ecrire', 'lire', 'vrai', 'faux', 'et', 'ou', 'non', 'div', 'mod', 'racine', 'sortir'
+        'ecrire', 'lire', 'vrai', 'faux', 'et', 'ou', 'non', 'div', 'mod', 'racine', 'sortir', 'allant'
     ]);
     
     for (let i = 0; i < lines.length; i++) {
@@ -790,14 +764,14 @@ function checkSyntax(code) {
                 continue;
             }
             
-            // Check Pour loop
+            // Check Pour loop - UPDATED to support all syntax variations
             if (line.startsWith('pour ')) {
-                const pourMatch = line.match(/^pour\s+([a-z_][a-z0-9_]*)\s+de\s+(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire\s*$/i);
+                const pourMatch = line.match(/^pour\s+([a-z_][a-z0-9_]*)\s*(?:de\s+|<-\s*)(.+?)\s+(?:allant\s+)?a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire\s*$/i);
                 if (!pourMatch) {
                     return createError('INVALID_POUR', lineNum, line,
                         'Structure "Pour" invalide',
-                        'Format attendu: pour variable de debut a fin faire\nOU: pour variable de debut a fin pas increment faire',
-                        'pour i de 1 a 10 faire\n    ecrire(i);\nfinpour');
+                        'Formats attendus:\n- pour variable de debut a fin faire\n- pour variable <- debut a fin faire\n- pour variable de debut allant a fin faire\n- pour variable de debut a fin pas increment faire',
+                        'pour i de 1 a 10 faire\n    ecrire(i);\nfinpour\n\npour i <- 1 a 10 faire\n    ecrire(i);\nfinpour\n\npour i de 1 allant a 10 faire\n    ecrire(i);\nfinpour\n\npour i de 1 a 10 pas 2 faire\n    ecrire(i);\nfinpour');
                 }
                 // Track loop variable
                 const loopVar = pourMatch[1];

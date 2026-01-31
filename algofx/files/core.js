@@ -2,6 +2,8 @@
 let history = [];
 let historyIndex = -1;
 let isUndoRedo = false;
+let globalSteps = [];   // Used to store step-by-step execution if needed
+const MAX_STEPS = 1000; // Maximum allowed steps to prevent infinite loops
 
 // Variables for algorithm execution
 let variables = {};
@@ -669,37 +671,49 @@ async function executeLines(lines, start, end) {
             i = loopEnd;
         }
         // For loop
-        else if (line.startsWith('pour ')) {
-            const match = line.match(/pour\s+(\w+)\s+de\s+(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/);
-            const varName = match[1];
-            
-            checkVariableDeclared(varName);
-            if (variableTypes[varName] !== TYPES.ENTIER) {
-                throw new Error(`La variable de boucle '${varName}' doit être de type entier`);
-            }
-            
-            const start = evaluateExpression(match[2]);
-            const end = evaluateExpression(match[3]);
-            const step = match[4] ? evaluateExpression(match[4]) : 1;
-            
-            if (!Number.isInteger(start) || !Number.isInteger(end) || !Number.isInteger(step)) {
-                throw new Error(`Les bornes de boucle doivent être des entiers`);
-            }
-            
-            const loopEnd = findBlockEnd(lines, i, 'pour', 'finpour');
-            
-            for (let val = start; step > 0 ? val <= end : val >= end; val += step) {
-                variables[varName] = val;
-                try {
-                    await executeLines(lines, i + 1, loopEnd - 1);
-                } catch (e) {
-                    if (e.message === 'BREAK') break;
-                    throw e;
-                }
-            }
-            
-            i = loopEnd;
-        }
+		else if (line.toLowerCase().startsWith('pour ')) {
+			// Match the 4 allowed variants
+			const match = line.match(/pour\s+(\w+)\s*(?:<-|de)\s*(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/i);
+			if (!match) {
+				throw new Error(`Syntaxe invalide pour la boucle POUR (ligne ${i + 1}). Exemples valides: 
+					"pour i de 1 a n faire", 
+					"pour i de 1 a n pas x faire", 
+					"pour i <- 1 a n faire", 
+					"pour i <- 1 a n pas x faire"`);
+			}
+
+			const varName = match[1];
+			const startExpr = match[2];
+			const endExpr = match[3];
+			const stepExpr = match[4] ?? '1'; // Default step is 1
+
+			checkVariableDeclared(varName);
+			if (variableTypes[varName] !== TYPES.ENTIER) {
+				throw new Error(`La variable de boucle '${varName}' doit être de type entier`);
+			}
+
+			const start = evaluateExpression(startExpr);
+			const end = evaluateExpression(endExpr);
+			const step = evaluateExpression(stepExpr);
+
+			if (![start, end, step].every(Number.isInteger)) {
+				throw new Error(`Les bornes et le pas de la boucle doivent être des entiers`);
+			}
+
+			const loopEnd = findBlockEnd(lines, i, 'pour', 'finpour');
+
+			for (let val = start; step > 0 ? val <= end : val >= end; val += step) {
+				variables[varName] = val;
+				try {
+					await executeLines(lines, i + 1, loopEnd - 1);
+				} catch (e) {
+					if (e.message === 'BREAK') break;
+					throw e;
+				}
+			}
+
+			i = loopEnd; // Skip to end of loop
+		}
         // Break statement
         else if (line === 'sortir;') {
             throw new Error('BREAK');

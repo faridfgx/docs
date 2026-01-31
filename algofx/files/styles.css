@@ -1,4 +1,4 @@
-        /* ===== FONT ===== */
+/* ===== FONT ===== */
         @font-face {
             font-family: 'Cascadia';
             src: url('Cascadia.ttf') format('truetype');
@@ -30,6 +30,7 @@
             --accent-success: #10b981;
             --accent-danger: #ef4444;
             --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
 
             --scrollbar-thumb: #334155;
             --scrollbar-track: #020617;
@@ -54,6 +55,7 @@
             --accent-success: #10b981;
             --accent-danger: #ef4444;
             --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
 
             --scrollbar-thumb: #cbd5e1;
             --scrollbar-track: #f8fafc;
@@ -78,6 +80,7 @@
             --accent-success: #10b981;
             --accent-danger: #ef4444;
             --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
 
             --scrollbar-thumb: #334155;
             --scrollbar-track: #020617;
@@ -228,6 +231,96 @@
             display: none;
         }
 
+        /* ===== HAMBURGER MENU ===== */
+        .hamburger-menu {
+            position: relative;
+            display: none;
+        }
+
+        .hamburger-btn {
+            padding: 8px 12px;
+            background: var(--bg-editor);
+            border: 1px solid var(--border-soft);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+
+        .hamburger-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-main);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-soft);
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            min-width: 200px;
+            display: none;
+            z-index: 1000;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-soft);
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 13px;
+            color: var(--text-main);
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-editor);
+        }
+
+        .dropdown-item:active {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-soft);
+            margin: 4px 0;
+        }
+
         /* ===== LAYOUT ===== */
         .main-content {
             display: grid;
@@ -259,6 +352,16 @@
 :root {
 --editor-lines: 12;
 --editor-line-height: 22.4px;
+}
+/* Desktop view - 17 lines */
+@media (min-width: 721px) {
+    :root {
+        --editor-lines: 17;
+    }
+	.autosave-indicator {
+		bottom: +480px;
+
+    }
 }
 /* ===== EDITOR WITH LINE NUMBERS ===== */
 .editor-wrapper {
@@ -556,8 +659,8 @@ box-sizing: border-box;
             color: white;
         }
 
-        .btn-run:hover {
-            background: #059669;
+        .btn-check:hover {
+            background: #7a7a7a;
         }
         .btn-clear {
             background: var(--accent-danger);
@@ -608,7 +711,50 @@ box-sizing: border-box;
             #highlightLayer {
                 min-height: 260px;
             }
+
+            /* Show hamburger menu on mobile */
+            .hamburger-menu {
+                display: block;
+            }
+            
+            /* Hide secondary buttons on mobile */
+            .menu-btn.secondary,
+            .menu-select.secondary,
+            .menu-checkbox.secondary,
+            .menu-divider.secondary {
+                display: none !important;
+            }
+
+            /* Compact step buttons on mobile */
+            .btn-step {
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            /* Stack menu bar items better */
+            .menu-bar {
+                gap: 6px;
+            }
         }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .menu-btn {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+
+            .btn-step {
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            .theme-toggle {
+                padding: 5px 8px;
+                font-size: 14px;
+            }
+        }
+
 .browser-warning {
     position: fixed;
     inset: 0;
@@ -625,7 +771,7 @@ box-sizing: border-box;
 }
 
 .warning-box {
-    background: var(--bg-panel);         /* CHANGED */
+    background: var(--bg-panel);
     border: 1px solid var(--border-soft);
     border-radius: 10px;
     padding: 24px;
@@ -658,7 +804,7 @@ box-sizing: border-box;
 }
 
 .btn-cancel {
-    background: var(--bg-editor);        /* CHANGED */
+    background: var(--bg-editor);
     border: 1px solid var(--border-soft);
     color: var(--text-main);
 }
@@ -674,7 +820,7 @@ box-sizing: border-box;
 }
 
 [data-theme="light"] .warning-box h3 {
-    color: #d97706; /* warning amber */
+    color: #d97706;
 }
 
 [data-theme="light"] .warning-box p {
@@ -713,11 +859,10 @@ box-sizing: border-box;
 
 /* ===== VARIABLE PANEL ===== */
 .variable-panel {
-margin-top: 12px; /* existing */
-margin-bottom: 12px; /* exterior space below */
-margin-left: 12px; /* exterior space on the left */
+margin-top: 12px;
+margin-bottom: 12px;
+margin-left: 12px;
 margin-right: 12px;
-    margin-top: 14px;
     background: var(--bg-output);
     border: 1px solid var(--border-soft);
     border-radius: 8px;
@@ -796,7 +941,7 @@ margin-right: 12px;
 @media (min-width: 600px) {
     #variableList {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* EXACTLY 2 COLUMNS */
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
 }
@@ -838,17 +983,6 @@ margin-right: 12px;
 
         .modal-box.success {
             border-color: var(--accent-success);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
         }
 
         .modal-header {
@@ -991,10 +1125,9 @@ margin-right: 12px;
         }
 
         .modal-btn {
-            padding: 8px 20px;
-            
+            padding: 12px 30px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -1063,11 +1196,10 @@ margin-right: 12px;
             border-color: #e2e8f0;
         }
 		[data-theme="light"] .modal-btn.error {
-		background: #fee2e2; /* soft red */
+		background: #fee2e2;
 		border-color: #fca5a5;
 		color: #7f1d1d;
 		}
-
 
 		[data-theme="light"] .modal-btn.error:hover {
 		background: #fecaca;
@@ -1083,8 +1215,6 @@ gap: 8px;
 		AlgoFX Auto-Save – Refined Theme
 		============================================ */
 
-
-		/* Restore notification banner */
 		.autosave-banner {
 		background: var(--bg-editor, #f9fafb);
 		color: var(--text-primary, #1f2937);
@@ -1097,21 +1227,16 @@ gap: 8px;
 		z-index: 100;
 		}
 
-
-		/* Banner content */
 		.banner-content {
 		display: flex;
 		align-items: center;
 		gap: 16px;
 		}
 
-
-		/* Actions */
 		.banner-actions {
 		display: flex;
 		gap: 8px;
 		}
-
 
 		.banner-btn {
 		padding: 4px 12px;
@@ -1122,32 +1247,25 @@ gap: 8px;
 		transition: background-color 0.15s ease, border-color 0.15s ease;
 		}
 
-
-		/* Restore = primary but subtle */
 		.btn-restore {
 		background: #2563eb;
 		color: white;
 		border-color: #2563eb;
 		}
 
-
 		.btn-restore:hover {
 		background: #1d4ed8;
 		}
 
-
-		/* Ignore = quiet action */
 		.btn-ignore {
 		background: transparent;
 		color: #6b7280;
 		border-color: #d1d5db;
 		}
 
-
 		.btn-ignore:hover {
 		background: #f3f4f6;
 		}
-
 
 		/* ============================================
 		Auto-save status indicator (IDE-style)
@@ -1164,13 +1282,10 @@ gap: 8px;
 		font-family: inherit;
 		}
 
-
-		/* Controls container */
 		.controls {
 		position: relative;
 		padding-bottom: 24px;
 		}
-
 
 		/* ============================================
 		Dark Theme
@@ -1193,7 +1308,6 @@ gap: 8px;
     pointer-events: auto;
 }
 
-/* Items */
 .autocomplete-item {
     padding: 8px 12px;
     cursor: pointer;
@@ -1251,7 +1365,37 @@ html[data-theme="dark"] .autocomplete-item.active {
     color: #ffffff;
 }
 
-/* ===== WRAPPER ===== */
 .editor-wrapper {
     position: relative;
+}
+@media (min-width: 721px) {
+	.autosave-indicator {
+		bottom: +465px;
+    }
+}
+
+/* ===== MENU CHECKBOX ===== */
+.menu-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: var(--bg-editor);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-main);
+}
+
+.menu-checkbox:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-main);
+}
+
+.menu-checkbox input[type="checkbox"] {
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
 }

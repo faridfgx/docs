@@ -5,29 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AlgoFX – Exécuteur d’Algorithmes Éducatif</title>
+    <title>AlgoFX – Exécuteur d'Algorithmes Éducatif</title>
     <link rel="manifest" href="manifest.json">
 	
-    <meta name="description" content="AlgoFX est un exécuteur d’algorithmes éducatif pour élèves et enseignants. Écriture, exécution pas à pas, suivi des variables et auto-complétion intelligente.">
+    <meta name="description" content="AlgoFX est un exécuteur d'algorithmes éducatif pour élèves et enseignants. Écriture, exécution pas à pas, suivi des variables et auto-complétion intelligente.">
     <meta name="keywords" content="AlgoFX, algorithmes, algorithmique, pseudo-code, informatique scolaire, apprentissage, éducation">
     <meta name="author" content="Farid Mezane">
     <meta name="robots" content="index, follow">
     <meta name="language" content="fr">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="AlgoFX – Exécuteur d’Algorithmes Éducatif">
+    <meta property="og:title" content="AlgoFX – Exécuteur d'Algorithmes Éducatif">
     <meta property="og:description" content="Apprenez les algorithmes pas à pas avec AlgoFX. Visualisation des variables, auto-complétion et exécution ligne par ligne.">
 	<meta property="og:image" content="https://csdocs.space/algofx/assets/og-image.png">
 	<meta property="og:image:secure_url" content="https://csdocs.space/algofx/assets/og-image.png">
 	<meta property="og:image:type" content="image/png">
 	<meta property="og:image:width" content="1200">
 	<meta property="og:image:height" content="630">
-	<meta property="og:image:alt" content="AlgoFX – Exécuteur d’Algorithmes Éducatif">
+	<meta property="og:image:alt" content="AlgoFX – Exécuteur d'Algorithmes Éducatif">
     <meta property="og:url" content="https://csdocs.space/algofx">
     <meta property="og:site_name" content="AlgoFX">
 	<meta property="fb:app_id" content="000000000000000">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AlgoFX – Exécuteur d’Algorithmes">
+    <meta name="twitter:title" content="AlgoFX – Exécuteur d'Algorithmes">
     <meta name="twitter:description" content="Outil pédagogique pour apprendre les algorithmes pas à pas.">
     <meta name="twitter:image" content="https://csdocs.space/algofx/assets/og-image.png">
 
@@ -46,7 +46,7 @@
       "name": "AlgoFX",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web, Android",
-      "description": "Exécuteur d’algorithmes éducatif avec exécution pas à pas et visualisation des variables.",
+      "description": "Exécuteur d'algorithmes éducatif avec exécution pas à pas et visualisation des variables.",
       "author": {
         "@type": "Person",
         "name": "Farid Mezane"
@@ -56,7 +56,115 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="files/styles.css">
+	<link rel="stylesheet" href="files/error-highlighting.css">
+<style>
+/* Download buttons inside modal */
+.download-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
 
+/* Same width & behavior as Firefox buttons */
+.download-options .download-option {
+    width: 100%;
+    max-width: 320px;   /* same visual size as Firefox buttons */
+    text-align: center;
+    padding: 12px 16px;
+    line-height: 1.3;
+}
+
+/* Small text under icon */
+.download-options .download-option small {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.85;
+    margin-top: 4px;
+}
+
+/* ===== HAMBURGER MENU ===== */
+.hamburger-menu {
+    position: relative;
+    display: none; /* Hidden on desktop */
+}
+
+.hamburger-btn {
+    padding: 8px 12px;
+    background: var(--bg-editor);
+    border: 1px solid var(--border-soft);
+    color: var(--text-main);
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hamburger-btn:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-main);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-soft);
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 13px;
+    color: var(--text-main);
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-editor);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border-soft);
+    margin: 4px 0;
+}
+
+/* Hide secondary buttons on mobile */
+@media (max-width: 720px) {
+    .hamburger-menu {
+        display: block;
+    }
+    
+    .menu-btn.secondary,
+    .menu-divider.secondary {
+        display: none !important;
+    }
+}
+</style>
 </head>
 <body>
     <div class="container">
@@ -71,37 +179,66 @@
         </div>
 
         <div class="menu-bar">
+            <!-- Primary buttons (always visible) -->
             <button class="menu-btn" onclick="newFile()">📄 Nouveau</button>
             <button class="menu-btn" onclick="document.getElementById('fileInput').click()">📂 Ouvrir</button>
             <button class="menu-btn" onclick="saveFile()">💾 Sauvegarder</button>
             <input type="file" id="fileInput" accept=".algo" onchange="openFile(event)">
             
             <div class="menu-divider"></div>
-            <button class="menu-btn" onclick="fixIndentation()">Indenter</button>
-            <button class="menu-btn" onclick="undo()">↶ Annuler</button>
-            <button class="menu-btn" onclick="redo()">↷ Refaire</button>
-            <label class="menu-checkbox">
-            <input type="checkbox" id="autoCompleteToggle" checked>Auto-complétion</label>
-            <div class="menu-divider"></div>
-            <button class="btn-step" onclick="runStepByStep()"> Pas à Pas</button>
-            <button class="btn-step" onclick="nextStep()" id="nextStepBtn" disabled> Suivant</button>
-            <button class="btn-step" onclick="stopStepExecution()" id="stopStepBtn" disabled> Arrêter</button>
-	        <div class="menu-divider"></div>
-            <select class="menu-select" id="templateSelect" onchange="loadTemplate()">
+            
+            <!-- Step buttons (always visible) -->
+            <button class="btn-step" onclick="runStepByStep()">▶ Pas à Pas</button>
+            <button class="btn-step" onclick="nextStep()" id="nextStepBtn" disabled>➜ Suivant</button>
+            <button class="btn-step" onclick="stopStepExecution()" id="stopStepBtn" disabled>⏹ Arrêter</button>
+            
+            <!-- Secondary buttons (hidden on mobile) -->
+            <div class="menu-divider secondary"></div>
+            <button class="menu-btn secondary" onclick="fixIndentation()">↹ Indenter</button>
+            <button class="menu-btn secondary" onclick="undo()">↶ Annuler</button>
+            <button class="menu-btn secondary" onclick="redo()">↷ Refaire</button>
+            
+            <div class="menu-divider secondary"></div>
+            <label class="menu-checkbox secondary">
+                <input type="checkbox" id="autoCompleteToggle" checked>Auto-complétion
+            </label>
+            
+            <div class="menu-divider secondary"></div>
+            <select class="menu-select secondary" id="templateSelect" onchange="loadTemplate()">
                 <option value="">📚 Exemples</option>
             </select>
-            <button class="menu-btn" onclick="downoff()">Download</button>
-            <button class="menu-btn" onclick="window.open('aide.html', '_blank')">📖 Aide</button>
+            <button class="menu-btn secondary" onclick="downoff()">⬇ Download</button>
+            <button class="menu-btn secondary" onclick="window.open('aide.html', '_blank')">📖 Aide</button>
+            
+            <!-- Theme toggle (always visible) -->
             <button class="theme-toggle" onclick="toggleTheme()" title="Changer le thème">
                 <span id="themeIcon">🌙</span>
             </button>
+            
+            <!-- Hamburger menu (mobile only) -->
+            <div class="hamburger-menu">
+                <button class="hamburger-btn" onclick="toggleDropdown()">☰</button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-item" onclick="fixIndentation(); closeDropdown()">↹ Indenter</button>
+                    <button class="dropdown-item" onclick="undo(); closeDropdown()">↶ Annuler</button>
+                    <button class="dropdown-item" onclick="redo(); closeDropdown()">↷ Refaire</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="toggleAutoComplete(); closeDropdown()">
+                        ✓ Auto-complétion
+                    </button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="openTemplateModal(); closeDropdown()"> Exemples</button>
+                    <button class="dropdown-item" onclick="downoff(); closeDropdown()">⬇ Download</button>
+                    <button class="dropdown-item" onclick="window.open('aide.html', '_blank'); closeDropdown()">📖 Aide</button>
+                </div>
+            </div>
         </div>
 
         <!-- Auto-save banner will be inserted here dynamically -->
 
         <!-- Add variable visualizer panel -->
         <div id="variablePanel" class="variable-panel">
-            <div class="panel-title"> Variables</div>
+            <div class="panel-title">📊 Variables</div>
             <div id="variableList"></div>
         </div>
 
@@ -109,6 +246,7 @@
             <div class="editor-section">
                 <div class="section-title">✏️ Éditeur d'Algorithme</div>
                 <div class="editor-wrapper">
+				<div class="error-indicators" id="errorIndicators"></div>
 				<div id="lineNumbers">1</div>
 				<div class="code-area">
                     <div id="highlightLayer"></div>
@@ -161,8 +299,32 @@
                 Les anciens navigateurs ne sont pas pris en charge.
             </p>
 
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+
+            <p style="text-align: center; margin: 15px 0;">
+                <strong>Télécharger AlgoFX / تحميل AlgoFX</strong>
+            </p>
+
+            <!-- Download options -->
+            <div class="download-options">
+                <button class="menu-btn btn-run download-option" onclick="downloadWindows()" >
+                    💻 Windows<br>
+                    <small>Nécessite un navigateur moderne </small>
+                </button>
+                <button class="menu-btn btn-run download-option" onclick="installPWA()" >
+                    🌐 Installer PWA<br>
+                    <small>Application web / تطبيق ويب</small>
+                </button>
+                <button class="menu-btn btn-run download-option" onclick="downloadAndroid()" >
+                    📱 Android APK<br>
+                    <small>Télécharger et installer / تحميل وتثبيت</small>
+                </button>
+
+
+            </div>
+
             <!-- Firefox download links -->
-            <div class="firefox-downloads">
+            <div class="firefox-downloads" style="text-align: center; margin: 15px 0;">
                 <p><strong>Mozilla Firefox :</strong></p>
 
                 <a class="menu-btn btn-run"
@@ -178,13 +340,10 @@
                 </a>
             </div>
 
-            <!-- Existing actions -->
+            <!-- Cancel button -->
             <div class="warning-actions">
                 <button class="menu-btn btn-cancel" onclick="closeWarning()">
                 Annuler / إلغاء
-                </button>
-                <button class="menu-btn btn-run" onclick="confirmDownload()">
-                Continuer / متابعة
                 </button>
             </div>
         </div>
@@ -211,6 +370,27 @@
         </div>
     </div>
 
+    <!-- Template Selection Modal (for mobile) -->
+    <div id="templateModal" class="syntax-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-icon">📚</span>
+                    <h3>Exemples</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeTemplateModal()">×</button>
+            </div>
+            
+            <div class="modal-content" style="max-height: 60vh; overflow-y: auto;">
+                <div id="templateList"></div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeTemplateModal()">Annuler</button>
+            </div>
+        </div>
+    </div>
+
     <script src="files/templates.js"></script>
     <script src="files/core.js"></script>
     <script src="files/stepsyntax.js"></script>
@@ -218,10 +398,11 @@
     <script src="files/indentation.js"></script>
 	<script src="files/autocomplete.js"></script>
 	<script>
-			if (!document.documentElement.hasAttribute('data-theme')) {
+		if (!document.documentElement.hasAttribute('data-theme')) {
 			document.documentElement.setAttribute('data-theme', 'light');
 		}
-			// Fix autocomplete box placement on page load
+		
+		// Fix autocomplete box placement on page load
 		document.addEventListener('DOMContentLoaded', function() {
 			const autoBox = document.getElementById('autocompleteBox');
 			const editorWrapper = document.querySelector('.editor-wrapper');
@@ -233,9 +414,202 @@
 					editorWrapper.appendChild(autoBox);
 				}
 			}
+			
+			// Populate template modal on mobile
+			populateTemplateModal();
 		});
-	</script>
-	<script>
+
+/* ===============================
+   HAMBURGER MENU FUNCTIONS
+   =============================== */
+
+function toggleDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.classList.toggle('active');
+}
+
+function closeDropdown() {
+    const dropdown = document.getElementById('dropdownMenu');
+    dropdown.classList.remove('active');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const dropdown = document.getElementById('dropdownMenu');
+    
+    if (hamburgerMenu && !hamburgerMenu.contains(event.target)) {
+        dropdown.classList.remove('active');
+    }
+});
+
+function toggleAutoComplete() {
+    const checkbox = document.getElementById('autoCompleteToggle');
+    checkbox.checked = !checkbox.checked;
+    // Trigger any autocomplete toggle handler if exists
+    if (typeof window.onAutoCompleteToggle === 'function') {
+        window.onAutoCompleteToggle();
+    }
+}
+
+/* ===============================
+   TEMPLATE MODAL FOR MOBILE
+   =============================== */
+
+function populateTemplateModal() {
+    const templateSelect = document.getElementById('templateSelect');
+    const templateList = document.getElementById('templateList');
+    
+    if (!templateSelect || !templateList) return;
+    
+    // Clear existing content
+    templateList.innerHTML = '';
+    
+    // Get all options from the select (skip the first placeholder)
+    const options = Array.from(templateSelect.options).slice(1);
+    
+    options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'dropdown-item';
+        btn.textContent = option.text;
+        btn.onclick = function() {
+            templateSelect.selectedIndex = index + 1;
+            loadTemplate();
+            closeTemplateModal();
+        };
+        templateList.appendChild(btn);
+    });
+}
+
+function openTemplateModal() {
+    const modal = document.getElementById('templateModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+}
+
+function closeTemplateModal() {
+    const modal = document.getElementById('templateModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+/* ===============================
+   DOWNLOAD WARNING MODAL
+   =============================== */
+
+function downoff() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.add("active");
+}
+
+function closeWarning() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.remove("active");
+}
+
+function downloadWindows() {
+    closeWarning();
+    
+    const link = document.createElement("a");
+    link.href = "AlgoFX.zip";
+    link.download = "AlgoFX.zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function downloadAndroid() {
+    closeWarning();
+    
+    const link = document.createElement("a");
+    link.href = "AlgoFX.apk";
+    link.download = "AlgoFX.apk";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+/* ===============================
+   PWA INSTALLATION
+   =============================== */
+
+let deferredPrompt;
+
+// Capture the install prompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('PWA install prompt ready');
+});
+
+function installPWA() {
+    if (deferredPrompt) {
+        // Show the install prompt
+        deferredPrompt.prompt();
+        
+        // Wait for user response
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('PWA installed successfully');
+                closeWarning();
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        // Fallback: show manual instructions
+        alert(
+            "Pour installer AlgoFX comme application :\n\n" +
+            "Chrome/Edge :\n" +
+            "1. Menu (⋮) → Installer AlgoFX\n" +
+            "2. Ou Ajouter à l'écran d'accueil\n\n" +
+            "لتثبيت AlgoFX كتطبيق:\n\n" +
+            "Chrome/Edge:\n" +
+            "١. القائمة (⋮) ← تثبيت AlgoFX\n" +
+            "٢. أو إضافة إلى الشاشة الرئيسية"
+        );
+    }
+}
+
+/* ===============================
+   THEME TOGGLE (LIGHT / DARK)
+   =============================== */
+
+function toggleTheme() {
+    const root = document.documentElement;
+    const themeIcon = document.getElementById("themeIcon");
+    if (!themeIcon) return;
+
+    const currentTheme = root.getAttribute("data-theme") || "dark";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    root.setAttribute("data-theme", nextTheme);
+    themeIcon.textContent = nextTheme === "light" ? "☀️" : "🌙";
+    localStorage.setItem("theme", nextTheme);
+}
+
+/* ===============================
+   LOAD SAVED THEME (EARLY)
+   =============================== */
+
+(function loadTheme() {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const root = document.documentElement;
+
+    root.setAttribute("data-theme", savedTheme);
+
+    // Update icon after DOM is ready
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeIcon = document.getElementById("themeIcon");
+        if (themeIcon) {
+            themeIcon.textContent = savedTheme === "light" ? "☀️" : "🌙";
+        }
+    });
+})();
+
 		if ('serviceWorker' in navigator) {
 		  window.addEventListener('load', () => {
 			navigator.serviceWorker.register('./service-worker.js')
@@ -244,5 +618,6 @@
 		  });
 		}
 	</script>
+<script src="files/error-highlighting.js">
 </body>
 </html>
