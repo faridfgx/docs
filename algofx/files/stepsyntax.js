@@ -1,3 +1,66 @@
+/* ===============================
+   DOWNLOAD WARNING MODAL
+   =============================== */
+
+function downoff() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.add("active");
+}
+
+function closeWarning() {
+    const modal = document.getElementById("browserWarning");
+    if (!modal) return;
+    modal.classList.remove("active");
+}
+
+function confirmDownload() {
+    closeWarning();
+
+    const link = document.createElement("a");
+    link.href = "AlgoFX.zip";   // adjust path if needed
+    link.download = "AlgoFX.zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+/* ===============================
+   THEME TOGGLE (LIGHT / DARK)
+   =============================== */
+
+function toggleTheme() {
+    const root = document.documentElement;
+    const themeIcon = document.getElementById("themeIcon");
+    if (!themeIcon) return;
+
+    const currentTheme = root.getAttribute("data-theme") || "dark";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+    root.setAttribute("data-theme", nextTheme);
+    themeIcon.textContent = nextTheme === "light" ? "☀️" : "🌙";
+    localStorage.setItem("theme", nextTheme);
+}
+
+/* ===============================
+   LOAD SAVED THEME (EARLY)
+   =============================== */
+
+(function loadTheme() {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const root = document.documentElement;
+
+    root.setAttribute("data-theme", savedTheme);
+
+    // Update icon after DOM is ready
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeIcon = document.getElementById("themeIcon");
+        if (themeIcon) {
+            themeIcon.textContent = savedTheme === "light" ? "☀️" : "🌙";
+        }
+    });
+})();
+
 function showStepUI() {
     document.getElementById('variablePanel').style.display = 'block';
     document.getElementById('nextStepBtn').style.display = 'inline-block';
@@ -147,14 +210,6 @@ async function executeLines(lines, start, end) {
     let i = start;
     
     while (i <= end) {
-        // Global step counter to prevent infinite loops across all contexts
-        globalSteps++;
-        if (globalSteps > MAX_STEPS) {
-            throw new Error(
-                `Exécution interrompue : boucle infinie probable (plus de ${MAX_STEPS} instructions)`
-            );
-        }
-        
         let line = lines[i].trim();
         
         if (!line || line.startsWith('//')) {
@@ -258,14 +313,6 @@ async function executeLines(lines, start, end) {
             const loopEnd = findBlockEnd(lines, i, 'tantque', 'fintantque');
             
             while (true) {
-                // Check global step count before each TantQue iteration
-                globalSteps++;
-                if (globalSteps > MAX_STEPS) {
-                    throw new Error(
-                        `Exécution interrompue : boucle infinie probable dans TantQue (plus de ${MAX_STEPS} instructions)`
-                    );
-                }
-                
                 const result = evaluateExpression(condition);
                 if (typeof result !== 'boolean') {
                     throw new Error(`La condition doit être booléenne, reçu: ${typeof result}`);
@@ -282,9 +329,9 @@ async function executeLines(lines, start, end) {
             
             i = loopEnd;
         }
-        // For loop - UPDATED to support all syntax variations
+        // For loop
         else if (line.startsWith('pour ')) {
-            const match = line.match(/pour\s+(\w+)\s*(?:de\s+|<-\s*)(.+?)\s+(?:allant\s+)?a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/);
+            const match = line.match(/pour\s+(\w+)\s+de\s+(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire/);
             const varName = match[1];
             
             checkVariableDeclared(varName);
@@ -300,30 +347,9 @@ async function executeLines(lines, start, end) {
                 throw new Error(`Les bornes de boucle doivent être des entiers`);
             }
             
-            // Detect obvious infinite loop conditions
-            if (step === 0) {
-                throw new Error(`Boucle infinie détectée! Le pas d'incrémentation ne peut pas être 0 (ligne ${i + 1})`);
-            }
-            
-            if (step > 0 && start > end) {
-                throw new Error(`Boucle invalide: début (${start}) > fin (${end}) avec pas positif (${step}) (ligne ${i + 1})`);
-            }
-            
-            if (step < 0 && start < end) {
-                throw new Error(`Boucle invalide: début (${start}) < fin (${end}) avec pas négatif (${step}) (ligne ${i + 1})`);
-            }
-            
             const loopEnd = findBlockEnd(lines, i, 'pour', 'finpour');
             
             for (let val = start; step > 0 ? val <= end : val >= end; val += step) {
-                // Check global step count before each Pour iteration
-                globalSteps++;
-                if (globalSteps > MAX_STEPS) {
-                    throw new Error(
-                        `Exécution interrompue : boucle infinie probable dans Pour (plus de ${MAX_STEPS} instructions)`
-                    );
-                }
-                
                 variables[varName] = val;
                 try {
                     await executeLines(lines, i + 1, loopEnd - 1);
@@ -345,87 +371,20 @@ async function executeLines(lines, start, end) {
 }
 
 
-// Complete Enhanced Syntax Checker with Variable Declaration Checking
 
-// Helper function to preserve strings while lowercasing
-function lowercasePreservingStrings(code) {
-    const stringPattern = /"([^"]*)"/g;
-    const strings = [];
-    let index = 0;
-    
-    // Extract strings
-    const withPlaceholders = code.replace(stringPattern, (match) => {
-        strings.push(match);
-        return `__STRING_${index++}__`;
-    });
-    
-    // Lowercase everything
-    const lowercased = withPlaceholders.toLowerCase();
-    
-    // Restore strings
-    let result = lowercased;
-    for (let i = 0; i < strings.length; i++) {
-        result = result.replace(`__string_${i}__`, strings[i]);
-    }
-    
-    return result;
-}
 
-// Helper function to extract variable names from expressions
-function extractVariablesFromExpression(expression, lineNum, usedVars, keywords) {
-    // Remove string literals first to avoid false positives
-    const withoutStrings = expression.replace(/"[^"]*"/g, '');
-    
-    // Match potential variable names (alphanumeric + underscore, starting with letter or underscore)
-    const varPattern = /\b([a-z_][a-z0-9_]*)\b/gi;
-    let match;
-    
-    while ((match = varPattern.exec(withoutStrings)) !== null) {
-        const varName = match[1].toLowerCase();
-        
-        // Skip keywords and numbers
-        if (!keywords.has(varName) && !/^\d+$/.test(varName)) {
-            if (!usedVars.has(varName)) {
-                usedVars.set(varName, lineNum);
-            }
-        }
-    }
-}
+// Syntax Checker for Algorithm Language
 
-function createError(errorType, lineNumber, lineContent, title, description, example) {
-    return {
-        isValid: false,
-        error: {
-            type: errorType,
-            line: lineNumber,
-            content: lineContent,
-            title: title,
-            description: description,
-            example: example
-        }
-    };
-}
-
-function getBlockExample(blockType) {
-    const examples = {
-        'si': 'si condition alors\n    // code\nfinsi',
-        'pour': 'pour i de 1 a 10 faire\n    // code\nfinpour',
-        'tantque': 'tantque condition faire\n    // code\nfintantque'
-    };
-    return examples[blockType] || '';
-}
-
-// Main syntax checker function
 function checkSyntax(code) {
     const processedCode = lowercasePreservingStrings(code);
     const lines = processedCode.split('\n');
     
-    let hasVar = false;
-    let hasConst = false;
+	let hasVar = false;
+	let hasConst = false;
 
-    let justSawVar = false;
-    let justSawConst = false;
-    
+	let justSawVar = false;
+	let justSawConst = false;
+	
     // Track block structure
     const blockStack = [];
     let hasAlgorithme = false;
@@ -444,18 +403,8 @@ function checkSyntax(code) {
     const declaredVars = new Set();
     const declaredConsts = new Set();
     
-    // Track variable usage for undeclared variable checking
-    const usedVars = new Map(); // Map<varName, lineNumber>
-    
     // Valid types
     const validTypes = ['entier', 'reel', 'chaine', 'caractere', 'booleen', 'tableau'];
-    
-    // Keywords that should not be treated as variables
-    const keywords = new Set([
-        'algorithme', 'var', 'const', 'debut', 'fin', 'si', 'alors', 'sinon', 'finsi',
-        'pour', 'de', 'a', 'pas', 'faire', 'finpour', 'tantque', 'fintantque',
-        'ecrire', 'lire', 'vrai', 'faux', 'et', 'ou', 'non', 'div', 'mod', 'racine', 'sortir', 'allant'
-    ]);
     
     for (let i = 0; i < lines.length; i++) {
         const originalLine = lines[i];
@@ -487,42 +436,42 @@ function checkSyntax(code) {
         }
         
         // 2. Check for Var section
-        if (line === 'var') {
-            if (afterDebut) {
-                return createError('VAR_AFTER_DEBUT', lineNum, line,
-                    'Section "Var" après "Debut"',
-                    'La section "Var" doit être déclarée avant "Debut"',
-                    'Var\n    x: entier;\nDebut');
-            }
+		if (line === 'var') {
+			if (afterDebut) {
+				return createError('VAR_AFTER_DEBUT', lineNum, line,
+					'Section "Var" après "Debut"',
+					'La section "Var" doit être déclarée avant "Debut"',
+					'Var\n    x: entier;\nDebut');
+			}
 
-            hasVar = true;
-            inVar = true;
-            inConst = false;
-            currentSection = 'var';
+			hasVar = true;
+			inVar = true;
+			inConst = false;
+			currentSection = 'var';
 
-            justSawVar = true;
-            justSawConst = false;
-            continue;
-        }
+			justSawVar = true;
+			justSawConst = false;
+			continue;
+		}
         
         // 3. Check for Const section
-        if (line === 'const') {
-            if (afterDebut) {
-                return createError('CONST_AFTER_DEBUT', lineNum, line,
-                    'Section "Const" après "Debut"',
-                    'La section "Const" doit être déclarée avant "Debut"',
-                    'Const\n    PI = 3.14;\nDebut');
-            }
+		if (line === 'const') {
+			if (afterDebut) {
+				return createError('CONST_AFTER_DEBUT', lineNum, line,
+					'Section "Const" après "Debut"',
+					'La section "Const" doit être déclarée avant "Debut"',
+					'Const\n    PI = 3.14;\nDebut');
+			}
 
-            hasConst = true;
-            inConst = true;
-            inVar = false;
-            currentSection = 'const';
+			hasConst = true;
+			inConst = true;
+			inVar = false;
+			currentSection = 'const';
 
-            justSawConst = true;
-            justSawVar = false;
-            continue;
-        }
+			justSawConst = true;
+			justSawVar = false;
+			continue;
+		}
         
         // 4. Check for Debut
         if (line === 'debut') {
@@ -577,152 +526,152 @@ function checkSyntax(code) {
             continue;
         }
         
-        // 6. Check variable declarations (in Var section)
-        if (inVar && currentSection === 'var') {
-            const varMatch = line.match(
-                /^([a-z_][a-z0-9_]*(?:\s*,\s*[a-z_][a-z0-9_]*)*)\s*:\s*([a-z]+)\s*;?\s*$/i
-            );
+		// 6. Check variable declarations (in Var section)
+		if (inVar && currentSection === 'var') {
+			const varMatch = line.match(
+				/^([a-z_][a-z0-9_]*(?:\s*,\s*[a-z_][a-z0-9_]*)*)\s*:\s*([a-z]+)\s*;?\s*$/i
+			);
 
-            if (!varMatch) {
-                return createError(
-                    'INVALID_VAR_DECLARATION',
-                    lineNum,
-                    line,
-                    'Déclaration de variable invalide',
-                    'Format attendu: nomVariable: type;',
-                    'x, y: entier;\nnom: chaine;'
-                );
-            }
+			if (!varMatch) {
+				return createError(
+					'INVALID_VAR_DECLARATION',
+					lineNum,
+					line,
+					'Déclaration de variable invalide',
+					'Format attendu: nomVariable: type;',
+					'x, y: entier;\nnom: chaine;'
+				);
+			}
 
-            const varNames = varMatch[1].split(',').map(v => v.trim());
-            const varType = varMatch[2].toLowerCase();
+			const varNames = varMatch[1].split(',').map(v => v.trim());
+			const varType = varMatch[2].toLowerCase();
 
-            if (!validTypes.includes(varType)) {
-                return createError(
-                    'INVALID_TYPE',
-                    lineNum,
-                    line,
-                    `Type "${varType}" invalide`,
-                    `Types valides: ${validTypes.join(', ')}`,
-                    'x: entier;\ny: reel;\nnom: chaine;'
-                );
-            }
+			if (!validTypes.includes(varType)) {
+				return createError(
+					'INVALID_TYPE',
+					lineNum,
+					line,
+					`Type "${varType}" invalide`,
+					`Types valides: ${validTypes.join(', ')}`,
+					'x: entier;\ny: reel;\nnom: chaine;'
+				);
+			}
 
-            for (const varName of varNames) {
-                if (!/^[a-z_][a-z0-9_]*$/i.test(varName)) {
-                    return createError(
-                        'INVALID_VAR_NAME',
-                        lineNum,
-                        line,
-                        `Nom de variable "${varName}" invalide`,
-                        'Les noms doivent commencer par une lettre ou "_" et contenir uniquement lettres, chiffres et "_"',
-                        'maVariable: entier;\n_compteur: entier;'
-                    );
-                }
+			for (const varName of varNames) {
+				if (!/^[a-z_][a-z0-9_]*$/i.test(varName)) {
+					return createError(
+						'INVALID_VAR_NAME',
+						lineNum,
+						line,
+						`Nom de variable "${varName}" invalide`,
+						'Les noms doivent commencer par une lettre ou "_" et contenir uniquement lettres, chiffres et "_"',
+						'maVariable: entier;\n_compteur: entier;'
+					);
+				}
 
-                if (declaredVars.has(varName)) {
-                    return createError(
-                        'DUPLICATE_VARIABLE',
-                        lineNum,
-                        line,
-                        `Variable "${varName}" déjà déclarée`,
-                        'Une variable ne peut être déclarée qu\'une seule fois',
-                        'x: entier;'
-                    );
-                }
+				if (declaredVars.has(varName)) {
+					return createError(
+						'DUPLICATE_VARIABLE',
+						lineNum,
+						line,
+						`Variable "${varName}" déjà déclarée`,
+						'Une variable ne peut être déclarée qu\'une seule fois',
+						'x: entier;'
+					);
+				}
 
-                if (declaredConsts.has(varName)) {
-                    return createError(
-                        'VAR_CONST_CONFLICT',
-                        lineNum,
-                        line,
-                        `Conflit de nom avec la constante "${varName}"`,
-                        'Un identifiant ne peut pas être à la fois variable et constante',
-                        'Var\n    x: entier;\nConst\n    PI = 3.14;'
-                    );
-                }
+				if (declaredConsts.has(varName)) {
+					return createError(
+						'VAR_CONST_CONFLICT',
+						lineNum,
+						line,
+						`Conflit de nom avec la constante "${varName}"`,
+						'Un identifiant ne peut pas être à la fois variable et constante',
+						'Var\n    x: entier;\nConst\n    PI = 3.14;'
+					);
+				}
 
-                declaredVars.add(varName);
-            }
+				declaredVars.add(varName);
+			}
 
-            continue;
-        }
+			continue;
+		}
         
-        // 7. Check constant declarations (in Const section)
-        if (inConst && currentSection === 'const') {
-            const constMatch = line.match(
-                /^([a-z_][a-z0-9_]*)\s*=\s*(.+?)\s*;?\s*$/i
-            );
+		// 7. Check constant declarations (in Const section)
+		if (inConst && currentSection === 'const') {
+			const constMatch = line.match(
+				/^([a-z_][a-z0-9_]*)\s*=\s*(.+?)\s*;?\s*$/i
+			);
 
-            if (!constMatch) {
-                return createError(
-                    'INVALID_CONST_DECLARATION',
-                    lineNum,
-                    line,
-                    'Déclaration de constante invalide',
-                    'Format attendu: NOM = valeur;',
-                    'PI = 3.14;\nMAX = 100;'
-                );
-            }
+			if (!constMatch) {
+				return createError(
+					'INVALID_CONST_DECLARATION',
+					lineNum,
+					line,
+					'Déclaration de constante invalide',
+					'Format attendu: NOM = valeur;',
+					'PI = 3.14;\nMAX = 100;'
+				);
+			}
 
-            const constName = constMatch[1];
-            const constValue = constMatch[2].trim();
+			const constName = constMatch[1];
+			const constValue = constMatch[2].trim();
 
-            if (!/^[a-z_][a-z0-9_]*$/i.test(constName)) {
-                return createError(
-                    'INVALID_CONST_NAME',
-                    lineNum,
-                    line,
-                    `Nom de constante "${constName}" invalide`,
-                    'Les noms doivent commencer par une lettre ou "_"',
-                    'PI = 3.14;\nMAX_VALUE = 100;'
-                );
-            }
+			if (!/^[a-z_][a-z0-9_]*$/i.test(constName)) {
+				return createError(
+					'INVALID_CONST_NAME',
+					lineNum,
+					line,
+					`Nom de constante "${constName}" invalide`,
+					'Les noms doivent commencer par une lettre ou "_"',
+					'PI = 3.14;\nMAX_VALUE = 100;'
+				);
+			}
 
-            if (declaredConsts.has(constName)) {
-                return createError(
-                    'DUPLICATE_CONSTANT',
-                    lineNum,
-                    line,
-                    `Constante "${constName}" déjà déclarée`,
-                    'Une constante ne peut être déclarée qu\'une seule fois',
-                    'PI = 3.14;'
-                );
-            }
+			if (declaredConsts.has(constName)) {
+				return createError(
+					'DUPLICATE_CONSTANT',
+					lineNum,
+					line,
+					`Constante "${constName}" déjà déclarée`,
+					'Une constante ne peut être déclarée qu\'une seule fois',
+					'PI = 3.14;'
+				);
+			}
 
-            if (declaredVars.has(constName)) {
-                return createError(
-                    'CONST_VAR_CONFLICT',
-                    lineNum,
-                    line,
-                    `Conflit de nom avec la variable "${constName}"`,
-                    'Un identifiant ne peut pas être à la fois variable et constante',
-                    'Const\n    MAX = 100;'
-                );
-            }
+			if (declaredVars.has(constName)) {
+				return createError(
+					'CONST_VAR_CONFLICT',
+					lineNum,
+					line,
+					`Conflit de nom avec la variable "${constName}"`,
+					'Un identifiant ne peut pas être à la fois variable et constante',
+					'Const\n    MAX = 100;'
+				);
+			}
 
-            // Basic value validation (number, string, boolean)
-            const isValidValue =
-                /^-?\d+(\.\d+)?$/.test(constValue) ||                  // number
-                /^".*"$/.test(constValue) ||                           // string
-                /^(vrai|faux)$/i.test(constValue);                     // boolean
+			// Basic value validation (number, string, boolean)
+			const isValidValue =
+				/^-?\d+(\.\d+)?$/.test(constValue) ||                  // number
+				/^".*"$/.test(constValue) ||                           // string
+				/^(vrai|faux)$/i.test(constValue);                     // boolean
 
-            if (!isValidValue) {
-                return createError(
-                    'INVALID_CONST_VALUE',
-                    lineNum,
-                    line,
-                    `Valeur de constante invalide`,
-                    'Une constante doit être un nombre, une chaîne ou un booléen',
-                    'PI = 3.14;\nMSG = "Bonjour";\nOK = vrai;'
-                );
-            }
+			if (!isValidValue) {
+				return createError(
+					'INVALID_CONST_VALUE',
+					lineNum,
+					line,
+					`Valeur de constante invalide`,
+					'Une constante doit être un nombre, une chaîne ou un booléen',
+					'PI = 3.14;\nMSG = "Bonjour";\nOK = vrai;'
+				);
+			}
 
-            declaredConsts.add(constName);
-            continue;
-        }
+			declaredConsts.add(constName);
+			continue;
+		}
         
-        // 8. Check statements (after Debut) and track variable usage
+        // 8. Check statements (after Debut)
         if (afterDebut && !hasFin) {
             
             // Check Si statement
@@ -734,8 +683,6 @@ function checkSyntax(code) {
                         'Format attendu: si condition alors',
                         'si x > 10 alors\n    ecrire("Grand");\nfinsi');
                 }
-                // Extract variables from condition
-                extractVariablesFromExpression(siMatch[1], lineNum, usedVars, keywords);
                 blockStack.push({ type: 'si', line: lineNum, closer: 'finsi' });
                 continue;
             }
@@ -748,6 +695,7 @@ function checkSyntax(code) {
                         '"Sinon" doit être précédé d\'un bloc "Si"',
                         'si condition alors\n    // code\nsinon\n    // code\nfinsi');
                 }
+                // Mark that we've seen sinon for this si
                 blockStack[blockStack.length - 1].hasSinon = true;
                 continue;
             }
@@ -764,26 +712,15 @@ function checkSyntax(code) {
                 continue;
             }
             
-            // Check Pour loop - UPDATED to support all syntax variations
+            // Check Pour loop
             if (line.startsWith('pour ')) {
-                const pourMatch = line.match(/^pour\s+([a-z_][a-z0-9_]*)\s*(?:de\s+|<-\s*)(.+?)\s+(?:allant\s+)?a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire\s*$/i);
+                const pourMatch = line.match(/^pour\s+([a-z_][a-z0-9_]*)\s+de\s+(.+?)\s+a\s+(.+?)(?:\s+pas\s+(.+?))?\s+faire\s*$/i);
                 if (!pourMatch) {
                     return createError('INVALID_POUR', lineNum, line,
                         'Structure "Pour" invalide',
-                        'Formats attendus:\n- pour variable de debut a fin faire\n- pour variable <- debut a fin faire\n- pour variable de debut allant a fin faire\n- pour variable de debut a fin pas increment faire',
-                        'pour i de 1 a 10 faire\n    ecrire(i);\nfinpour\n\npour i <- 1 a 10 faire\n    ecrire(i);\nfinpour\n\npour i de 1 allant a 10 faire\n    ecrire(i);\nfinpour\n\npour i de 1 a 10 pas 2 faire\n    ecrire(i);\nfinpour');
+                        'Format attendu: pour variable de debut a fin faire\nOU: pour variable de debut a fin pas increment faire',
+                        'pour i de 1 a 10 faire\n    ecrire(i);\nfinpour');
                 }
-                // Track loop variable
-                const loopVar = pourMatch[1];
-                usedVars.set(loopVar, lineNum);
-                
-                // Extract variables from expressions (de/a/pas)
-                extractVariablesFromExpression(pourMatch[2], lineNum, usedVars, keywords);
-                extractVariablesFromExpression(pourMatch[3], lineNum, usedVars, keywords);
-                if (pourMatch[4]) {
-                    extractVariablesFromExpression(pourMatch[4], lineNum, usedVars, keywords);
-                }
-                
                 blockStack.push({ type: 'pour', line: lineNum, closer: 'finpour' });
                 continue;
             }
@@ -809,8 +746,6 @@ function checkSyntax(code) {
                         'Format attendu: tantque condition faire',
                         'tantque x < 10 faire\n    x <- x + 1;\nfintantque');
                 }
-                // Extract variables from condition
-                extractVariablesFromExpression(tantqueMatch[1], lineNum, usedVars, keywords);
                 blockStack.push({ type: 'tantque', line: lineNum, closer: 'fintantque' });
                 continue;
             }
@@ -836,12 +771,6 @@ function checkSyntax(code) {
                         'Format attendu: variable <- expression;',
                         'x <- 10;\ny <- x + 5;');
                 }
-                // Track variable on left side (being assigned to)
-                const varName = assignMatch[1];
-                usedVars.set(varName, lineNum);
-                
-                // Extract variables from right side expression
-                extractVariablesFromExpression(assignMatch[2], lineNum, usedVars, keywords);
                 continue;
             }
             
@@ -853,13 +782,6 @@ function checkSyntax(code) {
                         'Instruction "lire" invalide',
                         'Format attendu: lire(variable1, variable2, ...);',
                         'lire(x);\nlire(nom, age);');
-                }
-                // Track variables being read into
-                const vars = lireMatch[1].split(',').map(v => v.trim());
-                for (const varName of vars) {
-                    if (/^[a-z_][a-z0-9_]*$/i.test(varName)) {
-                        usedVars.set(varName, lineNum);
-                    }
                 }
                 continue;
             }
@@ -873,8 +795,6 @@ function checkSyntax(code) {
                         'Format attendu: ecrire(expression1, expression2, ...);',
                         'ecrire("Bonjour");\necrire("Valeur:", x);');
                 }
-                // Extract variables from expressions
-                extractVariablesFromExpression(ecrireMatch[1], lineNum, usedVars, keywords);
                 continue;
             }
             
@@ -914,18 +834,16 @@ function checkSyntax(code) {
             'Vous devez terminer avec "Fin"',
             'Debut\n    // votre code\nFin');
     }
-    
-    if (!hasVar) {
-        return createError(
-            'MISSING_VAR',
-            1,
-            '',
-            'Section "Var" manquante ou déclarée sur la même ligne',
-            'La section "Var" est obligatoire et doit être déclarée sur une ligne séparée, même si aucune variable n est définie.',
-            'Algorithme MonAlgorithme;\nVar\n    n: entier;\nDebut\n    // code\nFin'
-        );
-    }
-    
+	if (!hasVar) {
+		return createError(
+			'MISSING_VAR',
+			1,
+			'',
+			'Section "Var" manquante ou déclarée sur la même ligne',
+			'La section "Var" est obligatoire et doit être déclarée sur une ligne séparée, même si aucune variable n’est définie.',
+			'Algorithme MonAlgorithme;\nVar\n    n: entier;\nDebut\n    // code\nFin'
+		);
+	}
     if (blockStack.length > 0) {
         const unclosed = blockStack[blockStack.length - 1];
         return createError('UNCLOSED_BLOCK_END', unclosed.line, '',
@@ -934,186 +852,196 @@ function checkSyntax(code) {
             getBlockExample(unclosed.type));
     }
     
-    // Check for undeclared variables
-    const allDeclared = new Set([...declaredVars, ...declaredConsts]);
-    const undeclaredVars = [];
-    
-    for (const [varName, lineNum] of usedVars.entries()) {
-        if (!allDeclared.has(varName) && !keywords.has(varName.toLowerCase())) {
-            undeclaredVars.push({ name: varName, line: lineNum });
-        }
-    }
-    
-    if (undeclaredVars.length > 0) {
-        // Report the first undeclared variable
-        const firstUndeclared = undeclaredVars[0];
-        const allUndeclaredNames = undeclaredVars.map(v => v.name).join(', ');
-        
-        return createError(
-            'UNDECLARED_VARIABLE',
-            firstUndeclared.line,
-            '',
-            `Variable(s) non déclarée(s): ${allUndeclaredNames}`,
-            'Toutes les variables utilisées doivent être déclarées dans la section "Var" ou "Const"',
-            `Var\n    ${firstUndeclared.name}: entier;\nDebut\n    ${firstUndeclared.name} <- 10;\nFin`
-        );
-    }
-    
     // All checks passed!
     return { isValid: true, errors: [] };
 }
 
-// UI Functions for displaying results
-function showSyntaxError(errorResult) {
-    const error = errorResult.error;
-    const modalBox = document.getElementById('modalBox');
-    const modalIcon = document.getElementById('modalIcon');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const modalBtn = document.getElementById('modalBtn');
-    
-    // Set error styling
-    modalBox.classList.remove('success');
-    modalIcon.textContent = '';
-    modalTitle.textContent = 'Erreur de Syntaxe';
-    modalBtn.className = 'modal-btn error';
-    modalBtn.textContent = 'OK';
-    
-    // Build content
-    let content = `
-        <div class="error-line-info">
-             <strong>Ligne ${error.line}</strong>
-        </div>
-        
-        <div class="error-title">
-            ❌ ${error.title}
-        </div>
-        
-        <div class="error-desc">
-            ${error.description}
-        </div>
-    `;
-    
-    // Add wrong code if available
-    if (error.content) {
-        content += `
-            <div class="code-block">
-                <div class="code-label">Code Erroné:</div>
-                <div class="code-box wrong">
-                    <pre>${escapeHtml(error.content)}</pre>
-                </div>
-            </div>
-        `;
-    }
-    
-    // Add correct example
-    content += `
-        <div class="code-block">
-            <div class="code-label"> Exemple Correct:</div>
-            <div class="code-box correct">
-                <pre>${escapeHtml(error.example)}</pre>
-            </div>
-        </div>
-    `;
-    
-    modalContent.innerHTML = content;
-    document.getElementById('syntaxModal').classList.add('active');
-}
-
-function showSyntaxSuccess() {
-    const modalBox = document.getElementById('modalBox');
-    const modalIcon = document.getElementById('modalIcon');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalContent = document.getElementById('modalContent');
-    const modalBtn = document.getElementById('modalBtn');
-    
-    // Set success styling
-    modalBox.classList.add('success');
-    modalIcon.textContent = '';
-    modalTitle.textContent = 'Syntaxe Correcte!';
-    modalBtn.className = 'modal-btn success';
-    modalBtn.textContent = 'OK';
-    
-    // Build content
-    modalContent.innerHTML = `
-        <div class="success-message">
-            <p>
-                 <strong>Aucune erreur détectée!</strong><br><br>
-                Votre algorithme est prêt à être exécuté.
-            </p>
-        </div>
-    `;
-    
-    document.getElementById('syntaxModal').classList.add('active');
-}
-
-function closeSyntaxModal() {
-    document.getElementById('syntaxModal').classList.remove('active');
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// Function to check syntax only (without running)
-function checkSyntaxOnly() {
-    const code = document.getElementById('codeEditor').value;
-    
-    if (!code.trim()) {
-        showSyntaxError({
-            isValid: false,
-            error: {
-                type: 'EMPTY_EDITOR',
-                line: 0,
-                content: '',
-                title: 'L\'éditeur est vide',
-                description: 'Veuillez écrire un algorithme avant de vérifier la syntaxe.',
-                example: 'Algorithme MonAlgorithme;\nVar\n    x: entier;\nDebut\n    ecrire("Hello");\nFin'
-            }
-        });
-        return;
-    }
-    
-    const result = checkSyntax(code);
-    
-    if (result.isValid) {
-        showSyntaxSuccess();
-    } else {
-        showSyntaxError(result);
-    }
-}
-
-// Function to validate and run (if you have a runAlgorithm function)
-function validateAndRun() {
-    const code = document.getElementById('codeEditor').value;
-    
-    if (!code.trim()) {
-        showSyntaxError({
-            isValid: false,
-            error: {
-                type: 'EMPTY_EDITOR',
-                line: 0,
-                content: '',
-                title: 'L\'éditeur est vide',
-                description: 'Veuillez écrire un algorithme avant de l\'exécuter.',
-                example: 'Algorithme MonAlgorithme;\nVar\n    x: entier;\nDebut\n    ecrire("Hello");\nFin'
-            }
-        });
-        return;
-    }
-    
-    const result = checkSyntax(code);
-    
-    if (result.isValid) {
-        // If you have a runAlgorithm function, call it here
-        if (typeof runAlgorithm === 'function') {
-            runAlgorithm();
-        } else {
-            showSyntaxSuccess();
+function createError(errorType, lineNumber, lineContent, title, description, example) {
+    return {
+        isValid: false,
+        error: {
+            type: errorType,
+            line: lineNumber,
+            content: lineContent,
+            title: title,
+            description: description,
+            example: example
         }
-    } else {
-        showSyntaxError(result);
-    }
+    };
 }
+
+function getBlockExample(blockType) {
+    const examples = {
+        'si': 'si condition alors\n    // code\nfinsi',
+        'pour': 'pour i de 1 a 10 faire\n    // code\nfinpour',
+        'tantque': 'tantque condition faire\n    // code\nfintantque'
+    };
+    return examples[blockType] || '';
+}
+
+        // Show syntax error in modal
+        function showSyntaxError(errorResult) {
+            const error = errorResult.error;
+            const modalBox = document.getElementById('modalBox');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalBtn = document.getElementById('modalBtn');
+            
+            // Set error styling
+            modalBox.classList.remove('success');
+            modalIcon.textContent = '';
+            modalTitle.textContent = 'Erreur de Syntaxe';
+            modalBtn.className = 'modal-btn error';
+            modalBtn.textContent = 'OK';
+            
+            // Build content
+            let content = `
+                <div class="error-line-info">
+                     <strong>Ligne ${error.line}</strong>
+                </div>
+                
+                <div class="error-title">
+                    ❌ ${error.title}
+                </div>
+                
+                <div class="error-desc">
+                    ${error.description}
+                </div>
+            `;
+            
+            // Add wrong code if available
+            if (error.content) {
+                content += `
+                    <div class="code-block">
+                        <div class="code-label">Code Erroné:</div>
+                        <div class="code-box wrong">
+                            <pre>${escapeHtml(error.content)}</pre>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Add correct example
+            content += `
+                <div class="code-block">
+                    <div class="code-label"> Exemple Correct:</div>
+                    <div class="code-box correct">
+                        <pre>${escapeHtml(error.example)}</pre>
+                    </div>
+                </div>
+            `;
+            
+            modalContent.innerHTML = content;
+            document.getElementById('syntaxModal').classList.add('active');
+        }
+
+        // Show syntax success in modal
+        function showSyntaxSuccess() {
+            const modalBox = document.getElementById('modalBox');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalBtn = document.getElementById('modalBtn');
+            
+            // Set success styling
+            modalBox.classList.add('success');
+            modalIcon.textContent = '';
+            modalTitle.textContent = 'Syntaxe Correcte!';
+            modalBtn.className = 'modal-btn success';
+            modalBtn.textContent = 'OK';
+            
+            // Build content
+            modalContent.innerHTML = `
+                <div class="success-message">
+                    <p>
+                         <strong>Aucune erreur détectée!</strong><br><br>
+                        Votre algorithme est prêt à être exécuté.
+                    </p>
+                </div>
+            `;
+            
+            document.getElementById('syntaxModal').classList.add('active');
+        }
+
+        // Close modal
+        function closeSyntaxModal() {
+            document.getElementById('syntaxModal').classList.remove('active');
+        }
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Update validateAndRun to use modal for empty editor
+        function validateAndRun() {
+            const code = document.getElementById('codeEditor').value;
+            
+            if (!code.trim()) {
+                showSyntaxError({
+                    isValid: false,
+                    error: {
+                        type: 'EMPTY_EDITOR',
+                        line: 0,
+                        content: '',
+                        title: 'L\'éditeur est vide',
+                        description: 'Veuillez écrire un algorithme avant de l\'exécuter.',
+                        example: 'Algorithme MonAlgorithme;\nVar\n    x: entier;\nDebut\n    ecrire("Hello");\nFin'
+                    }
+                });
+                return;
+            }
+            
+            const result = checkSyntax(code);
+            
+            if (result.isValid) {
+                runAlgorithm();
+            } else {
+                showSyntaxError(result);
+            }
+        }
+
+        // Update checkSyntaxOnly to use modal
+        function checkSyntaxOnly() {
+            const code = document.getElementById('codeEditor').value;
+            
+            if (!code.trim()) {
+                showSyntaxError({
+                    isValid: false,
+                    error: {
+                        type: 'EMPTY_EDITOR',
+                        line: 0,
+                        content: '',
+                        title: 'L\'éditeur est vide',
+                        description: 'Veuillez écrire un algorithme avant de vérifier la syntaxe.',
+                        example: 'Algorithme MonAlgorithme;\nVar\n    x: entier;\nDebut\n    ecrire("Hello");\nFin'
+                    }
+                });
+                return;
+            }
+            
+            const result = checkSyntax(code);
+            
+            if (result.isValid) {
+                showSyntaxSuccess();
+            } else {
+                showSyntaxError(result);
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('syntaxModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSyntaxModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSyntaxModal();
+            }
+        });
