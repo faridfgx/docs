@@ -9,6 +9,9 @@ class GlobalRatingSystem {
         this.userFingerprint = null;
         this.lastDownloadTime = 0;
         this.downloadCooldown = 10000; // 10 seconds in milliseconds
+		// timers (fix interval leak)
+		this.autoInterval = null;
+		this.closeInterval = null;
         
         // Ad configuration
         this.adConfig = {
@@ -60,7 +63,21 @@ class GlobalRatingSystem {
             this.showMessage('خطأ في تحميل نظام التقييم', 'error');
         }
     }
+sanitizeDownloadButtons() {
+    const buttons = document.querySelectorAll('.download-btn[onclick]');
 
+    buttons.forEach(button => {
+        const onclick = button.getAttribute('onclick');
+        if (!onclick) return;
+
+        // supports: downloadFile('x.zip') or downloadFile("x.zip")
+        const match = onclick.match(/downloadFile\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+        if (!match) return;
+
+        button.dataset.downloadUrl = match[1];
+        button.removeAttribute('onclick'); // IMPORTANT
+    });
+}
     createAdModal() {
         if (this.adModalCreated) return;
         
@@ -315,6 +332,7 @@ class GlobalRatingSystem {
 
     async initializeAfterDOM() {
         try {
+			this.sanitizeDownloadButtons();
             // Get all valid file IDs first
             const validFileIds = this.getValidFileIds();
             
@@ -569,48 +587,31 @@ class GlobalRatingSystem {
         });
     }
 
-    attachDownloadListeners() {
-        const downloadButtons = document.querySelectorAll('.download-btn');
-        
-        downloadButtons.forEach(button => {
-            const fileItem = button.closest('.file-item');
-            
-            if (!fileItem) {
-                return;
-            }
-            
-            const fileId = fileItem.dataset.fileId;
-            
-            if (!fileId || fileId.trim() === '') {
-                return;
-            }
-            
-            const originalOnclick = button.getAttribute('onclick');
-            
-            if (!originalOnclick) {
-                return;
-            }
-            
-            button.removeAttribute('onclick');
-            
-            const clickHandler = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // Store the download action
-                this.pendingDownload = {
-                    fileId: fileId.trim(),
-                    action: originalOnclick
-                };
-                
-                // Show ad modal
-                this.showAdModal();
-            };
-            
-            button.removeEventListener('click', clickHandler);
-            button.addEventListener('click', clickHandler);
-        });
-    }
+	attachDownloadListeners() {
+		const downloadButtons = document.querySelectorAll('.download-btn');
+
+		downloadButtons.forEach(button => {
+			const fileItem = button.closest('.file-item');
+			if (!fileItem) return;
+
+			const fileId = fileItem.dataset.fileId;
+			const url = button.dataset.downloadUrl;
+
+			if (!fileId || !url) return;
+
+			button.addEventListener('click', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+				this.pendingDownload = {
+					fileId: fileId.trim(),
+					url
+				};
+
+				this.showAdModal();
+			});
+		});
+	}
 
     showAdModal() {
         const modal = document.getElementById('download-ad-modal');
@@ -636,103 +637,94 @@ class GlobalRatingSystem {
         }
     }
 
-    startAdCountdowns() {
-        const autoCountdownEl = document.getElementById('auto-countdown');
-        const closeCountdownEl = document.getElementById('close-countdown');
-        const closeCountdownText = document.getElementById('close-countdown-text');
-        const closeBtn = document.getElementById('close-ad-btn');
-        
-        let autoCounter = Math.floor(this.adConfig.maxWaitTime / 1000); // 10 seconds
-        let closeCounter = Math.floor(this.adConfig.skipAfter / 1000);  // 5 seconds
-        
-        // Update initial display
-        if (autoCountdownEl) autoCountdownEl.textContent = autoCounter;
-        if (closeCountdownEl) closeCountdownEl.textContent = closeCounter;
-        
-        // Auto-close countdown (10 seconds)
-        const autoInterval = setInterval(() => {
-            autoCounter--;
-            if (autoCountdownEl) {
-                autoCountdownEl.textContent = autoCounter;
-            }
-            
-            if (autoCounter <= 0) {
-                clearInterval(autoInterval);
-                this.startDownload();
-            }
-        }, 1000);
-        
-        // Close button countdown (5 seconds)
-        const closeInterval = setInterval(() => {
-            closeCounter--;
-            if (closeCountdownEl) {
-                closeCountdownEl.textContent = closeCounter;
-            }
-            
-            if (closeCounter <= 0) {
-                clearInterval(closeInterval);
-                if (closeBtn) {
-                    closeBtn.disabled = false;
-                    closeBtn.querySelector('.btn-icon').textContent = '';
-                    closeCountdownText.innerHTML = 'ابدأ التحميل الآن';
-                }
-            }
-        }, 1000);
-    }
+startAdCountdowns() {
+    this.clearAdTimers();
 
-    startDownload() {
-        if (!this.pendingDownload) return;
-        
-        const now = Date.now();
-        const timeRemaining = this.downloadCooldown - (now - this.lastDownloadTime);
+    const autoCountdownEl = document.getElementById('auto-countdown');
+    const closeCountdownEl = document.getElementById('close-countdown');
+    const closeBtn = document.getElementById('close-ad-btn');
+    const closeCountdownText = document.getElementById('close-countdown-text');
 
-        // Check cooldown
-        if (timeRemaining > 0 && this.lastDownloadTime > 0) {
-            const seconds = Math.ceil(timeRemaining / 1000);
-            this.closeAdModal();
-            this.showMessage(`يرجى الانتظار ${seconds} ثانية قبل تحميل ملف آخر`, 'warning');
-            this.startCooldownTimer(timeRemaining);
-            return;
+    let autoCounter = Math.floor(this.adConfig.maxWaitTime / 1000);
+    let closeCounter = Math.floor(this.adConfig.skipAfter / 1000);
+
+    autoCountdownEl.textContent = autoCounter;
+    closeCountdownEl.textContent = closeCounter;
+
+    this.autoInterval = setInterval(() => {
+        autoCounter--;
+        autoCountdownEl.textContent = autoCounter;
+
+        if (autoCounter <= 0) {
+            this.clearAdTimers();
+            this.startDownload();
         }
+    }, 1000);
 
-        try {
-            this.lastDownloadTime = now;
-            
-            // Execute original download
-            eval(this.pendingDownload.action);
-            
-            // Update download count
-            this.incrementDownloadCountOptimized(this.pendingDownload.fileId).catch(error => {
-                console.warn('Could not update download count:', error.message);
-            });
-            
-            // Close modal
-            this.closeAdModal();
-            
-            // Start cooldown timer
-            this.startCooldownTimer(this.downloadCooldown);
-            
-            this.showMessage('تم بدء التحميل بنجاح!', 'success');
-            
-        } catch (error) {
-            console.error('Error handling download:', error);
-            this.closeAdModal();
-            this.showMessage('خطأ في تسجيل التحميل', 'error');
-        }
-        
-        // Clear pending download
-        this.pendingDownload = null;
-    }
+    this.closeInterval = setInterval(() => {
+        closeCounter--;
+        closeCountdownEl.textContent = closeCounter;
 
-    closeAdModal() {
-        const modal = document.getElementById('download-ad-modal');
-        if (modal) {
-            modal.style.display = 'none';
+        if (closeCounter <= 0) {
+            clearInterval(this.closeInterval);
+            this.closeInterval = null;
+
+            closeBtn.disabled = false;
+            closeCountdownText.textContent = 'ابدأ التحميل الآن';
         }
-        
-        // Restore body scroll
-        document.body.style.overflow = '';
+    }, 1000);
+}
+
+clearAdTimers() {
+    if (this.autoInterval) {
+        clearInterval(this.autoInterval);
+        this.autoInterval = null;
     }
+    if (this.closeInterval) {
+        clearInterval(this.closeInterval);
+        this.closeInterval = null;
+    }
+}
+	startDownload() {
+		if (!this.pendingDownload) return;
+
+		const now = Date.now();
+		const timeRemaining = this.downloadCooldown - (now - this.lastDownloadTime);
+
+		if (timeRemaining > 0 && this.lastDownloadTime > 0) {
+			const seconds = Math.ceil(timeRemaining / 1000);
+			this.closeAdModal();
+			this.showMessage(`يرجى الانتظار ${seconds} ثانية قبل تحميل ملف آخر`, 'warning');
+			return;
+		}
+
+		this.lastDownloadTime = now;
+
+		// SAFE download (no eval)
+		const a = document.createElement('a');
+		a.href = this.pendingDownload.url;
+		a.download = '';
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+
+		this.incrementDownloadCountOptimized(this.pendingDownload.fileId)
+			.catch(() => {});
+
+		this.closeAdModal();
+		this.showMessage('تم بدء التحميل بنجاح!', 'success');
+
+		this.pendingDownload = null;
+	}
+
+closeAdModal() {
+    this.clearAdTimers();
+
+    const modal = document.getElementById('download-ad-modal');
+    if (modal) modal.style.display = 'none';
+
+    document.body.style.overflow = '';
+}
 
     async incrementDownloadCountOptimized(fileId) {
         try {
@@ -1082,7 +1074,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
-
 
 
 
