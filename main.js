@@ -783,7 +783,7 @@ class GlobalRatingSystem {
             } else {
                 this.updateDownloadButtonsText(`انتظر ${seconds} ثواني`);
             }
-        }, 100);
+        }, 1000);
     }
 
     disableAllDownloadButtons() {
@@ -1082,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
