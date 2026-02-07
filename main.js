@@ -127,7 +127,7 @@ class GlobalRatingSystem {
     top: 0;
     left: 0;
     width: 100%;
-    height: height: 100vh;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.6);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
@@ -1082,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for use in other scripts if needed
 window.GlobalRatingSystem = GlobalRatingSystem;
+
 
 
 
