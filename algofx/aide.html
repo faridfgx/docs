@@ -3,180 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aide – Apprendre les algorithmes avec AlgoFX</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.7;
-            color: #333;
-            background: #f5f5f5;
-            padding: 12px;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #2c3e50;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 15px;
-        }
-        
-        h2 {
-            color: #2980b9;
-            font-size: 1.8em;
-            margin-top: 40px;
-            margin-bottom: 20px;
-            padding-left: 10px;
-            border-left: 4px solid #3498db;
-        }
-        
-        h3 {
-            color: #34495e;
-            font-size: 1.4em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        
-        h4 {
-            color: #555;
-            font-size: 1.1em;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
-        }
-        
-        .intro {
-            background: #ecf0f1;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 30px;
-            border-left: 4px solid #3498db;
-        }
-        
-        .important {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            border-left: 4px solid #ffc107;
-        }
-        
-        .tip {
-            background: #d1ecf1;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            border-left: 4px solid #17a2b8;
-        }
-        
-        .warning {
-            background: #f8d7da;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            border-left: 4px solid #dc3545;
-        }
-        
-        pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin: 20px 0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-        
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: 'Consolas', 'Monaco', monospace;
-            color: #e83e8c;
-            font-size: 0.9em;
-        }
-        
-        pre code {
-            background: transparent;
-            padding: 0;
-            color: #f8f8f2;
-        }
-        
-        ul, ol {
-            margin-left: 30px;
-            margin-bottom: 15px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
-        
-        .example-box {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .keyword {
-            color: #0066cc;
-            font-weight: bold;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        
-        th {
-            background: #3498db;
-            color: white;
-            font-weight: 600;
-        }
-        
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        
-        .section {
-            margin-bottom: 50px;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>Aide – Apprendre les algorithmes avec AlgoFX | Guide complet pour débutants</title>
+    <meta name="description" content="Guide complet pour apprendre les algorithmes avec AlgoFX. Tutoriels, exemples expliqués, boucles, conditions, variables. Parfait pour les débutants en programmation.">
+    <meta name="keywords" content="AlgoFX, algorithmes, apprendre programmation, tutoriel algorithmes, boucles, conditions, variables, français, débutants">
+    <meta name="author" content="AlgoFX">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://csdocs.space/algofx/aide.html">
+    <meta property="og:title" content="Aide AlgoFX – Guide complet des algorithmes">
+    <meta property="og:description" content="Apprenez les algorithmes pas à pas avec AlgoFX. Guide interactif avec 23 exemples expliqués pour débutants.">
+    <meta property="og:image" content="https://csdocs.space/algofx/assets/og-image.png">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://csdocs.space/algofx/aide.html">
+    <meta name="twitter:title" content="Aide AlgoFX – Guide complet des algorithmes">
+    <meta name="twitter:description" content="Apprenez les algorithmes pas à pas avec AlgoFX. Guide interactif avec 23 exemples expliqués.">
+    <meta name="twitter:image" content="https://csdocs.space/algofx/assets/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="files/fxlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="files/fxlogo.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="msapplication-TileColor" content="#3498db">
+    
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="files/aide.css">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://csdocs.space/aide.html">
+    
+    <!-- Schema.org Structured Data 
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "Aide AlgoFX – Guide complet pour apprendre les algorithmes",
+      "description": "Guide pédagogique complet pour apprendre les algorithmes avec AlgoFX. Inclut tutoriels, exemples et exercices pratiques.",
+      "author": {
+        "@type": "Organization",
+        "name": "AlgoFX"
+      },
+      "datePublished": "2026-02-07",
+      "dateModified": "2026-02-07",
+      "inLanguage": "fr-FR",
+      "educationalLevel": "Débutant",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student"
+      }
+    }
+    </script>
+	-->
 </head>
 <body>
     <div class="container">
-        <h1>Aide – Apprendre les algorithmes avec AlgoFX</h1>
-        
+        <header class="header">
+            <h1>Aide – AlgoFX</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 Rechercher (boucle, variable, condition...)" autocomplete="off">
+                <button id="clearSearch" aria-label="Effacer la recherche">✕</button>
+                <span class="search-icon"></span>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar Overlay -->
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+            
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3> Navigation</h3>
+                    <button class="sidebar-close" id="sidebarClose" aria-label="Fermer la navigation">✕</button>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li><a href="#introduction">1. Introduction</a></li>
+                    <li><a href="#comment-lire">2. Comment lire un algorithme</a></li>
+                    <li>
+                        <a href="#variables">3. Les variables</a>
+                        <ul class="nav-submenu">
+                            <li><a href="#declaration-variables">Déclaration</a></li>
+                            <li><a href="#types-donnees">Types de données</a></li>
+                            <li><a href="#affectation">Affectation</a></li>
+                            <li><a href="#constantes">Constantes</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#entrees-sorties">4. Entrées et sorties</a>
+                        <ul class="nav-submenu">
+                            <li><a href="#ecrire">Écrire</a></li>
+                            <li><a href="#lire">Lire</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#conditions">5. Les conditions</a>
+                        <ul class="nav-submenu">
+                            <li><a href="#si-alors">Si / Alors</a></li>
+                            <li><a href="#si-sinon">Si / Sinon</a></li>
+                            <li><a href="#operateurs-comparaison">Opérateurs</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#boucles">6. Les boucles</a>
+                        <ul class="nav-submenu">
+                            <li><a href="#boucle-pour">Boucle POUR</a></li>
+                            <li><a href="#boucle-tantque">Boucle TANT QUE</a></li>
+                            <li><a href="#sortir">Sortir</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#operateurs">7. Opérateurs et Fonctions</a></li>
+                    <li><a href="#pas-a-pas">8. Exécution pas à pas</a></li>
+                    <li><a href="#erreurs">9. Erreurs fréquentes</a></li>
+                    <li>
+                        <a href="#exemples">10. Exemples expliqués</a>
+                        <ul class="nav-submenu">
+                            <li><a href="#ex-carre">Ex1: Surface carré</a></li>
+                            <li><a href="#ex-rectangle">Ex2: Rectangle</a></li>
+                            <li><a href="#ex-moyenne">Ex3: Moyenne</a></li>
+                            <li><a href="#ex-temperature">Ex4: Température</a></li>
+                            <li><a href="#ex-cercle">Ex5: Cercle</a></li>
+                            <li><a href="#ex-equation1">Ex6: Équation 1er degré</a></li>
+                            <li><a href="#ex-afficher-nombres">Ex7: Afficher nombres</a></li>
+                            <li><a href="#ex-nombres-pairs">Ex8: Nombres pairs</a></li>
+                            <li><a href="#ex-nombres-impairs">Ex9: Nombres impairs</a></li>
+                            <li><a href="#ex-table-mult">Ex10: Table multiplication</a></li>
+                            <li><a href="#ex-somme10">Ex11: Somme 10 nombres</a></li>
+                            <li><a href="#ex-sommeN">Ex12: Somme N nombres</a></li>
+                            <li><a href="#ex-mot-passe">Ex13: Mot de passe</a></li>
+                            <li><a href="#ex-factorielle">Ex14: Factorielle</a></li>
+                            <li><a href="#ex-maximum">Ex15: Maximum</a></li>
+                            <li><a href="#ex-palindrome">Ex16: Palindrome</a></li>
+                            <li><a href="#ex-binaire">Ex17: Binaire</a></li>
+                            <li><a href="#ex-mot-passe3">Ex18: Mot passe 3 essais</a></li>
+                            <li><a href="#ex-fibonacci">Ex19: Fibonacci</a></li>
+                            <li><a href="#ex-pgcd">Ex20: PGCD</a></li>
+                            <li><a href="#ex-equation2">Ex21: Équation 2nd degré</a></li>
+                            <li><a href="#ex-ppcm">Ex22: PPCM</a></li>
+                            <li><a href="#ex-premiers">Ex23: Nombres premiers</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#conseils">11. Conseils pour progresser</a></li>
+                </ul>
+            </aside>
+
+        <main class="content">
+            <section class="section" id="introduction">
+                <div class="intro">
+                    <p><strong>Bienvenue dans AlgoFX !</strong> Cette aide va vous apprendre ce qu'est un algorithme et comment écrire vos premiers programmes. Même si vous n'avez jamais écrit une ligne de code, vous allez comprendre.</p>
+                </div>
         <section class="section">
             <div class="intro">
                 <p><strong>Bienvenue dans AlgoFX !</strong> Cette aide va vous apprendre ce qu'est un algorithme et comment écrire vos premiers programmes. Même si vous n'avez jamais écrit une ligne de code, vous allez comprendre.</p>
@@ -204,7 +191,7 @@
             <p>Les algorithmes sont partout : dans les calculatrices, les jeux vidéo, les réseaux sociaux, les GPS. Apprendre à écrire des algorithmes, c'est apprendre à résoudre des problèmes de manière logique et structurée.</p>
         </section>
         
-        <section class="section">
+        <section class="section" id="comment-lire">
             <h2>2. Comment lire un algorithme</h2>
             
             <h3>Structure de base</h3>
@@ -239,13 +226,13 @@ Fin</code></pre>
             <p>Chaque instruction dans un algorithme a un rôle précis. Si vous oubliez une ligne ou si vous la placez au mauvais endroit, l'algorithme ne fonctionnera pas correctement. C'est comme oublier d'allumer le four avant de mettre le gâteau à cuire.</p>
         </section>
         
-        <section class="section">
+        <section class="section" id="variables">
             <h2>3. Les variables</h2>
             
             <h3>Qu'est-ce qu'une variable ?</h3>
             <p>Une variable est comme une boîte avec une étiquette. Dans cette boîte, vous pouvez mettre une valeur. Imaginez que vous avez une boîte étiquetée "âge" et vous y mettez le nombre 15. Plus tard, vous pouvez regarder dans cette boîte pour savoir quel âge est stocké, ou vous pouvez changer la valeur à 16.</p>
             
-            <h3>Déclaration des variables</h3>
+            <h3 id="declaration-variables">Déclaration des variables</h3>
             <p>Avant d'utiliser une variable, vous devez la déclarer. Cela signifie que vous dites à l'algorithme : "Je vais utiliser une boîte qui s'appelle X et elle contiendra tel type de valeur".</p>
             
             <p>Voici comment déclarer des variables dans AlgoFX :</p>
@@ -262,7 +249,7 @@ Fin</code></pre>
                 <li><code>taille</code> est une variable de type <code>reel</code> (un nombre avec virgule comme 1.75, 3.14)</li>
             </ul>
             
-            <h3>Les types de données dans AlgoFX</h3>
+            <h3 id="types-donnees">Les types de données dans AlgoFX</h3>
             <table>
                 <tr>
                     <th>Type</th>
@@ -296,7 +283,7 @@ Fin</code></pre>
                 </tr>
             </table>
             
-            <h3>Affectation de valeurs</h3>
+            <h3 id="affectation">Affectation de valeurs</h3>
             <p>Une fois qu'une variable est déclarée, vous pouvez lui donner une valeur. On utilise la flèche <code>&lt;-</code> pour dire "mettre dans". Lisez toujours cette flèche comme "reçoit la valeur".</p>
             
             <pre><code>Debut
@@ -324,7 +311,7 @@ Fin</code></pre>
                 <p><strong>Astuce :</strong> AlgoFX possède un panneau spécial qui affiche toutes vos variables et leurs valeurs en temps réel. Cela vous permet de voir exactement ce qui se passe dans la mémoire de votre algorithme. Utilisez le mode "Pas à Pas" pour observer comment les variables changent ligne par ligne.</p>
             </div>
             
-            <h3>Les constantes</h3>
+            <h3 id="constantes">Les constantes</h3>
             <p>Une constante est comme une variable, mais sa valeur ne peut jamais changer. Imaginez une étiquette collée sur une boîte qui dit "NE PAS MODIFIER". Les constantes sont utiles pour les valeurs fixes comme le nombre Pi.</p>
             
             <pre><code>Const
@@ -336,10 +323,10 @@ Fin</code></pre>
             <p>Une fois définie, vous ne pouvez plus modifier <code>PI</code>. Si vous essayez, AlgoFX affichera une erreur.</p>
         </section>
         
-        <section class="section">
+        <section class="section" id="entrees-sorties">
             <h2>4. Entrées et sorties</h2>
             
-            <h3>Écrire (afficher des informations)</h3>
+            <h3 id="ecrire">Écrire (afficher des informations)</h3>
             <p>Pour afficher quelque chose à l'écran, on utilise l'instruction <code>ecrire()</code>. Cela signifie : "Montre ce message à l'utilisateur".</p>
             
             <pre><code>Debut
@@ -357,7 +344,7 @@ Fin</code></pre>
             
             <p>Ce programme affichera : <code>Votre âge est : 20</code></p>
             
-            <h3>Lire (recevoir des informations de l'utilisateur)</h3>
+            <h3 id="lire">Lire (recevoir des informations de l'utilisateur)</h3>
             <p>Pour demander à l'utilisateur d'entrer une valeur, on utilise <code>lire()</code>. Cela signifie : "Attends que l'utilisateur tape quelque chose, puis stocke cette valeur dans la variable".</p>
             
             <pre><code>Var
@@ -389,13 +376,13 @@ Fin</code></pre>
             <p>L'algorithme demande deux nombres, calcule leur somme, puis affiche le résultat. À ce moment-là, l'utilisateur participe activement au déroulement du programme.</p>
         </section>
         
-        <section class="section">
+        <section class="section" id="conditions">
             <h2>5. Les conditions</h2>
             
             <h3>Pourquoi utiliser des conditions ?</h3>
             <p>Imaginez que vous sortez de chez vous. Si il pleut, vous prenez un parapluie. Sinon, vous n'en prenez pas. C'est exactement ce qu'est une condition : faire quelque chose seulement si une situation est vraie.</p>
             
-            <h3>La structure Si / Alors</h3>
+            <h3 id="si-alors">La structure Si / Alors</h3>
             <p>Dans AlgoFX, on écrit les conditions avec <code>si</code>, <code>alors</code>, et <code>finsi</code> :</p>
             
             <pre><code>Var
@@ -411,7 +398,7 @@ Fin</code></pre>
             
             <p>Ici, le message "Vous êtes majeur" s'affiche seulement si l'âge est supérieur ou égal à 18. Sinon, l'algorithme ne fait rien et passe directement à la fin.</p>
             
-            <h3>Si / Sinon</h3>
+            <h3 id="si-sinon">Si / Sinon</h3>
             <p>Souvent, on veut faire une chose si la condition est vraie, et une autre chose si elle est fausse :</p>
             
             <pre><code>Var
@@ -429,7 +416,7 @@ Fin</code></pre>
             
             <p>Maintenant, l'algorithme affiche toujours un message : soit "majeur" si l'âge est 18 ou plus, soit "mineur" dans le cas contraire.</p>
             
-            <h3>Les opérateurs de comparaison</h3>
+            <h3 id="operateurs-comparaison">Les opérateurs de comparaison</h3>
             <table>
                 <tr>
                     <th>Opérateur</th>
@@ -493,13 +480,13 @@ Debut
 Fin</code></pre>
         </section>
         
-        <section class="section">
+        <section class="section" id="boucles">
             <h2>6. Les boucles</h2>
             
             <h3>Pourquoi répéter une action ?</h3>
             <p>Imaginez que vous devez écrire les nombres de 1 à 100. Vous ne voulez pas écrire 100 instructions <code>ecrire()</code> ! Les boucles permettent de répéter automatiquement une action plusieurs fois.</p>
             
-            <h3>La boucle POUR</h3>
+            <h3 id="boucle-pour">La boucle POUR</h3>
             <p>La boucle <code>pour</code> est utilisée quand vous savez exactement combien de fois vous voulez répéter quelque chose.</p>
             
             <pre><code>Var
@@ -521,7 +508,7 @@ finpour</code></pre>
             
             <p>Ici, l'algorithme affiche 0, 2, 4, 6, 8, 10. Il saute de 2 en 2.</p>
             
-            <h3>La boucle TANT QUE</h3>
+            <h3 id="boucle-tantque">La boucle TANT QUE</h3>
             <p>La boucle <code>tantque</code> répète tant qu'une condition est vraie. Vous ne savez pas forcément combien de fois la boucle va tourner.</p>
             
             <pre><code>Var
@@ -547,7 +534,7 @@ Fin</code></pre>
                 <li>Utilisez <code>tantque</code> quand vous ne savez pas à l'avance (par exemple : demander un mot de passe jusqu'à ce qu'il soit correct)</li>
             </ul>
             
-            <h3>L'instruction SORTIR</h3>
+            <h3 id="sortir">L'instruction SORTIR</h3>
             <p>Parfois, vous voulez arrêter une boucle avant la fin normale. L'instruction <code>sortir</code> permet de quitter immédiatement une boucle :</p>
             
             <pre><code>Var
@@ -566,9 +553,182 @@ Fin</code></pre>
             
             <p>Ce programme affiche les nombres de 1 à 10, puis sort de la boucle même si elle devait aller jusqu'à 100.</p>
         </section>
-        
-        <section class="section">
-            <h2>7. Exécution pas à pas dans AlgoFX</h2>
+   <h3 id="operateurs">Opérateurs et Fonctions</h3>
+    
+    <h4>Opérateurs Arithmétiques</h4>
+    <table class="help-table">
+        <tr>
+            <th>Opérateur</th>
+            <th>Description</th>
+            <th>Exemple</th>
+            <th>Résultat</th>
+        </tr>
+        <tr>
+            <td>+</td>
+            <td>Addition</td>
+            <td>5 + 3</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>-</td>
+            <td>Soustraction</td>
+            <td>5 - 3</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td>*</td>
+            <td>Multiplication</td>
+            <td>5 * 3</td>
+            <td>15</td>
+        </tr>
+        <tr>
+            <td>/</td>
+            <td>Division réelle</td>
+            <td>7 / 2</td>
+            <td>3.5</td>
+        </tr>
+        <tr>
+            <td>div</td>
+            <td>Division entière</td>
+            <td>7 div 2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>mod</td>
+            <td>Modulo (reste de division)</td>
+            <td>7 mod 2</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>^ ou puissance</td>
+            <td>Puissance</td>
+            <td>5^3 ou 5 puissance 3</td>
+            <td>125</td>
+        </tr>
+    </table>
+
+    <h4>Fonctions Mathématiques</h4>
+    <table class="help-table">
+        <tr>
+            <th>Fonction</th>
+            <th>Description</th>
+            <th>Exemple</th>
+            <th>Résultat</th>
+        </tr>
+        <tr>
+            <td>racine(x)</td>
+            <td>Racine carrée</td>
+            <td>racine(16)</td>
+            <td>4</td>
+        </tr>
+    </table>
+
+    <h4>Exemples d'Utilisation</h4>
+    <div class="help-example">
+        <h5>Exemple 1: Calculs arithmétiques</h5>
+        <pre>Var
+  a, b, somme, produit, puissance: entier;
+  quotient: reel;
+Debut
+  a &lt;- 10;
+  b &lt;- 3;
+  somme &lt;- a + b;        // 13
+  produit &lt;- a * b;      // 30
+  quotient &lt;- a / b;     // 3.333...
+  puissance &lt;- a^2;      // 100
+  ecrire("Somme:", somme);
+  ecrire("Puissance:", puissance);
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 2: Division entière et modulo</h5>
+        <pre>Var
+  dividende, diviseur, quotient, reste: entier;
+Debut
+  dividende &lt;- 17;
+  diviseur &lt;- 5;
+  quotient &lt;- dividende div diviseur;  // 3
+  reste &lt;- dividende mod diviseur;     // 2
+  ecrire("17 div 5 =", quotient);
+  ecrire("17 mod 5 =", reste);
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 3: Puissance (plusieurs syntaxes)</h5>
+        <pre>Var
+  base, exposant, resultat1, resultat2: entier;
+Debut
+  base &lt;- 2;
+  exposant &lt;- 8;
+  resultat1 &lt;- base^exposant;           // 256
+  resultat2 &lt;- base puissance exposant; // 256
+  ecrire("2^8 =", resultat1);
+  ecrire("2 puissance 8 =", resultat2);
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 4: Fonction racine</h5>
+        <pre>Var
+  nombre: entier;
+  resultat: reel;
+Debut
+  nombre &lt;- 25;
+  resultat &lt;- racine(nombre);  // 5.0
+  ecrire("Racine de", nombre, "=", resultat);
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 5: Opérateurs logiques</h5>
+        <pre>Var
+  age: entier;
+  estMajeur, estMineur: booleen;
+Debut
+  lire(age);
+  estMajeur &lt;- age &gt;= 18;
+  estMineur &lt;- non estMajeur;
+  
+  Si age &gt;= 18 et age &lt; 65 Alors
+    ecrire("Adulte actif");
+  Sinon
+    Si age &lt; 18 ou age &gt;= 65 Alors
+      ecrire("Mineur ou Senior");
+    FinSi
+  FinSi
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 6: Vérifier si un nombre est pair</h5>
+        <pre>Var
+  nombre: entier;
+Debut
+  lire(nombre);
+  Si nombre mod 2 = 0 Alors
+    ecrire(nombre, "est pair");
+  Sinon
+    ecrire(nombre, "est impair");
+  FinSi
+Fin</pre>
+    </div>
+
+    <div class="help-example">
+        <h5>Exemple 7: Calculer la distance entre deux points</h5>
+        <pre>Var
+  x1, y1, x2, y2: reel;
+  distance: reel;
+Debut
+  lire(x1, y1, x2, y2);
+  distance &lt;- racine((x2-x1)^2 + (y2-y1)^2);
+  ecrire("Distance =", distance);
+Fin</pre>
+    </div>
+
+        <section class="section" id="pas-a-pas">
+            <h2>8. Exécution pas à pas dans AlgoFX</h2>
             
             <h3>Qu'est-ce que le mode pas à pas ?</h3>
             <p>Le mode "Pas à Pas" est une fonctionnalité unique d'AlgoFX qui vous permet d'exécuter votre algorithme ligne par ligne. Au lieu de tout exécuter d'un coup, vous avancez instruction par instruction. Cela signifie que vous pouvez observer exactement ce qui se passe à chaque étape.</p>
@@ -596,8 +756,8 @@ Fin</code></pre>
             <p>Par exemple, si vous calculez une moyenne et obtenez un résultat bizarre, utilisez le pas à pas pour vérifier que vos variables contiennent bien les bonnes valeurs avant le calcul.</p>
         </section>
         
-        <section class="section">
-            <h2>8. Erreurs fréquentes</h2>
+        <section class="section" id="erreurs">
+            <h2>9. Erreurs fréquentes</h2>
             
             <h3>Erreurs de syntaxe</h3>
             <p>Les erreurs de syntaxe sont comme des fautes d'orthographe dans votre algorithme. AlgoFX ne comprend pas ce que vous voulez dire et refuse d'exécuter le programme.</p>
@@ -665,10 +825,10 @@ Fin</code></pre>
             </div>
         </section>
         
-        <section class="section">
-            <h2>9. Exemples expliqués</h2>
+        <section class="section" id="exemples">
+            <h2>10. Exemples expliqués</h2>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-carre">
                 <h3>Exemple 1 : Carré - Surface</h3>
                 <h4>Objectif</h4>
                 <p>Calculer la surface d'un carré à partir de la longueur de son côté. Cela signifie que si l'utilisateur donne 5, le programme calcule 5 × 5 = 25.</p>
@@ -698,7 +858,7 @@ Fin</code></pre>
                 <p>Cet algorithme montre comment récupérer une valeur de l'utilisateur, faire un calcul simple, et afficher le résultat. C'est le schéma de base de nombreux programmes : entrée → traitement → sortie.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-rectangle">
                 <h3>Exemple 2 : Rectangle - Surface et Périmètre</h3>
                 <h4>Objectif</h4>
                 <p>Calculer à la fois la surface et le périmètre d'un rectangle. La surface est longueur × largeur, et le périmètre est 2 × (longueur + largeur).</p>
@@ -732,7 +892,7 @@ Fin</code></pre>
                 <p>On peut faire plusieurs calculs dans un même algorithme. Chaque calcul utilise les bonnes variables et la bonne formule mathématique.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-moyenne">
                 <h3>Exemple 3 : Calcul de Moyenne</h3>
                 <h4>Objectif</h4>
                 <p>Calculer la moyenne de trois notes et afficher un message selon que l'élève a réussi ou non. Cela montre comment utiliser une condition pour prendre une décision.</p>
@@ -767,7 +927,7 @@ Fin</code></pre>
                 <p>Les conditions permettent à l'algorithme de s'adapter selon le résultat. C'est ce qui rend les programmes intelligents : ils peuvent réagir différemment selon la situation.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-temperature">
                 <h3>Exemple 4 : Conversion de Température</h3>
                 <h4>Objectif</h4>
                 <p>Convertir une température de Celsius vers Fahrenheit ou l'inverse, selon le choix de l'utilisateur. Cela montre comment utiliser des conditions imbriquées (des conditions dans des conditions).</p>
@@ -814,7 +974,7 @@ Fin</code></pre>
                 <p>On peut imbriquer plusieurs conditions pour gérer différents cas. Attention à bien fermer chaque <code>finsi</code> au bon endroit. Les formules mathématiques (9/5, 32, 5/9) sont des constantes qu'on utilise directement.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-cercle">
                 <h3>Exemple 5 : Calcul Cercle</h3>
                 <h4>Objectif</h4>
                 <p>Calculer la surface et la circonférence d'un cercle à partir de son rayon. Cela montre comment utiliser une constante (PI) dans les calculs.</p>
@@ -846,7 +1006,7 @@ Fin</code></pre>
                 <p>Les constantes sont utiles pour des valeurs fixes qu'on utilise plusieurs fois. On n'a pas besoin de réécrire 3.14159 partout, on utilise simplement PI.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-equation1">
                 <h3>Exemple 6 : Équation du 1er Degré</h3>
                 <h4>Objectif</h4>
                 <p>Résoudre une équation du type ax + b = 0. Cela montre comment gérer différents cas mathématiques (pas de solution, une solution, infinité de solutions).</p>
@@ -884,7 +1044,7 @@ Fin</code></pre>
                 <p>Avant de faire un calcul mathématique, il faut toujours vérifier les cas spéciaux (comme la division par zéro). Les conditions imbriquées permettent de gérer ces différents cas.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-afficher-nombres">
                 <h3>Exemple 7 : Afficher des Nombres</h3>
                 <h4>Objectif</h4>
                 <p>Afficher tous les nombres de 1 jusqu'à une limite donnée. C'est votre première boucle simple.</p>
@@ -912,7 +1072,7 @@ Fin</code></pre>
                 <p>La boucle <code>pour</code> est parfaite quand vous savez combien de fois répéter. Ici, on répète exactement nbLimite fois.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-nombres-pairs">
                 <h3>Exemple 8 : Nombres Pairs</h3>
                 <h4>Objectif</h4>
                 <p>Afficher tous les nombres pairs de 0 à n. Cela montre comment utiliser le paramètre <code>pas</code> dans une boucle.</p>
@@ -942,7 +1102,7 @@ Fin</code></pre>
                 <p>Le paramètre <code>pas</code> permet de contrôler le saut entre chaque itération. C'est très utile pour afficher une série régulière de nombres.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-nombres-impairs">
                 <h3>Exemple 9 : Nombres Impairs</h3>
                 <h4>Objectif</h4>
                 <p>Afficher tous les nombres impairs de 1 à n. Même principe que les nombres pairs, mais en commençant à 1.</p>
@@ -971,7 +1131,7 @@ Fin</code></pre>
                 <p>En changeant juste le point de départ (0 ou 1), on obtient soit les pairs soit les impairs. C'est la même logique de boucle.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-table-mult">
                 <h3>Exemple 10 : Table de Multiplication</h3>
                 <h4>Objectif</h4>
                 <p>Afficher la table de multiplication d'un nombre donné (par exemple : 5 × 1 = 5, 5 × 2 = 10, etc.).</p>
@@ -1000,7 +1160,7 @@ Fin</code></pre>
                 <p>Dans une boucle, on peut faire des calculs différents à chaque tour en utilisant la variable de boucle (ici i).</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-somme10">
                 <h3>Exemple 11 : Somme de 10 Nombres</h3>
                 <h4>Objectif</h4>
                 <p>Demander 10 nombres à l'utilisateur et calculer leur somme totale. Cela montre comment accumuler des valeurs dans une boucle.</p>
@@ -1031,7 +1191,7 @@ Fin</code></pre>
                 <p>Pour calculer une somme dans une boucle, il faut toujours initialiser la variable à 0 avant la boucle, puis ajouter chaque nouvelle valeur.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-sommeN">
                 <h3>Exemple 12 : Somme de N Nombres</h3>
                 <h4>Objectif</h4>
                 <p>Même chose que l'exemple précédent, mais cette fois l'utilisateur choisit combien de nombres il veut additionner.</p>
@@ -1064,7 +1224,7 @@ Fin</code></pre>
                 <p>La limite d'une boucle <code>pour</code> peut être une variable. Cela rend l'algorithme plus flexible et réutilisable.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-mot-passe">
                 <h3>Exemple 13 : Mot de Passe</h3>
                 <h4>Objectif</h4>
                 <p>Demander un mot de passe et continuer à demander tant que l'utilisateur n'entre pas le bon mot de passe (ici "0000").</p>
@@ -1096,7 +1256,7 @@ Fin</code></pre>
                 <p>La boucle <code>tantque</code> est parfaite pour répéter jusqu'à ce qu'une condition soit satisfaite. On ne sait pas à l'avance combien de tentatives l'utilisateur fera.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-factorielle">
                 <h3>Exemple 14 : Factorielle</h3>
                 <h4>Objectif</h4>
                 <p>Calculer la factorielle d'un nombre. La factorielle de 5 (notée 5!) est 1 × 2 × 3 × 4 × 5 = 120.</p>
@@ -1130,7 +1290,7 @@ Fin</code></pre>
                 <p>Pour multiplier des valeurs successives, on initialise à 1 (pas à 0). C'est le même principe que la somme, mais avec la multiplication.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-maximum">
                 <h3>Exemple 15 : Recherche du Maximum</h3>
                 <h4>Objectif</h4>
                 <p>Trouver le plus grand nombre parmi plusieurs nombres entrés par l'utilisateur. Cela montre comment garder en mémoire la meilleure valeur trouvée jusqu'à présent.</p>
@@ -1172,7 +1332,7 @@ Fin</code></pre>
                 <p>Pour trouver un maximum, on garde toujours en mémoire le plus grand nombre vu jusqu'à présent, et on le met à jour quand on trouve plus grand.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-palindrome">
                 <h3>Exemple 16 : Vérification Palindrome</h3>
                 <h4>Objectif</h4>
                 <p>Vérifier si un nombre est un palindrome (se lit pareil à l'envers, comme 121, 1331). Cela montre comment manipuler les chiffres d'un nombre.</p>
@@ -1212,7 +1372,7 @@ Fin</code></pre>
                 <p>L'opérateur <code>mod</code> donne le reste de la division (utile pour obtenir le dernier chiffre). L'opérateur <code>div</code> donne la division entière (utile pour enlever le dernier chiffre).</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-binaire">
                 <h3>Exemple 17 : Décimal vers Binaire</h3>
                 <h4>Objectif</h4>
                 <p>Convertir un nombre décimal (base 10) en binaire (base 2). Par exemple, 5 en décimal = 101 en binaire.</p>
@@ -1248,7 +1408,7 @@ Fin</code></pre>
                 <p>La conversion de base utilise des divisions successives. On récupère les restes et on les assemble dans l'ordre inverse.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-mot-passe3">
                 <h3>Exemple 18 : Mot de Passe avec 3 Essais</h3>
                 <h4>Objectif</h4>
                 <p>Demander un mot de passe mais limiter à 3 tentatives maximum. Si l'utilisateur échoue 3 fois, l'accès est refusé.</p>
@@ -1289,7 +1449,7 @@ Fin</code></pre>
                 <p>On peut combiner plusieurs conditions avec <code>et</code>. Les deux doivent être vraies pour continuer la boucle.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-fibonacci">
                 <h3>Exemple 19 : Suite de Fibonacci</h3>
                 <h4>Objectif</h4>
                 <p>Générer les n premiers termes de la suite de Fibonacci (0, 1, 1, 2, 3, 5, 8, 13...). Chaque terme est la somme des deux précédents.</p>
@@ -1334,7 +1494,7 @@ Fin</code></pre>
                 <p>Pour une suite où chaque terme dépend des précédents, on garde en mémoire les valeurs nécessaires et on les met à jour à chaque tour.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-pgcd">
                 <h3>Exemple 20 : PGCD (Plus Grand Commun Diviseur)</h3>
                 <h4>Objectif</h4>
                 <p>Calculer le PGCD de deux nombres en utilisant l'algorithme d'Euclide. C'est un algorithme mathématique célèbre.</p>
@@ -1374,7 +1534,7 @@ Fin</code></pre>
                 <p>Certains algorithmes mathématiques utilisent des boucles avec des remplacements de valeurs. C'est une technique puissante pour résoudre des problèmes complexes.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-equation2">
                 <h3>Exemple 21 : Équation du 2nd Degré</h3>
                 <h4>Objectif</h4>
                 <p>Résoudre une équation du type ax² + bx + c = 0 en utilisant le discriminant (Δ = b² - 4ac).</p>
@@ -1436,7 +1596,7 @@ Fin</code></pre>
                 <p>Les problèmes mathématiques ont souvent plusieurs cas à traiter. On utilise des conditions imbriquées pour gérer chaque cas correctement. AlgoFX fournit la fonction <code>racine()</code> pour la racine carrée.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-ppcm">
                 <h3>Exemple 22 : PPCM (Plus Petit Commun Multiple)</h3>
                 <h4>Objectif</h4>
                 <p>Calculer le PPCM de deux nombres. Le PPCM utilise le PGCD : PPCM(a,b) = (a × b) / PGCD(a,b).</p>
@@ -1483,7 +1643,7 @@ Fin</code></pre>
                 <p>Quand un algorithme modifie des variables mais qu'on a besoin des valeurs originales plus tard, on les sauvegarde dans des variables temporaires.</p>
             </article>
             
-            <article class="example-box">
+            <article class="example-box" id="ex-premiers">
                 <h3>Exemple 23 : Nombres Premiers</h3>
                 <h4>Objectif</h4>
                 <p>Afficher tous les nombres premiers jusqu'à n. Un nombre premier n'est divisible que par 1 et lui-même. Cela montre comment utiliser des boucles imbriquées et l'instruction <code>sortir</code>.</p>
@@ -1530,7 +1690,7 @@ Fin</code></pre>
             </article>
         </section>
         
-        <section class="section">
+        <section class="section"  id="conseils">
             <h2>10. Conseils pour progresser</h2>
             
             <h3>Comment s'entraîner efficacement</h3>
@@ -1622,6 +1782,14 @@ Fin</code></pre>
             <p>AlgoFX © 2026 – Guide créé pour vous aider à apprendre les algorithmes</p>
         </footer>
     </div>
-</body>
+ 
+    <!-- Floating Action Button for Mobile Navigation -->
+    <button class="fab-nav" id="fabNav" aria-label="Ouvrir la navigation">
+        <span class="fab-icon">☰</span>
+    </button>
 
+    <!-- Back to Top Button -->
+<button id="backToTop"  aria-label="Retour en haut"  style="    display: flex;    align-items: center;    justify-content: center;    width: 44px;    height: 44px;    font-size: 20px;  ">  ↑</button>
+<script src="files/aide.js"></script>
+</body>
 </html>
