@@ -245,17 +245,16 @@
         <div class="main-content">
             <div class="editor-section">
                 <div class="section-title">✏️ Éditeur d'Algorithme</div>
-                <div class="editor-wrapper">
-				<div class="error-indicators" id="errorIndicators"></div>
-				<div id="lineNumbers">1</div>
-				<div class="code-area">
-                    <div id="highlightLayer"></div>
-                    <textarea id="codeEditor" spellcheck="false"></textarea>
-					
-                </div>
-				<div id="autocompleteBox" class="autocomplete-box"></div>
+				<div class="editor-wrapper">
+					<div class="error-indicators" id="errorIndicators" style="top: 12px;"></div>
+					<div id="lineNumbers" >1</div>
+					<div class="code-area">
+						<div id="highlightLayer"></div>
+						<textarea id="codeEditor" spellcheck="false"></textarea>
+					</div>
+					<div id="autocompleteBox" class="autocomplete-box"></div>
 				</div>
-                <div class="controls">
+                <div class="controls" style="padding-bottom: 1px;">
                     <button class="btn-check" onclick="checkSyntaxOnly()">⚙️ Compiler</button>
 					<button class="btn-run" onclick="validateAndRun()">▶ Exécuter</button>
                     <button class="btn-clear" onclick="clearEditor()">🗑️ Effacer</button>
@@ -618,6 +617,56 @@ function toggleTheme() {
 		  });
 		}
 	</script>
-<script src="files/error-highlighting.js">
+<script>
+/* Scroll Sync Fix */
+(function() {
+    const editor = document.getElementById('codeEditor');
+    const numbers = document.getElementById('lineNumbers');
+    const highlight = document.getElementById('highlightLayer');
+    
+    if (!editor || !numbers) return;
+    
+    function sync() {
+        numbers.scrollTop = editor.scrollTop;
+        if (highlight) {
+            highlight.scrollTop = editor.scrollTop;
+            highlight.scrollLeft = editor.scrollLeft;
+        }
+    }
+    
+    editor.addEventListener('scroll', sync);
+    editor.addEventListener('input', () => setTimeout(sync, 0));
+    window.addEventListener('resize', sync);
+    sync();
+})();
+</script>
+
+<script src="files/error-highlighting.js"></script>
+<script>
+(function() {
+    function fixHighlightHeight() {
+        const editor = document.getElementById('codeEditor');
+        const highlight = document.getElementById('highlightLayer');
+        
+        if (!editor || !highlight) return;
+        
+        if (editor.value.endsWith('\n')) {
+            let html = highlight.innerHTML.replace(/\u200B+$/g, '');
+            const trailing = (editor.value.match(/\n+$/g) || [''])[0].length;
+            for (let i = 0; i < trailing; i++) html += '\n';
+            html += '\u200B';
+            highlight.innerHTML = html;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const editor = document.getElementById('codeEditor');
+        if (editor) {
+            editor.addEventListener('input', fixHighlightHeight);
+            setInterval(fixHighlightHeight, 500);
+        }
+    });
+})();
+</script>
 </body>
 </html>
