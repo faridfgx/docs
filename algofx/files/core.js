@@ -132,6 +132,11 @@ function setEditorContent(content) {
     document.getElementById('codeEditor').value = content;
     saveHistory();
     highlightCode();
+    
+    // ADD THIS LINE ⬇️
+    if (typeof refreshErrorHighlighting === 'function') {
+        setTimeout(() => refreshErrorHighlighting(), 50);
+    }
 }
 
 // Define keywords for pseudocode language
@@ -228,7 +233,7 @@ function highlightCode() {
     // Match operators (handle HTML entities)
     const operators = [
         '&lt;-', '&lt;=', '&gt;=', '&lt;&gt;', '&lt;', '&gt;',
-        '==', '!=', '\\+', '-', '\\*', '/', '%', '='
+        '==', '!=', '\\+', '-', '\\*', '/', '%', '=', '\\^'
     ];
     
     operators.forEach(op => {
@@ -535,6 +540,7 @@ function evaluateExpression(expr) {
     expr = expr.replace(/\bmod\b/g, '%');
     expr = expr.replace(/(\S+)\s+div\s+(\S+)/g, 'Math.floor($1/$2)');
     expr = expr.replace(/\bpuissance\b/g, '**');
+    expr = expr.replace(/\^/g, '**');
     expr = expr.replace(/racine\s*\(/g, 'Math.sqrt(');
     
     // Restore string literals

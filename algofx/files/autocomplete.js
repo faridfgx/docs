@@ -15,7 +15,7 @@ const VAR_TYPES = [
     { key: "en", value: "Entier;\n" },
     { key: "re", value: "Reel;\n" },
     { key: "ch", value: "Chaine;\n" },
-    { key: "bo", value: "Boolean;\n" },
+    { key: "bo", value: "Booleen;\n" },
     { key: "ca", value: "Caractere;\n" }
 ];
 

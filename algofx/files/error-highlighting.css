@@ -1,6 +1,6 @@
 /**
- * AlgoFX - Error Highlighting Styles (FIXED)
- * Debug-safe, scroll-synced, editor-aligned
+ * AlgoFX - Error Highlighting Styles (FIXED v3 - Dynamic Height)
+ * Supports unlimited lines
  */
 
 /* ===============================
@@ -8,7 +8,11 @@
    =============================== */
 
 .editor-wrapper {
-    position: relative; /* REQUIRED */
+    position: relative; /* REQUIRED for absolute positioning */
+}
+
+.code-area {
+    position: relative;
 }
 
 /* ===============================
@@ -19,11 +23,13 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 20px;
-    height: 100%;
+    width: 30px !important;
+    /* HEIGHT IS NOW SET DYNAMICALLY BY JAVASCRIPT */
+    min-height: 100%; /* Fallback minimum */
     background: transparent;
-    z-index: 15;
+    z-index: 300;
     pointer-events: none;
+    overflow: visible !important; /* CHANGED: Allow indicators to appear beyond initial bounds */
     scrollbar-width: none;
 }
 
@@ -51,6 +57,7 @@
 .error-indicator:hover {
     transform: scale(1.4);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    z-index: 25; /* Ensure tooltip appears above other elements */
 }
 
 /* ===============================
@@ -93,39 +100,44 @@
    =============================== */
 
 .error-indicator::before {
-    content: attr(title);
+    content: attr(data-tooltip);
     position: absolute;
     left: 24px;
     top: 50%;
     transform: translateY(-50%);
     background: rgba(20, 20, 20, 0.98);
     color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 9px;
+    line-height: 1.4;
     white-space: nowrap;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
     z-index: 1000;
     pointer-events: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .error-indicator::after {
     content: '';
     position: absolute;
-    left: 18px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
     border-width: 5px 6px 5px 0;
     border-style: solid;
     border-color: transparent rgba(20, 20, 20, 0.98) transparent transparent;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .error-indicator:hover::before,
 .error-indicator:hover::after {
     opacity: 1;
+    visibility: visible;
 }
 
 /* ===============================
@@ -139,20 +151,25 @@
     background: rgba(59, 130, 246, 0.25);
     pointer-events: none;
     z-index: 5;
+    opacity: 0;
 }
 
 /* ===============================
-   Mobile
+   Mobile Adjustments
    =============================== */
 
 @media (max-width: 720px) {
     .error-indicators {
         width: 16px;
     }
+    
     .error-indicator {
         width: 11px;
         height: 11px;
+        left: 3px;
     }
+    
+    /* Hide tooltips on mobile - they don't work well on touch */
     .error-indicator::before,
     .error-indicator::after {
         display: none !important;
@@ -160,10 +177,79 @@
 }
 
 /* ===============================
-   Debug Mode (visual only)
+   Debug Mode (visual guide)
    =============================== */
 
 .debug-mode .error-indicators {
     background: rgba(255, 0, 0, 0.08);
     outline: 1px dashed red;
 }
+
+.debug-mode .error-indicator {
+    outline: 1px solid yellow;
+}
+
+/* ===============================
+   Dark Theme Adjustments
+   =============================== */
+
+[data-theme="dark"] .error-indicator::before {
+    background: rgba(30, 30, 30, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .error-indicator::after {
+    border-color: transparent rgba(30, 30, 30, 0.98) transparent transparent;
+}
+
+[data-theme="dark"] .highlight-flash {
+    background: rgba(96, 165, 250, 0.3);
+}
+
+/* ===============================
+   Light Theme Adjustments
+   =============================== */
+
+[data-theme="light"] .error-indicator::before {
+    background: rgba(40, 40, 40, 0.95);
+    color: #f0f0f0;
+}
+
+[data-theme="light"] .error-indicator::after {
+    border-color: transparent rgba(40, 40, 40, 0.95) transparent transparent;
+}
+
+[data-theme="light"] .highlight-flash {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+/* ===============================
+   Ensure proper stacking context
+   =============================== */
+
+.editor-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Make sure line numbers don't interfere */
+#lineNumbers {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ===============================
+   CRITICAL: Ensure container expands
+   =============================== */
+
+.editor-wrapper {
+    /* Ensure wrapper doesn't constrain the error indicators */
+    overflow: visible;
+}
+
+/* If you have a max-height on the editor, remove it or adjust accordingly 
+#codeEditor {
+    /* The textarea should be able to grow 
+    min-height: 400px;
+}
+*/
