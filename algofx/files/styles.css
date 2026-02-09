@@ -671,6 +671,7 @@ box-sizing: border-box;
         .btn-clear:hover {
             background: #dc2626;
         }
+		
 
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
@@ -1272,7 +1273,7 @@ gap: 8px;
 		============================================ */
 		.autosave-indicator {
 		position: absolute;
-		bottom: +355px;
+		bottom: +335px;
 		right: 10px;
 		font-size: 16px;
 		color: #059669;
@@ -1370,7 +1371,7 @@ html[data-theme="dark"] .autocomplete-item.active {
 }
 @media (min-width: 721px) {
 	.autosave-indicator {
-		bottom: +465px;
+		bottom: +445px;
     }
 }
 

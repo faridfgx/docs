@@ -143,9 +143,10 @@ function setEditorContent(content) {
 const keywords = [
     'Algorithme', 'Var','Const', 'Debut', 'Fin', 
     'ecrire', 'lire', 
-    'reel', 'entier', 'chaine', 'booleen', 'caractere', 'Tableau',
+    'reel', 'entier', 'chaine', 'booleen', 'caractere',
     'Si', 'Alors', 'Sinon', 'FinSi',
-    'Pour', 'de', 'a', 'faire', 'FinPour', 'finpour', 'FinTantQue', 'TantQue', 'sortir'
+    'Pour', 'de','pas', 'faire', 'FinPour', 'finpour', 'FinTantQue', 'TantQue', 'sortir',
+	'Mod','Div','puissance','Racine','Sortir'
 ];
 
 // Helper function to escape HTML characters

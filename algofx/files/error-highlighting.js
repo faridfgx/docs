@@ -236,15 +236,23 @@ class AlgoErrorHighlighter {
             // ========================================
             // 2. CHECK VAR SECTION
             // ========================================
-            if (line === 'var') {
+            // Check if line starts with 'var' (with or without content after)
+            if (line.startsWith('var')) {
+                // Check if there's content after 'var' on the same line
+                const afterVar = line.substring(3).trim();
+                
+                if (afterVar.length > 0) {
+                    // There's content after 'var' - this is an error
+                    this.addError(lineNum, 'Déclarez les variables sur les lignes suivantes, pas avec "Var"', 'error');
+                    hasVar = true;
+                    inVarSection = true;
+                    inConstSection = false;
+                    return;
+                }
+                
+                // 'Var' is alone on the line - this is correct
                 if (afterDebut) {
                     this.addError(lineNum, '"Var" doit être avant "Debut"', 'error');
-                }
-                if (line !== originalLine.toLowerCase()) {
-                    // Check if there's anything else on the line
-                    if (originalLine.toLowerCase() !== 'var') {
-                        this.addError(lineNum, '"Var" doit être seul sur la ligne', 'error');
-                    }
                 }
                 hasVar = true;
                 inVarSection = true;
@@ -255,14 +263,23 @@ class AlgoErrorHighlighter {
             // ========================================
             // 3. CHECK CONST SECTION
             // ========================================
-            if (line === 'const') {
+            // Check if line starts with 'const' (with or without content after)
+            if (line.startsWith('const')) {
+                // Check if there's content after 'const' on the same line
+                const afterConst = line.substring(5).trim();
+                
+                if (afterConst.length > 0) {
+                    // There's content after 'const' - this is an error
+                    this.addError(lineNum, 'Déclarez les constantes sur les lignes suivantes, pas avec "Const"', 'error');
+                    hasConst = true;
+                    inConstSection = true;
+                    inVarSection = false;
+                    return;
+                }
+                
+                // 'Const' is alone on the line - this is correct
                 if (afterDebut) {
                     this.addError(lineNum, '"Const" doit être avant "Debut"', 'error');
-                }
-                if (line !== originalLine.toLowerCase()) {
-                    if (originalLine.toLowerCase() !== 'const') {
-                        this.addError(lineNum, '"Const" doit être seul sur la ligne', 'error');
-                    }
                 }
                 hasConst = true;
                 inConstSection = true;
@@ -577,3 +594,23 @@ window.clearErrorHighlighting = function() {
 };
 
 //console.log('[AlgoFX] Enhanced error highlighting system v5 loaded with comprehensive validation.');
+// Add to your error indicator click handler
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('error-indicator')) {
+        const message = e.target.getAttribute('data-tooltip');
+        showToast(message);
+    }
+});
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'error-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
