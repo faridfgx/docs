@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <input id="email" placeholder="Email">
+    <input id="key" placeholder="Key (e.g. ALGO-XXXX-YYYY)">
+    <button onclick="generate()">Get Hash</button>
+    <pre id="out"></pre>
+<script>
+async function generate() {
+    const key = document.getElementById('key').value;
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(key));
+    const hash = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    document.getElementById('out').textContent =
+        'Hash: ' + hash + '\n\nSQL:\nINSERT INTO users (email, access_key_hash, created_at, updated_at)\n' +
+        `VALUES ('${document.getElementById('email').value}', '${hash}', now(), now());`;
+}
+</script>
+</body>
+</html>
