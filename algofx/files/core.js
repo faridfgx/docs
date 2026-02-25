@@ -41,13 +41,23 @@ function loadTemplate() {
         select.value = '';
     }
 	updateLineNumbers();
+	//clearOutput(); // clear the output area
 }
 
 // File operations
+function clearOutput() {
+    const output = document.getElementById('output');
+    if (output) output.innerHTML = ''; // clears the output area
+	
+}
+
 function newFile() {
     if (confirm('Créer un nouveau fichier? Les modifications non sauvegardées seront perdues.')) {
         setEditorContent('');
+        clearOutput(); // clear the output area
+		updateLineNumbers();
     }
+	
 }
 
 function saveFile() {
@@ -858,5 +868,24 @@ function clearEditor() {
         setEditorContent('');
         document.getElementById('output').innerHTML = '';
         output = [];
+		
+    }
+	updateLineNumbers();
+}
+
+function toggleSyntaxHighlight() {
+    const enabled = document.getElementById('syntaxHighlightToggle').checked;
+    const highlightLayer = document.getElementById('highlightLayer');
+    const editor = document.getElementById('codeEditor');
+    
+    if (enabled) {
+        highlightLayer.style.visibility = '';
+        editor.style.color = 'transparent';
+        highlightCode();
+    } else {
+        highlightLayer.style.visibility = 'hidden';
+        // Use white for dark theme, black for light theme
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        editor.style.color = isDark ? '#d4d4d4' : '#1e1e1e';
     }
 }

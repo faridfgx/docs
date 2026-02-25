@@ -27,7 +27,7 @@ const GENERAL_RULES = [
 ];
 
 const BODY_RULES = [
-    { key: "li", value: "lire();" },
+    { key: "li", value: "Lire();" },
     { 
         key: "ec", 
         options: [ 
@@ -40,11 +40,11 @@ const BODY_RULES = [
         options: [
             {
                 label: "Pour … faire ",
-                value: "Pour i de 1 a n faire\n    \nFinpour"
+                value: "Pour i de 1 a n faire\n    \nFinPour"
             },
             {
                 label: "Pour … pas … faire",
-                value: "Pour i de 1 a n pas 2 faire\n    \nFinpour"
+                value: "Pour i de 1 a n pas 2 faire\n    \nFinPour"
             }
         ]
     },
@@ -53,16 +53,16 @@ const BODY_RULES = [
         options: [
             {
                 label: "Si … alors",
-                value: "Si condition alors\n    \nFinsi"
+                value: "Si condition alors\n    \nFinSi"
             },
             {
-                label: "Si … alors … Sinon",
-                value: "Si condition alors\n    \nSinon\n    \nFinsi"
+                label: "Si … alors … SiNon",
+                value: "Si condition alors\n    \nSiNon\n    \nFinSi"
             }
 			,
             {
-                label: "Sinon",
-                value: "Sinon\n"
+                label: "SiNon",
+                value: "SiNon\n"
             }
         ]
     },
@@ -70,14 +70,14 @@ const BODY_RULES = [
         key: "ta",
         options: [
             {
-                label: "Tantque … faire",
-                value: "Tantque condition faire\n    \nFintantque"
+                label: "TantQue … faire",
+                value: "TantQue condition faire\n    \nFinTantQue"
             }
         ]
     },
-    { key: "fs", value: "Finsi" },
-    { key: "ft", value: "Fintantque" },
-    { key: "fp", value: "Finpour" }
+    { key: "fs", value: "FinSi" },
+    { key: "ft", value: "FinTantQue" },
+    { key: "fp", value: "FinPour" }
 ];
 
 let suggestions = [];

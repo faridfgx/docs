@@ -12,229 +12,229 @@ Debut
 
 Fin`
     },
-	// NIVEAU 1 - TRÈS FACILE (Calculs simples, pas de boucles)
+	// NIVEAU 1 - TRÈS FACILE (Calculs Simples, pas de boucles)
     {
         name: "Carré - Surface",
         code: `Algorithme SurfaceCarre;
 Var
-    cote, surface: reel;
+    cote, surface: Reel;
 Debut
-    ecrire("Entrez le côté du carré:");
-    lire(cote);
+    Ecrire("Entrez le côté du carré:");
+    Lire(cote);
     
     surface <- cote * cote;
     
-    ecrire("La surface du carré est:", surface);
+    Ecrire("La surface du carré est:", surface);
 Fin`
     },
     {
         name: "Rect. : Surf./Périm.",
         code: `Algorithme RectangleSurfacePerimetre;
 Var
-    longueur, largeur, surface, perimetre: reel;
+    longueur, largeur, surface, perimetre: Reel;
 Debut
-    ecrire("Entrez la longueur du rectangle:");
-    lire(longueur);
-    ecrire("Entrez la largeur du rectangle:");
-    lire(largeur);
+    Ecrire("Entrez la longueur du rectangle:");
+    Lire(longueur);
+    Ecrire("Entrez la largeur du rectangle:");
+    Lire(largeur);
     
     surface <- longueur * largeur;
     perimetre <- 2 * (longueur + largeur);
     
-    ecrire("Surface du rectangle:", surface);
-    ecrire("Périmètre du rectangle:", perimetre);
+    Ecrire("Surface du rectangle:", surface);
+    Ecrire("Périmètre du rectangle:", perimetre);
 Fin`
     },
     {
         name: "Calcul Moyenne",
         code: `Algorithme CalculMoyenne;
 Var
-    note1, note2, note3, moyenne: reel;
+    note1, note2, note3, moyenne: Reel;
 Debut
-    ecrire("Entrez trois notes:");
-    lire(note1, note2, note3);
+    Ecrire("Entrez trois notes:");
+    Lire(note1, note2, note3);
     
     moyenne <- (note1 + note2 + note3) / 3;
     
-    ecrire("La moyenne est:", moyenne);
+    Ecrire("La moyenne est:", moyenne);
     
-    si moyenne >= 10 alors
-        ecrire("Félicitations, vous avez réussi!");
-    sinon
-        ecrire("Vous devez vous améliorer.");
-    finsi
+    Si moyenne >= 10 alors
+        Ecrire("Félicitations, vous avez réussi!");
+    SiNon
+        Ecrire("Vous devez vous améliorer.");
+    FinSi
 Fin`
     },
     {
         name: "Conversion Température",
         code: `Algorithme ConversionTemperature;
 Var
-    choix: entier;
-    celsius, fahrenheit: reel;
+    choix: Entier;
+    celsius, fahrenheit: Reel;
 Debut
-    ecrire("Conversion de température");
-    ecrire("1- Celsius vers Fahrenheit");
-    ecrire("2- Fahrenheit vers Celsius");
-    ecrire("Entrez votre choix (1 ou 2):");
+    Ecrire("Conversion de température");
+    Ecrire("1- Celsius vers Fahrenheit");
+    Ecrire("2- Fahrenheit vers Celsius");
+    Ecrire("Entrez votre choix (1 ou 2):");
     
-    lire(choix);
+    Lire(choix);
     
-    si choix = 1 alors
-        ecrire("Entrez la température en Celsius:");
-        lire(celsius);
-        fahrenheit <- (celsius * 9/5) + 32;
-        ecrire(celsius, "°C équivaut à", fahrenheit, "°F");
-    sinon
-        si choix = 2 alors
-            ecrire("Entrez la température en Fahrenheit:");
-            lire(fahrenheit);
-            celsius <- (fahrenheit - 32) * 5/9;
-            ecrire(fahrenheit, "°F équivaut à", celsius, "°C");
-        sinon
-            ecrire("Choix invalide");
-        finsi
-    finsi
+    Si choix = 1 alors
+        Ecrire("Entrez la température en Celsius:");
+        Lire(celSius);
+        fahrenheit <- (celSius * 9/5) + 32;
+        Ecrire(celSius, "°C équivaut à", fahrenheit, "°F");
+    SiNon
+        Si choix = 2 alors
+            Ecrire("Entrez la température en Fahrenheit:");
+            Lire(fahrenheit);
+            celSius <- (fahrenheit - 32) * 5/9;
+            Ecrire(fahrenheit, "°F équivaut à", celSius, "°C");
+        SiNon
+            Ecrire("Choix invalide");
+        FinSi
+    FinSi
 Fin`
     },
     {
         name: "Calcul Cercle",
         code: `Algorithme CalculCercle;
 Var
-    rayon, surface, circonference: reel;
+    rayon, surface, circonference: Reel;
 Const
     PI = 3.14159;
 Debut
-    ecrire("Entrez le rayon du cercle:");
-    lire(rayon);
+    Ecrire("Entrez le rayon du cercle:");
+    Lire(rayon);
     
     surface <- PI * rayon * rayon;
     circonference <- 2 * PI * rayon;
     
-    ecrire("Surface du cercle:", surface);
-    ecrire("Circonférence du cercle:", circonference);
+    Ecrire("Surface du cercle:", surface);
+    Ecrire("Circonférence du cercle:", circonference);
 Fin`
     },
     {
         name: "Equation 1er Degré",
         code: `Algorithme EquationPremierDegre;
 Var
-    a, b, x: reel;
+    a, b, x: Reel;
 Debut
-    ecrire("Résolution de l'équation ax + b = 0");
-    ecrire("Entrez la valeur de a:");
-    lire(a);
-    ecrire("Entrez la valeur de b:");
-    lire(b);
+    Ecrire("Résolution de l'équation ax + b = 0");
+    Ecrire("Entrez la valeur de a:");
+    Lire(a);
+    Ecrire("Entrez la valeur de b:");
+    Lire(b);
     
-    si a = 0 alors
-        si b = 0 alors
-            ecrire("L'équation admet une infinité de solutions");
-        sinon
-            ecrire("L'équation n'admet pas de solution");
-        finsi
-    sinon
+    Si a = 0 alors
+        Si b = 0 alors
+            Ecrire("L'équation admet une inFinité de solutions");
+        SiNon
+            Ecrire("L'équation n'admet pas de solution");
+        FinSi
+    SiNon
         x <- -b / a;
-        ecrire("La solution est x =", x);
-    finsi
+        Ecrire("La solution est x =", x);
+    FinSi
 Fin`
     },
     
-    // NIVEAU 2 - FACILE (Boucles simples)
+    // NIVEAU 2 - FACILE (Boucles Simples)
     {
         name: "Afficher Nombres",
         code: `Algorithme AfficherNombres;
 Var
-    nbLimite, i: entier;
+    nbLimite, i: Entier;
 Debut
-    ecrire("Entrer un nombre limite:");
-    lire(nbLimite);
+    Ecrire("Entrer un nombre limite:");
+    Lire(nbLimite);
     
-    pour i de 1 a nbLimite faire
-        ecrire(i);
-    finpour
+    Pour i de 1 a nbLimite faire
+        Ecrire(i);
+    FinPour
 Fin`
     },
     {
         name: "Nombres Pairs",
         code: `Algorithme NombresPairs;
 Var
-    n, i: entier;
+    n, i: Entier;
 Debut
-    ecrire("Entrez la valeur limite n:");
-    lire(n);
+    Ecrire("Entrez la valeur limite n:");
+    Lire(n);
     
-    ecrire("Nombres pairs de 0 à", n, ":");
+    Ecrire("Nombres pairs de 0 à", n, ":");
     
-    pour i de 0 a n pas 2 faire
-        ecrire(i);
-    finpour
+    Pour i de 0 a n pas 2 faire
+        Ecrire(i);
+    FinPour
 Fin`
     },
     {
         name: "Nombres Impairs",
-        code: `Algorithme NombresImpairs;
+        code: `Algorithme NombreSimpairs;
 Var
-    n, i: entier;
+    n, i: Entier;
 Debut
-    ecrire("Entrez la valeur limite n:");
-    lire(n);
+    Ecrire("Entrez la valeur limite n:");
+    Lire(n);
     
-    ecrire("Nombres impairs de 1 à", n, ":");
+    Ecrire("Nombres impairs de 1 à", n, ":");
     
-    pour i de 1 a n pas 2 faire
-        ecrire(i);
-    finpour
+    Pour i de 1 a n pas 2 faire
+        Ecrire(i);
+    FinPour
 Fin`
     },
     {
         name: "Table Multiplication",
         code: `Algorithme TableMultiplication;
 Var
-    nombre, i, resultat: entier;
+    nombre, i, resultat: Entier;
 Debut
-    ecrire("Quelle table voulez-vous afficher?");
-    lire(nombre);
+    Ecrire("Quelle table voulez-vous afficher?");
+    Lire(nombre);
     
-    pour i de 1 a 10 faire
+    Pour i de 1 a 10 faire
         resultat <- nombre * i;
-        ecrire(nombre, "x", i, "=", resultat);
-    finpour
+        Ecrire(nombre, "x", i, "=", resultat);
+    FinPour
 Fin`
     },
     {
         name: "Somme 10 Nombres",
         code: `Algorithme Somme10;
 Var
-    i, valeurEntree, somme: entier;
+    i, valeurEntree, somme: Entier;
 Debut
     somme <- 0;
     
-    pour i de 1 a 10 faire
-        ecrire("Entrer un nombre:");
-        lire(valeurEntree);
+    Pour i de 1 a 10 faire
+        Ecrire("Entrer un nombre:");
+        Lire(valeurEntree);
         somme <- somme + valeurEntree;
-    finpour
+    FinPour
     
-    ecrire("La somme est:", somme);
+    Ecrire("La somme est:", somme);
 Fin`
     },
     {
         name: "Somme N Nombres",
         code: `Algorithme SommeN;
 Var
-    n, i, nombre, somme: entier;
+    n, i, nombre, somme: Entier;
 Debut
-    ecrire("Combien de nombres voulez-vous additionner?");
-    lire(n);
+    Ecrire("Combien de nombres voulez-vous additionner?");
+    Lire(n);
     
     somme <- 0;
-    pour i de 1 a n faire
-        ecrire("Entrez le nombre", i, ":");
-        lire(nombre);
+    Pour i de 1 a n faire
+        Ecrire("Entrez le nombre", i, ":");
+        Lire(nombre);
         somme <- somme + nombre;
-    finpour
+    FinPour
     
-    ecrire("La somme des", n, "nombres est:", somme);
+    Ecrire("La somme des", n, "nombres est:", somme);
 Fin`
     },
 	{
@@ -244,12 +244,12 @@ Var
     mot : chaine;
 Debut
     Ecrire("Veuillez saisir le mot de passe :");
-    lire(mot);
+    Lire(mot);
 
-    tantque mot != "0000" faire
+    TantQue mot != "0000" faire
         Ecrire("Mot de passe incorrect. Veuillez réessayer :");
-        lire(mot);
-    fintantque
+        Lire(mot);
+    FinTantQue
 
     Ecrire("Mot de passe correct. Bienvenue !");
 Fin`
@@ -259,18 +259,18 @@ Fin`
         name: "Factoriel",
         code: `Algorithme Factoriel;
 Var
-    n, fact, i: entier;
+    n, fact, i: Entier;
 Debut
-    ecrire("Entrez un nombre pour calculer sa factorielle:");
-    lire(n);
+    Ecrire("Entrez un nombre Pour calculer sa factorielle:");
+    Lire(n);
     
     fact <- 1;
     
-    pour i de 1 a n faire
+    Pour i de 1 a n faire
         fact <- fact * i;
-    finpour
+    FinPour
     
-    ecrire("La factorielle de", n, "est", fact);
+    Ecrire("La factorielle de", n, "est", fact);
 Fin`
     },
     
@@ -279,75 +279,75 @@ Fin`
         name: "Recherche Maximum",
         code: `Algorithme RechercheMaximum;
 Var
-    n, nombre, maximum, i: entier;
+    n, nombre, maximum, i: Entier;
 Debut
-    ecrire("Combien de nombres voulez-vous comparer?");
-    lire(n);
+    Ecrire("Combien de nombres voulez-vous comparer?");
+    Lire(n);
     
-    ecrire("Entrez le nombre 1:");
-    lire(nombre);
+    Ecrire("Entrez le nombre 1:");
+    Lire(nombre);
     maximum <- nombre;
     i <- 2;
     
-    tantque i <= n faire
-        ecrire("Entrez le nombre", i, ":");
-        lire(nombre);
+    TantQue i <= n faire
+        Ecrire("Entrez le nombre", i, ":");
+        Lire(nombre);
         
-        si nombre > maximum alors
+        Si nombre > maximum alors
             maximum <- nombre;
-        finsi
+        FinSi
         
         i <- i + 1;
-    fintantque
+    FinTantQue
     
-    ecrire("Le maximum est:", maximum);
+    Ecrire("Le maximum est:", maximum);
 Fin`
     },
     {
         name: "Palindrome",
         code: `Algorithme VerificationPalindrome;
 Var
-    nombre, copie, inverse, chiffre: entier;
+    nombre, copie, inverse, chiffre: Entier;
 Debut
-    ecrire("Entrez un nombre:");
-    lire(nombre);
+    Ecrire("Entrez un nombre:");
+    Lire(nombre);
     
     copie <- nombre;
     inverse <- 0;
     
-    tantque copie > 0 faire
+    TantQue copie > 0 faire
         chiffre <- copie mod 10;
         inverse <- inverse * 10 + chiffre;
         copie <- copie div 10;
-    fintantque
+    FinTantQue
     
-    si nombre = inverse alors
-        ecrire(nombre, "est un palindrome");
-    sinon
-        ecrire(nombre, "n'est pas un palindrome");
-    finsi
+    Si nombre = inverse alors
+        Ecrire(nombre, "est un palindrome");
+    SiNon
+        Ecrire(nombre, "n est pas un palindrome");
+    FinSi
 Fin`
     },
     {
         name: "Décimal vers Binaire",
         code: `Algorithme DecimalVersBinaire;
 Var
-    nombreDecimal, binaire, reste, multiplicateur: entier;
+    nombreDecimal, binaire, reste, multiplicateur: Entier;
 Debut
-    ecrire("Entrez un nombre entier en base décimale:");
-    lire(nombreDecimal);
+    Ecrire("Entrez un nombre entier en base décimale:");
+    Lire(nombreDecimal);
     
     binaire <- 0;
     multiplicateur <- 1;
     
-    tantque nombreDecimal <> 0 faire
+    TantQue nombreDecimal <> 0 faire
         reste <- nombreDecimal mod 2;
         binaire <- binaire + (reste * multiplicateur);
         nombreDecimal <- nombreDecimal div 2;
         multiplicateur <- multiplicateur * 10;
-    fintantque
+    FinTantQue
     
-    ecrire("Représentation binaire:", binaire);
+    Ecrire("Représentation binaire:", binaire);
 Fin`
     },
     {
@@ -355,82 +355,82 @@ Fin`
         code: `Algorithme MotDePasse;
 Var
     mot : chaine;
-    essai : entier;
+    essai : Entier;
 Debut
     essai <- 1;
 
-    tantque essai <= 3 et mot != "0000" faire
+    TantQue essai <= 3 et mot != "0000" faire
         Ecrire("Entrez le mot de passe :");
-        lire(mot);
+        Lire(mot);
 
-        si mot != "0000" alors
+        Si mot != "0000" alors
             Ecrire("Mot de passe incorrect.");
-        finsi
+        FinSi
 
         essai <- essai + 1;
-    fintantque
+    FinTantQue
 
-    si mot = "0000" alors
+    Si mot = "0000" alors
         Ecrire("Accès autorisé.");
-    sinon
+    SiNon
         Ecrire("Accès refusé.");
-    finsi
+    FinSi
 Fin`
 	},
     {
         name: "Fibonacci",
         code: `Algorithme SuiteFibonacci;
 Var
-    n, i, a, b, c: entier;
+    n, i, a, b, c: Entier;
 Debut
-    ecrire("Combien de termes de la suite de Fibonacci voulez-vous?");
-    lire(n);
+    Ecrire("Combien de termes de la suite de Fibonacci voulez-vous?");
+    Lire(n);
     
-    ecrire("Suite de Fibonacci:");
+    Ecrire("Suite de Fibonacci:");
     
-    si n >= 1 alors
-        ecrire(0);
-    finsi
+    Si n >= 1 alors
+        Ecrire(0);
+    FinSi
     
-    si n >= 2 alors
-        ecrire(1);
-    finsi
+    Si n >= 2 alors
+        Ecrire(1);
+    FinSi
     
     a <- 0;
     b <- 1;
     
-    pour i de 3 a n faire
+    Pour i de 3 a n faire
         c <- a + b;
-        ecrire(c);
+        Ecrire(c);
         a <- b;
         b <- c;
-    finpour
+    FinPour
 Fin`
     },
     {
         name: "Calcul PGCD",
         code: `Algorithme CalculPGCD;
 Var
-    a, b, r: entier;
+    a, b, r: Entier;
 Debut
-    ecrire("Entrez le premier nombre:");
-    lire(a);
-    ecrire("Entrez le deuxième nombre:");
-    lire(b);
+    Ecrire("Entrez le premier nombre:");
+    Lire(a);
+    Ecrire("Entrez le deuxième nombre:");
+    Lire(b);
     
-    si a < b alors
+    Si a < b alors
         r <- a;
         a <- b;
         b <- r;
-    finsi
+    FinSi
     
-    tantque b <> 0 faire
+    TantQue b <> 0 faire
         r <- a mod b;
         a <- b;
         b <- r;
-    fintantque
+    FinTantQue
     
-    ecrire("Le PGCD est:", a);
+    Ecrire("Le PGCD est:", a);
 Fin`
     },
     {
@@ -439,43 +439,43 @@ Fin`
 Var
     a, b, c, delta, x1, x2: reel;
 Debut
-    ecrire("Résolution de l'équation ax² + bx + c = 0");
-    ecrire("Entrez la valeur de a:");
-    lire(a);
-    ecrire("Entrez la valeur de b:");
-    lire(b);
-    ecrire("Entrez la valeur de c:");
-    lire(c);
+    Ecrire("Résolution de l'équation ax² + bx + c = 0");
+    Ecrire("Entrez la valeur de a:");
+    Lire(a);
+    Ecrire("Entrez la valeur de b:");
+    Lire(b);
+    Ecrire("Entrez la valeur de c:");
+    Lire(c);
     
-    si a = 0 alors
-        si b = 0 alors
-            si c = 0 alors
-                ecrire("L'équation admet une infinité de solutions");
-            sinon
-                ecrire("L'équation n'admet pas de solution");
-            finsi
-        sinon
+    Si a = 0 alors
+        Si b = 0 alors
+            Si c = 0 alors
+                Ecrire("L'équation admet une infinité de solutions");
+            SiNon
+                Ecrire("L'équation n'admet pas de solution");
+            FinSi
+        SiNon
             x1 <- -c / b;
-            ecrire("L'équation est du premier degré, la solution est x =", x1);
-        finsi
-    sinon
+            Ecrire("L'équation est du premier degré, la solution est x =", x1);
+        FinSi
+    SiNon
         delta <- b * b - 4 * a * c;
         
-        si delta < 0 alors
-            ecrire("L'équation n'admet pas de solution réelle");
-        sinon
-            si delta = 0 alors
+        Si delta < 0 alors
+            Ecrire("L'équation n'admet pas de solution réelle");
+        SiNon
+            Si delta = 0 alors
                 x1 <- -b / (2 * a);
-                ecrire("L'équation admet une solution double: x =", x1);
-            sinon
+                Ecrire("L'équation admet une solution double: x =", x1);
+            SiNon
                 x1 <- (-b - racine(delta)) / (2 * a);
                 x2 <- (-b + racine(delta)) / (2 * a);
-                ecrire("L'équation admet deux solutions:");
-                ecrire("x1 =", x1);
-                ecrire("x2 =", x2);
-            finsi
-        finsi
-    finsi
+                Ecrire("L'équation admet deux solutions:");
+                Ecrire("x1 =", x1);
+                Ecrire("x2 =", x2);
+            FinSi
+        FinSi
+    FinSi
 Fin`
     },
     
@@ -484,61 +484,61 @@ Fin`
         name: "Calcul PPCM",
         code: `Algorithme CalculPPCM;
 Var
-    a, b, pgcd, ppcm: entier;
-    temp_a, temp_b, r: entier;
+    a, b, pgcd, ppcm: Entier;
+    temp_a, temp_b, r: Entier;
 Debut
-    ecrire("Entrez le premier nombre:");
-    lire(a);
-    ecrire("Entrez le deuxième nombre:");
-    lire(b);
+    Ecrire("Entrez le premier nombre:");
+    Lire(a);
+    Ecrire("Entrez le deuxième nombre:");
+    Lire(b);
     
     temp_a <- a;
     temp_b <- b;
     
-    si a < b alors
+    Si a < b alors
         r <- a;
         a <- b;
         b <- r;
-    finsi
+    FinSi
     
     tantque b <> 0 faire
         r <- a mod b;
         a <- b;
         b <- r;
-    fintantque
+    FinTantQue
     
     pgcd <- a;
     ppcm <- (temp_a * temp_b) / pgcd;
     
-    ecrire("Le PPCM est:", ppcm);
+    Ecrire("Le PPCM est:", ppcm);
 Fin`
     },
     {
         name: "Nombres Premiers",
         code: `Algorithme NombresPremiers;
 var
-    n, i, j, temp: entier;
-    estPremier: booleen;
+    n, i, j, temp: Entier;
+    estPremier: Booleen;
 debut
-    ecrire("Entrez la limite N:");
-    lire(n);
+    Ecrire("Entrez la limite N:");
+    Lire(n);
     
-    ecrire("Nombres premiers jusqu'à", n, ":");
+    Ecrire("Nombres premiers jusqu'à", n, ":");
     
     pour i de 2 a n faire
         estPremier <- vrai;
         
         pour j de 2 a i-1 faire
             temp <- i mod j;
-            si temp = 0 alors
+            Si temp = 0 alors
                 estPremier <- faux;
                 sortir;
-            finsi
-        finpour
+            FinSi
+        Finpour
         
-        si estPremier = vrai alors
-            ecrire(i);
-        finsi
+        Si estPremier = vrai alors
+            Ecrire(i);
+        FinSi
     finpour
 Fin`
     }

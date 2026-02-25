@@ -962,6 +962,7 @@ function getBlockExample(blockType) {
             `;
             
             document.getElementById('syntaxModal').classList.add('active');
+			
         }
 
         // Close modal
@@ -1026,7 +1027,9 @@ function getBlockExample(blockType) {
             const result = checkSyntax(code);
             
             if (result.isValid) {
+				fixIndentation();
                 showSyntaxSuccess();
+				
             } else {
                 showSyntaxError(result);
             }

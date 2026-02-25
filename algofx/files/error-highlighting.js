@@ -598,7 +598,7 @@ window.clearErrorHighlighting = function() {
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('error-indicator')) {
         const message = e.target.getAttribute('data-tooltip');
-        showToast(message);
+        //showToast(message);
     }
 });
 
@@ -614,3 +614,14 @@ function showToast(message) {
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('error-indicator')) {
+        // Toggle a CSS class that shows the tooltip
+        document.querySelectorAll('.error-indicator.active-tip')
+            .forEach(el => { if (el !== e.target) el.classList.remove('active-tip'); });
+        e.target.classList.toggle('active-tip');
+    } else {
+        document.querySelectorAll('.error-indicator.active-tip')
+            .forEach(el => el.classList.remove('active-tip'));
+    }
+});
