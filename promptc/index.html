@@ -3,763 +3,488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مهندس الاوامر</title>
+<title>مهندس الأوامر</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafaf9;
+  --surface:#ffffff;
+  --surface-alt:#f5f5f3;
+  --border:#e5e4e0;
+  --border-strong:#cccbc7;
+  --accent:#1a1a1a;
+  --accent-muted:#3d3d3b;
+  --tag-blue-bg:#eff6ff;--tag-blue-text:#1d4ed8;--tag-blue-border:#bfdbfe;
+  --tag-amber-bg:#fffbeb;--tag-amber-text:#92400e;--tag-amber-border:#fcd34d;
+  --tag-green-bg:#f0fdf4;--tag-green-text:#166534;--tag-green-border:#bbf7d0;
+  --tag-red-bg:#fef2f2;--tag-red-text:#991b1b;--tag-red-border:#fecaca;
+  --tag-purple-bg:#faf5ff;--tag-purple-text:#6b21a8;--tag-purple-border:#e9d5ff;
+  --tag-teal-bg:#f0fdfa;--tag-teal-text:#115e59;--tag-teal-border:#99f6e4;
+  --text-primary:#111110;
+  --text-secondary:#6b6b68;
+  --text-muted:#9b9b97;
+  --font:'IBM Plex Arabic',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --radius:8px;
+  --radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#111110;--surface:#1c1c1a;--surface-alt:#222220;
+    --border:#2e2e2b;--border-strong:#3d3d3a;
+    --accent:#f0efe9;--accent-muted:#c5c4be;
+    --text-primary:#f0efe9;--text-secondary:#9b9b97;--text-muted:#6b6b68;
+    --tag-blue-bg:#172554;--tag-blue-text:#93c5fd;--tag-blue-border:#1e3a8a;
+    --tag-amber-bg:#431407;--tag-amber-text:#fcd34d;--tag-amber-border:#78350f;
+    --tag-green-bg:#052e16;--tag-green-text:#86efac;--tag-green-border:#14532d;
+    --tag-red-bg:#450a0a;--tag-red-text:#fca5a5;--tag-red-border:#7f1d1d;
+    --tag-purple-bg:#2e1065;--tag-purple-text:#d8b4fe;--tag-purple-border:#4c1d95;
+    --tag-teal-bg:#042f2e;--tag-teal-text:#5eead4;--tag-teal-border:#134e4a;
+  }
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;line-height:1.6;font-size:15px}
 
-  :root {
-    --bg: #0f0f11;
-    --surface: #18181c;
-    --surface2: #202026;
-    --border: #2a2a35;
-    --border2: #3a3a48;
-    --accent: #7c6fff;
-    --accent2: #a89dff;
-    --accent-dim: #7c6fff22;
-    --green: #4ade80;
-    --green-dim: #4ade8015;
-    --amber: #fbbf24;
-    --amber-dim: #fbbf2415;
-    --rose: #fb7185;
-    --rose-dim: #fb718515;
-    --teal: #2dd4bf;
-    --teal-dim: #2dd4bf15;
-    --sky: #38bdf8;
-    --sky-dim: #38bdf815;
-    --orange: #fb923c;
-    --orange-dim: #fb923c15;
-    --text: #e8e8f0;
-    --text2: #9090a8;
-    --text3: #55556a;
-    --font: 'IBM Plex Arabic', sans-serif;
-    --mono: 'IBM Plex Mono', monospace;
-    --radius: 10px;
-    --radius-lg: 16px;
-  }
+.layout{max-width:780px;margin:0 auto;padding:3rem 1.5rem 6rem}
 
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.3;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* HEADER */
+.header{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.header-eyebrow{font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2.5s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-size:clamp(20px,4vw,26px);font-weight:600;color:var(--text-primary);letter-spacing:-.03em;line-height:1.2}
+.header-sub{font-size:13px;color:var(--text-secondary);margin-top:.4rem;font-weight:300}
+.header-badge{display:inline-flex;align-items:center;margin-top:1rem;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;letter-spacing:.06em}
 
-  .page {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem 5rem;
-  }
+/* STEP LABELS */
+.step{margin-bottom:2rem}
+.step-label{display:flex;align-items:center;gap:10px;margin-bottom:.85rem}
+.step-num{font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:4px;padding:2px 7px;letter-spacing:.08em;flex-shrink:0}
+.step-title{font-size:12px;font-weight:500;color:var(--text-secondary);letter-spacing:.02em}
 
-  /* HEADER */
-  .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 3rem; gap: 1rem; }
-  .logo-tag {
-    font-family: var(--mono); font-size: 11px; color: var(--accent);
-    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .logo-tag::before {
-    content: ''; display: inline-block; width: 6px; height: 6px;
-    background: var(--accent); border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-  h1 { font-size: clamp(22px,4vw,32px); font-weight: 600; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
-  h1 span { color: var(--accent2); }
-  .header-sub { font-size: 13px; color: var(--text2); margin-top: 6px; font-weight: 300; }
-  .badge {
-    font-family: var(--mono); font-size: 10px;
-    background: var(--accent-dim); color: var(--accent2);
-    border: 1px solid var(--accent); border-radius: 6px;
-    padding: 4px 10px; white-space: nowrap; margin-top: 4px; display: inline-block;
-  }
+/* SELECTS */
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'';position:absolute;left:12px;top:50%;width:8px;height:8px;border-left:1.5px solid var(--text-muted);border-bottom:1.5px solid var(--text-muted);transform:translateY(-65%) rotate(-45deg);pointer-events:none}
+select{width:100%;padding:10px 14px 10px 34px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-primary);font-family:var(--font);font-size:14px;cursor:pointer;appearance:none;outline:none;transition:border-color .15s,box-shadow .15s}
+select:hover:not(:disabled){border-color:var(--border-strong)}
+select:focus{border-color:var(--accent-muted);box-shadow:0 0 0 3px rgba(0,0,0,.05)}
+select:disabled{opacity:.35;cursor:not-allowed}
+select option{background:var(--surface)}
 
-  /* SECTIONS */
-  .section { margin-bottom: 1.5rem; }
-  .section-label {
-    font-family: var(--mono); font-size: 10px; color: var(--text3);
-    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* INFO STRIP */
+.info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:2rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .28s ease}
+.info-strip.open{max-height:100px;opacity:1}
+.info-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.info-tile-label{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-bottom:5px}
+.info-tile-value{font-size:12.5px;color:var(--text-primary);font-weight:500;line-height:1.4}
 
-  /* SELECTS */
-  .selects-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .select-wrap { position: relative; }
-  .select-wrap::after {
-    content: '▾'; position: absolute; left: 14px; top: 50%;
-    transform: translateY(-50%); color: var(--text3); font-size: 12px; pointer-events: none;
-  }
-  select {
-    width: 100%; padding: 11px 14px 11px 36px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    color: var(--text); font-family: var(--font); font-size: 14px;
-    cursor: pointer; appearance: none;
-    transition: border-color .15s, background .15s; outline: none;
-  }
-  select:hover { border-color: var(--border2); }
-  select:focus { border-color: var(--accent); background: var(--surface2); }
-  select:disabled { opacity: .4; cursor: not-allowed; }
-  select option { background: #1a1a22; }
+/* CLASS CARDS */
+.class-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.class-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;cursor:pointer;transition:border-color .15s,background .15s,transform .12s;position:relative}
+.class-card:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+.class-card.sel-jmet{border-color:var(--tag-blue-border);background:var(--tag-blue-bg)}
+.class-card.sel-jma{border-color:var(--tag-amber-border);background:var(--tag-amber-bg)}
+.card-check{position:absolute;top:10px;left:12px;width:16px;height:16px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.sel-jmet .card-check{background:var(--tag-blue-text);border-color:var(--tag-blue-text)}
+.sel-jma .card-check{background:var(--tag-amber-text);border-color:var(--tag-amber-text)}
+.card-check::after{content:'';width:5px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px);opacity:0;transition:opacity .12s}
+.sel-jmet .card-check::after,.sel-jma .card-check::after{opacity:1}
+.card-name{font-size:20px;font-weight:600;letter-spacing:-.02em;display:block;margin-bottom:4px;color:var(--text-primary)}
+.sel-jmet .card-name{color:var(--tag-blue-text)}
+.sel-jma .card-name{color:var(--tag-amber-text)}
+.card-level{font-family:var(--mono);font-size:10px;color:var(--text-muted);display:block;margin-bottom:8px}
+.card-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.level-bar{display:flex;gap:3px;margin-top:10px}
+.lv{height:2px;flex:1;border-radius:1px;background:var(--border)}
+.sel-jmet .lv.on{background:var(--tag-blue-text)}
+.sel-jma .lv.on{background:var(--tag-amber-text)}
 
-  /* CLASS TOGGLE */
-  .class-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .class-card {
-    border: 1px solid var(--border); border-radius: var(--radius-lg);
-    padding: 16px 18px; cursor: pointer;
-    transition: all .18s; background: var(--surface); position: relative; overflow: hidden;
-  }
-  .class-card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-1px); }
-  .class-card.active-jmet { border-color: var(--sky); background: var(--sky-dim); }
-  .class-card.active-jma  { border-color: var(--amber); background: var(--amber-dim); }
-  .class-card .check { position: absolute; top: 10px; left: 12px; font-family: var(--mono); font-size: 10px; display: none; }
-  .class-card.active-jmet .check { display: block; color: var(--sky); }
-  .class-card.active-jma  .check { display: block; color: var(--amber); }
-  .class-name { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; display: block; margin-bottom: 4px; }
-  .active-jmet .class-name { color: var(--sky); }
-  .active-jma  .class-name { color: var(--amber); }
-  .class-card:not(.active-jmet):not(.active-jma) .class-name { color: var(--text2); }
-  .class-level { font-size: 11px; color: var(--text3); font-family: var(--mono); display: block; margin-bottom: 8px; }
-  .class-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
-  .level-bar { display: flex; gap: 4px; margin-top: 10px; }
-  .level-dot { height: 3px; flex: 1; border-radius: 2px; background: var(--border2); }
-  .active-jmet .level-dot.filled { background: var(--sky); }
-  .active-jma  .level-dot.filled { background: var(--amber); }
-  .class-card:not(.active-jmet):not(.active-jma) .level-dot.filled { background: var(--border2); }
+/* TYPE GRID */
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.type-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .12s;position:relative}
+.type-btn:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+.type-btn.active{border-color:var(--accent);background:var(--surface-alt)}
+.type-check{position:absolute;top:7px;left:8px;font-family:var(--mono);font-size:9px;color:var(--text-primary);display:none}
+.type-btn.active .type-check{display:block}
+.type-icon{font-size:18px;display:block;margin-bottom:6px;line-height:1}
+.type-name{font-size:11.5px;font-weight:500;color:var(--text-primary);display:block;line-height:1.3}
+.type-sub{font-size:9.5px;color:var(--text-muted);display:block;margin-top:2px;font-family:var(--mono)}
 
-  /* INFO STRIP */
-  .info-strip {
-    display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
-    max-height: 0; overflow: hidden; opacity: 0;
-    transition: max-height .3s ease, opacity .3s ease, margin .3s ease;
-    margin-bottom: 0;
-  }
-  .info-strip.visible { max-height: 140px; opacity: 1; margin-bottom: 1.5rem; }
-  .info-tile {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 12px 14px; position: relative; overflow: hidden;
-  }
-  .info-tile::before {
-    content: ''; position: absolute; inset: 0 auto 0 0;
-    width: 2px; background: var(--accent); border-radius: 2px 0 0 2px;
-  }
-  .info-tile-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .06em; margin-bottom: 5px; }
-  .info-tile-value { font-size: 12px; color: var(--text); font-weight: 500; line-height: 1.4; }
+/* OUTPUT CONTROLS */
+.controls-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.ctrl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.ctrl-head{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.08em;padding:7px 12px 6px;border-bottom:1px solid var(--border)}
+.ctrl-pills{display:flex}
+.ctrl-pill{flex:1;padding:8px 6px;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:transparent;border:none;border-right:1px solid var(--border);cursor:pointer;transition:background .12s,color .12s;text-align:center;line-height:1.3}
+.ctrl-pill:last-child{border-right:none}
+.ctrl-pill:hover{background:var(--surface-alt);color:var(--text-secondary)}
+.ctrl-pill.on{background:var(--surface-alt);color:var(--text-primary);font-weight:500}
+.pill-en{display:block;font-size:9px;color:var(--text-muted);margin-top:1px}
+.ctrl-pill.on .pill-en{color:var(--text-muted)}
 
-  /* TYPE GRID — 6 items, 3 cols */
-  .type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-  .type-btn {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 14px 8px; cursor: pointer; text-align: center;
-    transition: all .15s; position: relative; overflow: hidden;
-  }
-  .type-btn:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-1px); }
-  .type-btn.active { border-color: var(--accent); background: var(--accent-dim); }
-  .type-btn.active::after { content: '✓'; position: absolute; top: 6px; left: 6px; font-size: 9px; color: var(--accent); font-family: var(--mono); }
-  .type-icon { font-size: 22px; display: block; margin-bottom: 6px; line-height: 1; }
-  .type-name { font-size: 11px; font-weight: 500; color: var(--text); line-height: 1.3; display: block; }
-  .type-sub  { font-size: 10px; color: var(--text3); display: block; margin-top: 3px; font-family: var(--mono); }
+/* STRICT ROW */
+.strict-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px}
+.strict-text{flex:1}
+.strict-title{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.strict-desc{font-family:var(--mono);font-size:10px;color:var(--text-muted);line-height:1.5}
+.toggle-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.toggle-lbl{font-family:var(--mono);font-size:10px;color:var(--text-muted);min-width:48px;text-align:left}
+.toggle{position:relative;width:34px;height:18px;background:var(--border-strong);border-radius:9px;cursor:pointer;border:none;outline:none;transition:background .2s;flex-shrink:0}
+.toggle::after{content:'';position:absolute;top:2px;right:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:right .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on{background:#22c55e}
+.toggle.on::after{right:calc(100% - 16px)}
 
-  .type-btn[data-type="course"].active       { border-color:var(--sky);    background:var(--sky-dim); }
-  .type-btn[data-type="course"].active::after { color:var(--sky); }
-  .type-btn[data-type="plan"].active         { border-color:var(--green);  background:var(--green-dim); }
-  .type-btn[data-type="plan"].active::after  { color:var(--green); }
-  .type-btn[data-type="presentation"].active { border-color:var(--amber);  background:var(--amber-dim); }
-  .type-btn[data-type="presentation"].active::after { color:var(--amber); }
-  .type-btn[data-type="problems"].active     { border-color:var(--rose);   background:var(--rose-dim); }
-  .type-btn[data-type="problems"].active::after { color:var(--rose); }
-  .type-btn[data-type="activities"].active   { border-color:var(--teal);   background:var(--teal-dim); }
-  .type-btn[data-type="activities"].active::after { color:var(--teal); }
-  .type-btn[data-type="exercises"].active    { border-color:var(--orange); background:var(--orange-dim); }
-  .type-btn[data-type="exercises"].active::after { color:var(--orange); }
+/* GEN BTN */
+.gen-btn{width:100%;padding:12px 20px;background:var(--text-primary);border:none;border-radius:var(--radius);color:var(--bg);font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .15s,transform .12s;letter-spacing:-.01em}
+.gen-btn:hover:not(:disabled){opacity:.85;transform:translateY(-1px)}
+.gen-btn:active:not(:disabled){transform:scale(.99)}
+.gen-btn:disabled{opacity:.3;cursor:not-allowed}
+.spin{width:14px;height:14px;border:1.5px solid rgba(255,255,255,.3);border-top-color:rgba(255,255,255,.9);border-radius:50%;animation:spin .6s linear infinite;display:none;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-color-scheme:dark){.gen-btn{color:#111110}}
 
-  /* ── NEW: OUTPUT CONTROLS ── */
-  .controls-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem;
-  }
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:2.5rem 0}
 
-  .ctrl-group { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .ctrl-group-label {
-    font-family: var(--mono); font-size: 9px; color: var(--text3);
-    letter-spacing: .1em; text-transform: uppercase;
-    padding: 8px 12px 6px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .ctrl-group-label .ctrl-icon { font-size: 11px; }
-  .ctrl-pills { display: flex; }
-  .ctrl-pill {
-    flex: 1; padding: 8px 4px; font-family: var(--mono); font-size: 10px;
-    color: var(--text3); background: transparent; border: none;
-    border-left: 1px solid var(--border); cursor: pointer;
-    transition: all .15s; text-align: center; line-height: 1.3;
-  }
-  .ctrl-pill:first-child { border-left: none; }
-  .ctrl-pill:hover { background: var(--surface2); color: var(--text2); }
-  .ctrl-pill.active { background: var(--accent-dim); color: var(--accent2); }
-  .ctrl-pill .pill-en { display: block; font-size: 9px; opacity: .6; margin-top: 1px; }
+/* OUTPUT */
+.output-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:none;animation:fadeIn .25s ease}
+.output-box.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.out-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.out-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.out-label{font-family:var(--mono);font-size:11px;color:var(--text-secondary)}
+.tags{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:9.5px;padding:2px 7px;border-radius:4px;border:1px solid;display:inline-block;white-space:nowrap}
+.tag-blue{background:var(--tag-blue-bg);color:var(--tag-blue-text);border-color:var(--tag-blue-border)}
+.tag-amber{background:var(--tag-amber-bg);color:var(--tag-amber-text);border-color:var(--tag-amber-border)}
+.tag-green{background:var(--tag-green-bg);color:var(--tag-green-text);border-color:var(--tag-green-border)}
+.tag-red{background:var(--tag-red-bg);color:var(--tag-red-text);border-color:var(--tag-red-border)}
+.tag-purple{background:var(--tag-purple-bg);color:var(--tag-purple-text);border-color:var(--tag-purple-border)}
+.tag-teal{background:var(--tag-teal-bg);color:var(--tag-teal-text);border-color:var(--tag-teal-border)}
+.tag-neutral{background:var(--surface-alt);color:var(--text-secondary);border-color:var(--border)}
+.out-actions{display:flex;gap:6px}
+.action-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-secondary);cursor:pointer;transition:all .12s;white-space:nowrap}
+.action-btn:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.action-btn.copied{border-color:var(--tag-green-border);color:var(--tag-green-text);background:var(--tag-green-bg)}
+.prompt-body{padding:20px;font-size:13px;line-height:1.9;color:var(--text-primary);white-space:pre-wrap;direction:rtl;font-weight:300;min-height:100px}
+.cursor{display:inline-block;width:1.5px;height:14px;background:var(--text-primary);margin-right:2px;vertical-align:middle;animation:blink .8s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.out-footer{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-top:1px solid var(--border);background:var(--surface-alt);flex-wrap:wrap;gap:8px}
+.meta-info{font-family:var(--mono);font-size:10px;color:var(--text-muted);display:flex;gap:14px;flex-wrap:wrap}
+.meta-val{color:var(--text-secondary);font-weight:500}
+.meta-hint{font-family:var(--mono);font-size:10px;color:var(--text-muted)}
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--text-muted)}
+.empty-icon{font-size:28px;margin-bottom:10px;opacity:.35}
+.empty-text{font-family:var(--mono);font-size:11px}
 
-  /* strict mode toggle */
-  .strict-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 14px; background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); margin-bottom: 1rem; gap: 12px;
-  }
-  .strict-info { flex: 1; }
-  .strict-title { font-size: 12px; color: var(--text); font-weight: 500; margin-bottom: 2px; }
-  .strict-desc  { font-size: 11px; color: var(--text3); line-height: 1.45; font-family: var(--mono); }
-  .toggle-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .toggle-label { font-family: var(--mono); font-size: 10px; color: var(--text3); }
-  .toggle {
-    position: relative; width: 36px; height: 20px;
-    background: var(--border2); border-radius: 10px; cursor: pointer;
-    transition: background .2s; border: none; outline: none; flex-shrink: 0;
-  }
-  .toggle::after {
-    content: ''; position: absolute; top: 3px; right: 3px;
-    width: 14px; height: 14px; background: var(--text3);
-    border-radius: 50%; transition: all .2s;
-  }
-  .toggle.on { background: var(--accent); }
-  .toggle.on::after { right: calc(100% - 17px); background: #fff; }
+/* HIDDEN sections */
+.hidden{display:none}
 
-  /* GEN BTN */
-  .gen-btn {
-    width: 100%; padding: 13px 20px; background: var(--accent); border: none;
-    border-radius: var(--radius); color: #fff; font-family: var(--font);
-    font-size: 15px; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: all .15s; margin-top: 1rem;
-  }
-  .gen-btn:hover:not(:disabled) { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-dim); }
-  .gen-btn:active:not(:disabled) { transform: scale(.99); }
-  .gen-btn:disabled { opacity: .45; cursor: not-allowed; }
-  .gen-btn .spinner {
-    width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3);
-    border-top-color: #fff; border-radius: 50%;
-    animation: spin .6s linear infinite; display: none;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); margin: 1.75rem 0; position: relative; }
-  .divider::after {
-    content: '◆'; position: absolute; left: 50%; top: 50%;
-    transform: translate(-50%,-50%); font-size: 8px; color: var(--border2);
-    background: var(--bg); padding: 0 8px;
-  }
-
-  /* OUTPUT */
-  .output-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-lg); overflow: hidden; display: none;
-    animation: fadeIn .3s ease;
-  }
-  .output-box.visible { display: block; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .output-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 12px; flex-wrap: wrap;
-  }
-  .output-title { font-family: var(--mono); font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .output-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 2s ease-in-out infinite; }
-  .output-actions { display: flex; gap: 8px; }
-  .action-btn {
-    font-family: var(--mono); font-size: 11px; padding: 5px 12px;
-    background: transparent; border: 1px solid var(--border2); border-radius: 6px;
-    color: var(--text2); cursor: pointer; transition: all .15s; white-space: nowrap;
-  }
-  .action-btn:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent2); }
-  .action-btn.copied { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-
-  /* output meta tags */
-  .output-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-  .meta-tag {
-    font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 4px;
-    border: 1px solid var(--border2); color: var(--text3); background: var(--surface2);
-    display: inline-flex; align-items: center; gap: 3px;
-  }
-  .meta-tag.fmt-structured { border-color: var(--sky); color: var(--sky); background: var(--sky-dim); }
-  .meta-tag.fmt-semi       { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
-  .meta-tag.fmt-free       { border-color: var(--accent); color: var(--accent2); background: var(--accent-dim); }
-  .meta-tag.len-short      { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-  .meta-tag.len-medium     { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
-  .meta-tag.len-long       { border-color: var(--rose); color: var(--rose); background: var(--rose-dim); }
-  .meta-tag.strict-on      { border-color: var(--rose); color: var(--rose); background: var(--rose-dim); }
-  .meta-tag.strict-off     { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-
-  .prompt-body {
-    padding: 20px; font-size: 13.5px; line-height: 1.85;
-    color: var(--text); white-space: pre-wrap; direction: rtl; min-height: 80px; font-weight: 300;
-  }
-  .cursor {
-    display: inline-block; width: 2px; height: 15px; background: var(--accent);
-    margin-right: 2px; vertical-align: middle; animation: blink .8s step-end infinite;
-  }
-  @keyframes blink { 50%{opacity:0} }
-
-  .token-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 16px; border-top: 1px solid var(--border);
-    background: var(--surface2); flex-wrap: wrap; gap: 8px;
-  }
-  .token-info { font-family: var(--mono); font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 12px; }
-  .token-count { color: var(--accent2); font-weight: 500; }
-
-  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text3); }
-  .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: .4; }
-  .empty-text { font-size: 13px; font-family: var(--mono); }
-
-  .class-pill { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 4px; display: inline-block; }
-  .class-pill.jmet { background: var(--sky-dim); color: var(--sky); border: 1px solid var(--sky); }
-  .class-pill.jma  { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
-
-  @media (max-width: 640px) {
-    .selects-row { grid-template-columns: 1fr; }
-    .type-grid   { grid-template-columns: repeat(2,1fr); }
-    .info-strip  { grid-template-columns: 1fr 1fr; }
-    .class-toggle { grid-template-columns: 1fr; }
-    .header { flex-direction: column; }
-    .controls-grid { grid-template-columns: 1fr; }
-  }
+@media(max-width:580px){
+  .row-2,.class-grid,.type-grid,.controls-row{grid-template-columns:1fr 1fr}
+  .type-grid{grid-template-columns:repeat(2,1fr)}
+  .info-strip{grid-template-columns:1fr 1fr}
+  .class-grid{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .row-2{grid-template-columns:1fr}
+  .type-grid{grid-template-columns:repeat(2,1fr)}
+  .controls-row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="layout">
 
+  <!-- HEADER -->
   <div class="header">
-    <div>
-      <div class="logo-tag">prompt engineer · v3.0</div>
-      <h1>مهندس الاوامر <span></span></h1>
-      <p class="header-sub">أداة توليد الأوامر — تدرج المعلوماتية / التعليم الثانوي</p>
-    </div>
-    <div><span class="badge">انسخ والصق في أي نموذج لغوي كبير (LLM)</span></div>
+    <div class="header-eyebrow"><span class="live-dot"></span>prompt engineer · v3</div>
+    <h1>مهندس الأوامر</h1>
+    <p class="header-sub">توليد أوامر بيداغوجية — الإعلام الآلي / التعليم الثانوي الجزائري</p>
+    <span class="header-badge">انسخ الأمر والصقه في أي نموذج لغوي</span>
   </div>
 
-  <!-- 01 CURRICULUM -->
-  <div class="section">
-    <div class="section-label">01 — المجال والوحدة</div>
-    <div class="selects-row">
-      <div class="select-wrap">
-        <select id="areaSelect"><option value="">— اختر المجال —</option></select>
-      </div>
-      <div class="select-wrap">
-        <select id="unitSelect" disabled><option value="">— اختر الوحدة —</option></select>
-      </div>
+  <!-- STEP 01 -->
+  <div class="step">
+    <div class="step-label">
+      <span class="step-num">01</span>
+      <span class="step-title">المجال والوحدة</span>
+    </div>
+    <div class="row-2">
+      <div class="sel-wrap"><select id="areaSelect"><option value="">— اختر المجال —</option></select></div>
+      <div class="sel-wrap"><select id="unitSelect" disabled><option value="">— اختر الوحدة —</option></select></div>
     </div>
   </div>
 
   <!-- INFO STRIP -->
   <div class="info-strip" id="infoStrip">
-    <div class="info-tile">
-      <div class="info-tile-label">الحجم الساعي</div>
-      <div class="info-tile-value" id="icDuration">—</div>
-    </div>
-    <div class="info-tile">
-      <div class="info-tile-label">الكفاءة المستهدفة</div>
-      <div class="info-tile-value" id="icCompetency">—</div>
-    </div>
-    <div class="info-tile">
-      <div class="info-tile-label">عدد الأهداف</div>
-      <div class="info-tile-value" id="icObjectives">—</div>
-    </div>
+    <div class="info-tile"><div class="info-tile-label">DURATION</div><div class="info-tile-value" id="icDuration">—</div></div>
+    <div class="info-tile"><div class="info-tile-label">COMPETENCY</div><div class="info-tile-value" id="icCompetency">—</div></div>
+    <div class="info-tile"><div class="info-tile-label">OBJECTIVES</div><div class="info-tile-value" id="icObjectives">—</div></div>
   </div>
 
-  <!-- 02 CLASS -->
-  <div class="section" id="classSection" style="display:none;">
-    <div class="section-label">02 — اختر القسم</div>
-    <div class="class-toggle">
+  <!-- STEP 02 -->
+  <div class="step hidden" id="classSection">
+    <div class="step-label">
+      <span class="step-num">02</span>
+      <span class="step-title">القسم</span>
+    </div>
+    <div class="class-grid">
       <div class="class-card" id="cardJmet" onclick="selectClass('jmet')">
-        <span class="check">✓</span>
-        <span class="class-name">ج م ع ت</span>
-        <span class="class-level">من متوسط الى جيد</span>
-        <span class="class-desc">تلاميذ قادرون على الاستيعاب بسرعة، يتقبّلون المفاهيم التقنية، ويمكن تحدّيهم بمسائل أعمق وتحليلية.</span>
+        <div class="card-check"></div>
+        <span class="card-name">ج م ع ت</span>
+        <span class="card-level">متوسط → جيد</span>
+        <span class="card-desc">تلاميذ قادرون على الاستيعاب بسرعة، يتقبّلون المفاهيم التقنية ويمكن تحدّيهم بمسائل أعمق.</span>
         <div class="level-bar">
-          <div class="level-dot filled"></div>
-          <div class="level-dot filled"></div>
-          <div class="level-dot filled"></div>
-          <div class="level-dot filled"></div>
-          <div class="level-dot"></div>
+          <div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv"></div>
         </div>
       </div>
       <div class="class-card" id="cardJma" onclick="selectClass('jma')">
-        <span class="check">✓</span>
-        <span class="class-name">ج م أ</span>
-        <span class="class-level">من ضعيف الى متوسط</span>
-        <span class="class-desc">تلاميذ يحتاجون تبسيطاً مكثفاً، تدرجاً بطيئاً، تعزيزاً مستمراً، وأمثلة ملموسة من واقعهم اليومي.</span>
+        <div class="card-check"></div>
+        <span class="card-name">ج م أ</span>
+        <span class="card-level">ضعيف → متوسط</span>
+        <span class="card-desc">تلاميذ يحتاجون تبسيطاً مكثفاً، تدرجاً بطيئاً، وأمثلة ملموسة من واقعهم اليومي.</span>
         <div class="level-bar">
-          <div class="level-dot filled"></div>
-          <div class="level-dot filled"></div>
-          <div class="level-dot"></div>
-          <div class="level-dot"></div>
-          <div class="level-dot"></div>
+          <div class="lv on"></div><div class="lv on"></div><div class="lv"></div><div class="lv"></div><div class="lv"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 03 TYPE -->
-  <div class="section" id="typeSection" style="display:none;">
-    <div class="section-label">03 — نوع المحتوى المطلوب</div>
+  <!-- STEP 03 -->
+  <div class="step hidden" id="typeSection">
+    <div class="step-label">
+      <span class="step-num">03</span>
+      <span class="step-title">نوع المحتوى</span>
+    </div>
     <div class="type-grid">
-      <button class="type-btn" data-type="course" onclick="selectType(this)">
-        <span class="type-icon">📄</span>
-        <span class="type-name">وثيقة الدرس</span>
-        <span class="type-sub"></span>
-      </button>
-      <button class="type-btn" data-type="plan" onclick="selectType(this)">
-        <span class="type-icon">📋</span>
-        <span class="type-name">مذكرة تحضيرية</span>
-        <span class="type-sub"></span>
-      </button>
-      <button class="type-btn" data-type="presentation" onclick="selectType(this)">
-        <span class="type-icon">🎓</span>
-        <span class="type-name">عرض تقديمي</span>
-        <span class="type-sub"></span>
-      </button>
-      <button class="type-btn" data-type="problems" onclick="selectType(this)">
-        <span class="type-icon">💡</span>
-        <span class="type-name">إشكاليات</span>
-        <span class="type-sub"></span>
-      </button>
-      <button class="type-btn" data-type="activities" onclick="selectType(this)">
-        <span class="type-icon">🖥️</span>
-        <span class="type-name">أنشطة تطبيقية</span>
-        <span class="type-sub"></span>
-      </button>
-      <button class="type-btn" data-type="exercises" onclick="selectType(this)">
-        <span class="type-icon">✏️</span>
-        <span class="type-name">تمارين و أفكار لتمارين</span>
-        <span class="type-sub"></span>
-      </button>
+      <button class="type-btn" data-type="course"        onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📄</span><span class="type-name">وثيقة الدرس</span></button>
+      <button class="type-btn" data-type="plan"          onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📋</span><span class="type-name">مذكرة تحضيرية</span></button>
+      <button class="type-btn" data-type="presentation"  onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🎓</span><span class="type-name">عرض تقديمي</span></button>
+      <button class="type-btn" data-type="problems"      onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">💡</span><span class="type-name">إشكاليات</span></button>
+      <button class="type-btn" data-type="activities"    onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🖥️</span><span class="type-name">أنشطة تطبيقية</span></button>
+      <button class="type-btn" data-type="exercises"     onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">✏️</span><span class="type-name">تمارين وأفكار</span></button>
     </div>
 
-    <!-- 04 OUTPUT CONTROLS (new) -->
-    <div class="section" style="margin-top:1.25rem; margin-bottom:0;">
-      <div class="section-label">04 — ضبط الإخراج</div>
-
-      <div class="controls-grid">
-        <!-- Format -->
-        <div class="ctrl-group">
-          <div class="ctrl-group-label"><span class="ctrl-icon">◧</span> تنسيق الإخراج</div>
+    <!-- STEP 04 -->
+    <div class="step" style="margin-top:1.5rem;margin-bottom:0">
+      <div class="step-label">
+        <span class="step-num">04</span>
+        <span class="step-title">ضبط الإخراج</span>
+      </div>
+      <div class="controls-row">
+        <div class="ctrl-box">
+          <div class="ctrl-head">تنسيق الإخراج</div>
           <div class="ctrl-pills">
-            <button class="ctrl-pill active" data-fmt="structured" onclick="selectFmt(this)">
-              منظم
-              <span class="pill-en">structured</span>
-            </button>
-            <button class="ctrl-pill" data-fmt="semi" onclick="selectFmt(this)">
-              مختلط
-              <span class="pill-en">semi</span>
-            </button>
-            <button class="ctrl-pill" data-fmt="free" onclick="selectFmt(this)">
-              حر
-              <span class="pill-en">free</span>
-            </button>
+            <button class="ctrl-pill on" data-fmt="structured" onclick="selectFmt(this)">منظم<span class="pill-en">structured</span></button>
+            <button class="ctrl-pill"    data-fmt="semi"       onclick="selectFmt(this)">مختلط<span class="pill-en">semi</span></button>
+            <button class="ctrl-pill"    data-fmt="free"       onclick="selectFmt(this)">حر<span class="pill-en">free</span></button>
           </div>
         </div>
-
-        <!-- Length -->
-        <div class="ctrl-group">
-          <div class="ctrl-group-label"><span class="ctrl-icon">↕</span> حجم الإخراج</div>
+        <div class="ctrl-box">
+          <div class="ctrl-head">حجم الإخراج</div>
           <div class="ctrl-pills">
-            <button class="ctrl-pill" data-len="short" onclick="selectLen(this)">
-              مختصر
-              <span class="pill-en">~400 كلمة</span>
-            </button>
-            <button class="ctrl-pill active" data-len="medium" onclick="selectLen(this)">
-              متوازن
-              <span class="pill-en">~700 كلمة</span>
-            </button>
-            <button class="ctrl-pill" data-len="long" onclick="selectLen(this)">
-              مفصل
-              <span class="pill-en">~1400 كلمة</span>
-            </button>
+            <button class="ctrl-pill"    data-len="short"  onclick="selectLen(this)">مختصر<span class="pill-en">~400</span></button>
+            <button class="ctrl-pill on" data-len="medium" onclick="selectLen(this)">متوازن<span class="pill-en">~700</span></button>
+            <button class="ctrl-pill"    data-len="long"   onclick="selectLen(this)">مفصل<span class="pill-en">~1400</span></button>
           </div>
         </div>
       </div>
-
-      <!-- Strict mode -->
       <div class="strict-row">
-        <div class="strict-info">
+        <div class="strict-text">
           <div class="strict-title">الوضع الصارم</div>
           <div class="strict-desc">يلزم النموذج باتباع الهيكل بدقة — بدون مقدمات أو إضافات خارج المطلوب</div>
         </div>
         <div class="toggle-wrap">
-          <span class="toggle-label" id="strictLabel">غير مفعل</span>
+          <span class="toggle-lbl" id="strictLabel">غير مفعل</span>
           <button class="toggle" id="strictToggle" onclick="toggleStrict()"></button>
         </div>
       </div>
     </div>
 
-    <button class="gen-btn" onclick="generatePrompt()" id="genBtn" disabled>
-      <div class="spinner" id="spinner"></div>
-      <span id="genBtnText">⚡ توليد الامر</span>
+    <button class="gen-btn" id="genBtn" onclick="generatePrompt()" disabled>
+      <div class="spin" id="spinner"></div>
+      <span id="genBtnText">⚡ توليد الأمر</span>
     </button>
   </div>
 
   <!-- OUTPUT -->
-  <div class="divider" id="outputDivider" style="display:none;"></div>
+  <div class="divider" id="outDivider" style="display:none"></div>
   <div class="output-box" id="outputBox">
-    <div class="output-header">
-      <div class="output-title">
-        <span class="dot"></span>
-        <div class="output-meta">
-          <span id="outputLabel">الامر المولد</span>
-          <span id="classPill"></span>
-          <span id="fmtTag" class="meta-tag"></span>
-          <span id="lenTag" class="meta-tag"></span>
-          <span id="strictTag" class="meta-tag"></span>
-        </div>
+    <div class="out-header">
+      <div class="out-title">
+        <span class="out-label" id="outLabel">الأمر المولّد</span>
+        <div class="tags" id="tagsRow"></div>
       </div>
-      <div class="output-actions">
-        <button class="action-btn" onclick="copyPrompt()" id="copyBtn">نسخ الامر</button>
+      <div class="out-actions">
+        <button class="action-btn" id="copyBtn" onclick="copyPrompt()">نسخ الأمر</button>
         <button class="action-btn" onclick="clearOutput()">مسح</button>
       </div>
     </div>
     <div class="prompt-body" id="promptBody">
-      <div class="empty-state">
-        <div class="empty-icon">✦</div>
-        <div class="empty-text">سيظهر الأمر هنا...</div>
-      </div>
+      <div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">سيظهر الأمر هنا...</div></div>
     </div>
-    <div class="token-bar">
-      <div class="token-info">
-        <span>الأحرف: <span class="token-count" id="charCount">0</span></span>
-        <span>الكلمات: <span class="token-count" id="wordCount">0</span></span>
-        <span>التقدير: <span class="token-count" id="tokenCount">~0</span> token</span>
+    <div class="out-footer">
+      <div class="meta-info">
+        <span>أحرف: <span class="meta-val" id="charCount">0</span></span>
+        <span>كلمات: <span class="meta-val" id="wordCount">0</span></span>
+        <span>تقدير: <span class="meta-val" id="tokenCount">~0</span> token</span>
       </div>
-      <div class="token-info"><span style="color:var(--text3);">انسخ والصق في ChatGPT · Gemini · Claude · إلخ</span></div>
+      <span class="meta-hint">ChatGPT · Gemini · Claude · إلخ</span>
     </div>
   </div>
 
 </div>
-
 <script>
 const CURRICULUM_DATA = {
   'بيئة التعامل مع الحاسوب': {
     'تقنية المعلومات': { competency:'يكتسب المتعلم معارف حول التقنيات الرقمية.',objectives:['يتعرف على مفهوم تكنولوجيا الإعلام والاتصال TIC.','يتعرف على مفهوم المعلوماتية.','يتعرف على مراحل تطور تقنية المعلومات IT.'],targeted_ressourses:['TIC مفهوم تكنولوجيا الإعلام والاتصال','مفهوم المعلوماتية','أهم مراحل تطور تقنية المعلومات'],progression:['البيانات – المعلومات – التقنية – المعلوماتية','مجالات تقنية المعلومات','مفهوم تكنولوجيا الإعلام والاتصال','أهم مراحل تطور تكنولوجيا الإعلام والاتصال'],duration:'2 ساعة',stage_evaluation:'ماهي أهم الميادين التي استفادت من تطور تكنولوجيا الإعلام والاتصال؟',final_task:'إنجاز بحث حول أحدث التطورات في تقنية المعلومات مع أمثلة من الواقع'},
-    'تجميع الحاسوب': { competency:'يتعلم مراحل تركيب الحاسوب.',objectives:['يتعرف على مواضع كل المكونات وكيفية توصيلها.'],targeted_ressourses:['مفهوم الحاسوب','مكونات الحاسوب','مخطط تركيب الحاسوب'],progression:['الحاسوب','وحدات الإدخال والإخراج','وحدة المعالجة والتخزين','تمثيل المعلومات في الحاسوب','استخدام برمجية المحاكات لتركيب الحاسوب'],duration:'4 ساعة',stage_evaluation:['أسئلة في المعارف المكتسبة مستغلا تمارين الكتاب المدرسي','أذكر مراحل تركيب الحاسوب؟','إنجاز عمليات تحويل بين مختلف وحدات قياس الذاكرة (Bit/Octet/Ko/Mo/Go/To)','توفير جميع مكونات الحاسوب','استعمال برنامج المحاكي لتركيب الحاسوب والتقويم'],final_task:['اذكر أوجه الشبه والاختلاف بين جهاز الحاسوب، الجهاز اللوحي والهاتف الذكي','إضافة أي بطاقة امتداد / مثال: إضافة بطاقة RAM']},
-    'نظام التشغيل': { competency:'يتمكن من تثبيت نظام التشغيل.',objectives:['يتعرف على مفهوم نظام التشغيل.','يتعرف على مفهوم تثبيت نظام التشغيل.','يتعرف على مفهوم تقسيم القرص.','يتعرف على مختلف مراحل التثبيت.'],targeted_ressourses:['تعريف نظام التشغيل','مفهوم تثبيت نظام التشغيل','مفهوم تقسيم القرص','مفهوم تهيئة القرص','الإعدادات قبل وأثناء التثبيت'],progression:['نظام التشغيل','تثبيت نظام التشغيل','تقسيم القرص الصلب','تهيئة القرص','مراحل تثبيت نظام التشغيل باستخدام برمجية محاكات'],duration:'4 ساعات',stage_evaluation:['أذكر أهم وظائف نظام التشغيل','كيفية تنفيذ الإقلاع الأول في برنامج الإعداد','أثناء عملية التثبيت، يفتح على المبتدئ عدة محطات لإعداد النظام أذكرها','استعمال برامج محاكاة لتثبيت النظام'],final_task:'تثبيت النظام باستعمال القرص'},
-    'لوحة التحكم': { competency:'ينجز بعض عمليات التحكم في الحاسوب.',objectives:['يتعرف على مكونات لوحة التحكم.','يتعرف على العرض وخصائصه.','يتعرف على خصائص الفأرة.','يتمكن من تغيير الخيارات الإقليمية وخيارات اللغة.','يتمكن من إزالة برنامج.','يتمكن من إنشاء حسابات المستخدمين.'],targeted_ressourses:['واجهة لوحة التحكم','خصائص العرض','خصائص الفأرة','الخيارات الإقليمية وخيارات اللغة','إزالة البرنامج','إنشاء حسابات المستخدمين'],progression:['يعرض على واجهة لوحة التحكم','يغير خصائص العرض','يغير خصائص الفأرة','يغير الخيارات الإقليمية واللغة','يزيل برنامجًا','ينشئ حساب المستخدم'],duration:'1 ساعة',stage_evaluation:['تغيير وإضافة لغة','إزالة برنامج','تغيير خلفية الشاشة','إنشاء حساب المستخدمين'],final_task:'التأقلم مع لوحة التحكم والتعود على مختلف استعمالاتها مع التركيز على حسابات المستخدمين'},
-    'حماية الحاسوب': { competency:'يثبت مضاد الفيروسات ويستعمله.',objectives:['يتعرف على الفيروسات وأنواعها.','يتعلم كيفية تثبيت مضاد الفيروسات واستعماله.'],targeted_ressourses:['الفيروسات وأنواعها','تثبيت مضاد الفيروسات والعمل به'],progression:['يتعرف على الفيروس','يميز بين مختلف الفيروسات','يتمكن من الوقاية من الفيروسات'],duration:'01 ساعة',stage_evaluation:['أذكر بعض أعراض الإصابة بالفيروس.'],final_task:'أهم الأسباب للعدوى بالفيروسات وطرق الوقاية من الفيروسات.'},
-    'الشبكة المحلية': { competency:'يتمكن من إعداد شبكة محلية واستغلالها.',objectives:['يتعرف على معنى الشبكة المحلية.','يدرس المكونات المادية للشبكة المحلية (طوبولوجيا النجمة).','يتمكن من إعداد الشبكة.','يتمكن من استغلال الموارد المشتركة (طابعة، قرص صلب...).'],targeted_ressourses:['تعريف الشبكة المحلية','المكونات المادية للشبكة المحلية','إعداد الشبكة'],progression:['يتعرف على الشبكة','يصنف الشبكات','يحدد المكونات المادية لشبكة محلية','يحدد طوبولوجيا الربط','يتعرف على العلاقة الوظيفية','يستغل المشاركة في المواد المادية والبرمجية'],duration:'04 ساعات',stage_evaluation:['أذكر الفرق بين المحول والموزع: Hub و Switch','الفرق بين مكونات الشبكة السلكية واللاسلكية','مشاركة بعض الموارد (قرص صلب، مجلد…)','استكشاف قرص صلب أو مجلد في جهاز ضمن مجموعة'],final_task:'إعداد 3 شبكات بأسماء مجموعات مختلفة وملاحظة الفرق.'}
+    'تجميع الحاسوب': { competency:'يتعلم مراحل تركيب الحاسوب.',objectives:['يتعرف على مواضع كل المكونات وكيفية توصيلها.'],targeted_ressourses:['مفهوم الحاسوب','مكونات الحاسوب','مخطط تركيب الحاسوب'],progression:['الحاسوب','وحدات الإدخال والإخراج','وحدة المعالجة والتخزين','تمثيل المعلومات في الحاسوب','استخدام برمجية المحاكات لتركيب الحاسوب'],duration:'4 ساعة',stage_evaluation:['أسئلة في المعارف المكتسبة','أذكر مراحل تركيب الحاسوب؟','إنجاز عمليات تحويل بين مختلف وحدات قياس الذاكرة'],final_task:['اذكر أوجه الشبه والاختلاف بين جهاز الحاسوب والجهاز اللوحي والهاتف الذكي','إضافة أي بطاقة امتداد']},
+    'نظام التشغيل': { competency:'يتمكن من تثبيت نظام التشغيل.',objectives:['يتعرف على مفهوم نظام التشغيل.','يتعرف على مفهوم تثبيت نظام التشغيل.','يتعرف على مفهوم تقسيم القرص.','يتعرف على مختلف مراحل التثبيت.'],targeted_ressourses:['تعريف نظام التشغيل','مفهوم تثبيت نظام التشغيل','مفهوم تقسيم القرص','مفهوم تهيئة القرص','الإعدادات قبل وأثناء التثبيت'],progression:['نظام التشغيل','تثبيت نظام التشغيل','تقسيم القرص الصلب','تهيئة القرص','مراحل تثبيت نظام التشغيل باستخدام برمجية محاكات'],duration:'4 ساعات',stage_evaluation:['أذكر أهم وظائف نظام التشغيل','كيفية تنفيذ الإقلاع الأول','استعمال برامج محاكاة لتثبيت النظام'],final_task:'تثبيت النظام باستعمال القرص'},
+    'لوحة التحكم': { competency:'ينجز بعض عمليات التحكم في الحاسوب.',objectives:['يتعرف على مكونات لوحة التحكم.','يتعرف على خصائص العرض والفأرة.','يتمكن من تغيير الخيارات الإقليمية وخيارات اللغة.','يتمكن من إزالة برنامج.','يتمكن من إنشاء حسابات المستخدمين.'],targeted_ressourses:['واجهة لوحة التحكم','خصائص العرض','خصائص الفأرة','الخيارات الإقليمية وخيارات اللغة','إزالة البرنامج','إنشاء حسابات المستخدمين'],progression:['يعرض على واجهة لوحة التحكم','يغير خصائص العرض','يغير خصائص الفأرة','يغير الخيارات الإقليمية','يزيل برنامجًا','ينشئ حساب المستخدم'],duration:'1 ساعة',stage_evaluation:['تغيير وإضافة لغة','إزالة برنامج','تغيير خلفية الشاشة','إنشاء حساب المستخدمين'],final_task:'التأقلم مع لوحة التحكم مع التركيز على حسابات المستخدمين'},
+    'حماية الحاسوب': { competency:'يثبت مضاد الفيروسات ويستعمله.',objectives:['يتعرف على الفيروسات وأنواعها.','يتعلم كيفية تثبيت مضاد الفيروسات واستعماله.'],targeted_ressourses:['الفيروسات وأنواعها','تثبيت مضاد الفيروسات والعمل به'],progression:['يتعرف على الفيروس','يميز بين مختلف الفيروسات','يتمكن من الوقاية من الفيروسات'],duration:'1 ساعة',stage_evaluation:['أذكر بعض أعراض الإصابة بالفيروس.'],final_task:'أهم الأسباب للعدوى بالفيروسات وطرق الوقاية.'},
+    'الشبكة المحلية': { competency:'يتمكن من إعداد شبكة محلية واستغلالها.',objectives:['يتعرف على معنى الشبكة المحلية.','يدرس المكونات المادية للشبكة المحلية.','يتمكن من إعداد الشبكة.','يتمكن من استغلال الموارد المشتركة.'],targeted_ressourses:['تعريف الشبكة المحلية','المكونات المادية للشبكة المحلية','إعداد الشبكة'],progression:['يتعرف على الشبكة','يصنف الشبكات','يحدد المكونات المادية','يحدد طوبولوجيا الربط','يستغل المشاركة في الموارد'],duration:'4 ساعات',stage_evaluation:['الفرق بين Hub و Switch','الفرق بين الشبكة السلكية واللاسلكية','مشاركة بعض الموارد'],final_task:'إعداد 3 شبكات بأسماء مجموعات مختلفة وملاحظة الفرق.'}
   },
   'المخططات الانسيابية والخوارزميات': {
-    'المخطط الإنسيابي': { competency:'يتمكن من فهم وإنشاء المخططات الانسيابية.',objectives:['يتعرف على المخطط الانسيابي.','يتعرف على عناصر حل مسألة.','يتعرف على مختلف دلالات الأشكال.'],targeted_ressourses:['تحديد عناصر المشكلة','تعريف المخطط الإنسيابي','أهم الأشكال والرموز في المخططات الإنسيابية'],progression:['يحدد عناصر مشكلة','يتعرف على المخطط الإنسيابي','يتعرف على مكونات المخطط الانسيابي'],duration:'02 ساعة',stage_evaluation:['إنشاء المخطط الانسيابي الذي يسمح بحساب مساحة ومحيط مستطيل','إنشاء المخطط الإنسيابي الذي يسمح بحل معادلة من الدرجة الأولى','إنشاء المخطط الانسيابي الذي يسمح بحساب معدل المواد الأساسية'],final_task:'حساب مجموع الأعداد الزوجية الأقل من عشرين.'},
-    'إنشاء المخطط الإنسيابي': { competency:'يتمكن من إنشاء مخطط انسيابي باستعمال برنامج LARP.',objectives:['يتعلم استعمال برنامج LARP.'],targeted_ressourses:['شرح برمجية Larp','توظيف برمجية Larp لإنشاء مخطط إنساني'],progression:['شرح برمجية Larp','يوظف برمجية Larp لإنشاء مخطط إنساني'],duration:'02 ساعة',stage_evaluation:['استعمل برمجية Larp لرسم المخطط الإنساني الذي يحسب مساحة ومحيط مستطيل','استعمل برمجية Larp لرسم المخطط الإنساني الذي يسمح بحل معادلة من الدرجة الأولى'],final_task:'إنجاز مخطط إنساني يسمح بقراءة 10 أعداد وإظهار عدد القيم السالبة.'},
-    'مدخل للخوارزمية': { competency:'يتعرف على الأجزاء الرئيسية للخوارزميات.',objectives:['يتعرف على مفهوم الخوارزميات.','يتعرف على الهيكل العام للخوارزمية.','يتعرف على أنواع البيانات.','يتعرف على قواعد تسمية المعرفات والتصريح بها.','يتعرف على أهم الرموز والعمليات الحسابية والمنطقية.','يتعرف على برنامج ALGOBOX.'],targeted_ressourses:['تعريف الخوارزميات','الهيكل العام للخوارزمية','أهم أنواع البيانات','قواعد تسمية المعرفات','الرموز الرياضية والمنطقية','التصريح عن المتغيرات والثوابت'],progression:['الخوارزميات','الهيكل العام للخوارزمية','أهم أنواع البيانات','قواعد تسمية المعرفات','الرموز الرياضية والمنطقية','التصريح عن المتغيرات والثوابت'],duration:'04 ساعة',stage_evaluation:['كتابة خوارزميات متنوعة'],final_task:'إنشاء خوارزميات بسيطة'},
-    'التعليمات الأساسية': { competency:'يتعرف على التعليمات الأساسية للخوارزميات.',objectives:['يتعرف على أهم التعليمات الأساسية للخوارزميات.'],targeted_ressourses:['تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمية الشرطية بأنواعها','التعليمية التكرارية بأنواعها'],progression:['تعريف التعليمية','تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمة الشرطية بأنواعها','التعليمة التكرارية بأنواعها','أنشطة مختلفة باستعمال Algobox'],duration:'08 ساعات',stage_evaluation:['قراءة خوارزمية وتنفيذها','اختيار مجموعة من التمارين موظفاً التعليمات المدروسة'],final_task:'إنجاز خوارزمية لمشكلة تشمل تعليمات شرطية وتكرارية.'}
+    'المخطط الإنسيابي': { competency:'يتمكن من فهم وإنشاء المخططات الانسيابية.',objectives:['يتعرف على المخطط الانسيابي.','يتعرف على عناصر حل مسألة.','يتعرف على مختلف دلالات الأشكال.'],targeted_ressourses:['تحديد عناصر المشكلة','تعريف المخطط الإنسيابي','أهم الأشكال والرموز'],progression:['يحدد عناصر مشكلة','يتعرف على المخطط الإنسيابي','يتعرف على مكوناته'],duration:'2 ساعة',stage_evaluation:['إنشاء المخطط لحساب مساحة مستطيل','إنشاء المخطط لحل معادلة من الدرجة الأولى','إنشاء المخطط لحساب معدل المواد الأساسية'],final_task:'حساب مجموع الأعداد الزوجية الأقل من عشرين.'},
+    'إنشاء المخطط الإنسيابي': { competency:'يتمكن من إنشاء مخطط انسيابي باستعمال برنامج LARP.',objectives:['يتعلم استعمال برنامج LARP.'],targeted_ressourses:['شرح برمجية Larp','توظيف برمجية Larp لإنشاء مخطط'],progression:['شرح برمجية Larp','يوظف برمجية Larp لإنشاء مخطط'],duration:'2 ساعة',stage_evaluation:['استعمل Larp لرسم مخطط حساب مساحة مستطيل','استعمل Larp لرسم مخطط حل معادلة'],final_task:'إنجاز مخطط يسمح بقراءة 10 أعداد وإظهار القيم السالبة.'},
+    'مدخل للخوارزمية': { competency:'يتعرف على الأجزاء الرئيسية للخوارزميات.',objectives:['يتعرف على مفهوم الخوارزميات.','يتعرف على الهيكل العام.','يتعرف على أنواع البيانات.','يتعرف على قواعد تسمية المعرفات.','يتعرف على برنامج ALGOBOX.'],targeted_ressourses:['تعريف الخوارزميات','الهيكل العام للخوارزمية','أهم أنواع البيانات','قواعد تسمية المعرفات','الرموز الرياضية والمنطقية','التصريح عن المتغيرات والثوابت'],progression:['الخوارزميات','الهيكل العام','أنواع البيانات','قواعد التسمية','الرموز','التصريح عن المتغيرات'],duration:'4 ساعة',stage_evaluation:['كتابة خوارزميات متنوعة'],final_task:'إنشاء خوارزميات بسيطة'},
+    'التعليمات الأساسية': { competency:'يتعرف على التعليمات الأساسية للخوارزميات.',objectives:['يتعرف على أهم التعليمات الأساسية للخوارزميات.'],targeted_ressourses:['تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمية الشرطية بأنواعها','التعليمية التكرارية بأنواعها'],progression:['تعريف التعليمية','تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمة الشرطية','التعليمة التكرارية','أنشطة مختلفة باستعمال Algobox'],duration:'8 ساعات',stage_evaluation:['قراءة خوارزمية وتنفيذها','اختيار تمارين موظفاً التعليمات المدروسة'],final_task:'إنجاز خوارزمية لمشكلة تشمل تعليمات شرطية وتكرارية.'}
   },
   'تقنيات الويب': {
-    'المتصفح': { competency:'يتعرف على بعض المتصفحات.',objectives:['يتمكن من الوصول إلى موقع إلكتروني.','يتدرب على طرق البحث.','يستغل نتائج البحث.'],targeted_ressourses:['تعريف المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','الخيارات','تحصيص الواجهة','آثار المتصفح','تعريف محرك البحث'],progression:['المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','آثار المتصفح','محرك البحث'],duration:'02 ساعة',stage_evaluation:['الطلب من التلاميذ الولوج إلى موقع يحدده الأستاذ وتصفحه.'],final_task:'البحث عن أهم المعالم السياحية في الجزائر.'},
-    'البريد الإلكتروني': { competency:'أن يتمكن من استخدام البريد الإلكتروني في تواصله مع زملائه.',objectives:['يتمكن من إنشاء واستعمال حساب بريد إلكتروني.','أن يتعرف على مكونات عنوان البريد الإلكتروني.','أن يدرك إيجابيات وسلبيات البريد الإلكتروني.'],targeted_ressourses:['تعريف البريد الإلكتروني','مكونات عنوان البريد الإلكتروني','إيجابيات وسلبيات البريد الإلكتروني','إنشاء حساب بريد إلكتروني','إرسال الرسائل والاطلاع على الرسائل الواردة','إدراج ملف مرفق برسالة'],progression:['تعريف البريد الإلكتروني','مقارنة بين البريد العادي والبريد الإلكتروني','يتعرف مكونات عنوان البريد الإلكتروني','إيجابيات وسلبيات البريد الإلكتروني','يرسل رسالة','يدرج ملف مرفق برسالة'],duration:'01 ساعة',stage_evaluation:['إرسل إلى زميلك دعوة لزيارة مدينتك مع صورة مرفقة.'],final_task:'إرسال رسالة إلى خمس تلاميذ دفعة واحدة.'},
-    'إنشاء صفحة ويب': { competency:'يكتسب المتعلم معارف لغة HTML.',objectives:['يتعرف على أهم وسوم لغة HTML.'],targeted_ressourses:['تعريف HTML','بنية ملف HTML','الوسوم: (العنوان، الفقرة، التعداد النقطي والرقمي، الخطوط، الألوان، الصورة، الارتباط التشعبي، الجداول...)','إنشاء صفحة ويب'],progression:['تعريف HTML','أمثلة عن الوسوم والتعامل معها','يتعرف على بنية ملف HTML','التعداد الرقمي والنقطي','إنشاء صفحة ويب'],duration:'06 ساعات',stage_evaluation:['التعامل مع وسم الفقرة','وسوم التنسيق','وسم الصورة','وسوم الألوان','الارتباط التشعبي'],final_task:'إنشاء صفحة ويب.'},
-    'استغلال وسائل التواصل': { competency:'يتعرف على بعض أدوات التواصل الاجتماعي.',objectives:['أن يتمكن من استعمال بعض شبكات التواصل الاجتماعية.'],targeted_ressourses:['التعرف على بعض شبكات التواصل الاجتماعية','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','أخلاقيات استعمال الإنترنت'],progression:['يتعرف على بعض شبكات التواصل الاجتماعية.','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','يستخلص أخلاقيات استعمال الإنترنت'],duration:'01 ساعة',stage_evaluation:['حدد السلبيات والإيجابيات؟','اذكر الأخلاقيات التي يجب التحلي بها عند استخدام مواقع التواصل؟'],final_task:'بحث حول سلبيات ومخاطر شبكات التواصل والإنترنت.'}
+    'المتصفح': { competency:'يتعرف على بعض المتصفحات.',objectives:['يتمكن من الوصول إلى موقع إلكتروني.','يتدرب على طرق البحث.','يستغل نتائج البحث.'],targeted_ressourses:['تعريف المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','آثار المتصفح','محرك البحث'],progression:['المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','آثار المتصفح','محرك البحث'],duration:'2 ساعة',stage_evaluation:['الولوج إلى موقع يحدده الأستاذ وتصفحه.'],final_task:'البحث عن أهم المعالم السياحية في الجزائر.'},
+    'البريد الإلكتروني': { competency:'يتمكن من استخدام البريد الإلكتروني في تواصله مع زملائه.',objectives:['يتمكن من إنشاء واستعمال حساب بريد إلكتروني.','يتعرف على مكونات عنوان البريد الإلكتروني.','يدرك إيجابيات وسلبيات البريد الإلكتروني.'],targeted_ressourses:['تعريف البريد الإلكتروني','مكونات عنوان البريد الإلكتروني','إيجابيات وسلبيات البريد','إنشاء حساب بريد إلكتروني','إرسال الرسائل','إدراج ملف مرفق'],progression:['تعريف البريد الإلكتروني','مقارنة البريد العادي والإلكتروني','مكونات عنوان البريد','إيجابيات وسلبياته','إرسال رسالة','إدراج ملف مرفق'],duration:'1 ساعة',stage_evaluation:['أرسل إلى زميلك دعوة لزيارة مدينتك مع صورة مرفقة.'],final_task:'إرسال رسالة إلى خمس تلاميذ دفعة واحدة.'},
+    'إنشاء صفحة ويب': { competency:'يكتسب المتعلم معارف لغة HTML.',objectives:['يتعرف على أهم وسوم لغة HTML.'],targeted_ressourses:['تعريف HTML','بنية ملف HTML','الوسوم: العنوان، الفقرة، التعداد، الخطوط، الألوان، الصورة، الارتباط التشعبي، الجداول','إنشاء صفحة ويب'],progression:['تعريف HTML','أمثلة عن الوسوم','بنية ملف HTML','التعداد الرقمي والنقطي','إنشاء صفحة ويب'],duration:'6 ساعات',stage_evaluation:['وسم الفقرة','وسوم التنسيق','وسم الصورة','وسوم الألوان','الارتباط التشعبي'],final_task:'إنشاء صفحة ويب.'},
+    'استغلال وسائل التواصل': { competency:'يتعرف على بعض أدوات التواصل الاجتماعي.',objectives:['يتمكن من استعمال بعض شبكات التواصل الاجتماعية.'],targeted_ressourses:['التعرف على بعض شبكات التواصل الاجتماعية','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','أخلاقيات استعمال الإنترنت'],progression:['يتعرف على بعض شبكات التواصل.','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','أخلاقيات استعمال الإنترنت'],duration:'1 ساعة',stage_evaluation:['حدد السلبيات والإيجابيات؟','اذكر الأخلاقيات التي يجب التحلي بها؟'],final_task:'بحث حول سلبيات ومخاطر شبكات التواصل والإنترنت.'}
   },
   'المكتبية': {
-    'معالج النصوص 1': { competency:'يتحكم في تحرير وثيقة متكاملة.',objectives:['يتحكم في تحرير وثيقة متكاملة.','التنسيق.','الجداول.','الصور والأشكال.','الطباعة.'],targeted_ressourses:['تذكير بواجهة معالج النصوص','كتابة نص وتنسيقه','الجداول','الأشكال والصور','استعمال قالب جاهز وإنشاء قالب جديد','إدراج فواصل','إدراج مقاطع'],progression:['يكتب نص وينسقه','ينشئ جدول','يدرج الأشكال والصور','يستعمل قالب جاهز وينشئ قالب جديد','يدرج فواصل','يدرج مقاطع'],duration:'03 ساعات',stage_evaluation:['كتابة نص مكون من ثلاث فقرات وتنسيقه','إدراج صورة','إدراج جدول والكتابة فيه وتنسيقه','تنسيق النص السابق باستعمال الأنماط','إنشاء استمارة معلومات وحفظها كملف'],final_task:'إنجاز وثيقة تحوي فواصل ومقاطع'},
-    'معالج النصوص 2': { competency:'يتحكم في دمج المراسلات.',objectives:['يتعرف على مفهوم دمج المراسلات.','يتعرف على المستند الرئيسي ومصدر البيانات.','يدرس طريقة الدمج.'],targeted_ressourses:['إنشاء قاعدة بيانات','استعمال استمارة المعلومات السابقة كمستند رئيسي','عملية الدمج'],progression:['ينشئ قاعدة بيانات','يستعمل استمارة المعلومات السابقة كمستند رئيسي','ينجز عملية الدمج'],duration:'02 ساعة',stage_evaluation:'استغلال النشاط المقترح في الكتاب المدرسي',final_task:['أنشطة متنوعة في الدمج','الإدراج المشروط لنص']},
-    'جداول البيانات 1': { competency:'يسترجع المعارف التي درست في المجدول ويتحكم في إنجاز مصنف.',objectives:['يتمكن من إنجاز مصنف يحوي على جدول منسق.','يتعرف على بعض الصيغ والدوال البسيطة.','يدرس الدالة الشرطية SI.'],targeted_ressourses:['التذكير بواجهة الجدول','التعامل مع أوراق العمل','إنجاز مصنف يحتوي على جدول منسق','كتابة الصيغ','إدراج واستعمال دوال منطقية ورياضية'],progression:['يتعرف على خصائص أوراق العمل','ينجز مصنف يحتوي على جدول منسق','يكتب الصيغ','يدرج ويستعمل دوال منطقية ورياضية'],duration:'03 ساعات',stage_evaluation:'حساب وحل معادلات من الدرجة الأولى أو الثانية',final_task:'إنجاز جداول متنوعة.'},
-    'جداول البيانات 2': { competency:'أن يتمكن من فرز وترتيب البيانات.',objectives:['أن يتمكن من فرز وترتيب البيانات حسب معيار أو أكثر.'],targeted_ressourses:'فرز وترتيب البيانات',progression:['يفرز البيانات حسب معيار معين','يرتب البيانات حسب معيار معين'],duration:'02 ساعة',stage_evaluation:'قم بفرز وترتيب بيانات قائمة تلاميذ القسم مع نتائجهم',final_task:'فرز قائمة من البيانات وفق معايير مختلفة.'},
-    'العروض التقديمية 1': { competency:'أن ينجز عروضا أكثر احترافية مدمجا الصوت، الصور، الفيديو والمؤثرات.',objectives:['أن يتمكن من إنجاز مشاريع مدمجا نصوص، صور، فيديو.'],targeted_ressourses:['واجهة برنامج العروض التقديمية','التعامل مع الشرائح','الانتقال بين الشرائح'],progression:['التعامل مع الشرائح','الانتقال بين الشرائح'],duration:'01 ساعة',stage_evaluation:'عرّف بمدينتك، مبينا أهم المعالم المميزة لها.',final_task:''},
-    'العروض التقديمية 2': { competency:'أن يتمكن من إدراج واستغلال الارتباطات التشعبية.',objectives:['أن يتمكن من إنجاز عرض تقديمي مدمجا نصوص، صور، فيديو ومستغلا الارتباطات التشعبية.'],targeted_ressourses:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],progression:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],duration:'01 ساعة',stage_evaluation:'توظيف الارتباطات التشعبية للانتقال بين شرائح المشروع الذي يعرف بمدينتك.',final_task:'تصميم اختبار مكون من ثلاث أسئلة من نوع متعددة الاختيارات (QCM).'}
+    'معالج النصوص 1': { competency:'يتحكم في تحرير وثيقة متكاملة.',objectives:['يتحكم في تحرير وثيقة متكاملة.','التنسيق.','الجداول.','الصور والأشكال.','الطباعة.'],targeted_ressourses:['واجهة معالج النصوص','كتابة نص وتنسيقه','الجداول','الأشكال والصور','استعمال قالب جاهز وإنشاء قالب جديد','إدراج فواصل ومقاطع'],progression:['يكتب نص وينسقه','ينشئ جدول','يدرج الأشكال والصور','يستعمل قالب جاهز وينشئ قالب جديد','يدرج فواصل ومقاطع'],duration:'3 ساعات',stage_evaluation:['كتابة نص مكون من ثلاث فقرات وتنسيقه','إدراج صورة','إدراج جدول والكتابة فيه وتنسيقه','إنشاء استمارة معلومات وحفظها'],final_task:'إنجاز وثيقة تحوي فواصل ومقاطع'},
+    'معالج النصوص 2': { competency:'يتحكم في دمج المراسلات.',objectives:['يتعرف على مفهوم دمج المراسلات.','يتعرف على المستند الرئيسي ومصدر البيانات.','يدرس طريقة الدمج.'],targeted_ressourses:['إنشاء قاعدة بيانات','استعمال استمارة المعلومات كمستند رئيسي','عملية الدمج'],progression:['ينشئ قاعدة بيانات','يستعمل استمارة المعلومات كمستند رئيسي','ينجز عملية الدمج'],duration:'2 ساعة',stage_evaluation:'استغلال النشاط المقترح في الكتاب المدرسي',final_task:['أنشطة متنوعة في الدمج','الإدراج المشروط لنص']},
+    'جداول البيانات 1': { competency:'يسترجع المعارف التي درست في المجدول ويتحكم في إنجاز مصنف.',objectives:['يتمكن من إنجاز مصنف يحوي جدول منسق.','يتعرف على بعض الصيغ والدوال البسيطة.','يدرس الدالة الشرطية SI.'],targeted_ressourses:['واجهة الجدول','التعامل مع أوراق العمل','إنجاز مصنف يحتوي على جدول منسق','كتابة الصيغ','إدراج واستعمال دوال منطقية ورياضية'],progression:['يتعرف على خصائص أوراق العمل','ينجز مصنف','يكتب الصيغ','يدرج ويستعمل دوال منطقية ورياضية'],duration:'3 ساعات',stage_evaluation:'حساب وحل معادلات',final_task:'إنجاز جداول متنوعة.'},
+    'جداول البيانات 2': { competency:'يتمكن من فرز وترتيب البيانات.',objectives:['يتمكن من فرز وترتيب البيانات حسب معيار أو أكثر.'],targeted_ressourses:'فرز وترتيب البيانات',progression:['يفرز البيانات حسب معيار','يرتب البيانات حسب معيار'],duration:'2 ساعة',stage_evaluation:'قم بفرز وترتيب بيانات قائمة تلاميذ القسم',final_task:'فرز قائمة من البيانات وفق معايير مختلفة.'},
+    'العروض التقديمية 1': { competency:'ينجز عروضا أكثر احترافية مدمجا الصوت والصور والفيديو والمؤثرات.',objectives:['يتمكن من إنجاز مشاريع مدمجا نصوص وصور وفيديو.'],targeted_ressourses:['واجهة برنامج العروض التقديمية','التعامل مع الشرائح','الانتقال بين الشرائح'],progression:['التعامل مع الشرائح','الانتقال بين الشرائح'],duration:'1 ساعة',stage_evaluation:'عرّف بمدينتك مبينا أهم المعالم المميزة لها.',final_task:''},
+    'العروض التقديمية 2': { competency:'يتمكن من إدراج واستغلال الارتباطات التشعبية.',objectives:['يتمكن من إنجاز عرض تقديمي مدمجا نصوص وصور وفيديو ومستغلا الارتباطات التشعبية.'],targeted_ressourses:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],progression:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],duration:'1 ساعة',stage_evaluation:'توظيف الارتباطات التشعبية للانتقال بين شرائح مشروعك.',final_task:'تصميم اختبار QCM من ثلاثة أسئلة.'}
   }
 };
 
-/* ── state ── */
-const areaSelect   = document.getElementById('areaSelect');
-const unitSelect   = document.getElementById('unitSelect');
-const infoStrip    = document.getElementById('infoStrip');
+const areaEl = document.getElementById('areaSelect');
+const unitEl = document.getElementById('unitSelect');
+const infoStrip = document.getElementById('infoStrip');
 const classSection = document.getElementById('classSection');
 const typeSection  = document.getElementById('typeSection');
-const outputBox    = document.getElementById('outputBox');
-const outputDiv    = document.getElementById('outputDivider');
-const promptBody   = document.getElementById('promptBody');
-const genBtn       = document.getElementById('genBtn');
-const genBtnText   = document.getElementById('genBtnText');
-const spinner      = document.getElementById('spinner');
+const outputBox  = document.getElementById('outputBox');
+const outDivider = document.getElementById('outDivider');
+const promptBody = document.getElementById('promptBody');
+const genBtn     = document.getElementById('genBtn');
+const genBtnText = document.getElementById('genBtnText');
+const spinner    = document.getElementById('spinner');
 
-let selectedType   = null;
-let selectedClass  = null;
-let currentData    = null;
-let currentPrompt  = '';
-let outputFormat   = 'structured'; // structured | semi | free
-let lengthMode     = 'medium';     // short | medium | long
-let strictMode     = false;
+let selType = null, selClass = null, curData = null, curPrompt = '';
+let outFmt = 'structured', lenMode = 'medium', strictMode = false;
 
-/* ── init ── */
 Object.keys(CURRICULUM_DATA).forEach(a => {
-  const o = document.createElement('option'); o.value = a; o.textContent = a;
-  areaSelect.appendChild(o);
+  const o = document.createElement('option'); o.value = a; o.textContent = a; areaEl.appendChild(o);
 });
-areaSelect.addEventListener('change', () => {
-  const area = areaSelect.value;
-  unitSelect.innerHTML = '<option value="">— اختر الوحدة —</option>';
-  unitSelect.disabled = !area;
+
+areaEl.addEventListener('change', () => {
+  const a = areaEl.value;
+  unitEl.innerHTML = '<option value="">— اختر الوحدة —</option>';
+  unitEl.disabled = !a;
   hideAll();
-  if (!area) return;
-  Object.keys(CURRICULUM_DATA[area]).forEach(u => {
-    const o = document.createElement('option'); o.value = u; o.textContent = u;
-    unitSelect.appendChild(o);
+  if (!a) return;
+  Object.keys(CURRICULUM_DATA[a]).forEach(u => {
+    const o = document.createElement('option'); o.value = u; o.textContent = u; unitEl.appendChild(o);
   });
 });
-unitSelect.addEventListener('change', () => {
-  const area = areaSelect.value, unit = unitSelect.value;
-  if (area && unit) { currentData = CURRICULUM_DATA[area][unit]; showInfo(currentData); }
+
+unitEl.addEventListener('change', () => {
+  const a = areaEl.value, u = unitEl.value;
+  if (a && u) { curData = CURRICULUM_DATA[a][u]; showInfo(curData); }
   else hideAll();
 });
 
 function showInfo(d) {
-  document.getElementById('icDuration').textContent   = d.duration || '—';
+  document.getElementById('icDuration').textContent = d.duration || '—';
   document.getElementById('icCompetency').textContent = d.competency || '—';
   const n = toArr(d.objectives).length;
-  document.getElementById('icObjectives').textContent = n + (n===1?' هدف':' أهداف');
-  infoStrip.classList.add('visible');
-  classSection.style.display = 'block';
-  typeSection.style.display  = 'block';
-  selectedType = null; selectedClass = null;
+  document.getElementById('icObjectives').textContent = n + ' هدف';
+  infoStrip.classList.add('open');
+  classSection.classList.remove('hidden');
+  typeSection.classList.remove('hidden');
+  selType = null; selClass = null;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('cardJmet').className = 'class-card';
   document.getElementById('cardJma').className  = 'class-card';
   genBtn.disabled = true;
-  outputBox.classList.remove('visible');
-  outputDiv.style.display = 'none';
+  outputBox.classList.remove('open');
+  outDivider.style.display = 'none';
 }
 function hideAll() {
-  infoStrip.classList.remove('visible');
-  classSection.style.display = 'none';
-  typeSection.style.display  = 'none';
-  outputBox.classList.remove('visible');
-  outputDiv.style.display = 'none';
-  currentData = null;
+  infoStrip.classList.remove('open');
+  classSection.classList.add('hidden');
+  typeSection.classList.add('hidden');
+  outputBox.classList.remove('open');
+  outDivider.style.display = 'none';
+  curData = null;
 }
 
 function selectClass(cls) {
-  selectedClass = cls;
-  document.getElementById('cardJmet').className = 'class-card' + (cls==='jmet'?' active-jmet':'');
-  document.getElementById('cardJma').className  = 'class-card' + (cls==='jma' ?' active-jma' :'');
+  selClass = cls;
+  document.getElementById('cardJmet').className = 'class-card' + (cls==='jmet' ? ' sel-jmet' : '');
+  document.getElementById('cardJma').className  = 'class-card' + (cls==='jma'  ? ' sel-jma'  : '');
   checkBtn();
 }
 function selectType(el) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  selectedType = el.dataset.type;
-  checkBtn();
+  el.classList.add('active'); selType = el.dataset.type; checkBtn();
 }
 function selectFmt(el) {
-  document.querySelectorAll('.ctrl-pill[data-fmt]').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  outputFormat = el.dataset.fmt;
+  document.querySelectorAll('.ctrl-pill[data-fmt]').forEach(b => b.classList.remove('on'));
+  el.classList.add('on'); outFmt = el.dataset.fmt;
 }
 function selectLen(el) {
-  document.querySelectorAll('.ctrl-pill[data-len]').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  lengthMode = el.dataset.len;
+  document.querySelectorAll('.ctrl-pill[data-len]').forEach(b => b.classList.remove('on'));
+  el.classList.add('on'); lenMode = el.dataset.len;
 }
 function toggleStrict() {
   strictMode = !strictMode;
-  const btn = document.getElementById('strictToggle');
-  const lbl = document.getElementById('strictLabel');
-  btn.classList.toggle('on', strictMode);
-  lbl.textContent = strictMode ? 'مفعل' : 'غير مفعل';
+  document.getElementById('strictToggle').classList.toggle('on', strictMode);
+  document.getElementById('strictLabel').textContent = strictMode ? 'مفعّل' : 'غير مفعل';
 }
-function checkBtn() { genBtn.disabled = !(selectedType && selectedClass && currentData); }
+function checkBtn() { genBtn.disabled = !(selType && selClass && curData); }
 
-/* ── helpers ── */
-const toArr = v => v ? (Array.isArray(v)?v:[v]) : [];
-const list  = arr => toArr(arr).map(i=>`  • ${i}`).join('\n');
+const toArr = v => v ? (Array.isArray(v) ? v : [v]) : [];
+const list  = arr => toArr(arr).map(i => `  • ${i}`).join('\n');
 
 const CLASS_PROFILES = {
-  jmet: {
-    label: 'ج م ع ت', level: 'متوسط إلى جيد',
-    desc: 'تلاميذ قادرون على الاستيعاب بسرعة، يتقبّلون المفاهيم التقنية، ويمكن تحدّيهم بمسائل أعمق وتحليلية.',
-    adapt: `- المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة
-- يمكن استخدام المصطلحات التقنية مع شرح مختصر
-- أضف أسئلة تحليلية ومقارنة بين المفاهيم
-- شمّل تمارين تحدٍّ اختيارية للمتقدمين
-- التمارين: سهل + متوسط + صعب + تحدٍّ`,
-    exDiff: 'سهل + متوسط + صعب + تمرين تحدٍّ اختياري',
-    style: 'شرح موجز مركّز على الفهم العميق والتطبيق'
-  },
-  jma: {
-    label: 'ج م أ', level: 'ضعيف إلى متوسط',
-    desc: 'تلاميذ يحتاجون تبسيطاً مكثفاً، تدرجاً بطيئاً، تعزيزاً مستمراً، وأمثلة ملموسة من واقعهم اليومي.',
-    adapt: `- المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول للاستيعاب
-- تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة
-- اعتمد على أمثلة ملموسة ومرئية من الحياة اليومية الجزائرية
-- قسّم كل مفهوم إلى خطوات صغيرة جداً مع تأكيد الفهم
-- أضف "مربعات تذكير" وملخصات بعد كل فكرة
-- التمارين: جداً سهل + سهل + متوسط (لا تمارين صعبة)`,
-    exDiff: 'جداً سهل + سهل + متوسط (بدون مستوى صعب)',
-    style: 'شرح مبسط خطوة بخطوة مع أمثلة ملموسة ومكررة'
-  }
+  jmet:{label:'ج م ع ت',level:'متوسط إلى جيد',adapt:`- المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة\n- يمكن استخدام المصطلحات التقنية مع شرح مختصر\n- أضف أسئلة تحليلية ومقارنة بين المفاهيم\n- شمّل تمارين تحدٍّ اختيارية للمتقدمين\n- التمارين: سهل + متوسط + صعب + تحدٍّ`,exDiff:'سهل + متوسط + صعب + تمرين تحدٍّ اختياري'},
+  jma: {label:'ج م أ', level:'ضعيف إلى متوسط', adapt:`- المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول للاستيعاب\n- تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة\n- اعتمد على أمثلة ملموسة من الحياة اليومية الجزائرية\n- قسّم كل مفهوم إلى خطوات صغيرة جداً مع تأكيد الفهم\n- أضف مربعات تذكير وملخصات بعد كل فكرة\n- التمارين: جداً سهل + سهل + متوسط (لا تمارين صعبة)`,exDiff:'جداً سهل + سهل + متوسط (بدون مستوى صعب)'}
 };
 
-const typeLabels = {
-  course:'وثيقة الدرس الكاملة', plan:'المذكرة التحضيرية',
-  presentation:'خطة العرض التقديمي', problems:'الإشكاليات المقترحة',
-  activities:'الأنشطة التطبيقية العملية', exercises:'تمارين وأفكار'
-};
+const typeLabels = {course:'وثيقة الدرس الكاملة',plan:'المذكرة التحضيرية',presentation:'خطة العرض التقديمي',problems:'الإشكاليات المقترحة',activities:'الأنشطة التطبيقية العملية',exercises:'تمارين وأفكار'};
 
 const typeStructure = {
-  course:       '## مقدمة\n## محاور الدرس\n## ملاحظات\n## ملخص\n## تقييم',
-  plan:         '## البيانات الإدارية\n## سير الحصة\n## التقييم\n## التمييز البيداغوجي',
-  presentation: '## هيكل الشرائح\n## تفاصيل كل شريحة\n## النشاط التفاعلي\n## التقييم',
-  problems:     '## وضعيات الانطلاق\n## أسئلة الاستكشاف\n## ربط بالواقع',
-  activities:   '## الاستعداد\n## الأنشطة\n## التقييم الذاتي\n## الإغلاق',
-  exercises:    '## تمارين الفهم\n## تمارين التطبيق\n## QCM\n## أفكار إضافية\n## مشروع'
+  course:'## مقدمة\n## محاور الدرس\n## ملاحظات\n## ملخص\n## تقييم',
+  plan:'## البيانات الإدارية\n## سير الحصة\n## التقييم\n## التمييز البيداغوجي',
+  presentation:'## هيكل الشرائح\n## تفاصيل كل شريحة\n## النشاط التفاعلي\n## التقييم',
+  problems:'## وضعيات الانطلاق\n## أسئلة الاستكشاف\n## ربط بالواقع',
+  activities:'## الاستعداد\n## الأنشطة\n## التقييم الذاتي\n## الإغلاق',
+  exercises:'## تمارين الفهم\n## تمارين التطبيق\n## QCM\n## أفكار إضافية\n## مشروع'
 };
 
-const fmtInstructions = {
-  structured: `- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت\n- بدون فقرات طويلة`,
-  semi:       `- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,
-  free:       `- حرية في الأسلوب مع الحفاظ على الوضوح`
-};
-const lenInstructions = {
-  short:  `- مختصر جداً\n- أقصى حد: 400 كلمة\n- ركّز على الأساسي فقط`,
-  medium: `- متوازن\n- بين 500 و 900 كلمة`,
-  long:   `- مفصل\n- حتى 1400 كلمة\n- شرح + أمثلة + تنويع`
-};
+const fmtInstr = {structured:`- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت\n- بدون فقرات طويلة`,semi:`- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,free:`- حرية في الأسلوب مع الحفاظ على الوضوح`};
+const lenInstr  = {short:`- مختصر جداً\n- أقصى حد: 400 كلمة\n- ركّز على الأساسي فقط`,medium:`- متوازن\n- بين 500 و 900 كلمة`,long:`- مفصل\n- حتى 1400 كلمة\n- شرح + أمثلة + تنويع`};
 
-function buildPrompt(type, area, unit, d, cls) {
+function buildPrompt(type,area,unit,d,cls) {
   const P = CLASS_PROFILES[cls];
-  const objList  = list(d.objectives);
-  const resList  = list(d.targeted_ressourses);
-  const progList = list(d.progression);
-  const evalList = list(d.stage_evaluation);
-  const taskList = list(d.final_task);
-
+  const jma = cls==='jma';
   const strictBlock = strictMode
-    ? `[قيود صارمة — مفعلة]
-- لا تضف مقدمة خارج المطلوب
-- لا تشرح ما ستقوم به
-- لا تغير ترتيب الأقسام
-- لا تضف أقسام جديدة
-- لا تحذف أي عنصر مهم
-- التزم بالبنية بدقة`
-    : `[قيود مرنة]
-- يمكنك تحسين العرض دون كسر البنية العامة`;
-
-  const jma = cls === 'jma';
+    ? `[قيود صارمة — مفعلة]\n- لا تضف مقدمة خارج المطلوب\n- لا تشرح ما ستقوم به\n- لا تغير ترتيب الأقسام\n- لا تضف أقسام جديدة\n- لا تحذف أي عنصر مهم\n- التزم بالبنية بدقة`
+    : `[قيود مرنة]\n- يمكنك تحسين العرض دون كسر البنية العامة`;
 
   const CTX = `═══════════════════════════════════════════════════════════
  السياق المنهجي — الإعلام الآلي / الثانوي الجزائري
@@ -793,10 +518,10 @@ ${P.adapt}
 - اربط المفاهيم بواقع التلميذ
 
 [تنسيق الإخراج]
-${fmtInstructions[outputFormat]}
+${fmtInstr[outFmt]}
 
 [حجم الإخراج]
-${lenInstructions[lengthMode]}
+${lenInstr[lenMode]}
 
 ${strictBlock}
 
@@ -811,8 +536,7 @@ ${typeStructure[type]}
 ═══════════════════════════════════════════════════════════`;
 
   const T = {
-
-course: `${CTX}
+course:`${CTX}
 
 [المحتوى التفصيلي]
 أنشئ وثيقة درس كاملة لوحدة "${unit}" مكيّفة لقسم ${P.label}.
@@ -836,7 +560,7 @@ course: `${CTX}
 
 ابدأ الآن.`,
 
-plan: `${CTX}
+plan:`${CTX}
 
 [المحتوى التفصيلي]
 مذكرة تحضيرية كاملة وجاهزة للتطبيق — وحدة "${unit}" — قسم ${P.label} (${P.level}).
@@ -853,13 +577,11 @@ plan: `${CTX}
 └ التقويم الختامي
 
 الجزء 3 — التمييز البيداغوجي
-${jma
-  ? '- للتلاميذ الذين لم يستوعبوا: إعادة الشرح بطريقة أبسط\n- للتلاميذ المتوسطين: تمارين تطبيقية إضافية'
-  : '- للتلاميذ ذوي الصعوبات: تبسيط + أمثلة إضافية\n- للتلاميذ المتقدمين: مسائل أعمق + بحث إضافي'}
+${jma ? '- للتلاميذ الذين لم يستوعبوا: إعادة الشرح بطريقة أبسط\n- للتلاميذ المتوسطين: تمارين تطبيقية إضافية' : '- للتلاميذ ذوي الصعوبات: تبسيط + أمثلة إضافية\n- للتلاميذ المتقدمين: مسائل أعمق + بحث إضافي'}
 
 ابدأ الآن.`,
 
-presentation: `${CTX}
+presentation:`${CTX}
 
 [المحتوى التفصيلي]
 خطة عرض تقديمي لـ "${unit}" — ${P.label} — ${d.duration}.
@@ -883,18 +605,13 @@ presentation: `${CTX}
 
 ابدأ الآن.`,
 
-problems: `${CTX}
+problems:`${CTX}
 
 [المحتوى التفصيلي]
 حزمة إشكاليات لتقديم "${unit}" — مكيّفة لـ ${P.label}.
 
 ━━━ وضعيات الانطلاق ━━━
-${jma ? `الوضعية 1 — جداً بسيطة (لبناء الثقة)
-الوضعية 2 — بسيطة
-الوضعية 3 — بسيطة إلى متوسطة`
-: `الوضعية 1 — بسيطة
-الوضعية 2 — متوسطة
-الوضعية 3 — مركبة`}
+${jma ? `الوضعية 1 — جداً بسيطة (لبناء الثقة)\nالوضعية 2 — بسيطة\nالوضعية 3 — بسيطة إلى متوسطة` : `الوضعية 1 — بسيطة\nالوضعية 2 — متوسطة\nالوضعية 3 — مركبة`}
 
 لكل وضعية: السياق | المشكلة | الهدف | الكلمات المفتاحية
 
@@ -906,7 +623,7 @@ ${jma ? '8 أسئلة بسيطة تحفز دون إرباك' : '10 أسئلة ت
 
 ابدأ الآن.`,
 
-activities: `${CTX}
+activities:`${CTX}
 
 [المحتوى التفصيلي]
 خطة أنشطة عملية لـ "${unit}" — ${P.label}.
@@ -926,7 +643,7 @@ ${jma ? 'أضف تحذيرات للأخطاء الشائعة عند كل خطو�
 
 ابدأ الآن.`,
 
-exercises: `${CTX}
+exercises:`${CTX}
 
 [المحتوى التفصيلي]
 بنك شامل من التمارين لوحدة "${unit}" — قسم ${P.label}.
@@ -948,86 +665,94 @@ ${jma ? 'مشروع بسيط وممتع يجمع مفاهيم الوحدة' : '�
 
 ابدأ الآن.`
   };
-
   return T[type];
 }
 
-/* ── generate ── */
 function generatePrompt() {
-  if (!selectedType || !selectedClass || !currentData) return;
-  const area = areaSelect.value, unit = unitSelect.value;
-  const prompt = buildPrompt(selectedType, area, unit, currentData, selectedClass);
-  currentPrompt = prompt;
+  if (!selType || !selClass || !curData) return;
+  const area = areaEl.value, unit = unitEl.value;
+  const prompt = buildPrompt(selType, area, unit, curData, selClass);
+  curPrompt = prompt;
 
-  outputDiv.style.display = 'block';
-  outputBox.classList.add('visible');
+  outDivider.style.display = 'block';
+  outputBox.classList.add('open');
 
-  const P = CLASS_PROFILES[selectedClass];
-  document.getElementById('outputLabel').textContent = typeLabels[selectedType] + ' — ' + unit;
+  const P = CLASS_PROFILES[selClass];
+  document.getElementById('outLabel').textContent = typeLabels[selType] + ' — ' + unit;
 
-  const pill = document.getElementById('classPill');
-  pill.className = 'class-pill ' + selectedClass;
-  pill.textContent = P.label;
+  const fmtMap = {structured:['منظم','tag-blue'],semi:['مختلط','tag-teal'],free:['حر','tag-purple']};
+  const lenMap = {short:['مختصر','tag-green'],medium:['متوازن','tag-amber'],long:['مفصل','tag-red']};
+  const clsMap = {jmet:['ج م ع ت','tag-blue'],jma:['ج م أ','tag-amber']};
 
-  // meta tags
-  const fmtLabels = { structured:'منظم', semi:'مختلط', free:'حر' };
-  const lenLabels = { short:'مختصر', medium:'متوازن', long:'مفصل' };
-  const ft = document.getElementById('fmtTag');
-  ft.textContent = fmtLabels[outputFormat];
-  ft.className = 'meta-tag fmt-' + outputFormat;
-  const lt = document.getElementById('lenTag');
-  lt.textContent = lenLabels[lengthMode];
-  lt.className = 'meta-tag len-' + lengthMode;
-  const st = document.getElementById('strictTag');
-  st.textContent = strictMode ? '🔒 صارم' : '🔓 مرن';
-  st.className = 'meta-tag ' + (strictMode ? 'strict-on' : 'strict-off');
+  const tagsRow = document.getElementById('tagsRow');
+  tagsRow.innerHTML = '';
+  [[clsMap[selClass]],[fmtMap[outFmt]],[lenMap[lenMode]],[strictMode ? ['🔒 صارم','tag-red'] : ['🔓 مرن','tag-green']]].forEach(([arr]) => {
+    const s = document.createElement('span');
+    s.className = 'tag ' + arr[1];
+    s.textContent = arr[0];
+    tagsRow.appendChild(s);
+  });
 
-  document.getElementById('copyBtn').textContent = 'نسخ الامر';
+  document.getElementById('copyBtn').textContent = 'نسخ الأمر';
   document.getElementById('copyBtn').classList.remove('copied');
-
   promptBody.textContent = '';
   const cursor = document.createElement('span');
   cursor.className = 'cursor';
   promptBody.appendChild(cursor);
 
   let i = 0;
-  genBtn.disabled = true; spinner.style.display = 'block'; genBtnText.textContent = 'جاري التوليد...';
+  genBtn.disabled = true;
+  spinner.style.display = 'block';
+  genBtnText.textContent = 'جاري التوليد...';
 
   function tick() {
     if (i < prompt.length) {
       cursor.before(prompt[i]); i++;
-      if (i % 40 === 0) outputBox.scrollIntoView({behavior:'smooth',block:'nearest'});
-      setTimeout(tick, i < 300 ? 3 : 1);
+      if (i % 50 === 0) outputBox.scrollIntoView({behavior:'smooth',block:'nearest'});
+      setTimeout(tick, i < 200 ? 3 : 1);
     } else {
       cursor.remove();
-      genBtn.disabled = false; spinner.style.display = 'none'; genBtnText.textContent = '⚡ توليد الأمر';
+      genBtn.disabled = false;
+      spinner.style.display = 'none';
+      genBtnText.textContent = '⚡ توليد الأمر';
       updateCounts(prompt);
     }
   }
-  tick(); updateCounts(prompt);
+  tick();
+  updateCounts(prompt);
 }
 
 function updateCounts(text) {
-  const chars = text.length, words = text.trim().split(/\s+/).filter(Boolean).length, tokens = Math.round(chars/3.5);
-  document.getElementById('charCount').textContent  = chars.toLocaleString('ar-DZ');
-  document.getElementById('wordCount').textContent  = words.toLocaleString('ar-DZ');
+  const chars = text.length;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const tokens = Math.round(chars / 3.5);
+  document.getElementById('charCount').textContent = chars.toLocaleString('ar-DZ');
+  document.getElementById('wordCount').textContent = words.toLocaleString('ar-DZ');
   document.getElementById('tokenCount').textContent = '~' + tokens.toLocaleString('ar-DZ');
 }
 
 function copyPrompt() {
-  if (!currentPrompt) return;
+  if (!curPrompt) return;
   const btn = document.getElementById('copyBtn');
-  const done = () => { btn.textContent='✓ تم النسخ'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='نسخ الحافز';btn.classList.remove('copied');},2500); };
-  navigator.clipboard.writeText(currentPrompt).then(done).catch(()=>{
-    const ta=document.createElement('textarea'); ta.value=currentPrompt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+  const done = () => {
+    btn.textContent = '✓ تم النسخ';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'نسخ الأمر'; btn.classList.remove('copied'); }, 2500);
+  };
+  navigator.clipboard.writeText(curPrompt).then(done).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = curPrompt;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); done();
   });
 }
 
 function clearOutput() {
-  outputBox.classList.remove('visible'); outputDiv.style.display='none'; currentPrompt='';
-  promptBody.innerHTML='<div class="empty-state"><div class="empty-icon">✦</div><div class="empty-text">سيظهر الأمر هنا ...</div></div>';
-  ['charCount','wordCount'].forEach(id=>document.getElementById(id).textContent='0');
-  document.getElementById('tokenCount').textContent='~0';
+  outputBox.classList.remove('open');
+  outDivider.style.display = 'none';
+  curPrompt = '';
+  promptBody.innerHTML = '<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">سيظهر الأمر هنا...</div></div>';
+  ['charCount','wordCount'].forEach(id => document.getElementById(id).textContent = '0');
+  document.getElementById('tokenCount').textContent = '~0';
 }
 </script>
 </body>
