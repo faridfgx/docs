@@ -10,44 +10,32 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#fafaf9;
-  --surface:#ffffff;
-  --surface-alt:#f5f5f3;
-  --border:#e5e4e0;
-  --border-strong:#cccbc7;
-  --accent:#1a1a1a;
-  --accent-muted:#3d3d3b;
-  --tag-blue-bg:#eff6ff;--tag-blue-text:#1d4ed8;--tag-blue-border:#bfdbfe;
-  --tag-amber-bg:#fffbeb;--tag-amber-text:#92400e;--tag-amber-border:#fcd34d;
-  --tag-green-bg:#f0fdf4;--tag-green-text:#166534;--tag-green-border:#bbf7d0;
-  --tag-red-bg:#fef2f2;--tag-red-text:#991b1b;--tag-red-border:#fecaca;
-  --tag-purple-bg:#faf5ff;--tag-purple-text:#6b21a8;--tag-purple-border:#e9d5ff;
-  --tag-teal-bg:#f0fdfa;--tag-teal-text:#115e59;--tag-teal-border:#99f6e4;
-  --text-primary:#111110;
-  --text-secondary:#6b6b68;
-  --text-muted:#9b9b97;
-  --font:'IBM Plex Arabic',sans-serif;
-  --mono:'IBM Plex Mono',monospace;
-  --radius:8px;
-  --radius-lg:12px;
+--bg:#fafaf9;--surface:#ffffff;--surface-alt:#f5f5f3;--border:#e5e4e0;--border-strong:#cccbc7;
+--accent:#1a1a1a;--accent-muted:#3d3d3b;
+--tag-blue-bg:#eff6ff;--tag-blue-text:#1d4ed8;--tag-blue-border:#bfdbfe;
+--tag-amber-bg:#fffbeb;--tag-amber-text:#92400e;--tag-amber-border:#fcd34d;
+--tag-green-bg:#f0fdf4;--tag-green-text:#166534;--tag-green-border:#bbf7d0;
+--tag-red-bg:#fef2f2;--tag-red-text:#991b1b;--tag-red-border:#fecaca;
+--tag-purple-bg:#faf5ff;--tag-purple-text:#6b21a8;--tag-purple-border:#e9d5ff;
+--tag-teal-bg:#f0fdfa;--tag-teal-text:#115e59;--tag-teal-border:#99f6e4;
+--tag-orange-bg:#fff7ed;--tag-orange-text:#9a3412;--tag-orange-border:#fdba74;
+--text-primary:#111110;--text-secondary:#6b6b68;--text-muted:#9b9b97;
+--font:'IBM Plex Arabic',sans-serif;--mono:'IBM Plex Mono',monospace;
+--radius:8px;--radius-lg:12px;
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#111110;--surface:#1c1c1a;--surface-alt:#222220;
-    --border:#2e2e2b;--border-strong:#3d3d3a;
-    --accent:#f0efe9;--accent-muted:#c5c4be;
-    --text-primary:#f0efe9;--text-secondary:#9b9b97;--text-muted:#6b6b68;
-    --tag-blue-bg:#172554;--tag-blue-text:#93c5fd;--tag-blue-border:#1e3a8a;
-    --tag-amber-bg:#431407;--tag-amber-text:#fcd34d;--tag-amber-border:#78350f;
-    --tag-green-bg:#052e16;--tag-green-text:#86efac;--tag-green-border:#14532d;
-    --tag-red-bg:#450a0a;--tag-red-text:#fca5a5;--tag-red-border:#7f1d1d;
-    --tag-purple-bg:#2e1065;--tag-purple-text:#d8b4fe;--tag-purple-border:#4c1d95;
-    --tag-teal-bg:#042f2e;--tag-teal-text:#5eead4;--tag-teal-border:#134e4a;
-  }
-}
+@media(prefers-color-scheme:dark){:root{
+--bg:#111110;--surface:#1c1c1a;--surface-alt:#222220;--border:#2e2e2b;--border-strong:#3d3d3a;
+--accent:#f0efe9;--accent-muted:#c5c4be;--text-primary:#f0efe9;--text-secondary:#9b9b97;--text-muted:#6b6b68;
+--tag-blue-bg:#172554;--tag-blue-text:#93c5fd;--tag-blue-border:#1e3a8a;
+--tag-amber-bg:#431407;--tag-amber-text:#fcd34d;--tag-amber-border:#78350f;
+--tag-green-bg:#052e16;--tag-green-text:#86efac;--tag-green-border:#14532d;
+--tag-red-bg:#450a0a;--tag-red-text:#fca5a5;--tag-red-border:#7f1d1d;
+--tag-purple-bg:#2e1065;--tag-purple-text:#d8b4fe;--tag-purple-border:#4c1d95;
+--tag-teal-bg:#042f2e;--tag-teal-text:#5eead4;--tag-teal-border:#134e4a;
+--tag-orange-bg:#431407;--tag-orange-text:#fb923c;--tag-orange-border:#7c2d12;
+}}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;line-height:1.6;font-size:15px}
-
 .layout{max-width:780px;margin:0 auto;padding:3rem 1.5rem 6rem}
 
 /* HEADER */
@@ -59,7 +47,7 @@ h1{font-size:clamp(20px,4vw,26px);font-weight:600;color:var(--text-primary);lett
 .header-sub{font-size:13px;color:var(--text-secondary);margin-top:.4rem;font-weight:300}
 .header-badge{display:inline-flex;align-items:center;margin-top:1rem;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;letter-spacing:.06em}
 
-/* STEP LABELS */
+/* STEP */
 .step{margin-bottom:2rem}
 .step-label{display:flex;align-items:center;gap:10px;margin-bottom:.85rem}
 .step-num{font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:4px;padding:2px 7px;letter-spacing:.08em;flex-shrink:0}
@@ -114,6 +102,41 @@ select option{background:var(--surface)}
 .type-name{font-size:11.5px;font-weight:500;color:var(--text-primary);display:block;line-height:1.3}
 .type-sub{font-size:9.5px;color:var(--text-muted);display:block;margin-top:2px;font-family:var(--mono)}
 
+/* EXAM TYPE highlight */
+.type-btn[data-type="exam"]{border-color:var(--tag-orange-border);}
+.type-btn[data-type="exam"]:hover{border-color:var(--tag-orange-text)}
+.type-btn[data-type="exam"].active{border-color:var(--tag-orange-text);background:var(--tag-orange-bg)}
+.type-btn[data-type="exam"].active .type-name{color:var(--tag-orange-text)}
+
+/* EXAM SECTION */
+.exam-section{background:var(--surface);border:1px solid var(--tag-orange-border);border-radius:var(--radius-lg);padding:18px;margin-top:14px;display:none;animation:fadeIn .2s ease}
+.exam-section.open{display:block}
+.exam-section-title{font-family:var(--mono);font-size:10px;color:var(--tag-orange-text);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.exam-section-title::before{content:'📝';font-size:12px}
+
+/* MULTI-UNIT SELECTOR */
+.multi-unit-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.unit-count-badge{font-family:var(--mono);font-size:10px;background:var(--tag-orange-bg);color:var(--tag-orange-text);border:1px solid var(--tag-orange-border);border-radius:4px;padding:1px 7px}
+.units-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.unit-chip{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .15s;font-size:12px;color:var(--text-secondary)}
+.unit-chip:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.unit-chip.selected{border-color:var(--tag-orange-border);background:var(--tag-orange-bg);color:var(--tag-orange-text)}
+.unit-chip-check{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.unit-chip.selected .unit-chip-check{background:var(--tag-orange-text);border-color:var(--tag-orange-text)}
+.unit-chip-check::after{content:'';width:4px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px);opacity:0;transition:opacity .12s}
+.unit-chip.selected .unit-chip-check::after{opacity:1}
+.unit-chip-name{flex:1;line-height:1.3}
+
+/* EXAM PARAMS ROW */
+.exam-params{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.exam-param-box{background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.exam-param-head{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.08em;padding:7px 12px 6px;border-bottom:1px solid var(--border)}
+.exam-param-pills{display:flex}
+.exam-param-pill{flex:1;padding:9px 6px;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:transparent;border:none;border-right:1px solid var(--border);cursor:pointer;transition:background .12s,color .12s;text-align:center;line-height:1.3}
+.exam-param-pill:last-child{border-right:none}
+.exam-param-pill:hover{background:var(--surface);color:var(--text-secondary)}
+.exam-param-pill.on{background:var(--tag-orange-bg);color:var(--tag-orange-text);font-weight:500}
+
 /* OUTPUT CONTROLS */
 .controls-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .ctrl-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
@@ -165,6 +188,7 @@ select option{background:var(--surface)}
 .tag-red{background:var(--tag-red-bg);color:var(--tag-red-text);border-color:var(--tag-red-border)}
 .tag-purple{background:var(--tag-purple-bg);color:var(--tag-purple-text);border-color:var(--tag-purple-border)}
 .tag-teal{background:var(--tag-teal-bg);color:var(--tag-teal-text);border-color:var(--tag-teal-border)}
+.tag-orange{background:var(--tag-orange-bg);color:var(--tag-orange-text);border-color:var(--tag-orange-border)}
 .tag-neutral{background:var(--surface-alt);color:var(--text-secondary);border-color:var(--border)}
 .out-actions{display:flex;gap:6px}
 .action-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-secondary);cursor:pointer;transition:all .12s;white-space:nowrap}
@@ -181,14 +205,19 @@ select option{background:var(--surface)}
 .empty-icon{font-size:28px;margin-bottom:10px;opacity:.35}
 .empty-text{font-family:var(--mono);font-size:11px}
 
-/* HIDDEN sections */
 .hidden{display:none}
+
+/* validation note */
+.exam-note{font-family:var(--mono);font-size:10px;color:var(--tag-orange-text);background:var(--tag-orange-bg);border:1px solid var(--tag-orange-border);border-radius:var(--radius);padding:8px 12px;margin-top:10px;display:none}
+.exam-note.show{display:block}
 
 @media(max-width:580px){
   .row-2,.class-grid,.type-grid,.controls-row{grid-template-columns:1fr 1fr}
   .type-grid{grid-template-columns:repeat(2,1fr)}
   .info-strip{grid-template-columns:1fr 1fr}
   .class-grid{grid-template-columns:1fr}
+  .units-grid{grid-template-columns:1fr}
+  .exam-params{grid-template-columns:1fr}
 }
 @media(max-width:400px){
   .row-2{grid-template-columns:1fr}
@@ -202,9 +231,9 @@ select option{background:var(--surface)}
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-eyebrow"><span class="live-dot"></span>prompt engineer · v3</div>
+    <div class="header-eyebrow"><span class="live-dot"></span>prompt engineer · v4</div>
     <h1>مهندس الأوامر</h1>
-    <p class="header-sub">توليد أوامر بيداغوجية- مادة المعلوماتية / التعليم الثانوي</p>
+    <p class="header-sub">توليد أوامر بيداغوجية — مادة المعلوماتية / التعليم الثانوي</p>
     <span class="header-badge">انسخ الأمر والصقه في أي نموذج لغوي</span>
   </div>
 
@@ -262,12 +291,50 @@ select option{background:var(--surface)}
       <span class="step-title">نوع المحتوى</span>
     </div>
     <div class="type-grid">
-      <button class="type-btn" data-type="course"        onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📄</span><span class="type-name">وثيقة الدرس</span></button>
-      <button class="type-btn" data-type="plan"          onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📋</span><span class="type-name">مذكرة تحضيرية</span></button>
-      <button class="type-btn" data-type="presentation"  onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🎓</span><span class="type-name">عرض تقديمي</span></button>
-      <button class="type-btn" data-type="problems"      onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">💡</span><span class="type-name">إشكاليات</span></button>
-      <button class="type-btn" data-type="activities"    onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🖥️</span><span class="type-name">أنشطة تطبيقية</span></button>
-      <button class="type-btn" data-type="exercises"     onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">✏️</span><span class="type-name">تمارين وأفكار</span></button>
+      <button class="type-btn" data-type="course" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📄</span><span class="type-name">وثيقة الدرس</span></button>
+      <button class="type-btn" data-type="plan" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📋</span><span class="type-name">مذكرة تحضيرية</span></button>
+      <button class="type-btn" data-type="presentation" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🎓</span><span class="type-name">عرض تقديمي</span></button>
+      <button class="type-btn" data-type="problems" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">💡</span><span class="type-name">إشكاليات</span></button>
+      <button class="type-btn" data-type="activities" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🖥️</span><span class="type-name">أنشطة تطبيقية</span></button>
+      <button class="type-btn" data-type="exercises" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">✏️</span><span class="type-name">تمارين وأفكار</span></button>
+      <button class="type-btn" data-type="exam" onclick="selectType(this)" style="grid-column:1/-1"><span class="type-check">✓</span><span class="type-icon">📝</span><span class="type-name">إنشاء امتحان</span><span class="type-sub">اختر وحدات متعددة</span></button>
+    </div>
+
+    <!-- EXAM SECTION (shown only when exam type selected) -->
+    <div class="exam-section" id="examSection">
+      <div class="exam-section-title">إعدادات الامتحان</div>
+
+      <!-- Multi-unit selector -->
+      <div class="multi-unit-label">
+        <span>اختر الوحدات المشمولة في الامتحان</span>
+        <span class="unit-count-badge" id="unitCountBadge">0 / 6</span>
+      </div>
+      <div class="units-grid" id="unitsGrid">
+        <!-- populated by JS -->
+      </div>
+      <div class="exam-note" id="examNote">⚠ يرجى اختيار وحدة واحدة على الأقل</div>
+
+      <!-- Exam params -->
+      <div class="exam-params">
+        <div class="exam-param-box">
+          <div class="exam-param-head">عدد التمارين</div>
+          <div class="exam-param-pills" id="exCountPills">
+            <button class="exam-param-pill" data-count="3" onclick="selectExCount(this)">3</button>
+            <button class="exam-param-pill on" data-count="4" onclick="selectExCount(this)">4</button>
+            <button class="exam-param-pill" data-count="5" onclick="selectExCount(this)">5</button>
+            <button class="exam-param-pill" data-count="6" onclick="selectExCount(this)">6</button>
+          </div>
+        </div>
+        <div class="exam-param-box">
+          <div class="exam-param-head">مدة الامتحان</div>
+          <div class="exam-param-pills" id="exDurPills">
+            <button class="exam-param-pill" data-dur="45" onclick="selectExDur(this)">45 د</button>
+            <button class="exam-param-pill on" data-dur="60" onclick="selectExDur(this)">1 سا</button>
+            <button class="exam-param-pill" data-dur="90" onclick="selectExDur(this)">1.5 سا</button>
+            <button class="exam-param-pill" data-dur="120" onclick="selectExDur(this)">2 سا</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- STEP 04 -->
@@ -281,16 +348,16 @@ select option{background:var(--surface)}
           <div class="ctrl-head">تنسيق الإخراج</div>
           <div class="ctrl-pills">
             <button class="ctrl-pill on" data-fmt="structured" onclick="selectFmt(this)">منظم<span class="pill-en">structured</span></button>
-            <button class="ctrl-pill"    data-fmt="semi"       onclick="selectFmt(this)">مختلط<span class="pill-en">semi</span></button>
-            <button class="ctrl-pill"    data-fmt="free"       onclick="selectFmt(this)">حر<span class="pill-en">free</span></button>
+            <button class="ctrl-pill" data-fmt="semi" onclick="selectFmt(this)">مختلط<span class="pill-en">semi</span></button>
+            <button class="ctrl-pill" data-fmt="free" onclick="selectFmt(this)">حر<span class="pill-en">free</span></button>
           </div>
         </div>
         <div class="ctrl-box">
           <div class="ctrl-head">حجم الإخراج</div>
           <div class="ctrl-pills">
-            <button class="ctrl-pill"    data-len="short"  onclick="selectLen(this)">مختصر<span class="pill-en">~500</span></button>
+            <button class="ctrl-pill" data-len="short" onclick="selectLen(this)">مختصر<span class="pill-en">~500</span></button>
             <button class="ctrl-pill on" data-len="medium" onclick="selectLen(this)">متوازن<span class="pill-en">~800</span></button>
-            <button class="ctrl-pill"    data-len="long"   onclick="selectLen(this)">مفصل<span class="pill-en">~1500</span></button>
+            <button class="ctrl-pill" data-len="long" onclick="selectLen(this)">مفصل<span class="pill-en">~1500</span></button>
           </div>
         </div>
       </div>
@@ -339,35 +406,36 @@ select option{background:var(--surface)}
   </div>
 
 </div>
+
 <script>
 const CURRICULUM_DATA = {
   'بيئة التعامل مع الحاسوب': {
-    'تقنية المعلومات': { competency:'يكتسب المتعلم معارف حول التقنيات الرقمية.',objectives:['يتعرف على مفهوم تكنولوجيا الإعلام والاتصال TIC.','يتعرف على مفهوم المعلوماتية.','يتعرف على مراحل تطور تقنية المعلومات IT.'],targeted_ressourses:['TIC مفهوم تكنولوجيا الإعلام والاتصال','مفهوم المعلوماتية','أهم مراحل تطور تقنية المعلومات'],progression:['البيانات – المعلومات – التقنية – المعلوماتية','مجالات تقنية المعلومات','مفهوم تكنولوجيا الإعلام والاتصال','أهم مراحل تطور تكنولوجيا الإعلام والاتصال'],duration:'2 ساعة',stage_evaluation:'ماهي أهم الميادين التي استفادت من تطور تكنولوجيا الإعلام والاتصال؟',final_task:'إنجاز بحث حول أحدث التطورات في تقنية المعلومات مع أمثلة من الواقع'},
-    'تجميع الحاسوب': { competency:'يتعلم مراحل تركيب الحاسوب.',objectives:['يتعرف على مواضع كل المكونات وكيفية توصيلها.'],targeted_ressourses:['مفهوم الحاسوب','مكونات الحاسوب','مخطط تركيب الحاسوب'],progression:['الحاسوب','وحدات الإدخال والإخراج','وحدة المعالجة والتخزين','تمثيل المعلومات في الحاسوب','استخدام برمجية المحاكات لتركيب الحاسوب'],duration:'4 ساعة',stage_evaluation:['أسئلة في المعارف المكتسبة','أذكر مراحل تركيب الحاسوب؟','إنجاز عمليات تحويل بين مختلف وحدات قياس الذاكرة'],final_task:['اذكر أوجه الشبه والاختلاف بين جهاز الحاسوب والجهاز اللوحي والهاتف الذكي','إضافة أي بطاقة امتداد']},
-    'نظام التشغيل': { competency:'يتمكن من تثبيت نظام التشغيل.',objectives:['يتعرف على مفهوم نظام التشغيل.','يتعرف على مفهوم تثبيت نظام التشغيل.','يتعرف على مفهوم تقسيم القرص.','يتعرف على مختلف مراحل التثبيت.'],targeted_ressourses:['تعريف نظام التشغيل','مفهوم تثبيت نظام التشغيل','مفهوم تقسيم القرص','مفهوم تهيئة القرص','الإعدادات قبل وأثناء التثبيت'],progression:['نظام التشغيل','تثبيت نظام التشغيل','تقسيم القرص الصلب','تهيئة القرص','مراحل تثبيت نظام التشغيل باستخدام برمجية محاكات'],duration:'4 ساعات',stage_evaluation:['أذكر أهم وظائف نظام التشغيل','كيفية تنفيذ الإقلاع الأول','استعمال برامج محاكاة لتثبيت النظام'],final_task:'تثبيت النظام باستعمال القرص'},
-    'لوحة التحكم': { competency:'ينجز بعض عمليات التحكم في الحاسوب.',objectives:['يتعرف على مكونات لوحة التحكم.','يتعرف على خصائص العرض والفأرة.','يتمكن من تغيير الخيارات الإقليمية وخيارات اللغة.','يتمكن من إزالة برنامج.','يتمكن من إنشاء حسابات المستخدمين.'],targeted_ressourses:['واجهة لوحة التحكم','خصائص العرض','خصائص الفأرة','الخيارات الإقليمية وخيارات اللغة','إزالة البرنامج','إنشاء حسابات المستخدمين'],progression:['يعرض على واجهة لوحة التحكم','يغير خصائص العرض','يغير خصائص الفأرة','يغير الخيارات الإقليمية','يزيل برنامجًا','ينشئ حساب المستخدم'],duration:'1 ساعة',stage_evaluation:['تغيير وإضافة لغة','إزالة برنامج','تغيير خلفية الشاشة','إنشاء حساب المستخدمين'],final_task:'التأقلم مع لوحة التحكم مع التركيز على حسابات المستخدمين'},
-    'حماية الحاسوب': { competency:'يثبت مضاد الفيروسات ويستعمله.',objectives:['يتعرف على الفيروسات وأنواعها.','يتعلم كيفية تثبيت مضاد الفيروسات واستعماله.'],targeted_ressourses:['الفيروسات وأنواعها','تثبيت مضاد الفيروسات والعمل به'],progression:['يتعرف على الفيروس','يميز بين مختلف الفيروسات','يتمكن من الوقاية من الفيروسات'],duration:'1 ساعة',stage_evaluation:['أذكر بعض أعراض الإصابة بالفيروس.'],final_task:'أهم الأسباب للعدوى بالفيروسات وطرق الوقاية.'},
-    'الشبكة المحلية': { competency:'يتمكن من إعداد شبكة محلية واستغلالها.',objectives:['يتعرف على معنى الشبكة المحلية.','يدرس المكونات المادية للشبكة المحلية.','يتمكن من إعداد الشبكة.','يتمكن من استغلال الموارد المشتركة.'],targeted_ressourses:['تعريف الشبكة المحلية','المكونات المادية للشبكة المحلية','إعداد الشبكة'],progression:['يتعرف على الشبكة','يصنف الشبكات','يحدد المكونات المادية','يحدد طوبولوجيا الربط','يستغل المشاركة في الموارد'],duration:'4 ساعات',stage_evaluation:['الفرق بين Hub و Switch','الفرق بين الشبكة السلكية واللاسلكية','مشاركة بعض الموارد'],final_task:'إعداد 3 شبكات بأسماء مجموعات مختلفة وملاحظة الفرق.'}
+    'تقنية المعلومات': {competency:'يكتسب المتعلم معارف حول التقنيات الرقمية.',objectives:['يتعرف على مفهوم TIC.','يتعرف على مفهوم المعلوماتية.','يتعرف على مراحل تطور IT.'],targeted_ressourses:['TIC','مفهوم المعلوماتية','مراحل تطور IT'],progression:['البيانات – المعلومات – التقنية','مجالات TIC','مراحل تطور TIC'],duration:'2 ساعة',stage_evaluation:'ما أهم الميادين التي استفادت من تطور TIC؟',final_task:'بحث حول أحدث التطورات في IT'},
+    'تجميع الحاسوب': {competency:'يتعلم مراحل تركيب الحاسوب.',objectives:['يتعرف على مواضع كل المكونات وكيفية توصيلها.'],targeted_ressourses:['مفهوم الحاسوب','مكونات الحاسوب','مخطط تركيب الحاسوب'],progression:['الحاسوب','وحدات الإدخال والإخراج','وحدة المعالجة والتخزين','تمثيل المعلومات'],duration:'4 ساعة',stage_evaluation:['أسئلة في المعارف المكتسبة','أذكر مراحل تركيب الحاسوب'],final_task:'إضافة أي بطاقة امتداد'},
+    'نظام التشغيل': {competency:'يتمكن من تثبيت نظام التشغيل.',objectives:['يتعرف على مفهوم نظام التشغيل.','يتعرف على تثبيته.','يتعرف على تقسيم القرص.','يتعرف على مراحل التثبيت.'],targeted_ressourses:['تعريف نظام التشغيل','تثبيت نظام التشغيل','تقسيم القرص','تهيئة القرص'],progression:['نظام التشغيل','تثبيته','تقسيم القرص','تهيئة القرص'],duration:'4 ساعات',stage_evaluation:['أذكر أهم وظائف نظام التشغيل'],final_task:'تثبيت النظام'},
+    'لوحة التحكم': {competency:'ينجز عمليات التحكم في الحاسوب.',objectives:['يتعرف على مكونات لوحة التحكم.','يتمكن من تغيير الخيارات الإقليمية.','يتمكن من إزالة برنامج.','يتمكن من إنشاء حسابات المستخدمين.'],targeted_ressourses:['واجهة لوحة التحكم','خصائص العرض','الخيارات الإقليمية','إنشاء حسابات المستخدمين'],progression:['لوحة التحكم','تغيير خصائص العرض','تغيير الخيارات الإقليمية','إنشاء حساب المستخدم'],duration:'1 ساعة',stage_evaluation:['تغيير لغة','إزالة برنامج','إنشاء حساب'],final_task:'التأقلم مع لوحة التحكم'},
+    'حماية الحاسوب': {competency:'يثبت مضاد الفيروسات ويستعمله.',objectives:['يتعرف على الفيروسات وأنواعها.','يتعلم تثبيت مضاد الفيروسات.'],targeted_ressourses:['الفيروسات وأنواعها','تثبيت مضاد الفيروسات'],progression:['يتعرف على الفيروس','يميز بين أنواعه','الوقاية'],duration:'1 ساعة',stage_evaluation:['أذكر بعض أعراض الإصابة.'],final_task:'أهم أسباب العدوى وطرق الوقاية.'},
+    'الشبكة المحلية': {competency:'يتمكن من إعداد شبكة محلية.',objectives:['يتعرف على معنى الشبكة المحلية.','يدرس المكونات المادية.','يتمكن من إعداد الشبكة.'],targeted_ressourses:['تعريف الشبكة المحلية','المكونات المادية','إعداد الشبكة'],progression:['يتعرف على الشبكة','يصنف الشبكات','يحدد المكونات','يستغل المشاركة'],duration:'4 ساعات',stage_evaluation:['الفرق بين Hub و Switch','مشاركة الموارد'],final_task:'إعداد 3 شبكات بأسماء مختلفة.'}
   },
   'المخططات الانسيابية والخوارزميات': {
-    'المخطط الإنسيابي': { competency:'يتمكن من فهم وإنشاء المخططات الانسيابية.',objectives:['يتعرف على المخطط الانسيابي.','يتعرف على عناصر حل مسألة.','يتعرف على مختلف دلالات الأشكال.'],targeted_ressourses:['تحديد عناصر المشكلة','تعريف المخطط الإنسيابي','أهم الأشكال والرموز'],progression:['يحدد عناصر مشكلة','يتعرف على المخطط الإنسيابي','يتعرف على مكوناته'],duration:'2 ساعة',stage_evaluation:['إنشاء المخطط لحساب مساحة مستطيل','إنشاء المخطط لحل معادلة من الدرجة الأولى','إنشاء المخطط لحساب معدل المواد الأساسية'],final_task:'حساب مجموع الأعداد الزوجية الأقل من عشرين.'},
-    'إنشاء المخطط الإنسيابي': { competency:'يتمكن من إنشاء مخطط انسيابي باستعمال برنامج LARP.',objectives:['يتعلم استعمال برنامج LARP.'],targeted_ressourses:['شرح برمجية Larp','توظيف برمجية Larp لإنشاء مخطط'],progression:['شرح برمجية Larp','يوظف برمجية Larp لإنشاء مخطط'],duration:'2 ساعة',stage_evaluation:['استعمل Larp لرسم مخطط حساب مساحة مستطيل','استعمل Larp لرسم مخطط حل معادلة'],final_task:'إنجاز مخطط يسمح بقراءة 10 أعداد وإظهار القيم السالبة.'},
-    'مدخل للخوارزمية': { competency:'يتعرف على الأجزاء الرئيسية للخوارزميات.',objectives:['يتعرف على مفهوم الخوارزميات.','يتعرف على الهيكل العام.','يتعرف على أنواع البيانات.','يتعرف على قواعد تسمية المعرفات.','يتعرف على برنامج ALGOBOX.'],targeted_ressourses:['تعريف الخوارزميات','الهيكل العام للخوارزمية','أهم أنواع البيانات','قواعد تسمية المعرفات','الرموز الرياضية والمنطقية','التصريح عن المتغيرات والثوابت'],progression:['الخوارزميات','الهيكل العام','أنواع البيانات','قواعد التسمية','الرموز','التصريح عن المتغيرات'],duration:'4 ساعة',stage_evaluation:['كتابة خوارزميات متنوعة'],final_task:'إنشاء خوارزميات بسيطة'},
-    'التعليمات الأساسية': { competency:'يتعرف على التعليمات الأساسية للخوارزميات.',objectives:['يتعرف على أهم التعليمات الأساسية للخوارزميات.'],targeted_ressourses:['تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمية الشرطية بأنواعها','التعليمية التكرارية بأنواعها'],progression:['تعريف التعليمية','تعليمة الاسناد','تعليمة القراءة والكتابة','التعليمة الشرطية','التعليمة التكرارية','أنشطة مختلفة باستعمال Algobox'],duration:'8 ساعات',stage_evaluation:['قراءة خوارزمية وتنفيذها','اختيار تمارين موظفاً التعليمات المدروسة'],final_task:'إنجاز خوارزمية لمشكلة تشمل تعليمات شرطية وتكرارية.'}
+    'المخطط الإنسيابي': {competency:'يتمكن من فهم وإنشاء المخططات الانسيابية.',objectives:['يتعرف على المخطط الانسيابي.','يتعرف على عناصر حل مسألة.','يتعرف على دلالات الأشكال.'],targeted_ressourses:['تعريف المخطط','أهم الأشكال والرموز'],progression:['يحدد عناصر مشكلة','يتعرف على المخطط','مكوناته'],duration:'2 ساعة',stage_evaluation:['مخطط حساب مساحة مستطيل','مخطط معادلة درجة أولى'],final_task:'حساب مجموع الأعداد الزوجية أقل من 20.'},
+    'إنشاء المخطط الإنسيابي': {competency:'يتمكن من إنشاء مخطط باستعمال LARP.',objectives:['يتعلم استعمال برنامج LARP.'],targeted_ressourses:['شرح برمجية Larp','توظيفها'],progression:['شرح Larp','يوظف Larp لإنشاء مخطط'],duration:'2 ساعة',stage_evaluation:['Larp لرسم مخطط مساحة مستطيل'],final_task:'مخطط يقرأ 10 أعداد ويظهر السالبة.'},
+    'مدخل للخوارزمية': {competency:'يتعرف على الأجزاء الرئيسية للخوارزميات.',objectives:['يتعرف على مفهوم الخوارزميات.','الهيكل العام.','أنواع البيانات.','قواعد التسمية.'],targeted_ressourses:['تعريف الخوارزميات','الهيكل العام','أنواع البيانات','قواعد التسمية'],progression:['الخوارزميات','الهيكل العام','أنواع البيانات','قواعد التسمية'],duration:'4 ساعة',stage_evaluation:['كتابة خوارزميات متنوعة'],final_task:'إنشاء خوارزميات بسيطة'},
+    'التعليمات الأساسية': {competency:'يتعرف على التعليمات الأساسية للخوارزميات.',objectives:['يتعرف على أهم التعليمات الأساسية.'],targeted_ressourses:['تعليمة الإسناد','القراءة والكتابة','التعليمة الشرطية','التعليمة التكرارية'],progression:['تعريف التعليمية','الإسناد','القراءة/الكتابة','الشرطية','التكرارية'],duration:'8 ساعات',stage_evaluation:['قراءة خوارزمية وتنفيذها'],final_task:'خوارزمية تشمل تعليمات شرطية وتكرارية.'}
   },
   'تقنيات الويب': {
-    'المتصفح': { competency:'يتعرف على بعض المتصفحات.',objectives:['يتمكن من الوصول إلى موقع إلكتروني.','يتدرب على طرق البحث.','يستغل نتائج البحث.'],targeted_ressourses:['تعريف المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','آثار المتصفح','محرك البحث'],progression:['المتصفح','خصائص ومميزات المتصفح','حفظ الصفحة','المفضلة','آثار المتصفح','محرك البحث'],duration:'2 ساعة',stage_evaluation:['الولوج إلى موقع يحدده الأستاذ وتصفحه.'],final_task:'البحث عن أهم المعالم السياحية في الجزائر.'},
-    'البريد الإلكتروني': { competency:'يتمكن من استخدام البريد الإلكتروني في تواصله مع زملائه.',objectives:['يتمكن من إنشاء واستعمال حساب بريد إلكتروني.','يتعرف على مكونات عنوان البريد الإلكتروني.','يدرك إيجابيات وسلبيات البريد الإلكتروني.'],targeted_ressourses:['تعريف البريد الإلكتروني','مكونات عنوان البريد الإلكتروني','إيجابيات وسلبيات البريد','إنشاء حساب بريد إلكتروني','إرسال الرسائل','إدراج ملف مرفق'],progression:['تعريف البريد الإلكتروني','مقارنة البريد العادي والإلكتروني','مكونات عنوان البريد','إيجابيات وسلبياته','إرسال رسالة','إدراج ملف مرفق'],duration:'1 ساعة',stage_evaluation:['أرسل إلى زميلك دعوة لزيارة مدينتك مع صورة مرفقة.'],final_task:'إرسال رسالة إلى خمس تلاميذ دفعة واحدة.'},
-    'إنشاء صفحة ويب': { competency:'يكتسب المتعلم معارف لغة HTML.',objectives:['يتعرف على أهم وسوم لغة HTML.'],targeted_ressourses:['تعريف HTML','بنية ملف HTML','الوسوم: العنوان، الفقرة، التعداد، الخطوط، الألوان، الصورة، الارتباط التشعبي، الجداول','إنشاء صفحة ويب'],progression:['تعريف HTML','أمثلة عن الوسوم','بنية ملف HTML','التعداد الرقمي والنقطي','إنشاء صفحة ويب'],duration:'6 ساعات',stage_evaluation:['وسم الفقرة','وسوم التنسيق','وسم الصورة','وسوم الألوان','الارتباط التشعبي'],final_task:'إنشاء صفحة ويب.'},
-    'استغلال وسائل التواصل': { competency:'يتعرف على بعض أدوات التواصل الاجتماعي.',objectives:['يتمكن من استعمال بعض شبكات التواصل الاجتماعية.'],targeted_ressourses:['التعرف على بعض شبكات التواصل الاجتماعية','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','أخلاقيات استعمال الإنترنت'],progression:['يتعرف على بعض شبكات التواصل.','سلبيات مواقع التواصل','إيجابيات مواقع التواصل','أخلاقيات استعمال الإنترنت'],duration:'1 ساعة',stage_evaluation:['حدد السلبيات والإيجابيات؟','اذكر الأخلاقيات التي يجب التحلي بها؟'],final_task:'بحث حول سلبيات ومخاطر شبكات التواصل والإنترنت.'}
+    'المتصفح': {competency:'يتعرف على بعض المتصفحات.',objectives:['يتمكن من الوصول إلى موقع.','يتدرب على البحث.'],targeted_ressourses:['تعريف المتصفح','محرك البحث','المفضلة'],progression:['المتصفح','خصائصه','محرك البحث'],duration:'2 ساعة',stage_evaluation:['الولوج إلى موقع وتصفحه.'],final_task:'البحث عن أهم المعالم السياحية في الجزائر.'},
+    'البريد الإلكتروني': {competency:'يتمكن من استخدام البريد الإلكتروني.',objectives:['يتمكن من إنشاء حساب بريد.','يتعرف على مكونات عنوانه.'],targeted_ressourses:['تعريف البريد','مكوناته','إيجابياته وسلبياته'],progression:['تعريف البريد','مقارنة البريد العادي والإلكتروني','إرسال رسالة'],duration:'1 ساعة',stage_evaluation:['أرسل دعوة لزيارة مدينتك مع صورة.'],final_task:'إرسال رسالة إلى خمسة تلاميذ دفعة واحدة.'},
+    'إنشاء صفحة ويب': {competency:'يكتسب معارف لغة HTML.',objectives:['يتعرف على أهم وسوم HTML.'],targeted_ressourses:['تعريف HTML','بنية ملف HTML','الوسوم المختلفة'],progression:['تعريف HTML','أمثلة عن الوسوم','بنية ملف'],duration:'6 ساعات',stage_evaluation:['وسم الفقرة','وسوم التنسيق','الارتباط التشعبي'],final_task:'إنشاء صفحة ويب.'},
+    'استغلال وسائل التواصل': {competency:'يتعرف على أدوات التواصل الاجتماعي.',objectives:['يتمكن من استعمال شبكات التواصل.'],targeted_ressourses:['شبكات التواصل','سلبياتها','إيجابياتها','أخلاقيات الإنترنت'],progression:['يتعرف على شبكات التواصل','سلبياتها','إيجابياتها','أخلاقيات'],duration:'1 ساعة',stage_evaluation:['حدد السلبيات والإيجابيات؟'],final_task:'بحث حول مخاطر شبكات التواصل.'}
   },
   'المكتبية': {
-    'معالج النصوص 1': { competency:'يتحكم في تحرير وثيقة متكاملة.',objectives:['يتحكم في تحرير وثيقة متكاملة.','التنسيق.','الجداول.','الصور والأشكال.','الطباعة.'],targeted_ressourses:['واجهة معالج النصوص','كتابة نص وتنسيقه','الجداول','الأشكال والصور','استعمال قالب جاهز وإنشاء قالب جديد','إدراج فواصل ومقاطع'],progression:['يكتب نص وينسقه','ينشئ جدول','يدرج الأشكال والصور','يستعمل قالب جاهز وينشئ قالب جديد','يدرج فواصل ومقاطع'],duration:'3 ساعات',stage_evaluation:['كتابة نص مكون من ثلاث فقرات وتنسيقه','إدراج صورة','إدراج جدول والكتابة فيه وتنسيقه','إنشاء استمارة معلومات وحفظها'],final_task:'إنجاز وثيقة تحوي فواصل ومقاطع'},
-    'معالج النصوص 2': { competency:'يتحكم في دمج المراسلات.',objectives:['يتعرف على مفهوم دمج المراسلات.','يتعرف على المستند الرئيسي ومصدر البيانات.','يدرس طريقة الدمج.'],targeted_ressourses:['إنشاء قاعدة بيانات','استعمال استمارة المعلومات كمستند رئيسي','عملية الدمج'],progression:['ينشئ قاعدة بيانات','يستعمل استمارة المعلومات كمستند رئيسي','ينجز عملية الدمج'],duration:'2 ساعة',stage_evaluation:'استغلال النشاط المقترح في الكتاب المدرسي',final_task:['أنشطة متنوعة في الدمج','الإدراج المشروط لنص']},
-    'جداول البيانات 1': { competency:'يسترجع المعارف التي درست في المجدول ويتحكم في إنجاز مصنف.',objectives:['يتمكن من إنجاز مصنف يحوي جدول منسق.','يتعرف على بعض الصيغ والدوال البسيطة.','يدرس الدالة الشرطية SI.'],targeted_ressourses:['واجهة الجدول','التعامل مع أوراق العمل','إنجاز مصنف يحتوي على جدول منسق','كتابة الصيغ','إدراج واستعمال دوال منطقية ورياضية'],progression:['يتعرف على خصائص أوراق العمل','ينجز مصنف','يكتب الصيغ','يدرج ويستعمل دوال منطقية ورياضية'],duration:'3 ساعات',stage_evaluation:'حساب وحل معادلات',final_task:'إنجاز جداول متنوعة.'},
-    'جداول البيانات 2': { competency:'يتمكن من فرز وترتيب البيانات.',objectives:['يتمكن من فرز وترتيب البيانات حسب معيار أو أكثر.'],targeted_ressourses:'فرز وترتيب البيانات',progression:['يفرز البيانات حسب معيار','يرتب البيانات حسب معيار'],duration:'2 ساعة',stage_evaluation:'قم بفرز وترتيب بيانات قائمة تلاميذ القسم',final_task:'فرز قائمة من البيانات وفق معايير مختلفة.'},
-    'العروض التقديمية 1': { competency:'ينجز عروضا أكثر احترافية مدمجا الصوت والصور والفيديو والمؤثرات.',objectives:['يتمكن من إنجاز مشاريع مدمجا نصوص وصور وفيديو.'],targeted_ressourses:['واجهة برنامج العروض التقديمية','التعامل مع الشرائح','الانتقال بين الشرائح'],progression:['التعامل مع الشرائح','الانتقال بين الشرائح'],duration:'1 ساعة',stage_evaluation:'عرّف بمدينتك مبينا أهم المعالم المميزة لها.',final_task:''},
-    'العروض التقديمية 2': { competency:'يتمكن من إدراج واستغلال الارتباطات التشعبية.',objectives:['يتمكن من إنجاز عرض تقديمي مدمجا نصوص وصور وفيديو ومستغلا الارتباطات التشعبية.'],targeted_ressourses:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],progression:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],duration:'1 ساعة',stage_evaluation:'توظيف الارتباطات التشعبية للانتقال بين شرائح مشروعك.',final_task:'تصميم اختبار QCM من ثلاثة أسئلة.'}
+    'معالج النصوص 1': {competency:'يتحكم في تحرير وثيقة متكاملة.',objectives:['يتحكم في التنسيق.','الجداول.','الصور والأشكال.'],targeted_ressourses:['واجهة معالج النصوص','تنسيق النص','الجداول','الأشكال'],progression:['يكتب نص وينسقه','ينشئ جدول','يدرج الأشكال والصور'],duration:'3 ساعات',stage_evaluation:['كتابة نص وتنسيقه','إدراج صورة','إدراج جدول'],final_task:'وثيقة تحوي فواصل ومقاطع'},
+    'معالج النصوص 2': {competency:'يتحكم في دمج المراسلات.',objectives:['يتعرف على دمج المراسلات.','يتعرف على المستند الرئيسي.'],targeted_ressourses:['إنشاء قاعدة بيانات','الدمج'],progression:['ينشئ قاعدة بيانات','ينجز عملية الدمج'],duration:'2 ساعة',stage_evaluation:'النشاط المقترح في الكتاب المدرسي',final_task:'أنشطة في الدمج'},
+    'جداول البيانات 1': {competency:'يتحكم في إنجاز مصنف.',objectives:['يتمكن من إنجاز مصنف.','يتعرف على الصيغ والدوال.','يدرس الدالة الشرطية SI.'],targeted_ressourses:['واجهة الجدول','إنجاز مصنف','كتابة الصيغ','الدوال المنطقية'],progression:['يتعرف على أوراق العمل','ينجز مصنف','يكتب الصيغ'],duration:'3 ساعات',stage_evaluation:'حساب وحل معادلات',final_task:'إنجاز جداول متنوعة.'},
+    'جداول البيانات 2': {competency:'يتمكن من فرز وترتيب البيانات.',objectives:['يتمكن من فرز البيانات حسب معيار.'],targeted_ressourses:'فرز وترتيب البيانات',progression:['يفرز البيانات','يرتب البيانات'],duration:'2 ساعة',stage_evaluation:'فرز قائمة تلاميذ القسم',final_task:'فرز قائمة بيانات وفق معايير مختلفة.'},
+    'العروض التقديمية 1': {competency:'ينجز عروضاً مدمجاً الصوت والصور والفيديو.',objectives:['يتمكن من إنجاز مشاريع مدمجة.'],targeted_ressourses:['واجهة العروض','التعامل مع الشرائح'],progression:['الشرائح','الانتقال بينها'],duration:'1 ساعة',stage_evaluation:'عرّف بمدينتك.',final_task:''},
+    'العروض التقديمية 2': {competency:'يتمكن من إدراج الارتباطات التشعبية.',objectives:['يتمكن من إنجاز عرض مع ارتباطات.'],targeted_ressourses:['إنشاء الارتباط التشعبي'],progression:['الحركة بين الشرائح','إنشاء الارتباط التشعبي'],duration:'1 ساعة',stage_evaluation:'توظيف الارتباطات للانتقال بين شرائح مشروعك.',final_task:'تصميم اختبار QCM من 3 أسئلة.'}
   }
 };
 
@@ -375,17 +443,22 @@ const areaEl = document.getElementById('areaSelect');
 const unitEl = document.getElementById('unitSelect');
 const infoStrip = document.getElementById('infoStrip');
 const classSection = document.getElementById('classSection');
-const typeSection  = document.getElementById('typeSection');
-const outputBox  = document.getElementById('outputBox');
+const typeSection = document.getElementById('typeSection');
+const outputBox = document.getElementById('outputBox');
 const outDivider = document.getElementById('outDivider');
 const promptBody = document.getElementById('promptBody');
-const genBtn     = document.getElementById('genBtn');
+const genBtn = document.getElementById('genBtn');
 const genBtnText = document.getElementById('genBtnText');
-const spinner    = document.getElementById('spinner');
+const spinner = document.getElementById('spinner');
+const examSection = document.getElementById('examSection');
+const unitsGrid = document.getElementById('unitsGrid');
 
 let selType = null, selClass = null, curData = null, curPrompt = '';
 let outFmt = 'structured', lenMode = 'medium', strictMode = false;
+let selectedExamUnits = new Set(); // { area: '...', unit: '...' } as JSON keys
+let examExCount = 4, examDuration = 60;
 
+// Populate area select
 Object.keys(CURRICULUM_DATA).forEach(a => {
   const o = document.createElement('option'); o.value = a; o.textContent = a; areaEl.appendChild(o);
 });
@@ -418,15 +491,18 @@ function showInfo(d) {
   selType = null; selClass = null;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('cardJmet').className = 'class-card';
-  document.getElementById('cardJma').className  = 'class-card';
+  document.getElementById('cardJma').className = 'class-card';
+  examSection.classList.remove('open');
   genBtn.disabled = true;
   outputBox.classList.remove('open');
   outDivider.style.display = 'none';
 }
+
 function hideAll() {
   infoStrip.classList.remove('open');
   classSection.classList.add('hidden');
   typeSection.classList.add('hidden');
+  examSection.classList.remove('open');
   outputBox.classList.remove('open');
   outDivider.style.display = 'none';
   curData = null;
@@ -435,75 +511,263 @@ function hideAll() {
 function selectClass(cls) {
   selClass = cls;
   document.getElementById('cardJmet').className = 'class-card' + (cls==='jmet' ? ' sel-jmet' : '');
-  document.getElementById('cardJma').className  = 'class-card' + (cls==='jma'  ? ' sel-jma'  : '');
+  document.getElementById('cardJma').className = 'class-card' + (cls==='jma' ? ' sel-jma' : '');
   checkBtn();
 }
+
 function selectType(el) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active'); selType = el.dataset.type; checkBtn();
+  el.classList.add('active');
+  selType = el.dataset.type;
+  if (selType === 'exam') {
+    examSection.classList.add('open');
+    buildUnitsGrid();
+  } else {
+    examSection.classList.remove('open');
+  }
+  checkBtn();
 }
+
+function buildUnitsGrid() {
+  unitsGrid.innerHTML = '';
+  // Collect ALL units from ALL areas, max 6 shown per area
+  let count = 0;
+  Object.entries(CURRICULUM_DATA).forEach(([area, units]) => {
+    Object.keys(units).forEach(unit => {
+      if (count >= 24) return; // safety limit
+      const key = JSON.stringify({area, unit});
+      const chip = document.createElement('div');
+      chip.className = 'unit-chip' + (selectedExamUnits.has(key) ? ' selected' : '');
+      chip.dataset.key = key;
+      chip.innerHTML = `<div class="unit-chip-check"></div><div class="unit-chip-name">${unit}<br><span style="font-family:var(--mono);font-size:9px;color:var(--text-muted)">${area}</span></div>`;
+      chip.addEventListener('click', () => toggleExamUnit(key, chip));
+      unitsGrid.appendChild(chip);
+      count++;
+    });
+  });
+  updateUnitCount();
+}
+
+function toggleExamUnit(key, chip) {
+  if (selectedExamUnits.has(key)) {
+    selectedExamUnits.delete(key);
+    chip.classList.remove('selected');
+  } else {
+    if (selectedExamUnits.size >= 6) return; // max 6
+    selectedExamUnits.add(key);
+    chip.classList.add('selected');
+  }
+  updateUnitCount();
+  checkBtn();
+}
+
+function updateUnitCount() {
+  document.getElementById('unitCountBadge').textContent = selectedExamUnits.size + ' / 6';
+  const note = document.getElementById('examNote');
+  note.classList.toggle('show', selType === 'exam' && selectedExamUnits.size === 0);
+}
+
+function selectExCount(el) {
+  document.querySelectorAll('#exCountPills .exam-param-pill').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  examExCount = parseInt(el.dataset.count);
+}
+
+function selectExDur(el) {
+  document.querySelectorAll('#exDurPills .exam-param-pill').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  examDuration = parseInt(el.dataset.dur);
+}
+
 function selectFmt(el) {
   document.querySelectorAll('.ctrl-pill[data-fmt]').forEach(b => b.classList.remove('on'));
   el.classList.add('on'); outFmt = el.dataset.fmt;
 }
+
 function selectLen(el) {
   document.querySelectorAll('.ctrl-pill[data-len]').forEach(b => b.classList.remove('on'));
   el.classList.add('on'); lenMode = el.dataset.len;
 }
+
 function toggleStrict() {
   strictMode = !strictMode;
   document.getElementById('strictToggle').classList.toggle('on', strictMode);
   document.getElementById('strictLabel').textContent = strictMode ? 'مفعّل' : 'غير مفعل';
 }
-function checkBtn() { genBtn.disabled = !(selType && selClass && curData); }
+
+function checkBtn() {
+  if (selType === 'exam') {
+    genBtn.disabled = !(selClass && selectedExamUnits.size > 0);
+  } else {
+    genBtn.disabled = !(selType && selClass && curData);
+  }
+}
 
 const toArr = v => v ? (Array.isArray(v) ? v : [v]) : [];
-const list  = arr => toArr(arr).map(i => `  • ${i}`).join('\n');
 
 const CLASS_PROFILES = {
-  jmet:{label:'ج م ع ت',level:'متوسط إلى جيد',adapt:`- المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة\n- يمكن استخدام المصطلحات التقنية مع شرح مختصر\n- أضف أسئلة تحليلية ومقارنة بين المفاهيم\n- شمّل تمارين تحدٍّ اختيارية للمتقدمين\n- التمارين: سهل + متوسط + صعب + تحدٍّ`,exDiff:'سهل + متوسط + صعب + تمرين تحدٍّ اختياري'},
-  jma: {label:'ج م أ', level:'ضعيف إلى متوسط', adapt:`- المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول للاستيعاب\n- تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة\n- اعتمد على أمثلة ملموسة من الحياة اليومية الجزائرية\n- قسّم كل مفهوم إلى خطوات صغيرة جداً مع تأكيد الفهم\n- أضف مربعات تذكير وملخصات بعد كل فكرة\n- التمارين: جداً سهل + سهل + متوسط (لا تمارين صعبة)`,exDiff:'جداً سهل + سهل + متوسط (بدون مستوى صعب)'}
+  jmet:{label:'ج م ع ت',level:'متوسط إلى جيد',adapt:`- المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة
+- يمكن استخدام المصطلحات التقنية مع شرح مختصر
+- أضف أسئلة تحليلية ومقارنة بين المفاهيم
+- التمارين: سهل + متوسط + صعب + تحدٍّ`,exDiff:'سهل + متوسط + صعب + تمرين تحدٍّ اختياري'},
+  jma:{label:'ج م أ',level:'ضعيف إلى متوسط',adapt:`- المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول
+- تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة
+- اعتمد على أمثلة ملموسة من الحياة اليومية الجزائرية
+- قسّم كل مفهوم إلى خطوات صغيرة مع تأكيد الفهم
+- التمارين: جداً سهل + سهل + متوسط`,exDiff:'جداً سهل + سهل + متوسط (بدون مستوى صعب)'}
 };
 
-const typeLabels = {course:'وثيقة الدرس الكاملة',plan:'المذكرة التحضيرية',presentation:'خطة العرض التقديمي',problems:'الإشكاليات المقترحة',activities:'الأنشطة التطبيقية العملية',exercises:'تمارين وأفكار'};
+const typeLabels = {course:'وثيقة الدرس الكاملة',plan:'المذكرة التحضيرية',presentation:'خطة العرض التقديمي',problems:'الإشكاليات المقترحة',activities:'الأنشطة التطبيقية العملية',exercises:'تمارين وأفكار',exam:'امتحان'};
 
+const fmtInstr = {
+  structured:`- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت`,
+  semi:`- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,
+  free:`- حرية في الأسلوب مع الحفاظ على الوضوح`
+};
+const lenInstr = {
+  short:`- مختصر جداً — أقصى 500 كلمة`,
+  medium:`- متوازن — بين 500 و 1000 كلمة`,
+  long:`- مفصل — حتى 1500 كلمة`
+};
 const typeStructure = {
   course:'## مقدمة\n## محاور الدرس\n## ملاحظات\n## ملخص\n## تقييم',
   plan:'## البيانات الإدارية\n## سير الحصة\n## التقييم\n## التمييز البيداغوجي',
   presentation:'## هيكل الشرائح\n## تفاصيل كل شريحة\n## النشاط التفاعلي\n## التقييم',
   problems:'## وضعيات الانطلاق\n## أسئلة الاستكشاف\n## ربط بالواقع',
   activities:'## الاستعداد\n## الأنشطة\n## التقييم الذاتي\n## الإغلاق',
-  exercises:'## تمارين الفهم\n## تمارين التطبيق\n## QCM\n## أفكار إضافية\n## مشروع'
+  exercises:'## تمارين الفهم\n## تمارين التطبيق\n## QCM\n## أفكار إضافية\n## مشروع',
+  exam:'## معلومات الامتحان\n## التمارين (مرقمة)\n## سلّم التصحيح'
 };
 
-const fmtInstr = {structured:`- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت\n- بدون فقرات طويلة`,semi:`- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,free:`- حرية في الأسلوب مع الحفاظ على الوضوح`};
-const lenInstr  = {short:`- مختصر جداً\n- أقصى حد: 500 كلمة\n- ركّز على الأساسي فقط`,medium:`- متوازن\n- بين 500 و 1000 كلمة`,long:`- مفصل\n- حتى 1500 كلمة\n- شرح + أمثلة + تنويع`};
+function durLabel(min) {
+  if (min === 45) return '45 دقيقة';
+  if (min === 60) return 'ساعة واحدة (60 دقيقة)';
+  if (min === 90) return 'ساعة ونصف (90 دقيقة)';
+  if (min === 120) return 'ساعتان (120 دقيقة)';
+  return min + ' دقيقة';
+}
 
-function buildPrompt(type,area,unit,d,cls) {
+function buildExamPrompt(cls) {
   const P = CLASS_PROFILES[cls];
-  const jma = cls==='jma';
+  const units = [...selectedExamUnits].map(k => JSON.parse(k));
+  const unitsBlock = units.map((u, i) => {
+    const d = CURRICULUM_DATA[u.area][u.unit];
+    return `الوحدة ${i+1}: "${u.unit}" [${u.area}]
+  - الكفاءة: ${d.competency}
+  - الأهداف: ${toArr(d.objectives).join(' | ')}
+  - الموارد: ${toArr(d.targeted_ressourses).join(' | ')}`;
+  }).join('\n\n');
+
   const strictBlock = strictMode
-    ? `[قيود صارمة — مفعلة]\n- لا تضف مقدمة خارج المطلوب\n- لا تشرح ما ستقوم به\n- لا تغير ترتيب الأقسام\n- لا تضف أقسام جديدة\n- لا تحذف أي عنصر مهم\n- التزم بالبنية بدقة`
-    : `[قيود مرنة]\n- يمكنك تحسين العرض دون كسر البنية العامة`;
+    ? `[قيود صارمة — مفعلة]
+- لا تضف مقدمة خارج المطلوب
+- لا تشرح ما ستقوم به
+- لا تغير ترتيب الأقسام
+- التزم بالبنية بدقة`
+    : `[قيود مرنة]
+- يمكنك تحسين العرض دون كسر البنية العامة`;
+
+  return `═══════════════════════════════════════════════════════════
+ السياق المنهجي — الإعلام الآلي / الثانوي الجزائري
+═══════════════════════════════════════════════════════════
+
+[الدور]
+أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج امتحانات بيداغوجية عالية الجودة.
+
+[المهمة]
+إنشاء امتحان في مادة الإعلام الآلي مكيّف لمستوى ${P.label}
+
+[معطيات الامتحان]
+القسم      = ${P.label} (${P.level})
+عدد التمارين = ${examExCount} تمارين
+مدة الامتحان = ${durLabel(examDuration)}
+عدد الوحدات  = ${units.length} وحدة
+
+[الوحدات المشمولة]
+${unitsBlock}
+
+[قواعد التكيّف مع المستوى — إلزامي]
+${P.adapt}
+
+[التوزيع على التمارين]
+- وزّع التمارين على الوحدات المشمولة بشكل منطقي ومتوازن
+- لا تهمل أي وحدة مختارة تماماً
+- أنواع التمارين المقترحة: QCM + أسئلة مفتوحة + تطبيق عملي + تحليل + إنجاز + ترتيب خطوات +  صحيح او خطأ مع التصحيح + أكتب الخوارزمية + أنشىء المخطط الانسيابي
+- مستوى الصعوبة: ${P.exDiff}
+- كل تمرين يحمل نقاطاً واضحة، مجموعها 20 نقطة
+
+[تنسيق الامتحان — إلزامي]
+صفحة الغلاف:
+┌ المؤسسة | التاريخ | المادة: الإعلام الآلي
+├ القسم: ${P.label} | المدة: ${durLabel(examDuration)}
+└ المجموع: 20 نقطة
+
+هيكل كل تمرين:
+التمرين [رقم]: [عنوان الوحدة] — [النقاط] نقطة
+[الوضعية أو السياق إن وجد]
+السؤال 1: ... [النقاط]
+السؤال 2: ... [النقاط]
+...
+
+[قواعد الصياغة]
+- استخدم لغة عربية فصحى واضحة
+- التعليمات مباشرة ولا تحتمل تأويلاً
+- الأسئلة متدرجة: من البسيط إلى الأعمق داخل كل تمرين
+- اربط الأسئلة بالسياق الجزائري كلما أمكن
+
+[تنسيق الإخراج]
+${fmtInstr[outFmt]}
+
+[حجم الإخراج]
+${lenInstr[lenMode]}
+
+${strictBlock}
+
+[هيكل الإخراج — إلزامي]
+${typeStructure.exam}
+
+[سلّم التصحيح]
+أرفق في النهاية سلّم تصحيح كاملاً لكل تمرين مع التنقيط التفصيلي.
+
+[تحقق ذاتي قبل الإخراج]
+- هل الامتحان يشمل جميع الوحدات المختارة؟
+- هل المجموع يساوي 20 نقطة بالضبط؟
+- هل مستوى الصعوبة مناسب لـ ${P.label}؟
+- هل المدة المحددة (${durLabel(examDuration)}) كافية للإجابة؟
+
+═══════════════════════════════════════════════════════════
+
+ابدأ الآن.`;
+}
+
+function buildPrompt(type, area, unit, d, cls) {
+  const P = CLASS_PROFILES[cls];
+  const jma = cls === 'jma';
+  const strictBlock = strictMode
+    ? `[قيود صارمة — مفعلة]
+- لا تضف مقدمة خارج المطلوب
+- لا تشرح ما ستقوم به
+- لا تغير ترتيب الأقسام
+- لا تضف أقسام جديدة
+- التزم بالبنية بدقة`
+    : `[قيود مرنة]
+- يمكنك تحسين العرض دون كسر البنية العامة`;
 
   const CTX = `═══════════════════════════════════════════════════════════
  السياق المنهجي — الإعلام الآلي / الثانوي الجزائري
 ═══════════════════════════════════════════════════════════
 [الدور]
-أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج محتوى بيداغوجي عالي الجودة ومكيّف حسب مستوى التلاميذ.
+أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج محتوى بيداغوجي عالي الجودة.
 
 [المهمة]
-إنشاء: ${typeLabels[type]}
-للوحدة: "${unit}"
+إنشاء: ${typeLabels[type]} للوحدة: "${unit}"
 
 [المعطيات]
 FIELD      = ${area}
 UNIT       = ${unit}
 DURATION   = ${d.duration}
 LEVEL      = ${P.label} (${P.level})
-
 COMPETENCY = ${d.competency}
-
 OBJECTIVES = ${toArr(d.objectives).join(' | ')}
 RESOURCES  = ${toArr(d.targeted_ressourses).join(' | ')}
 FLOW       = ${toArr(d.progression).join(' | ')}
@@ -514,7 +778,7 @@ FINAL_TASK = ${toArr(d.final_task).join(' | ')}
 ${P.adapt}
 
 [السياق المحلي — إلزامي]
-- استخدم أمثلة من البيئة الجزائرية (مدرسة، إنترنت، هاتف، حياة يومية)
+- استخدم أمثلة من البيئة الجزائرية
 - اربط المفاهيم بواقع التلميذ
 
 [تنسيق الإخراج]
@@ -528,182 +792,95 @@ ${strictBlock}
 [هيكل الإخراج — إلزامي]
 ${typeStructure[type]}
 
-[تحقق ذاتي قبل الإخراج]
+[تحقق ذاتي]
 - هل المحتوى مناسب لمستوى ${P.label}؟
 - هل هناك تدرج منطقي؟
 - هل الأمثلة واقعية؟
-- هل تم احترام الحجم والتنسيق؟
 ═══════════════════════════════════════════════════════════`;
 
   const T = {
-course:`${CTX}
-
+    course: `${CTX}
 [المحتوى التفصيلي]
 أنشئ وثيقة درس كاملة لوحدة "${unit}" مكيّفة لقسم ${P.label}.
-
-1. مقدمة تمهيدية
-   - ربط بالحياة اليومية للمتعلم الجزائري
-   - ${jma ? 'أسئلة تشخيصية بسيطة جداً' : 'وضعية مشكلة تثير الفضول'}
-
-2. محاور الدرس (لكل مورد مستهدف)
-   - تعريف ${jma ? 'بسيط جداً + مثال ملموس فوري' : 'واضح مع ربط نظري وتطبيقي'}
-   - شرح تدريجي ${jma ? 'بطيء مع تأكيد الفهم بعد كل خطوة' : 'مع ربط بين المفاهيم'}
-   - ${jma ? 'مربع ملخص بعد كل فكرة رئيسية' : 'تمارين تطبيقية مدمجة في الشرح'}
-
-3. ملاحظات وتنبيهات
-   - أخطاء شائعة خاصة بمستوى ${P.label}
-
-4. ملخص الدرس
-   - ${jma ? 'جدول بسيط: المصطلح + معناه + مثاله' : 'خريطة ذهنية كاملة للوحدة'}
-
+1. مقدمة — ${jma ? 'أسئلة تشخيصية بسيطة' : 'وضعية مشكلة تثير الفضول'}
+2. محاور الدرس (لكل مورد مستهدف): تعريف + شرح تدريجي + ${jma ? 'مربع ملخص بعد كل فكرة' : 'تمارين مدمجة'}
+3. ملاحظات وأخطاء شائعة
+4. ملخص — ${jma ? 'جدول: المصطلح + معناه + مثاله' : 'خريطة ذهنية'}
 5. أسئلة التقييم — ${P.exDiff}
-
 ابدأ الآن.`,
-
-plan:`${CTX}
-
+    plan: `${CTX}
 [المحتوى التفصيلي]
-مذكرة تحضيرية كاملة وجاهزة للتطبيق — وحدة "${unit}" — قسم ${P.label} (${P.level}).
-
-الجزء 1 — البيانات الإدارية
-┌ المادة | المستوى | القسم: ${P.label} | المجال | الوحدة | الحجم الساعي: ${d.duration}
-└ الكفاءة المستهدفة | الأهداف التعليمية | الوسائل التعليمية
-
-الجزء 2 — سير الحصة (بالدقائق)
-┌ التهيئة (5-10 دق)
-├ بناء المعرفة (${jma ? 'تدرج بطيء، توقف للتأكد من الفهم' : 'شرح تحليلي، مناقشة'})
-│  نشاط الأستاذ | نشاط التلميذ | الوسيلة | الزمن
-├ التطبيق والترسيخ — ${P.exDiff}
-└ التقويم الختامي
-
-الجزء 3 — التمييز البيداغوجي
-${jma ? '- للتلاميذ الذين لم يستوعبوا: إعادة الشرح بطريقة أبسط\n- للتلاميذ المتوسطين: تمارين تطبيقية إضافية' : '- للتلاميذ ذوي الصعوبات: تبسيط + أمثلة إضافية\n- للتلاميذ المتقدمين: مسائل أعمق + بحث إضافي'}
-
+مذكرة تحضيرية كاملة — وحدة "${unit}" — قسم ${P.label}.
+الجزء 1: البيانات الإدارية
+الجزء 2: سير الحصة (بالدقائق) — نشاط الأستاذ | نشاط التلميذ | الوسيلة | الزمن
+الجزء 3: التمييز البيداغوجي
 ابدأ الآن.`,
-
-presentation:`${CTX}
-
+    presentation: `${CTX}
 [المحتوى التفصيلي]
 خطة عرض تقديمي لـ "${unit}" — ${P.label} — ${d.duration}.
-
-لكل شريحة:
-  [رقم] — العنوان
-  المحتوى: (${jma ? 'نقاط قليلة جداً، بسيطة' : 'نقاط واضحة منظمة'})
-  توجيه للأستاذ: (كيف تتفاعل مع هذا المستوى)
-  العناصر المرئية: (${jma ? 'صور توضيحية كثيرة' : 'رسوم بيانية، جداول مقارنة'})
-  الزمن: (بالدقائق)
-
-الهيكل:
-  1 — العنوان + الكفاءة
-  2 — الأهداف
-  3 — وضعية الانطلاق
-  4-N — محاور الدرس
-  N+1 — نشاط تفاعلي
-  N+2 — تطبيق (${P.exDiff})
-  N+3 — ملخص
-  N+4 — التقييم والواجب
-
+لكل شريحة: الرقم — العنوان — المحتوى — توجيه الأستاذ — العناصر المرئية — الزمن
 ابدأ الآن.`,
-
-problems:`${CTX}
-
+    problems: `${CTX}
 [المحتوى التفصيلي]
 حزمة إشكاليات لتقديم "${unit}" — مكيّفة لـ ${P.label}.
-
-━━━ وضعيات الانطلاق ━━━
-${jma ? `الوضعية 1 — جداً بسيطة (لبناء الثقة)\nالوضعية 2 — بسيطة\nالوضعية 3 — بسيطة إلى متوسطة` : `الوضعية 1 — بسيطة\nالوضعية 2 — متوسطة\nالوضعية 3 — مركبة`}
-
-لكل وضعية: السياق | المشكلة | الهدف | الكلمات المفتاحية
-
-━━━ أسئلة الاستكشاف ━━━
-${jma ? '8 أسئلة بسيطة تحفز دون إرباك' : '10 أسئلة تحفيز تفكير نقدي'}
-
-━━━ ربط بالواقع ━━━
-- تطبيقات يستخدمها التلميذ الجزائري يومياً
-
+3 وضعيات انطلاق + أسئلة استكشاف + ربط بالواقع الجزائري
 ابدأ الآن.`,
-
-activities:`${CTX}
-
+    activities: `${CTX}
 [المحتوى التفصيلي]
 خطة أنشطة عملية لـ "${unit}" — ${P.label}.
-
-السياق: قاعة إعلام آلي | أجهزة LAN | Windows | أفواج 2-3 تلاميذ
-
-▸ الاستعداد (5 دق)
-▸ الأنشطة التطبيقية (نشاط لكل هدف):
-  - الهدف | الخطوات | معيار النجاح | الوقت
-  (${jma ? 'خطوات صغيرة، تأكيد بعد كل خطوة' : 'خطوات منطقية واضحة'})
-▸ نشاط تعاوني عبر الشبكة المحلية
-▸ التقييم الذاتي — ${P.exDiff}
-▸ الإغلاق (5 دق)
-
-ملاحظة: اذكر اسم الزر/القائمة بالضبط (مثل: File > Save As)
-${jma ? 'أضف تحذيرات للأخطاء الشائعة عند كل خطوة' : 'أضف ملاحظات للتلاميذ المتقدمين'}
-
+استعداد + أنشطة (لكل هدف) + تقييم ذاتي + إغلاق
 ابدأ الآن.`,
-
-exercises:`${CTX}
-
+    exercises: `${CTX}
 [المحتوى التفصيلي]
-بنك شامل من التمارين لوحدة "${unit}" — قسم ${P.label}.
-
-━━━ ق1: تمارين الفهم (${jma ? '6 أسئلة مباشرة' : '5 أسئلة متدرجة'}) ━━━
-لكل تمرين: السؤال | الهدف التعلمي | الإجابة النموذجية | الأخطاء المتوقعة
-
-━━━ ق2: تمارين التطبيق (${P.exDiff}) ━━━
-لكل تمرين: الوضعية | المطلوب | التصحيح الكامل | معيار التنقيط
-
-━━━ ق3: QCM ━━━
-8 أسئلة (${jma ? 'خيارَان لكل سؤال' : 'أربعة خيارات لكل سؤال'}) مع الإجابات
-
-━━━ ق4: أفكار إضافية ━━━
-10 أفكار للأستاذ — مناسبة لـ ${P.label}
-
-━━━ ق5: مشروع صغير ━━━
-${jma ? 'مشروع بسيط وممتع يجمع مفاهيم الوحدة' : 'تحدٍّ فكري يدمج مفاهيم الوحدة بعمق'}
-
+بنك تمارين لوحدة "${unit}" — قسم ${P.label}.
+ق1: تمارين الفهم | ق2: تطبيق (${P.exDiff}) | ق3: QCM (8 أسئلة) | ق4: أفكار | ق5: مشروع صغير
 ابدأ الآن.`
   };
   return T[type];
 }
 
 function generatePrompt() {
-  if (!selType || !selClass || !curData) return;
-  const area = areaEl.value, unit = unitEl.value;
-  const prompt = buildPrompt(selType, area, unit, curData, selClass);
-  curPrompt = prompt;
+  let prompt;
+  if (selType === 'exam') {
+    if (!selClass || selectedExamUnits.size === 0) return;
+    prompt = buildExamPrompt(selClass);
+  } else {
+    if (!selType || !selClass || !curData) return;
+    const area = areaEl.value, unit = unitEl.value;
+    prompt = buildPrompt(selType, area, unit, curData, selClass);
+  }
 
+  curPrompt = prompt;
   outDivider.style.display = 'block';
   outputBox.classList.add('open');
 
   const P = CLASS_PROFILES[selClass];
-  document.getElementById('outLabel').textContent = typeLabels[selType] + ' — ' + unit;
+  let outLabelText = (typeLabels[selType] || selType);
+  if (selType === 'exam') {
+    outLabelText += ' — ' + selectedExamUnits.size + ' وحدات — ' + durLabel(examDuration);
+  } else {
+    outLabelText += ' — ' + unitEl.value;
+  }
+  document.getElementById('outLabel').textContent = outLabelText;
 
   const fmtMap = {structured:['منظم','tag-blue'],semi:['مختلط','tag-teal'],free:['حر','tag-purple']};
   const lenMap = {short:['مختصر','tag-green'],medium:['متوازن','tag-amber'],long:['مفصل','tag-red']};
   const clsMap = {jmet:['ج م ع ت','tag-blue'],jma:['ج م أ','tag-amber']};
-
   const tagsRow = document.getElementById('tagsRow');
   tagsRow.innerHTML = '';
-  [[clsMap[selClass]],[fmtMap[outFmt]],[lenMap[lenMode]],[strictMode ? ['🔒 صارم','tag-red'] : ['🔓 مرن','tag-green']]].forEach(([arr]) => {
-    const s = document.createElement('span');
-    s.className = 'tag ' + arr[1];
-    s.textContent = arr[0];
-    tagsRow.appendChild(s);
+  const tagItems = [clsMap[selClass], fmtMap[outFmt], lenMap[lenMode], strictMode ? ['🔒 صارم','tag-red'] : ['🔓 مرن','tag-green']];
+  if (selType === 'exam') tagItems.push([examExCount + ' تمارين', 'tag-orange']);
+  tagItems.forEach(arr => {
+    const s = document.createElement('span'); s.className = 'tag ' + arr[1]; s.textContent = arr[0]; tagsRow.appendChild(s);
   });
 
   document.getElementById('copyBtn').textContent = 'نسخ الأمر';
   document.getElementById('copyBtn').classList.remove('copied');
   promptBody.textContent = '';
-  const cursor = document.createElement('span');
-  cursor.className = 'cursor';
-  promptBody.appendChild(cursor);
+  const cursor = document.createElement('span'); cursor.className = 'cursor'; promptBody.appendChild(cursor);
 
   let i = 0;
-  genBtn.disabled = true;
-  spinner.style.display = 'block';
-  genBtnText.textContent = 'جاري التوليد...';
+  genBtn.disabled = true; spinner.style.display = 'block'; genBtnText.textContent = 'جاري التوليد...';
 
   function tick() {
     if (i < prompt.length) {
@@ -712,9 +889,7 @@ function generatePrompt() {
       setTimeout(tick, i < 200 ? 3 : 1);
     } else {
       cursor.remove();
-      genBtn.disabled = false;
-      spinner.style.display = 'none';
-      genBtnText.textContent = '⚡ توليد الأمر';
+      genBtn.disabled = false; spinner.style.display = 'none'; genBtnText.textContent = '⚡ توليد الأمر';
       updateCounts(prompt);
     }
   }
@@ -735,21 +910,17 @@ function copyPrompt() {
   if (!curPrompt) return;
   const btn = document.getElementById('copyBtn');
   const done = () => {
-    btn.textContent = '✓ تم النسخ';
-    btn.classList.add('copied');
+    btn.textContent = '✓ تم النسخ'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'نسخ الأمر'; btn.classList.remove('copied'); }, 2500);
   };
   navigator.clipboard.writeText(curPrompt).then(done).catch(() => {
     const ta = document.createElement('textarea'); ta.value = curPrompt;
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-    document.body.removeChild(ta); done();
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
   });
 }
 
 function clearOutput() {
-  outputBox.classList.remove('open');
-  outDivider.style.display = 'none';
-  curPrompt = '';
+  outputBox.classList.remove('open'); outDivider.style.display = 'none'; curPrompt = '';
   promptBody.innerHTML = '<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">سيظهر الأمر هنا...</div></div>';
   ['charCount','wordCount'].forEach(id => document.getElementById(id).textContent = '0');
   document.getElementById('tokenCount').textContent = '~0';
