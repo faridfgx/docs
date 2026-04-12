@@ -288,9 +288,9 @@ select option{background:var(--surface)}
         <div class="ctrl-box">
           <div class="ctrl-head">حجم الإخراج</div>
           <div class="ctrl-pills">
-            <button class="ctrl-pill"    data-len="short"  onclick="selectLen(this)">مختصر<span class="pill-en">~400</span></button>
-            <button class="ctrl-pill on" data-len="medium" onclick="selectLen(this)">متوازن<span class="pill-en">~700</span></button>
-            <button class="ctrl-pill"    data-len="long"   onclick="selectLen(this)">مفصل<span class="pill-en">~1400</span></button>
+            <button class="ctrl-pill"    data-len="short"  onclick="selectLen(this)">مختصر<span class="pill-en">~500</span></button>
+            <button class="ctrl-pill on" data-len="medium" onclick="selectLen(this)">متوازن<span class="pill-en">~800</span></button>
+            <button class="ctrl-pill"    data-len="long"   onclick="selectLen(this)">مفصل<span class="pill-en">~1500</span></button>
           </div>
         </div>
       </div>
@@ -477,7 +477,7 @@ const typeStructure = {
 };
 
 const fmtInstr = {structured:`- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت\n- بدون فقرات طويلة`,semi:`- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,free:`- حرية في الأسلوب مع الحفاظ على الوضوح`};
-const lenInstr  = {short:`- مختصر جداً\n- أقصى حد: 400 كلمة\n- ركّز على الأساسي فقط`,medium:`- متوازن\n- بين 500 و 900 كلمة`,long:`- مفصل\n- حتى 1400 كلمة\n- شرح + أمثلة + تنويع`};
+const lenInstr  = {short:`- مختصر جداً\n- أقصى حد: 500 كلمة\n- ركّز على الأساسي فقط`,medium:`- متوازن\n- بين 500 و 1000 كلمة`,long:`- مفصل\n- حتى 1500 كلمة\n- شرح + أمثلة + تنويع`};
 
 function buildPrompt(type,area,unit,d,cls) {
   const P = CLASS_PROFILES[cls];
