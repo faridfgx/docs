@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مهندس الأوامر</title>
+<title>مهندس الأوامر — ICDF + STEAM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -19,6 +19,8 @@
 --tag-purple-bg:#faf5ff;--tag-purple-text:#6b21a8;--tag-purple-border:#e9d5ff;
 --tag-teal-bg:#f0fdfa;--tag-teal-text:#115e59;--tag-teal-border:#99f6e4;
 --tag-orange-bg:#fff7ed;--tag-orange-text:#9a3412;--tag-orange-border:#fdba74;
+--tag-indigo-bg:#eef2ff;--tag-indigo-text:#3730a3;--tag-indigo-border:#c7d2fe;
+--tag-rose-bg:#fff1f2;--tag-rose-text:#9f1239;--tag-rose-border:#fecdd3;
 --text-primary:#111110;--text-secondary:#6b6b68;--text-muted:#9b9b97;
 --font:'IBM Plex Arabic',sans-serif;--mono:'IBM Plex Mono',monospace;
 --radius:8px;--radius-lg:12px;
@@ -33,10 +35,12 @@
 --tag-purple-bg:#2e1065;--tag-purple-text:#d8b4fe;--tag-purple-border:#4c1d95;
 --tag-teal-bg:#042f2e;--tag-teal-text:#5eead4;--tag-teal-border:#134e4a;
 --tag-orange-bg:#431407;--tag-orange-text:#fb923c;--tag-orange-border:#7c2d12;
+--tag-indigo-bg:#1e1b4b;--tag-indigo-text:#a5b4fc;--tag-indigo-border:#312e81;
+--tag-rose-bg:#4c0519;--tag-rose-text:#fda4af;--tag-rose-border:#881337;
 }}
 html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-height:100vh;line-height:1.6;font-size:15px}
-.layout{max-width:780px;margin:0 auto;padding:3rem 1.5rem 6rem}
+.layout{max-width:800px;margin:0 auto;padding:3rem 1.5rem 6rem}
 
 /* HEADER */
 .header{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
@@ -45,7 +49,25 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);min-
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 h1{font-size:clamp(20px,4vw,26px);font-weight:600;color:var(--text-primary);letter-spacing:-.03em;line-height:1.2}
 .header-sub{font-size:13px;color:var(--text-secondary);margin-top:.4rem;font-weight:300}
-.header-badge{display:inline-flex;align-items:center;margin-top:1rem;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;letter-spacing:.06em}
+.header-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.header-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--text-muted);background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:4px 10px;letter-spacing:.06em}
+.badge-icdf{background:var(--tag-indigo-bg);color:var(--tag-indigo-text);border-color:var(--tag-indigo-border)}
+.badge-steam{background:var(--tag-rose-bg);color:var(--tag-rose-text);border-color:var(--tag-rose-border)}
+
+/* FRAMEWORK EXPLAINER */
+.framework-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2.5rem}
+.fw-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;position:relative;overflow:hidden}
+.fw-card::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;border-radius:0 var(--radius-lg) var(--radius-lg) 0}
+.fw-icdf::before{background:var(--tag-indigo-text)}
+.fw-steam::before{background:var(--tag-rose-text)}
+.fw-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.fw-icdf .fw-title{color:var(--tag-indigo-text)}
+.fw-steam .fw-title{color:var(--tag-rose-text)}
+.fw-items{display:flex;flex-direction:column;gap:4px}
+.fw-item{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:var(--text-secondary)}
+.fw-key{font-family:var(--mono);font-size:10px;font-weight:600;flex-shrink:0;padding:1px 5px;border-radius:3px;line-height:1.6}
+.fw-icdf .fw-key{background:var(--tag-indigo-bg);color:var(--tag-indigo-text);border:1px solid var(--tag-indigo-border)}
+.fw-steam .fw-key{background:var(--tag-rose-bg);color:var(--tag-rose-text);border:1px solid var(--tag-rose-border)}
 
 /* STEP */
 .step{margin-bottom:2rem}
@@ -65,7 +87,7 @@ select option{background:var(--surface)}
 
 /* INFO STRIP */
 .info-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:2rem;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .28s ease}
-.info-strip.open{max-height:100px;opacity:1}
+.info-strip.open{max-height:120px;opacity:1}
 .info-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
 .info-tile-label{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.06em;margin-bottom:5px}
 .info-tile-value{font-size:12.5px;color:var(--text-primary);font-weight:500;line-height:1.4}
@@ -101,20 +123,43 @@ select option{background:var(--surface)}
 .type-icon{font-size:18px;display:block;margin-bottom:6px;line-height:1}
 .type-name{font-size:11.5px;font-weight:500;color:var(--text-primary);display:block;line-height:1.3}
 .type-sub{font-size:9.5px;color:var(--text-muted);display:block;margin-top:2px;font-family:var(--mono)}
-
-/* EXAM TYPE highlight */
+/* steam badge on type btn */
+.steam-badge{display:inline-block;font-family:var(--mono);font-size:8px;background:var(--tag-rose-bg);color:var(--tag-rose-text);border:1px solid var(--tag-rose-border);border-radius:3px;padding:0px 4px;margin-top:4px;letter-spacing:.04em}
 .type-btn[data-type="exam"]{border-color:var(--tag-orange-border);}
 .type-btn[data-type="exam"]:hover{border-color:var(--tag-orange-text)}
 .type-btn[data-type="exam"].active{border-color:var(--tag-orange-text);background:var(--tag-orange-bg)}
 .type-btn[data-type="exam"].active .type-name{color:var(--tag-orange-text)}
+
+/* ICDF PANEL */
+.icdf-panel{background:var(--surface);border:1px solid var(--tag-indigo-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.icdf-panel::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;}
+.icdf-label{font-family:var(--mono);font-size:10px;color:var(--tag-indigo-text);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.icdf-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.icdf-field{background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.icdf-field-head{font-family:var(--mono);font-size:9px;color:var(--tag-indigo-text);letter-spacing:.1em;padding:6px 10px 5px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;background:var(--tag-indigo-bg)}
+.icdf-field-body{padding:8px 10px}
+.icdf-textarea{width:100%;background:transparent;border:none;outline:none;font-family:var(--font);font-size:12px;color:var(--text-primary);resize:none;min-height:48px;line-height:1.5;direction:rtl}
+.icdf-textarea::placeholder{color:var(--text-muted);font-size:11px}
+.icdf-hint{font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:4px;line-height:1.4}
+
+/* STEAM PANEL */
+.steam-panel{background:var(--surface);border:1px solid var(--tag-rose-border);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;display:none;animation:fadeIn .2s ease}
+.steam-panel.open{display:block}
+.steam-label{font-family:var(--mono);font-size:10px;color:var(--tag-rose-text);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.steam-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
+.steam-pill{background:var(--surface-alt);border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 4px;cursor:pointer;text-align:center;transition:all .15s;font-family:var(--mono);font-size:10px;color:var(--text-muted)}
+.steam-pill:hover{border-color:var(--tag-rose-border);color:var(--tag-rose-text)}
+.steam-pill.on{border-color:var(--tag-rose-text);background:var(--tag-rose-bg);color:var(--tag-rose-text);font-weight:600}
+.steam-pill-letter{display:block;font-size:16px;font-weight:700;margin-bottom:2px}
+.steam-pill-word{display:block;font-size:8px;line-height:1.2}
+.steam-approach{background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--text-secondary);line-height:1.6;display:none}
+.steam-approach.show{display:block}
 
 /* EXAM SECTION */
 .exam-section{background:var(--surface);border:1px solid var(--tag-orange-border);border-radius:var(--radius-lg);padding:18px;margin-top:14px;display:none;animation:fadeIn .2s ease}
 .exam-section.open{display:block}
 .exam-section-title{font-family:var(--mono);font-size:10px;color:var(--tag-orange-text);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .exam-section-title::before{content:'📝';font-size:12px}
-
-/* MULTI-UNIT SELECTOR */
 .multi-unit-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
 .unit-count-badge{font-family:var(--mono);font-size:10px;background:var(--tag-orange-bg);color:var(--tag-orange-text);border:1px solid var(--tag-orange-border);border-radius:4px;padding:1px 7px}
 .units-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
@@ -126,8 +171,6 @@ select option{background:var(--surface)}
 .unit-chip-check::after{content:'';width:4px;height:3px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px);opacity:0;transition:opacity .12s}
 .unit-chip.selected .unit-chip-check::after{opacity:1}
 .unit-chip-name{flex:1;line-height:1.3}
-
-/* EXAM PARAMS ROW */
 .exam-params{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .exam-param-box{background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .exam-param-head{font-family:var(--mono);font-size:10px;color:var(--text-muted);letter-spacing:.08em;padding:7px 12px 6px;border-bottom:1px solid var(--border)}
@@ -148,8 +191,6 @@ select option{background:var(--surface)}
 .ctrl-pill.on{background:var(--surface-alt);color:var(--text-primary);font-weight:500}
 .pill-en{display:block;font-size:9px;color:var(--text-muted);margin-top:1px}
 .ctrl-pill.on .pill-en{color:var(--text-muted)}
-
-/* STRICT ROW */
 .strict-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px}
 .strict-text{flex:1}
 .strict-title{font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
@@ -169,8 +210,6 @@ select option{background:var(--surface)}
 .spin{width:14px;height:14px;border:1.5px solid rgba(255,255,255,.3);border-top-color:rgba(255,255,255,.9);border-radius:50%;animation:spin .6s linear infinite;display:none;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(prefers-color-scheme:dark){.gen-btn{color:#111110}}
-
-/* DIVIDER */
 .divider{height:1px;background:var(--border);margin:2.5rem 0}
 
 /* OUTPUT */
@@ -190,6 +229,8 @@ select option{background:var(--surface)}
 .tag-teal{background:var(--tag-teal-bg);color:var(--tag-teal-text);border-color:var(--tag-teal-border)}
 .tag-orange{background:var(--tag-orange-bg);color:var(--tag-orange-text);border-color:var(--tag-orange-border)}
 .tag-neutral{background:var(--surface-alt);color:var(--text-secondary);border-color:var(--border)}
+.tag-indigo{background:var(--tag-indigo-bg);color:var(--tag-indigo-text);border-color:var(--tag-indigo-border)}
+.tag-rose{background:var(--tag-rose-bg);color:var(--tag-rose-text);border-color:var(--tag-rose-border)}
 .out-actions{display:flex;gap:6px}
 .action-btn{font-family:var(--mono);font-size:11px;padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text-secondary);cursor:pointer;transition:all .12s;white-space:nowrap}
 .action-btn:hover{border-color:var(--border-strong);color:var(--text-primary)}
@@ -204,25 +245,25 @@ select option{background:var(--surface)}
 .empty-state{text-align:center;padding:2.5rem 1rem;color:var(--text-muted)}
 .empty-icon{font-size:28px;margin-bottom:10px;opacity:.35}
 .empty-text{font-family:var(--mono);font-size:11px}
-
 .hidden{display:none}
-
-/* validation note */
 .exam-note{font-family:var(--mono);font-size:10px;color:var(--tag-orange-text);background:var(--tag-orange-bg);border:1px solid var(--tag-orange-border);border-radius:var(--radius);padding:8px 12px;margin-top:10px;display:none}
 .exam-note.show{display:block}
 
-@media(max-width:580px){
-  .row-2,.class-grid,.type-grid,.controls-row{grid-template-columns:1fr 1fr}
-  .type-grid{grid-template-columns:repeat(2,1fr)}
-  .info-strip{grid-template-columns:1fr 1fr}
-  .class-grid{grid-template-columns:1fr}
-  .units-grid{grid-template-columns:1fr}
-  .exam-params{grid-template-columns:1fr}
+@media(max-width:600px){
+.framework-strip{grid-template-columns:1fr}
+.row-2,.class-grid,.type-grid,.controls-row{grid-template-columns:1fr 1fr}
+.type-grid{grid-template-columns:repeat(2,1fr)}
+.info-strip{grid-template-columns:1fr 1fr}
+.class-grid{grid-template-columns:1fr}
+.units-grid{grid-template-columns:1fr}
+.exam-params{grid-template-columns:1fr}
+.icdf-grid{grid-template-columns:1fr}
+.steam-grid{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:400px){
-  .row-2{grid-template-columns:1fr}
-  .type-grid{grid-template-columns:repeat(2,1fr)}
-  .controls-row{grid-template-columns:1fr}
+.row-2{grid-template-columns:1fr}
+.controls-row{grid-template-columns:1fr}
+.steam-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -231,10 +272,37 @@ select option{background:var(--surface)}
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-eyebrow"><span class="live-dot"></span>prompt engineer · v4</div>
+    <div class="header-eyebrow"><span class="live-dot"></span>prompt engineer · v5 — ICDF + STEAM</div>
     <h1>مهندس الأوامر</h1>
-    <p class="header-sub">توليد أوامر بيداغوجية — مادة المعلوماتية / التعليم الثانوي</p>
-    <span class="header-badge">انسخ الأمر والصقه في أي نموذج لغوي</span>
+    <p class="header-sub">توليد أوامر بيداغوجية — مادة المعلوماتية / التعليم الثانوي · إطار ICDF + منهج STEAM</p>
+    <div class="header-badges">
+      <span class="header-badge badge-icdf">◈ ICDF Framework</span>
+      <span class="header-badge badge-steam">✦ STEAM Method</span>
+      <span class="header-badge">انسخ الأمر والصقه في أي نموذج لغوي</span>
+    </div>
+  </div>
+
+  <!-- FRAMEWORK EXPLAINER -->
+  <div class="framework-strip">
+    <div class="fw-card fw-icdf">
+      <div class="fw-title">◈ إطار ICDF — بنية الأمر</div>
+      <div class="fw-items">
+        <div class="fw-item"><span class="fw-key">I</span><span><strong>Identity</strong> — هوية النموذج ودوره</span></div>
+        <div class="fw-item"><span class="fw-key">C</span><span><strong>Context</strong> — السياق والمعطيات الكاملة</span></div>
+        <div class="fw-item"><span class="fw-key">D</span><span><strong>Demand</strong> — الطلب المحدد والواضح</span></div>
+        <div class="fw-item"><span class="fw-key">F</span><span><strong>Format</strong> — صيغة الإخراج المطلوبة</span></div>
+      </div>
+    </div>
+    <div class="fw-card fw-steam">
+      <div class="fw-title">✦ منهج STEAM — التكامل المعرفي</div>
+      <div class="fw-items">
+        <div class="fw-item"><span class="fw-key">S</span><span><strong>Science</strong> — العلوم والتجريب</span></div>
+        <div class="fw-item"><span class="fw-key">T</span><span><strong>Technology</strong> — التقنية والأدوات</span></div>
+        <div class="fw-item"><span class="fw-key">E</span><span><strong>Engineering</strong> — الهندسة والتصميم</span></div>
+        <div class="fw-item"><span class="fw-key">A</span><span><strong>Arts</strong> — الفن والإبداع</span></div>
+        <div class="fw-item"><span class="fw-key">M</span><span><strong>Mathematics</strong> — الرياضيات والمنطق</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- STEP 01 -->
@@ -268,18 +336,14 @@ select option{background:var(--surface)}
         <span class="card-name">ج م ع ت</span>
         <span class="card-level">متوسط → جيد</span>
         <span class="card-desc">تلاميذ قادرون على الاستيعاب بسرعة، يتقبّلون المفاهيم التقنية ويمكن تحدّيهم بمسائل أعمق.</span>
-        <div class="level-bar">
-          <div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv"></div>
-        </div>
+        <div class="level-bar"><div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv on"></div><div class="lv"></div></div>
       </div>
       <div class="class-card" id="cardJma" onclick="selectClass('jma')">
         <div class="card-check"></div>
         <span class="card-name">ج م أ</span>
         <span class="card-level">ضعيف → متوسط</span>
         <span class="card-desc">تلاميذ يحتاجون تبسيطاً مكثفاً، تدرجاً بطيئاً، وأمثلة ملموسة من واقعهم اليومي.</span>
-        <div class="level-bar">
-          <div class="lv on"></div><div class="lv on"></div><div class="lv"></div><div class="lv"></div><div class="lv"></div>
-        </div>
+        <div class="level-bar"><div class="lv on"></div><div class="lv on"></div><div class="lv"></div><div class="lv"></div><div class="lv"></div></div>
       </div>
     </div>
   </div>
@@ -291,30 +355,52 @@ select option{background:var(--surface)}
       <span class="step-title">نوع المحتوى</span>
     </div>
     <div class="type-grid">
-      <button class="type-btn" data-type="course" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📄</span><span class="type-name">وثيقة الدرس</span></button>
-      <button class="type-btn" data-type="plan" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">📋</span><span class="type-name">مذكرة تحضيرية</span></button>
-      <button class="type-btn" data-type="presentation" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🎓</span><span class="type-name">عرض تقديمي</span></button>
-      <button class="type-btn" data-type="problems" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">💡</span><span class="type-name">إشكاليات</span></button>
-      <button class="type-btn" data-type="activities" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">🖥️</span><span class="type-name">أنشطة تطبيقية</span></button>
-      <button class="type-btn" data-type="exercises" onclick="selectType(this)"><span class="type-check">✓</span><span class="type-icon">✏️</span><span class="type-name">تمارين وأفكار</span></button>
-      <button class="type-btn" data-type="exam" onclick="selectType(this)" style="grid-column:1/-1"><span class="type-check">✓</span><span class="type-icon">📝</span><span class="type-name">إنشاء امتحان</span><span class="type-sub">اختر وحدات متعددة</span></button>
+      <button class="type-btn" data-type="course" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">📄</span>
+        <span class="type-name">وثيقة الدرس</span>
+        <span class="steam-badge">S·T·E·A·M</span>
+      </button>
+      <button class="type-btn" data-type="plan" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">📋</span>
+        <span class="type-name">مذكرة تحضيرية</span>
+        <span class="steam-badge">T·E·M</span>
+      </button>
+      <button class="type-btn" data-type="presentation" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">🎓</span>
+        <span class="type-name">عرض تقديمي</span>
+        <span class="steam-badge">T·A</span>
+      </button>
+      <button class="type-btn" data-type="problems" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">💡</span>
+        <span class="type-name">إشكاليات</span>
+        <span class="steam-badge">S·E·M</span>
+      </button>
+      <button class="type-btn" data-type="activities" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">🖥️</span>
+        <span class="type-name">أنشطة تطبيقية</span>
+        <span class="steam-badge">T·E·A</span>
+      </button>
+      <button class="type-btn" data-type="exercises" onclick="selectType(this)">
+        <span class="type-check">✓</span><span class="type-icon">✏️</span>
+        <span class="type-name">تمارين وأفكار</span>
+        <span class="steam-badge">S·M</span>
+      </button>
+      <button class="type-btn" data-type="exam" onclick="selectType(this)" style="grid-column:1/-1">
+        <span class="type-check">✓</span><span class="type-icon">📝</span>
+        <span class="type-name">إنشاء امتحان</span>
+        <span class="type-sub">اختر وحدات متعددة</span>
+      </button>
     </div>
 
-    <!-- EXAM SECTION (shown only when exam type selected) -->
+    <!-- EXAM SECTION -->
     <div class="exam-section" id="examSection">
       <div class="exam-section-title">إعدادات الامتحان</div>
-
-      <!-- Multi-unit selector -->
       <div class="multi-unit-label">
         <span>اختر الوحدات المشمولة في الامتحان</span>
         <span class="unit-count-badge" id="unitCountBadge">0 / 6</span>
       </div>
-      <div class="units-grid" id="unitsGrid">
-        <!-- populated by JS -->
-      </div>
+      <div class="units-grid" id="unitsGrid"></div>
       <div class="exam-note" id="examNote">⚠ يرجى اختيار وحدة واحدة على الأقل</div>
-
-      <!-- Exam params -->
       <div class="exam-params">
         <div class="exam-param-box">
           <div class="exam-param-head">عدد التمارين</div>
@@ -335,6 +421,51 @@ select option{background:var(--surface)}
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- STEAM CUSTOMIZATION PANEL -->
+    <div class="steam-panel" id="steamPanel">
+      <div class="steam-label">✦ تخصيص أبعاد STEAM المُدمجة</div>
+      <div class="steam-grid">
+        <div class="steam-pill on" data-s="S" onclick="toggleSteam(this)"><span class="steam-pill-letter">S</span><span class="steam-pill-word">Science</span></div>
+        <div class="steam-pill on" data-s="T" onclick="toggleSteam(this)"><span class="steam-pill-letter">T</span><span class="steam-pill-word">Technology</span></div>
+        <div class="steam-pill on" data-s="E" onclick="toggleSteam(this)"><span class="steam-pill-letter">E</span><span class="steam-pill-word">Engineering</span></div>
+        <div class="steam-pill on" data-s="A" onclick="toggleSteam(this)"><span class="steam-pill-letter">A</span><span class="steam-pill-word">Arts</span></div>
+        <div class="steam-pill on" data-s="M" onclick="toggleSteam(this)"><span class="steam-pill-letter">M</span><span class="steam-pill-word">Math</span></div>
+      </div>
+      <div class="steam-approach" id="steamApproachBox"></div>
+    </div>
+
+    <!-- ICDF CONTEXT PANEL -->
+    <div class="icdf-panel" id="icdfPanel" style="display:none">
+      <div class="icdf-label">◈ تخصيص إطار ICDF — اختياري</div>
+      <div class="icdf-grid">
+        <div class="icdf-field">
+          <div class="icdf-field-head">I — Identity <span style="font-size:8px;opacity:.6">هوية الدور</span></div>
+          <div class="icdf-field-body">
+            <textarea class="icdf-textarea" id="icdfIdentity" placeholder="مثال: أنت مدرّس خبير في الإعلام الآلي منذ 15 سنة..." rows="2"></textarea>
+          </div>
+        </div>
+        <div class="icdf-field">
+          <div class="icdf-field-head">C — Context <span style="font-size:8px;opacity:.6">سياق إضافي</span></div>
+          <div class="icdf-field-body">
+            <textarea class="icdf-textarea" id="icdfContext" placeholder="مثال: المدرسة في منطقة ريفية، الموارد محدودة..." rows="2"></textarea>
+          </div>
+        </div>
+        <div class="icdf-field">
+          <div class="icdf-field-head">D — Demand <span style="font-size:8px;opacity:.6">تركيز إضافي</span></div>
+          <div class="icdf-field-body">
+            <textarea class="icdf-textarea" id="icdfDemand" placeholder="مثال: ركّز على الجانب التطبيقي أكثر من النظري..." rows="2"></textarea>
+          </div>
+        </div>
+        <div class="icdf-field">
+          <div class="icdf-field-head">F — Format <span style="font-size:8px;opacity:.6">تنسيق مخصص</span></div>
+          <div class="icdf-field-body">
+            <textarea class="icdf-textarea" id="icdfFormat" placeholder="مثال: استخدم جداول بدلاً من النقاط..." rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="icdf-hint">هذه الحقول تُضاف إلى الأمر المُولَّد لتعزيز دقة النتيجة. اتركها فارغة إذا أردت الإعدادات الافتراضية.</div>
     </div>
 
     <!-- STEP 04 -->
@@ -375,7 +506,7 @@ select option{background:var(--surface)}
 
     <button class="gen-btn" id="genBtn" onclick="generatePrompt()" disabled>
       <div class="spin" id="spinner"></div>
-      <span id="genBtnText">⚡ توليد الأمر</span>
+      <span id="genBtnText">⚡ توليد الأمر بإطار ICDF</span>
     </button>
   </div>
 
@@ -439,6 +570,28 @@ const CURRICULUM_DATA = {
   }
 };
 
+// ─── STEAM config per content type ───────────────────────────────────────────
+const STEAM_DEFAULTS = {
+  course:       {S:true, T:true, E:true, A:true, M:true},
+  plan:         {S:false,T:true, E:true, A:false,M:true},
+  presentation: {S:false,T:true, E:false,A:true, M:false},
+  problems:     {S:true, T:false,E:true, A:false,M:true},
+  activities:   {S:false,T:true, E:true, A:true, M:false},
+  exercises:    {S:true, T:false,E:false,A:false,M:true},
+  exam:         {S:true, T:true, E:true, A:false,M:true}
+};
+
+const STEAM_INSTRUCTIONS = {
+  S:`[S — العلوم]\n• ابدأ بسؤال تساؤلي/علمي يثير الفضول\n• اربط المحتوى بمبادئ علمية قابلة للملاحظة\n• شجّع التجريب والاستنتاج من الأمثلة`,
+  T:`[T — التقنية]\n• أبرز الأدوات والبرامج المستخدمة بوضوح\n• قدّم خطوات تشغيل عملية قابلة للتطبيق الفوري\n• اربط المفاهيم بتطبيقات تقنية حقيقية`,
+  E:`[E — الهندسة]\n• قدّم نهج حل المشكلات خطوة بخطوة\n• شجّع التصميم والبناء (تصميم خوارزمية، شبكة، صفحة...)\n• وظّف التفكير الهندسي: تشخيص → تصميم → اختبار → تحسين`,
+  A:`[A — الفنون]\n• ادمج عناصر بصرية وإبداعية (رسوم، مخططات، تصاميم)\n• شجّع التعبير الإبداعي في تقديم المشاريع\n• استخدم القصة والسيناريو لتقديم المفاهيم`,
+  M:`[M — الرياضيات]\n• أدرج حسابات وإثباتات رياضية حيثما أمكن\n• استخدم المنطق الرياضي في الخوارزميات والشرط والتكرار\n• قدّم أسئلة كمية قابلة للقياس`
+};
+
+// active STEAM dims — start with all true, will be updated per type
+let activeSteam = {S:true,T:true,E:true,A:true,M:true};
+
 const areaEl = document.getElementById('areaSelect');
 const unitEl = document.getElementById('unitSelect');
 const infoStrip = document.getElementById('infoStrip');
@@ -452,10 +605,12 @@ const genBtnText = document.getElementById('genBtnText');
 const spinner = document.getElementById('spinner');
 const examSection = document.getElementById('examSection');
 const unitsGrid = document.getElementById('unitsGrid');
+const steamPanel = document.getElementById('steamPanel');
+const icdfPanel = document.getElementById('icdfPanel');
 
 let selType = null, selClass = null, curData = null, curPrompt = '';
 let outFmt = 'structured', lenMode = 'medium', strictMode = false;
-let selectedExamUnits = new Set(); // { area: '...', unit: '...' } as JSON keys
+let selectedExamUnits = new Set();
 let examExCount = 4, examDuration = 60;
 
 // Populate area select
@@ -493,6 +648,8 @@ function showInfo(d) {
   document.getElementById('cardJmet').className = 'class-card';
   document.getElementById('cardJma').className = 'class-card';
   examSection.classList.remove('open');
+  steamPanel.classList.remove('open');
+  icdfPanel.style.display = 'none';
   genBtn.disabled = true;
   outputBox.classList.remove('open');
   outDivider.style.display = 'none';
@@ -503,6 +660,8 @@ function hideAll() {
   classSection.classList.add('hidden');
   typeSection.classList.add('hidden');
   examSection.classList.remove('open');
+  steamPanel.classList.remove('open');
+  icdfPanel.style.display = 'none';
   outputBox.classList.remove('open');
   outDivider.style.display = 'none';
   curData = null;
@@ -519,22 +678,50 @@ function selectType(el) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   selType = el.dataset.type;
+  
   if (selType === 'exam') {
     examSection.classList.add('open');
     buildUnitsGrid();
   } else {
     examSection.classList.remove('open');
   }
+
+  // Show STEAM panel for all types
+  steamPanel.classList.add('open');
+  icdfPanel.style.display = 'block';
+  
+  // Set STEAM defaults for this type
+  const defaults = STEAM_DEFAULTS[selType] || {S:true,T:true,E:true,A:true,M:true};
+  activeSteam = {...defaults};
+  document.querySelectorAll('.steam-pill').forEach(p => {
+    const key = p.dataset.s;
+    p.classList.toggle('on', !!activeSteam[key]);
+  });
+  updateSteamApproach();
   checkBtn();
+}
+
+function toggleSteam(el) {
+  const key = el.dataset.s;
+  activeSteam[key] = !activeSteam[key];
+  el.classList.toggle('on', activeSteam[key]);
+  updateSteamApproach();
+}
+
+function updateSteamApproach() {
+  const box = document.getElementById('steamApproachBox');
+  const active = Object.entries(activeSteam).filter(([,v])=>v).map(([k])=>k);
+  if (active.length === 0) { box.classList.remove('show'); return; }
+  box.classList.add('show');
+  box.textContent = 'الأبعاد النشطة: ' + active.join(' · ') + ' — سيتم دمجها في الأمر المُولَّد لتوجيه النموذج نحو تكامل معرفي متعدد الأبعاد.';
 }
 
 function buildUnitsGrid() {
   unitsGrid.innerHTML = '';
-  // Collect ALL units from ALL areas, max 6 shown per area
   let count = 0;
   Object.entries(CURRICULUM_DATA).forEach(([area, units]) => {
     Object.keys(units).forEach(unit => {
-      if (count >= 24) return; // safety limit
+      if (count >= 24) return;
       const key = JSON.stringify({area, unit});
       const chip = document.createElement('div');
       chip.className = 'unit-chip' + (selectedExamUnits.has(key) ? ' selected' : '');
@@ -549,16 +736,9 @@ function buildUnitsGrid() {
 }
 
 function toggleExamUnit(key, chip) {
-  if (selectedExamUnits.has(key)) {
-    selectedExamUnits.delete(key);
-    chip.classList.remove('selected');
-  } else {
-    if (selectedExamUnits.size >= 6) return; // max 6
-    selectedExamUnits.add(key);
-    chip.classList.add('selected');
-  }
-  updateUnitCount();
-  checkBtn();
+  if (selectedExamUnits.has(key)) { selectedExamUnits.delete(key); chip.classList.remove('selected'); }
+  else { if (selectedExamUnits.size >= 6) return; selectedExamUnits.add(key); chip.classList.add('selected'); }
+  updateUnitCount(); checkBtn();
 }
 
 function updateUnitCount() {
@@ -567,67 +747,35 @@ function updateUnitCount() {
   note.classList.toggle('show', selType === 'exam' && selectedExamUnits.size === 0);
 }
 
-function selectExCount(el) {
-  document.querySelectorAll('#exCountPills .exam-param-pill').forEach(b => b.classList.remove('on'));
-  el.classList.add('on');
-  examExCount = parseInt(el.dataset.count);
-}
-
-function selectExDur(el) {
-  document.querySelectorAll('#exDurPills .exam-param-pill').forEach(b => b.classList.remove('on'));
-  el.classList.add('on');
-  examDuration = parseInt(el.dataset.dur);
-}
-
-function selectFmt(el) {
-  document.querySelectorAll('.ctrl-pill[data-fmt]').forEach(b => b.classList.remove('on'));
-  el.classList.add('on'); outFmt = el.dataset.fmt;
-}
-
-function selectLen(el) {
-  document.querySelectorAll('.ctrl-pill[data-len]').forEach(b => b.classList.remove('on'));
-  el.classList.add('on'); lenMode = el.dataset.len;
-}
-
-function toggleStrict() {
-  strictMode = !strictMode;
-  document.getElementById('strictToggle').classList.toggle('on', strictMode);
-  document.getElementById('strictLabel').textContent = strictMode ? 'مفعّل' : 'غير مفعل';
-}
+function selectExCount(el) { document.querySelectorAll('#exCountPills .exam-param-pill').forEach(b=>b.classList.remove('on')); el.classList.add('on'); examExCount=parseInt(el.dataset.count); }
+function selectExDur(el) { document.querySelectorAll('#exDurPills .exam-param-pill').forEach(b=>b.classList.remove('on')); el.classList.add('on'); examDuration=parseInt(el.dataset.dur); }
+function selectFmt(el) { document.querySelectorAll('.ctrl-pill[data-fmt]').forEach(b=>b.classList.remove('on')); el.classList.add('on'); outFmt=el.dataset.fmt; }
+function selectLen(el) { document.querySelectorAll('.ctrl-pill[data-len]').forEach(b=>b.classList.remove('on')); el.classList.add('on'); lenMode=el.dataset.len; }
+function toggleStrict() { strictMode=!strictMode; document.getElementById('strictToggle').classList.toggle('on',strictMode); document.getElementById('strictLabel').textContent=strictMode?'مفعّل':'غير مفعل'; }
 
 function checkBtn() {
-  if (selType === 'exam') {
-    genBtn.disabled = !(selClass && selectedExamUnits.size > 0);
-  } else {
-    genBtn.disabled = !(selType && selClass && curData);
-  }
+  if (selType === 'exam') genBtn.disabled = !(selClass && selectedExamUnits.size > 0);
+  else genBtn.disabled = !(selType && selClass && curData);
 }
 
 const toArr = v => v ? (Array.isArray(v) ? v : [v]) : [];
 
 const CLASS_PROFILES = {
-  jmet:{label:'ج م ع ت',level:'متوسط إلى جيد',adapt:`- المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة
-- يمكن استخدام المصطلحات التقنية مع شرح مختصر
-- أضف أسئلة تحليلية ومقارنة بين المفاهيم
-- التمارين: سهل + متوسط + صعب + تحدٍّ`,exDiff:'سهل + متوسط + صعب + تمرين تحدٍّ اختياري'},
-  jma:{label:'ج م أ',level:'ضعيف إلى متوسط',adapt:`- المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول
-- تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة
-- اعتمد على أمثلة ملموسة من الحياة اليومية الجزائرية
-- قسّم كل مفهوم إلى خطوات صغيرة مع تأكيد الفهم
-- التمارين: جداً سهل + سهل + متوسط`,exDiff:'جداً سهل + سهل + متوسط (بدون مستوى صعب)'}
+  jmet:{label:'ج م ع ت',level:'متوسط إلى جيد',adapt:`• المستوى: متوسط إلى جيد — يستوعبون المفاهيم بسرعة معقولة\n• يمكن استخدام المصطلحات التقنية مع شرح مختصر\n• أضف أسئلة تحليلية ومقارنة بين المفاهيم\n• التمارين: سهل + متوسط + صعب + تحدٍّ`,exDiff:'سهل + متوسط + صعب + تمرين تحدٍّ اختياري'},
+  jma:{label:'ج م أ',level:'ضعيف إلى متوسط',adapt:`• المستوى: ضعيف إلى متوسط — يحتاجون وقتاً أطول\n• تجنب المصطلحات المعقدة، استخدم لغة بسيطة ومباشرة\n• اعتمد على أمثلة ملموسة من الحياة اليومية الجزائرية\n• قسّم كل مفهوم إلى خطوات صغيرة مع تأكيد الفهم\n• التمارين: جداً سهل + سهل + متوسط`,exDiff:'جداً سهل + سهل + متوسط (بدون مستوى صعب)'}
 };
 
-const typeLabels = {course:'وثيقة الدرس الكاملة',plan:'المذكرة التحضيرية',presentation:'خطة العرض التقديمي',problems:'الإشكاليات المقترحة',activities:'الأنشطة التطبيقية العملية',exercises:'تمارين وأفكار',exam:'امتحان'};
+const typeLabels = {course:'وثيقة الدرس',plan:'المذكرة التحضيرية',presentation:'العرض التقديمي',problems:'الإشكاليات',activities:'الأنشطة التطبيقية',exercises:'تمارين وأفكار',exam:'امتحان'};
 
 const fmtInstr = {
-  structured:`- استخدم عناوين واضحة (##)\n- استخدم تعداد نقطي (•) فقط\n- كل قسم منظم وثابت`,
-  semi:`- عناوين واضحة\n- مزيج بين نقاط وفقرات قصيرة`,
-  free:`- حرية في الأسلوب مع الحفاظ على الوضوح`
+  structured:`• استخدم عناوين واضحة (##)\n• استخدم تعداد نقطي (•) فقط\n• كل قسم منظم وثابت`,
+  semi:`• عناوين واضحة\n• مزيج بين نقاط وفقرات قصيرة`,
+  free:`• حرية في الأسلوب مع الحفاظ على الوضوح`
 };
 const lenInstr = {
-  short:`- مختصر جداً — أقصى 500 كلمة`,
-  medium:`- متوازن — بين 500 و 1000 كلمة`,
-  long:`- مفصل — حتى 1500 كلمة`
+  short:`• مختصر جداً — أقصى 500 كلمة`,
+  medium:`• متوازن — بين 500 و 1000 كلمة`,
+  long:`• مفصل — حتى 1500 كلمة`
 };
 const typeStructure = {
   course:'## مقدمة\n## محاور الدرس\n## ملاحظات\n## ملخص\n## تقييم',
@@ -640,63 +788,201 @@ const typeStructure = {
 };
 
 function durLabel(min) {
-  if (min === 45) return '45 دقيقة';
-  if (min === 60) return 'ساعة واحدة (60 دقيقة)';
-  if (min === 90) return 'ساعة ونصف (90 دقيقة)';
-  if (min === 120) return 'ساعتان (120 دقيقة)';
-  return min + ' دقيقة';
+  if(min===45)return'45 دقيقة';if(min===60)return'ساعة واحدة (60 دقيقة)';
+  if(min===90)return'ساعة ونصف (90 دقيقة)';if(min===120)return'ساعتان (120 دقيقة)';return min+' دقيقة';
+}
+
+function getICDFCustom() {
+  return {
+    identity: document.getElementById('icdfIdentity').value.trim(),
+    context:  document.getElementById('icdfContext').value.trim(),
+    demand:   document.getElementById('icdfDemand').value.trim(),
+    format:   document.getElementById('icdfFormat').value.trim()
+  };
+}
+
+function buildSteamBlock() {
+  const active = Object.entries(activeSteam).filter(([,v])=>v).map(([k])=>k);
+  if (active.length === 0) return '';
+  const lines = active.map(k => STEAM_INSTRUCTIONS[k]).join('\n\n');
+  return `
+╔═══════════════════════════════════════════════════════════╗
+║  تكامل STEAM — الأبعاد النشطة: ${active.join(' · ')}
+╚═══════════════════════════════════════════════════════════╝
+${lines}
+
+[تعليمة تكامل STEAM — إلزامية]
+• اجعل كل بُعد نشط حاضراً بوضوح في المحتوى
+• لا تفصل الأبعاد عن بعضها — ادمجها بشكل طبيعي
+• استخدم STEAM كإطار لإثراء التفكير النقدي والإبداعي لدى التلاميذ`;
+}
+
+function buildICDFHeader(P, typeLabel, unit, d, icdf) {
+  const identLine = icdf.identity
+    ? icdf.identity
+    : `أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج محتوى بيداغوجي عالي الجودة مكيّف وفق منهج STEAM.`;
+
+  const ctxExtra = icdf.context ? `\n[سياق إضافي من المعلم]\n${icdf.context}` : '';
+  const demandExtra = icdf.demand ? `\n[تركيز إضافي مطلوب]\n${icdf.demand}` : '';
+  const fmtExtra = icdf.format ? `\n[تنسيق مخصص]\n${icdf.format}` : '';
+
+  return `
+━━━━━━━━━━━━━━━━ [I] IDENTITY — الهوية ━━━━━━━━━━━━━━━━
+${identLine}
+
+━━━━━━━━━━━━━━━━ [C] CONTEXT — السياق ━━━━━━━━━━━━━━━━
+المادة        : الإعلام الآلي — التعليم الثانوي الجزائري
+المجال        : ${areaEl.value}
+الوحدة        : ${unit}
+القسم         : ${P.label} (${P.level})
+المدة المخصصة : ${d.duration}
+الكفاءة       : ${d.competency}
+الأهداف       : ${toArr(d.objectives).join(' | ')}
+الموارد       : ${toArr(d.targeted_ressourses).join(' | ')}
+التدرج        : ${toArr(d.progression).join(' ← ')}
+التقييم       : ${toArr(d.stage_evaluation).join(' | ')}
+المهمة النهائية: ${toArr(d.final_task).join(' | ')}
+
+[التكيّف مع المستوى — إلزامي]
+${P.adapt}
+
+[السياق الجزائري — إلزامي]
+• استخدم أمثلة من البيئة الجزائرية (ولايات، مؤسسات، مواقع محلية)
+• اربط المفاهيم بواقع التلميذ الجزائري اليومي${ctxExtra}`;
+}
+
+function buildICDFDemand(typeLabel, type, P, icdf) {
+  const demandExtra = icdf.demand ? `\n${icdf.demand}` : '';
+  return `
+━━━━━━━━━━━━━━━━ [D] DEMAND — الطلب ━━━━━━━━━━━━━━━━
+المطلوب    : إنشاء ${typeLabel} مكيّف لقسم ${P.label}
+المعيار    : يجب أن يكون المحتوى قابلاً للتطبيق الفوري في القاعة
+التكيّف    : راعِ المستوى بدقة — لا تبسّط أكثر ولا تعقّد أكثر${demandExtra}`;
+}
+
+function buildICDFFormat(icdf) {
+  const fmtExtra = icdf.format ? `\n[تنسيق مخصص]\n${icdf.format}` : '';
+  const strictBlock = strictMode
+    ? `\n[قيود صارمة — مفعلة]\n• لا تضف مقدمة خارج المطلوب\n• لا تشرح ما ستقوم به\n• لا تغير ترتيب الأقسام\n• لا تضف أقسام جديدة`
+    : `\n[قيود مرنة]\n• يمكنك تحسين العرض دون كسر البنية العامة`;
+  return `
+━━━━━━━━━━━━━━━━ [F] FORMAT — التنسيق ━━━━━━━━━━━━━━━━
+تنسيق الإخراج:
+${fmtInstr[outFmt]}
+
+حجم الإخراج:
+${lenInstr[lenMode]}
+${strictBlock}${fmtExtra}`;
+}
+
+function buildPrompt(type, area, unit, d, cls) {
+  const P = CLASS_PROFILES[cls];
+  const icdf = getICDFCustom();
+  const jma = cls === 'jma';
+
+  const CTX = buildICDFHeader(P, typeLabels[type], unit, d, icdf)
+    + buildICDFDemand(typeLabels[type], type, P, icdf)
+    + buildSteamBlock()
+    + buildICDFFormat(icdf);
+
+  const STRUCT = `
+━━━━━━━━━━━━━━━━ هيكل الإخراج — إلزامي ━━━━━━━━━━━━━━━━
+${typeStructure[type]}
+
+[تحقق ذاتي قبل الإخراج]
+• هل المحتوى مناسب تماماً لمستوى ${P.label}؟
+• هل هناك تدرج منطقي من البسيط إلى المعقد؟
+• هل الأمثلة واقعية ومستوحاة من السياق الجزائري؟
+• هل أبعاد STEAM النشطة حاضرة بشكل طبيعي في المحتوى؟
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+  const SPECIFIC = {
+    course: `
+[محتوى وثيقة الدرس]
+• مقدمة — ${jma?'أسئلة تشخيصية بسيطة':'وضعية مشكلة تثير الفضول'}
+• لكل مورد مستهدف: تعريف + شرح تدريجي + ${jma?'مربع ملخص بعد كل فكرة':'تمارين مدمجة'}
+• ملاحظات وأخطاء شائعة
+• ملخص — ${jma?'جدول: المصطلح + معناه + مثاله':'خريطة ذهنية'}
+• أسئلة التقييم — ${P.exDiff}`,
+    plan: `
+[محتوى المذكرة التحضيرية]
+• الجزء 1: البيانات الإدارية الكاملة
+• الجزء 2: سير الحصة بالدقائق — [نشاط الأستاذ | نشاط التلميذ | الوسيلة | الزمن]
+• الجزء 3: التمييز البيداغوجي`,
+    presentation: `
+[محتوى العرض التقديمي]
+• لكل شريحة: الرقم — العنوان — المحتوى — توجيه الأستاذ — العناصر المرئية — الزمن
+• المدة الكلية: ${d.duration}`,
+    problems: `
+[محتوى حزمة الإشكاليات]
+• 3 وضعيات انطلاق مختلفة
+• أسئلة استكشاف لكل وضعية
+• ربط بالواقع الجزائري (أمثلة محلية)`,
+    activities: `
+[محتوى خطة الأنشطة]
+• استعداد (المواد، التجهيزات)
+• أنشطة مقابل كل هدف تعليمي
+• تقييم ذاتي للتلميذ
+• إغلاق وتلخيص`,
+    exercises: `
+[محتوى بنك التمارين]
+• قسم 1: تمارين الفهم
+• قسم 2: تطبيق — ${P.exDiff}
+• قسم 3: QCM — 8 أسئلة مع الإجابات
+• قسم 4: أفكار إضافية
+• قسم 5: مشروع صغير`
+  };
+
+  return `${CTX}\n${SPECIFIC[type]}\n${STRUCT}\n\nابدأ الآن.`;
 }
 
 function buildExamPrompt(cls) {
   const P = CLASS_PROFILES[cls];
+  const icdf = getICDFCustom();
   const units = [...selectedExamUnits].map(k => JSON.parse(k));
-  const unitsBlock = units.map((u, i) => {
+
+  const identLine = icdf.identity
+    ? icdf.identity
+    : `أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج امتحانات بيداغوجية عالية الجودة مكيّفة وفق منهج STEAM.`;
+
+  const unitsBlock = units.map((u,i) => {
     const d = CURRICULUM_DATA[u.area][u.unit];
-    return `الوحدة ${i+1}: "${u.unit}" [${u.area}]
-  - الكفاءة: ${d.competency}
-  - الأهداف: ${toArr(d.objectives).join(' | ')}
-  - الموارد: ${toArr(d.targeted_ressourses).join(' | ')}`;
+    return `الوحدة ${i+1}: "${u.unit}" [${u.area}]\n  الكفاءة : ${d.competency}\n  الأهداف : ${toArr(d.objectives).join(' | ')}\n  الموارد : ${toArr(d.targeted_ressourses).join(' | ')}`;
   }).join('\n\n');
 
   const strictBlock = strictMode
-    ? `[قيود صارمة — مفعلة]
-- لا تضف مقدمة خارج المطلوب
-- لا تشرح ما ستقوم به
-- لا تغير ترتيب الأقسام
-- التزم بالبنية بدقة`
-    : `[قيود مرنة]
-- يمكنك تحسين العرض دون كسر البنية العامة`;
+    ? `[قيود صارمة — مفعلة]\n• لا تضف مقدمة خارج المطلوب\n• لا تشرح ما ستقوم به\n• التزم بالبنية بدقة`
+    : `[قيود مرنة]\n• يمكنك تحسين العرض دون كسر البنية العامة`;
 
-  return `═══════════════════════════════════════════════════════════
- السياق المنهجي — الإعلام الآلي / الثانوي الجزائري
-═══════════════════════════════════════════════════════════
+  const ctxExtra = icdf.context ? `\n[سياق إضافي]\n${icdf.context}` : '';
+  const demandExtra = icdf.demand ? `\n[تركيز إضافي]\n${icdf.demand}` : '';
+  const fmtExtra = icdf.format ? `\n[تنسيق مخصص]\n${icdf.format}` : '';
 
-[الدور]
-أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج امتحانات بيداغوجية عالية الجودة.
+  return `
+━━━━━━━━━━━━━━━━ [I] IDENTITY — الهوية ━━━━━━━━━━━━━━━━
+${identLine}
 
-[المهمة]
-إنشاء امتحان في مادة الإعلام الآلي مكيّف لمستوى ${P.label}
-
-[معطيات الامتحان]
-القسم      = ${P.label} (${P.level})
-عدد التمارين = ${examExCount} تمارين
-مدة الامتحان = ${durLabel(examDuration)}
-عدد الوحدات  = ${units.length} وحدة
+━━━━━━━━━━━━━━━━ [C] CONTEXT — السياق ━━━━━━━━━━━━━━━━
+القسم        : ${P.label} (${P.level})
+عدد التمارين : ${examExCount} تمارين
+مدة الامتحان : ${durLabel(examDuration)}
+عدد الوحدات  : ${units.length} وحدة
 
 [الوحدات المشمولة]
 ${unitsBlock}
 
-[قواعد التكيّف مع المستوى — إلزامي]
-${P.adapt}
+[التكيّف مع المستوى — إلزامي]
+${P.adapt}${ctxExtra}
 
-[التوزيع على التمارين]
-- وزّع التمارين على الوحدات المشمولة بشكل منطقي ومتوازن
-- لا تهمل أي وحدة مختارة تماماً
-- أنواع التمارين المقترحة: QCM + أسئلة مفتوحة + تطبيق عملي + تحليل + إنجاز + ترتيب خطوات +  صحيح او خطأ مع التصحيح + أكتب الخوارزمية + أنشىء المخطط الانسيابي
-- مستوى الصعوبة: ${P.exDiff}
-- كل تمرين يحمل نقاطاً واضحة، مجموعها 20 نقطة
+━━━━━━━━━━━━━━━━ [D] DEMAND — الطلب ━━━━━━━━━━━━━━━━
+• أنشئ امتحاناً يشمل جميع الوحدات المختارة بشكل متوازن
+• لا تهمل أي وحدة تماماً
+• أنواع التمارين المقترحة: QCM + أسئلة مفتوحة + تطبيق عملي + تحليل + ترتيب خطوات + صح/خطأ + كتابة خوارزمية + إنشاء مخطط انسيابي
+• مستوى الصعوبة: ${P.exDiff}
+• المجموع الكلي: 20 نقطة موزعة بوضوح${demandExtra}
+${buildSteamBlock()}
 
-[تنسيق الامتحان — إلزامي]
+━━━━━━━━━━━━━━━━ [F] FORMAT — التنسيق ━━━━━━━━━━━━━━━━
 صفحة الغلاف:
 ┌ المؤسسة | التاريخ | المادة: الإعلام الآلي
 ├ القسم: ${P.label} | المدة: ${durLabel(examDuration)}
@@ -707,136 +993,23 @@ ${P.adapt}
 [الوضعية أو السياق إن وجد]
 السؤال 1: ... [النقاط]
 السؤال 2: ... [النقاط]
-...
 
-[قواعد الصياغة]
-- استخدم لغة عربية فصحى واضحة
-- التعليمات مباشرة ولا تحتمل تأويلاً
-- الأسئلة متدرجة: من البسيط إلى الأعمق داخل كل تمرين
-- اربط الأسئلة بالسياق الجزائري كلما أمكن
-
-[تنسيق الإخراج]
 ${fmtInstr[outFmt]}
-
-[حجم الإخراج]
 ${lenInstr[lenMode]}
+${strictBlock}${fmtExtra}
 
-${strictBlock}
-
-[هيكل الإخراج — إلزامي]
+━━━━━━━━━━━━━━━━ هيكل الإخراج — إلزامي ━━━━━━━━━━━━━━━━
 ${typeStructure.exam}
 
-[سلّم التصحيح]
-أرفق في النهاية سلّم تصحيح كاملاً لكل تمرين مع التنقيط التفصيلي.
-
 [تحقق ذاتي قبل الإخراج]
-- هل الامتحان يشمل جميع الوحدات المختارة؟
-- هل المجموع يساوي 20 نقطة بالضبط؟
-- هل مستوى الصعوبة مناسب لـ ${P.label}؟
-- هل المدة المحددة (${durLabel(examDuration)}) كافية للإجابة؟
-
-═══════════════════════════════════════════════════════════
+• هل الامتحان يشمل جميع الوحدات المختارة؟
+• هل المجموع يساوي 20 نقطة بالضبط؟
+• هل مستوى الصعوبة مناسب لـ ${P.label}؟
+• هل المدة المحددة (${durLabel(examDuration)}) كافية للإجابة؟
+• هل أبعاد STEAM النشطة تنعكس في صياغة الأسئلة؟
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ابدأ الآن.`;
-}
-
-function buildPrompt(type, area, unit, d, cls) {
-  const P = CLASS_PROFILES[cls];
-  const jma = cls === 'jma';
-  const strictBlock = strictMode
-    ? `[قيود صارمة — مفعلة]
-- لا تضف مقدمة خارج المطلوب
-- لا تشرح ما ستقوم به
-- لا تغير ترتيب الأقسام
-- لا تضف أقسام جديدة
-- التزم بالبنية بدقة`
-    : `[قيود مرنة]
-- يمكنك تحسين العرض دون كسر البنية العامة`;
-
-  const CTX = `═══════════════════════════════════════════════════════════
- السياق المنهجي — الإعلام الآلي / الثانوي الجزائري
-═══════════════════════════════════════════════════════════
-[الدور]
-أنت خبير في الإعلام الآلي والتعليم الثانوي الجزائري، متخصص في إنتاج محتوى بيداغوجي عالي الجودة.
-
-[المهمة]
-إنشاء: ${typeLabels[type]} للوحدة: "${unit}"
-
-[المعطيات]
-FIELD      = ${area}
-UNIT       = ${unit}
-DURATION   = ${d.duration}
-LEVEL      = ${P.label} (${P.level})
-COMPETENCY = ${d.competency}
-OBJECTIVES = ${toArr(d.objectives).join(' | ')}
-RESOURCES  = ${toArr(d.targeted_ressourses).join(' | ')}
-FLOW       = ${toArr(d.progression).join(' | ')}
-EVALUATION = ${toArr(d.stage_evaluation).join(' | ')}
-FINAL_TASK = ${toArr(d.final_task).join(' | ')}
-
-[قواعد التكيّف — إلزامي]
-${P.adapt}
-
-[السياق المحلي — إلزامي]
-- استخدم أمثلة من البيئة الجزائرية
-- اربط المفاهيم بواقع التلميذ
-
-[تنسيق الإخراج]
-${fmtInstr[outFmt]}
-
-[حجم الإخراج]
-${lenInstr[lenMode]}
-
-${strictBlock}
-
-[هيكل الإخراج — إلزامي]
-${typeStructure[type]}
-
-[تحقق ذاتي]
-- هل المحتوى مناسب لمستوى ${P.label}؟
-- هل هناك تدرج منطقي؟
-- هل الأمثلة واقعية؟
-═══════════════════════════════════════════════════════════`;
-
-  const T = {
-    course: `${CTX}
-[المحتوى التفصيلي]
-أنشئ وثيقة درس كاملة لوحدة "${unit}" مكيّفة لقسم ${P.label}.
-1. مقدمة — ${jma ? 'أسئلة تشخيصية بسيطة' : 'وضعية مشكلة تثير الفضول'}
-2. محاور الدرس (لكل مورد مستهدف): تعريف + شرح تدريجي + ${jma ? 'مربع ملخص بعد كل فكرة' : 'تمارين مدمجة'}
-3. ملاحظات وأخطاء شائعة
-4. ملخص — ${jma ? 'جدول: المصطلح + معناه + مثاله' : 'خريطة ذهنية'}
-5. أسئلة التقييم — ${P.exDiff}
-ابدأ الآن.`,
-    plan: `${CTX}
-[المحتوى التفصيلي]
-مذكرة تحضيرية كاملة — وحدة "${unit}" — قسم ${P.label}.
-الجزء 1: البيانات الإدارية
-الجزء 2: سير الحصة (بالدقائق) — نشاط الأستاذ | نشاط التلميذ | الوسيلة | الزمن
-الجزء 3: التمييز البيداغوجي
-ابدأ الآن.`,
-    presentation: `${CTX}
-[المحتوى التفصيلي]
-خطة عرض تقديمي لـ "${unit}" — ${P.label} — ${d.duration}.
-لكل شريحة: الرقم — العنوان — المحتوى — توجيه الأستاذ — العناصر المرئية — الزمن
-ابدأ الآن.`,
-    problems: `${CTX}
-[المحتوى التفصيلي]
-حزمة إشكاليات لتقديم "${unit}" — مكيّفة لـ ${P.label}.
-3 وضعيات انطلاق + أسئلة استكشاف + ربط بالواقع الجزائري
-ابدأ الآن.`,
-    activities: `${CTX}
-[المحتوى التفصيلي]
-خطة أنشطة عملية لـ "${unit}" — ${P.label}.
-استعداد + أنشطة (لكل هدف) + تقييم ذاتي + إغلاق
-ابدأ الآن.`,
-    exercises: `${CTX}
-[المحتوى التفصيلي]
-بنك تمارين لوحدة "${unit}" — قسم ${P.label}.
-ق1: تمارين الفهم | ق2: تطبيق (${P.exDiff}) | ق3: QCM (8 أسئلة) | ق4: أفكار | ق5: مشروع صغير
-ابدأ الآن.`
-  };
-  return T[type];
 }
 
 function generatePrompt() {
@@ -846,8 +1019,7 @@ function generatePrompt() {
     prompt = buildExamPrompt(selClass);
   } else {
     if (!selType || !selClass || !curData) return;
-    const area = areaEl.value, unit = unitEl.value;
-    prompt = buildPrompt(selType, area, unit, curData, selClass);
+    prompt = buildPrompt(selType, areaEl.value, unitEl.value, curData, selClass);
   }
 
   curPrompt = prompt;
@@ -855,12 +1027,9 @@ function generatePrompt() {
   outputBox.classList.add('open');
 
   const P = CLASS_PROFILES[selClass];
-  let outLabelText = (typeLabels[selType] || selType);
-  if (selType === 'exam') {
-    outLabelText += ' — ' + selectedExamUnits.size + ' وحدات — ' + durLabel(examDuration);
-  } else {
-    outLabelText += ' — ' + unitEl.value;
-  }
+  let outLabelText = typeLabels[selType] || selType;
+  if (selType === 'exam') outLabelText += ' — ' + selectedExamUnits.size + ' وحدات — ' + durLabel(examDuration);
+  else outLabelText += ' — ' + unitEl.value;
   document.getElementById('outLabel').textContent = outLabelText;
 
   const fmtMap = {structured:['منظم','tag-blue'],semi:['مختلط','tag-teal'],free:['حر','tag-purple']};
@@ -868,8 +1037,17 @@ function generatePrompt() {
   const clsMap = {jmet:['ج م ع ت','tag-blue'],jma:['ج م أ','tag-amber']};
   const tagsRow = document.getElementById('tagsRow');
   tagsRow.innerHTML = '';
-  const tagItems = [clsMap[selClass], fmtMap[outFmt], lenMap[lenMode], strictMode ? ['🔒 صارم','tag-red'] : ['🔓 مرن','tag-green']];
-  if (selType === 'exam') tagItems.push([examExCount + ' تمارين', 'tag-orange']);
+
+  const activeDims = Object.entries(activeSteam).filter(([,v])=>v).map(([k])=>k);
+  const tagItems = [
+    clsMap[selClass],
+    fmtMap[outFmt],
+    lenMap[lenMode],
+    strictMode ? ['🔒 صارم','tag-red'] : ['🔓 مرن','tag-green'],
+    ['ICDF','tag-indigo'],
+    activeDims.length > 0 ? [activeDims.join('·'),'tag-rose'] : null
+  ].filter(Boolean);
+  if (selType === 'exam') tagItems.push([examExCount + ' تمارين','tag-orange']);
   tagItems.forEach(arr => {
     const s = document.createElement('span'); s.className = 'tag ' + arr[1]; s.textContent = arr[0]; tagsRow.appendChild(s);
   });
@@ -889,7 +1067,7 @@ function generatePrompt() {
       setTimeout(tick, i < 200 ? 3 : 1);
     } else {
       cursor.remove();
-      genBtn.disabled = false; spinner.style.display = 'none'; genBtnText.textContent = '⚡ توليد الأمر';
+      genBtn.disabled = false; spinner.style.display = 'none'; genBtnText.textContent = '⚡ توليد الأمر بإطار ICDF';
       updateCounts(prompt);
     }
   }
@@ -909,10 +1087,7 @@ function updateCounts(text) {
 function copyPrompt() {
   if (!curPrompt) return;
   const btn = document.getElementById('copyBtn');
-  const done = () => {
-    btn.textContent = '✓ تم النسخ'; btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'نسخ الأمر'; btn.classList.remove('copied'); }, 2500);
-  };
+  const done = () => { btn.textContent = '✓ تم النسخ'; btn.classList.add('copied'); setTimeout(()=>{btn.textContent='نسخ الأمر';btn.classList.remove('copied');},2500); };
   navigator.clipboard.writeText(curPrompt).then(done).catch(() => {
     const ta = document.createElement('textarea'); ta.value = curPrompt;
     document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
@@ -920,10 +1095,10 @@ function copyPrompt() {
 }
 
 function clearOutput() {
-  outputBox.classList.remove('open'); outDivider.style.display = 'none'; curPrompt = '';
-  promptBody.innerHTML = '<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">سيظهر الأمر هنا...</div></div>';
-  ['charCount','wordCount'].forEach(id => document.getElementById(id).textContent = '0');
-  document.getElementById('tokenCount').textContent = '~0';
+  outputBox.classList.remove('open'); outDivider.style.display='none'; curPrompt='';
+  promptBody.innerHTML='<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-text">سيظهر الأمر هنا...</div></div>';
+  ['charCount','wordCount'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('tokenCount').textContent='~0';
 }
 </script>
 </body>
