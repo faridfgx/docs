@@ -9,37 +9,18 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f4f0;
-  --bg2:#eeece7;
-  --bg3:#e8e5de;
-  --surface:#ffffff;
-  --surface2:#faf9f6;
-  --border:#dbd8d0;
-  --border2:#c8c4bb;
-  --border3:#a09a8e;
-  --text:#1c1a16;
-  --text2:#4a4640;
-  --text3:#8c8680;
-  --accent:#1a4f8a;
-  --accent2:#153e6e;
-  --accent-soft:rgba(26,79,138,0.08);
-  --accent-mid:rgba(26,79,138,0.15);
-  --gold:#8a6a1a;
-  --gold-bg:#fdf6e3;
-  --gold-border:#e8d4a0;
-  --success:#1a6e45;
-  --success-bg:#edf7f2;
-  --success-border:#a8d9bc;
-  --danger:#8a1a1a;
-  --danger-bg:#fdf0f0;
-  --danger-border:#e8a8a8;
-  --teal:#1a6a6e;
-  --teal-bg:#edf6f7;
-  --radius:6px;
-  --radius-lg:10px;
-  --radius-xl:16px;
-  --font:'Cairo',system-ui,sans-serif;
-  --font-serif:'Amiri',Georgia,serif;
+  --bg:#f5f4f0;--bg2:#eeece7;--bg3:#e8e5de;--surface:#ffffff;--surface2:#faf9f6;
+  --border:#dbd8d0;--border2:#c8c4bb;--border3:#a09a8e;
+  --text:#1c1a16;--text2:#4a4640;--text3:#8c8680;
+  --accent:#1a4f8a;--accent2:#153e6e;--accent-soft:rgba(26,79,138,0.08);--accent-mid:rgba(26,79,138,0.15);
+  --gold:#8a6a1a;--gold-bg:#fdf6e3;--gold-border:#e8d4a0;
+  --success:#1a6e45;--success-bg:#edf7f2;--success-border:#a8d9bc;
+  --danger:#8a1a1a;--danger-bg:#fdf0f0;--danger-border:#e8a8a8;
+  --teal:#1a6a6e;--teal-bg:#edf6f7;
+  --active-topic:#7c3aed;--active-topic-soft:rgba(124,58,237,0.08);--active-topic-border:#c4b5fd;--active-topic-bg:#f5f3ff;
+  --archive:#5c4a1a;--archive-bg:#fdf8ed;--archive-border:#dfd0a0;--archive-soft:rgba(92,74,26,0.08);
+  --radius:6px;--radius-lg:10px;--radius-xl:16px;
+  --font:'Cairo',system-ui,sans-serif;--font-serif:'Amiri',Georgia,serif;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 0 0 0.5px rgba(0,0,0,0.04);
   --shadow:0 2px 8px rgba(0,0,0,0.08),0 0 0 0.5px rgba(0,0,0,0.05);
   --shadow-lg:0 8px 24px rgba(0,0,0,0.1),0 0 0 0.5px rgba(0,0,0,0.06);
@@ -50,7 +31,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* ── ONBOARD ── */
 .onboard-overlay{position:fixed;inset:0;background:rgba(28,26,22,0.7);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem}
-.onboard-card{background:var(--surface);border-radius:var(--radius-xl);padding:2.75rem 2.25rem;max-width:420px;width:100%;text-align:center;box-shadow:var(--shadow-lg);animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.onboard-card{background:var(--surface);border-radius:var(--radius-xl);padding:2.75rem 2.25rem;max-width:460px;width:100%;text-align:center;box-shadow:var(--shadow-lg);animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
 .onboard-logo{width:64px;height:64px;background:var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:28px}
 .onboard-title{font-family:var(--font-serif);font-size:24px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.01em}
 .onboard-sub{font-size:13px;color:var(--text3);margin-bottom:2rem;line-height:1.7}
@@ -62,6 +43,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .onboard-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 .onboard-btn:active{transform:none}
 
+/* ── PAST SESSIONS on onboard ── */
+.past-sessions-wrap{margin-top:1.5rem;text-align:right}
+.past-sessions-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
+.past-sessions-title::before,.past-sessions-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.past-session-item{background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);padding:10px 14px;margin-bottom:7px;cursor:pointer;transition:all var(--tr);text-align:right}
+.past-session-item:hover{border-color:var(--archive);background:#fdf4d6;transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.psi-name{font-size:14px;font-weight:700;color:var(--archive);line-height:1.3}
+.psi-meta{font-size:12px;color:var(--text3);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.psi-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;background:rgba(92,74,26,0.1);color:var(--archive)}
+
 /* ── HEADER ── */
 header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:var(--shadow-sm)}
 .header-inner{max-width:1140px;margin:0 auto;padding:0 1.5rem;height:62px;display:flex;align-items:center;justify-content:space-between}
@@ -69,6 +60,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .brand-mark{width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .brand-title{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.2}
 .brand-sub{font-size:11px;color:var(--text3);font-weight:400;letter-spacing:0.03em}
+.brand-sub.archived-mode{color:var(--archive);font-weight:700}
 .header-right{display:flex;align-items:center;gap:8px}
 .user-chip{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border);border-radius:30px;padding:4px 12px 4px 8px;box-shadow:var(--shadow-sm)}
 .u-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
@@ -76,6 +68,8 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .btn-hdr{padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:13px;font-family:var(--font);font-weight:600;cursor:pointer;transition:all var(--tr);display:flex;align-items:center;gap:5px;box-shadow:var(--shadow-sm)}
 .btn-hdr:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
 .btn-hdr.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-hdr.archive-mode{background:var(--archive-bg);border-color:var(--archive-border);color:var(--archive)}
+.btn-hdr.archive-mode:hover{background:var(--archive);color:#fff}
 
 /* ── LAYOUT ── */
 .layout{max-width:1140px;margin:0 auto;padding:2rem 1.5rem;display:grid;grid-template-columns:1fr 320px;gap:1.75rem;align-items:start}
@@ -84,20 +78,42 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 /* ── SECTION LABELS ── */
 .sec-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem}
 
+/* ── ARCHIVE BANNER ── */
+.archive-view-banner{background:var(--archive-bg);border:2px solid var(--archive-border);border-radius:var(--radius-lg);padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;animation:slideUp 0.3s ease}
+.archive-view-banner-left{display:flex;align-items:center;gap:10px}
+.archive-view-icon{font-size:22px}
+.archive-view-name{font-size:15px;font-weight:700;color:var(--archive)}
+.archive-view-date{font-size:12px;color:var(--text3);margin-top:2px}
+.archive-view-stats{display:flex;gap:8px;flex-wrap:wrap}
+.archive-stat-chip{font-size:12px;font-weight:600;background:rgba(92,74,26,0.1);color:var(--archive);padding:3px 10px;border-radius:12px}
+
+/* ── ACTIVE TOPIC BANNER ── */
+.active-topic-banner{background:var(--active-topic-bg);border:2px solid var(--active-topic-border);border-radius:var(--radius-lg);margin-bottom:14px;overflow:hidden;box-shadow:0 0 0 4px rgba(124,58,237,0.06),var(--shadow);animation:slideUp 0.3s ease both}
+.active-topic-badge{display:flex;align-items:center;gap:7px;padding:8px 16px;background:var(--active-topic);font-size:11px;font-weight:700;color:#fff;letter-spacing:0.07em;text-transform:uppercase}
+.active-pulse{width:7px;height:7px;border-radius:50%;background:#fff;animation:activePulse 1.5s infinite;flex-shrink:0}
+.active-topic-title{padding:13px 16px 4px;font-size:17px;font-weight:800;color:var(--active-topic);line-height:1.3}
+.active-topic-desc{padding:0 16px 12px;font-size:13px;color:var(--text2);line-height:1.6}
+.active-topic-cta{margin:0 16px 14px;display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--active-topic);cursor:pointer;background:none;border:1.5px solid var(--active-topic-border);padding:6px 14px;border-radius:var(--radius);transition:all var(--tr)}
+.active-topic-cta:hover{background:var(--active-topic);color:#fff;border-color:var(--active-topic)}
+
 /* ── TOPIC CARD ── */
 .topic-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden;transition:border-color var(--tr),box-shadow var(--tr);animation:slideUp 0.3s ease both;box-shadow:var(--shadow-sm)}
 .topic-card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
 .topic-card.expanded{border-color:var(--accent);box-shadow:0 0 0 1.5px var(--accent),var(--shadow)}
+.topic-card.is-active-topic{border-color:var(--active-topic-border);background:var(--active-topic-bg)}
+.topic-card.is-active-topic.expanded{border-color:var(--active-topic);box-shadow:0 0 0 1.5px var(--active-topic),var(--shadow)}
 .topic-header{padding:1.25rem 1.5rem;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;user-select:none}
 .t-left{flex:1;min-width:0}
 .t-index{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.05em;margin-bottom:6px;background:var(--accent-soft);padding:3px 10px;border-radius:20px}
+.t-index.active-idx{color:var(--active-topic);background:var(--active-topic-soft);border:1px solid var(--active-topic-border)}
 .t-title{font-size:17px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:5px}
 .t-desc{font-size:13px;color:var(--text2);line-height:1.6}
 .t-meta{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
 .t-meta-item{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:4px}
 .t-chevron{color:var(--text3);font-size:20px;transition:transform var(--tr),color var(--tr);flex-shrink:0;line-height:1;margin-top:3px}
 .topic-card.expanded .t-chevron{transform:rotate(90deg);color:var(--accent)}
-.admin-bar{display:flex;gap:6px;padding:0 1.5rem 10px}
+.topic-card.is-active-topic.expanded .t-chevron{color:var(--active-topic)}
+.admin-bar{display:flex;gap:6px;padding:0 1.5rem 10px;flex-wrap:wrap}
 .topic-body{border-top:1px solid var(--border);display:none}
 .topic-card.expanded .topic-body{display:block;animation:fadeIn 0.2s ease}
 .topic-body-inner{padding:1.4rem 1.5rem}
@@ -117,10 +133,22 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .poll-fill{height:100%;background:linear-gradient(90deg,var(--accent) 0%,#2d6fc4 100%);border-radius:10px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);min-width:2px}
 .poll-pct{flex:0 0 36px;text-align:left;color:var(--text3);font-size:12px;font-weight:600}
 .poll-count{flex:0 0 28px;text-align:left;color:var(--text3);font-size:11px}
-.poll-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--gold-border)}
+.poll-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--gold-border);flex-wrap:wrap;gap:8px}
 .poll-total-txt{font-size:12px;color:var(--text3)}
 .voted-badge{display:inline-flex;align-items:center;gap:5px;background:var(--success-bg);color:var(--success);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--success-border)}
+.preview-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(138,106,26,0.1);color:var(--gold);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--gold-border)}
 .rt-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success);animation:livePulse 2s infinite;margin-left:4px}
+
+/* ── SKIP VOTE BUTTON area ── */
+.poll-actions{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
+.btn-skip{background:transparent;border:1px dashed var(--gold-border);color:var(--gold);font-size:12px;font-weight:700;font-family:var(--font);padding:7px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--tr)}
+.btn-skip:hover{background:rgba(138,106,26,0.07);border-color:var(--gold)}
+.btn-vote-now{background:var(--accent);color:#fff;font-size:13px;font-weight:700;font-family:var(--font);padding:8px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:all var(--tr);flex:1}
+.btn-vote-now:hover{background:var(--accent2)}
+.btn-vote-now:disabled{background:var(--border2);color:var(--text3);cursor:default}
+.back-to-vote-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed var(--gold-border);flex-wrap:wrap;gap:8px}
+.back-to-vote-btn{background:none;border:1.5px solid var(--gold-border);color:var(--gold);font-size:12px;font-weight:700;font-family:var(--font);padding:6px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--tr);display:flex;align-items:center;gap:5px}
+.back-to-vote-btn:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
 
 /* ── COMMENTS ── */
 .comments-section{margin-top:4px}
@@ -145,9 +173,11 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .cform-textarea{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:10px 13px;font-size:13px;font-family:var(--font);color:var(--text);resize:none;height:68px;outline:none;transition:border-color var(--tr),box-shadow var(--tr);line-height:1.6}
 .cform-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .cform-textarea::placeholder{color:var(--text3)}
+.cform-textarea:disabled{background:var(--bg2);cursor:not-allowed}
 .cooldown-bar{height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;display:none}
 .cooldown-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 1s linear}
 .cooldown-txt{font-size:11px;color:var(--text3);margin-top:5px;min-height:16px}
+.archive-notice{font-size:12px;color:var(--archive);background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);padding:10px 14px;text-align:center;margin-top:10px}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 16px;border-radius:var(--radius);font-size:13px;font-family:var(--font);font-weight:700;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap;letter-spacing:0.01em}
@@ -159,10 +189,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .btn-ghost:hover{color:var(--text);border-color:var(--border3);background:var(--bg2)}
 .btn-danger{background:transparent;color:var(--danger);border:1px solid var(--danger-border)}
 .btn-danger:hover{background:var(--danger-bg)}
+.btn-archive{background:transparent;color:var(--archive);border:1px solid var(--archive-border)}
+.btn-archive:hover{background:var(--archive-bg)}
+.btn-purple{background:transparent;color:var(--active-topic);border:1px solid var(--active-topic-border)}
+.btn-purple:hover{background:var(--active-topic);color:#fff;border-color:var(--active-topic)}
+.btn-purple.is-active{background:var(--active-topic);color:#fff;border-color:var(--active-topic)}
 .btn-sm{padding:4px 10px;font-size:12px;border-radius:5px}
-.btn-vote{width:100%;padding:10px;font-size:14px;background:var(--accent);color:#fff;margin-top:10px;box-shadow:0 1px 3px rgba(26,79,138,0.2)}
-.btn-vote:hover{background:var(--accent2)}
-.btn-vote:disabled{background:var(--border2);color:var(--text3);cursor:default}
 
 /* ── SIDEBAR ── */
 .sb-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:12px;box-shadow:var(--shadow-sm)}
@@ -189,6 +221,12 @@ select.finput{cursor:pointer}
 .btn-addopt{background:none;border:none;color:var(--accent);font-size:13px;font-family:var(--font);cursor:pointer;padding:0 0 6px;font-weight:700}
 .btn-addopt:hover{color:var(--accent2)}
 
+/* ── Archive Admin section ── */
+.archive-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.archive-list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);margin-bottom:6px;font-size:13px}
+.ali-name{font-weight:700;color:var(--archive);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ali-date{font-size:11px;color:var(--text3)}
+
 /* ── STATS ── */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
 .stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
@@ -199,20 +237,31 @@ select.finput{cursor:pointer}
 .live-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--success);font-weight:600;padding:8px 12px;background:var(--success-bg);border:1px solid var(--success-border);border-radius:var(--radius);margin-bottom:12px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:livePulse 2s infinite;flex-shrink:0}
 
+/* ── EDIT POLL OPTIONS ── */
+.poe-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.poe-input{flex:1;background:var(--surface);border:1.5px solid var(--gold-border);border-radius:var(--radius);padding:7px 10px;font-size:13px;font-family:var(--font);color:var(--text);outline:none;transition:border-color var(--tr)}
+.poe-input:focus{border-color:var(--gold);background:#fffef8}
+
 /* ── MODALS ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(28,26,22,0.65);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn 0.18s ease}
 .modal-overlay.hidden{display:none}
-.modal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:1.75rem;width:100%;max-width:420px;box-shadow:var(--shadow-lg);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
+.modal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:1.75rem;width:100%;max-width:480px;box-shadow:var(--shadow-lg);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
 .modal-title{font-size:17px;font-weight:700;margin-bottom:1.1rem;color:var(--text)}
 .modal-msg{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:4px}
 .modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:1.1rem}
 .divider{height:1px;background:var(--border);margin:1rem 0}
+
+/* ── ARCHIVE MODAL ── */
+#archive-modal .modal-card{max-width:520px}
+.archive-modal-info{background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--archive);line-height:1.7}
+.archive-modal-info strong{font-weight:800}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--text);color:#fff;font-size:13px;font-weight:600;padding:10px 22px;border-radius:30px;opacity:0;transition:all 0.28s cubic-bezier(0.34,1.56,0.64,1);z-index:999;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.success{background:var(--success)}
 .toast.error{background:var(--danger)}
+.toast.archive{background:var(--archive)}
 
 /* ── EMPTY / LOADING ── */
 .state-empty{text-align:center;padding:2.5rem 1rem;color:var(--text3);font-size:13px}
@@ -229,7 +278,7 @@ select.finput{cursor:pointer}
 @keyframes popIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(26,110,69,0.4)}50%{box-shadow:0 0 0 5px rgba(26,110,69,0)}}
-@keyframes rowFadeIn{from{opacity:0;background:rgba(26,79,138,0.06)}to{opacity:1;background:transparent}}
+@keyframes activePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0.5)}50%{box-shadow:0 0 0 5px rgba(255,255,255,0)}}
 
 /* Avatar colors */
 .av0{background:linear-gradient(135deg,#1a4f8a,#2d7dd2)}
@@ -245,12 +294,13 @@ select.finput{cursor:pointer}
 <!-- ONBOARD -->
 <div class="onboard-overlay" id="onboard-overlay">
   <div class="onboard-card">
-    <div class="onboard-logo">👨🏻‍🏫</div>
+    <div class="onboard-logo">⚙️</div>
     <div class="onboard-title">لوحة المناقشة</div>
     <div class="onboard-sub">مرحباً بك في جلسة هندسة أوامر الذكاء الاصطناعي<br>أدخل اسمك للمشاركة في النقاش</div>
     <label class="onboard-label">الاسم</label>
     <input class="onboard-input" id="onboard-name" type="text" placeholder="اكتب اسمك الكامل…" maxlength="30" autocomplete="off">
-    <button class="onboard-btn" onclick="enterBoard()">دخول اللوحة</button>
+    <button class="onboard-btn" onclick="enterBoard()">دخول اللوحة →</button>
+    <div id="past-sessions-wrap"></div>
   </div>
 </div>
 
@@ -270,11 +320,11 @@ select.finput{cursor:pointer}
 <!-- CONFIRM MODAL -->
 <div class="modal-overlay hidden" id="confirm-modal">
   <div class="modal-card">
-    <div class="modal-title">تأكيد الحذف</div>
+    <div class="modal-title" id="confirm-title">تأكيد</div>
     <p class="modal-msg" id="confirm-msg">هل أنت متأكد؟</p>
     <div class="modal-btns">
       <button class="btn btn-ghost" onclick="closeModal('confirm-modal')">إلغاء</button>
-      <button class="btn btn-danger" id="confirm-ok">حذف</button>
+      <button class="btn btn-danger" id="confirm-ok">تأكيد</button>
     </div>
   </div>
 </div>
@@ -292,6 +342,52 @@ select.finput{cursor:pointer}
   </div>
 </div>
 
+<!-- EDIT POLL OPTIONS MODAL -->
+<div class="modal-overlay hidden" id="poll-opts-modal">
+  <div class="modal-card" style="max-width:500px">
+    <div class="modal-title">✏️ تعديل خيارات الاستطلاع</div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:14px">يمكنك تعديل نص الخيارات. لا يمكن إضافة أو حذف خيارات لحفظ الأصوات الحالية.</p>
+    <div id="poll-opts-editor-list"></div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('poll-opts-modal')">إلغاء</button>
+      <button class="btn btn-primary" id="poll-opts-save">حفظ الخيارات</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHIVE MODAL -->
+<div class="modal-overlay hidden" id="archive-modal">
+  <div class="modal-card">
+    <div class="modal-title">📦 أرشفة الجلسة الحالية</div>
+    <div class="archive-modal-info">
+      ستُحفظ جميع المواضيع والتعليقات والاستطلاعات والأصوات في الأرشيف.<br>
+      ثم <strong>تُمسح من الجلسة الحالية</strong> ليبدأ المشرف جلسة جديدة نظيفة.<br>
+      يمكن للمستخدمين الاطلاع على الأرشيف من شاشة الدخول.
+    </div>
+    <div class="fg">
+      <label class="flabel">اسم الجلسة المؤرشفة</label>
+      <input class="finput" id="archive-session-name" type="text" placeholder="مثال: جلسة هندسة الأوامر — ١٥ يناير ٢٠٢٥" maxlength="120">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('archive-modal')">إلغاء</button>
+      <button class="btn btn-primary" onclick="doArchiveSession()" style="background:var(--archive);box-shadow:none">📦 أرشفة وبدء جلسة جديدة</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW ARCHIVE MODAL -->
+<div class="modal-overlay hidden" id="view-archive-modal">
+  <div class="modal-card" style="max-width:560px;max-height:80vh;overflow-y:auto">
+    <div class="modal-title">🗂 الأرشيف</div>
+    <div id="archive-modal-list">
+      <div class="state-empty"><div class="ldots"><span></span><span></span><span></span></div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeModal('view-archive-modal')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header>
   <div class="header-inner">
@@ -299,7 +395,7 @@ select.finput{cursor:pointer}
       <div class="brand-mark">⚙️</div>
       <div>
         <div class="brand-title">هندسة اوامر الذكاء الاصطناعي</div>
-        <div class="brand-sub">لوحة نقاش تفاعلية • مباشر</div>
+        <div class="brand-sub" id="brand-sub-txt">لوحة نقاش تفاعلية • مباشر</div>
       </div>
     </div>
     <div class="header-right">
@@ -307,6 +403,8 @@ select.finput{cursor:pointer}
         <div class="u-av" id="hdr-av"></div>
         <span class="user-chip-name" id="hdr-name">…</span>
       </div>
+      <button class="btn-hdr" id="archive-view-btn" onclick="openArchiveView()" style="display:none">🗂 الأرشيف</button>
+      <button class="btn-hdr archive-mode" id="back-live-btn" onclick="goBackToLive()" style="display:none">↩ العودة للمباشر</button>
       <button class="btn-hdr" id="admin-btn" onclick="openModal('admin-modal')">🔐 مشرف</button>
     </div>
   </div>
@@ -318,7 +416,9 @@ select.finput{cursor:pointer}
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
       <div class="sec-label" style="margin-bottom:0">المواضيع</div>
     </div>
-    <div class="live-row"><div class="live-dot"></div>الجلسة مباشرة — جميع التعليقات والتصويتات تظهر فوراً لجميع المشاركين</div>
+    <div id="live-row-banner" class="live-row"><div class="live-dot"></div>الجلسة مباشرة — جميع التعليقات والتصويتات تظهر فوراً لجميع المشاركين</div>
+    <div id="archive-view-banner"></div>
+    <div id="active-topic-banner"></div>
     <div id="topics-list"><div class="state-empty"><div class="ldots"><span></span><span></span><span></span></div></div></div>
   </main>
 
@@ -330,14 +430,17 @@ select.finput{cursor:pointer}
         <button class="btn btn-ghost btn-sm" onclick="doLogout()">خروج</button>
       </div>
       <div class="admin-tabs">
-        <div class="atab active" onclick="switchTab('topic')">موضوع جديد</div>
-        <div class="atab" onclick="switchTab('poll')">استطلاع جديد</div>
+        <div class="atab active" onclick="switchTab('topic')">موضوع</div>
+        <div class="atab" onclick="switchTab('poll')">استطلاع</div>
+        <div class="atab" onclick="switchTab('archive')">أرشيف</div>
       </div>
+      <!-- Topic form -->
       <div class="af open" id="f-topic">
         <div class="fg"><label class="flabel">العنوان</label><input class="finput" id="new-title" type="text" placeholder="عنوان الموضوع…" maxlength="120"></div>
         <div class="fg"><label class="flabel">الوصف</label><textarea class="finput" id="new-desc" placeholder="وصف مختصر (اختياري)…" rows="3"></textarea></div>
         <button class="btn btn-primary" style="width:100%;padding:10px;margin-top:2px" onclick="addTopic()">إضافة الموضوع</button>
       </div>
+      <!-- Poll form -->
       <div class="af" id="f-poll">
         <div class="fg"><label class="flabel">الموضوع</label><select class="finput" id="poll-tsel"><option value="">اختر موضوعاً…</option></select></div>
         <div class="fg"><label class="flabel">السؤال</label><input class="finput" id="poll-q" type="text" placeholder="سؤال الاستطلاع…" maxlength="200"></div>
@@ -351,11 +454,20 @@ select.finput{cursor:pointer}
         </div>
         <button class="btn btn-primary" style="width:100%;padding:10px" onclick="addPoll()">إنشاء الاستطلاع</button>
       </div>
+      <!-- Archive form -->
+      <div class="af" id="f-archive">
+        <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">أرشفة الجلسة الحالية تحفظ كل شيء (مواضيع، تعليقات، استطلاعات، أصوات) ثم تمسحها لبدء جلسة جديدة نظيفة.</p>
+        <button class="btn btn-archive" style="width:100%;padding:10px;font-size:14px" onclick="openModal('archive-modal')">📦 أرشفة الجلسة الحالية</button>
+        <div class="archive-section">
+          <div class="sec-label" style="margin-bottom:8px">الجلسات المؤرشفة</div>
+          <div id="admin-archive-list"><div style="font-size:12px;color:var(--text3)">جارٍ التحميل…</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- STATS -->
     <div class="sb-card">
-      <div class="sec-label" style="margin-bottom:.75rem">إحصائيات الجلسة</div>
+      <div class="sec-label" style="margin-bottom:.75rem" id="stats-label">إحصائيات الجلسة</div>
       <div class="stats-grid">
         <div class="stat-box"><div class="stat-num" id="st-topics">–</div><div class="stat-lbl">موضوع</div></div>
         <div class="stat-box"><div class="stat-num" id="st-comments">–</div><div class="stat-lbl">تعليق</div></div>
@@ -363,7 +475,7 @@ select.finput{cursor:pointer}
         <div class="stat-box"><div class="stat-num" id="st-votes">–</div><div class="stat-lbl">تصويت</div></div>
       </div>
       <div class="divider"></div>
-      <p style="font-size:12px;color:var(--text3);line-height:1.75">يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع. جميع المشاركات تظهر في الوقت الفعلي.</p>
+      <p style="font-size:12px;color:var(--text3);line-height:1.75" id="stats-note">يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع. يمكنك معاينة نتائج الاستطلاع قبل التصويت.</p>
     </div>
   </aside>
 </div>
@@ -381,13 +493,63 @@ let UID=sessionStorage.getItem('b_uid')||('u_'+Math.random().toString(36).slice(
 sessionStorage.setItem('b_uid',UID);
 let userName=sessionStorage.getItem('b_name')||'';
 let isAdmin=false,adminName='',topics=[],expandedId=null,lastComment={};
+let activeTopicId=null;
+// poll preview state: set of poll ids user chose to preview without voting
+const pollPreviews=new Set();
+// archive view state
+let viewingArchiveId=null;
+let archiveSessions=[];
+
 const dname=()=>isAdmin?adminName:userName;
 const AV=['av0','av1','av2','av3','av4','av5'];
 function avc(s){let h=0;for(const c of(s||'u'))h=(h*31+c.charCodeAt(0))>>>0;return AV[h%6];}
 function ini(n){return(n||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
 // ── ONBOARD ──
-if(userName){document.getElementById('onboard-overlay').style.display='none';updateHdr();}
+async function initOnboard(){
+  await loadArchiveSessions();
+  if(userName){
+    document.getElementById('onboard-overlay').style.display='none';
+    updateHdr();
+  } else {
+    renderPastSessionsOnboard();
+  }
+}
+function renderPastSessionsOnboard(){
+  const wrap=document.getElementById('past-sessions-wrap');
+  if(!archiveSessions.length){wrap.innerHTML='';return;}
+  let html=`<div class="past-sessions-wrap">
+    <div class="past-sessions-title">الجلسات السابقة</div>`;
+  archiveSessions.forEach(s=>{
+    const d=new Date(s.archived_at);
+    const dateStr=d.toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric'});
+    html+=`<div class="past-session-item" onclick="viewArchiveFromOnboard('${s.id}')">
+      <div class="psi-name">📦 ${esc(s.name)}</div>
+      <div class="psi-meta">
+        <span class="psi-badge">📅 ${dateStr}</span>
+        <span class="psi-badge">💬 ${s.comment_count||0} تعليق</span>
+        <span class="psi-badge">📊 ${s.poll_count||0} استطلاع</span>
+        <span class="psi-badge">🗳 ${s.vote_count||0} تصويت</span>
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+  wrap.innerHTML=html;
+}
+function viewArchiveFromOnboard(archiveId){
+  // Allow viewing without entering name — just peek. Enter prompts name.
+  const name=document.getElementById('onboard-name').value.trim();
+  if(!name){
+    // highlight name field
+    shake('onboard-name');
+    toast('أدخل اسمك أولاً للدخول','error');
+    return;
+  }
+  userName=name;sessionStorage.setItem('b_name',name);
+  document.getElementById('onboard-overlay').style.display='none';
+  updateHdr();
+  loadArchiveSession(archiveId);
+}
 document.getElementById('onboard-name').addEventListener('keydown',e=>{if(e.key==='Enter')enterBoard();});
 function enterBoard(){
   const v=document.getElementById('onboard-name').value.trim();
@@ -408,10 +570,13 @@ function shake(id){const el=document.getElementById(id);el.style.animation='none
 // ── MODALS ──
 function openModal(id){document.getElementById(id).classList.remove('hidden');}
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
-function showConfirm(msg,cb){
+function showConfirm(title,msg,cb,btnTxt='تأكيد',btnCls='btn-danger'){
+  document.getElementById('confirm-title').textContent=title;
   document.getElementById('confirm-msg').textContent=msg;
   document.getElementById('confirm-modal').classList.remove('hidden');
-  document.getElementById('confirm-ok').onclick=()=>{closeModal('confirm-modal');cb();};
+  const ok=document.getElementById('confirm-ok');
+  ok.textContent=btnTxt;ok.className='btn '+btnCls;
+  ok.onclick=()=>{closeModal('confirm-modal');cb();};
 }
 function showEdit(title,lbl,val,descVal,cb){
   document.getElementById('edit-title').textContent=title;
@@ -436,7 +601,8 @@ function doLogin(){
   document.getElementById('admin-btn').classList.add('active');
   document.getElementById('admin-btn').textContent='⚡ مشرف';
   document.getElementById('apass').value='';
-  updateHdr();populatePollSel();
+  document.getElementById('archive-view-btn').style.display='flex';
+  updateHdr();populatePollSel();loadAdminArchiveList();
   toast('مرحباً '+n+'! وضع المشرف مفعّل','success');
   renderTopics();
 }
@@ -445,13 +611,18 @@ function doLogout(){
   document.getElementById('admin-panel').classList.remove('open');
   document.getElementById('admin-btn').classList.remove('active');
   document.getElementById('admin-btn').textContent='🔐 مشرف';
+  document.getElementById('archive-view-btn').style.display='none';
   updateHdr();renderTopics();toast('تم تسجيل الخروج');
 }
 function switchTab(t){
-  document.querySelectorAll('.atab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='topic')||(i===1&&t==='poll')));
+  document.querySelectorAll('.atab').forEach((el,i)=>{
+    el.classList.toggle('active',(i===0&&t==='topic')||(i===1&&t==='poll')||(i===2&&t==='archive'));
+  });
   document.getElementById('f-topic').classList.toggle('open',t==='topic');
   document.getElementById('f-poll').classList.toggle('open',t==='poll');
+  document.getElementById('f-archive').classList.toggle('open',t==='archive');
   if(t==='poll')populatePollSel();
+  if(t==='archive')loadAdminArchiveList();
 }
 function populatePollSel(){
   const sel=document.getElementById('poll-tsel');
@@ -459,15 +630,61 @@ function populatePollSel(){
   topics.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.title;sel.appendChild(o);});
 }
 
+// ── ACTIVE TOPIC ──
+async function setActiveTopic(tid){
+  const newActive = (activeTopicId===tid) ? null : tid;
+  const updates = topics.map(t=>
+    db.from('topics').update({is_active: t.id===newActive}).eq('id',t.id)
+  );
+  await Promise.all(updates);
+  activeTopicId=newActive;
+  await loadTopics();
+  toast(newActive ? '✅ تم تعيين الموضوع النشط' : 'تم إلغاء الموضوع النشط','success');
+}
+function renderActiveBanner(){
+  const banner=document.getElementById('active-topic-banner');
+  if(!activeTopicId||viewingArchiveId){banner.innerHTML='';return;}
+  const t=topics.find(x=>x.id===activeTopicId);
+  if(!t){banner.innerHTML='';return;}
+  banner.innerHTML=`
+    <div class="active-topic-banner">
+      <div class="active-topic-badge"><div class="active-pulse"></div>الموضوع النشط الآن</div>
+      <div class="active-topic-title">${esc(t.title)}</div>
+      ${t.description?`<div class="active-topic-desc">${esc(t.description)}</div>`:''}
+      <button class="active-topic-cta" onclick="scrollToTopic('${t.id}')">انتقل إلى الموضوع ↓</button>
+    </div>`;
+}
+function scrollToTopic(tid){
+  const card=document.getElementById('tc-'+tid);
+  if(!card)return;
+  if(expandedId!==tid)toggleTopic(tid);
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),120);
+}
+
 // ── LOAD ──
 async function loadTopics(){
   const {data,error}=await db.from('topics').select('*').order('created_at',{ascending:true});
   if(error){document.getElementById('topics-list').innerHTML='<div class="state-empty">خطأ في تحميل البيانات</div>';return;}
   topics=data||[];
+  const active=topics.find(t=>t.is_active);
+  activeTopicId=active?active.id:null;
   document.getElementById('st-topics').textContent=topics.length;
-  renderTopics();loadStats();
+  renderActiveBanner();
+  renderTopics();
+  loadStats();
 }
-async function loadStats(){
+async function loadStats(archiveId=null){
+  if(archiveId){
+    // Load stats from archive data
+    const {data:sess}=await db.from('archive_sessions').select('comment_count,poll_count,vote_count,topic_count').eq('id',archiveId).single();
+    if(sess){
+      document.getElementById('st-topics').textContent=sess.topic_count??'–';
+      document.getElementById('st-comments').textContent=sess.comment_count??'–';
+      document.getElementById('st-polls').textContent=sess.poll_count??'–';
+      document.getElementById('st-votes').textContent=sess.vote_count??'–';
+    }
+    return;
+  }
   const [{count:cc},{count:pc},{count:vc}]=await Promise.all([
     db.from('comments').select('*',{count:'exact',head:true}),
     db.from('polls').select('*',{count:'exact',head:true}),
@@ -478,18 +695,27 @@ async function loadStats(){
   document.getElementById('st-votes').textContent=vc??'–';
 }
 
-function renderTopics(){
+function renderTopics(archiveMode=false){
   const c=document.getElementById('topics-list');
-  if(!topics.length){c.innerHTML='<div class="state-empty"><span class="icon">💬</span>لا توجد مواضيع بعد</div>';return;}
+  if(!topics.length){
+    c.innerHTML=`<div class="state-empty"><span class="icon">${archiveMode?'📦':'💬'}</span>${archiveMode?'لا توجد مواضيع في هذا الأرشيف':'لا توجد مواضيع بعد'}</div>`;
+    return;
+  }
   c.innerHTML='';
   topics.forEach((t,i)=>{
+    const isAct=!archiveMode&&(t.id===activeTopicId);
     const card=document.createElement('div');
-    card.className='topic-card'+(expandedId===t.id?' expanded':'');
+    card.className='topic-card'+(expandedId===t.id?' expanded':'')+(isAct?' is-active-topic':'');
     card.id='tc-'+t.id;card.style.animationDelay=(i*0.055)+'s';
+    const adminBar=isAdmin&&!archiveMode?`<div class="admin-bar">
+      <button class="btn btn-purple btn-sm${isAct?' is-active':''}" onclick="event.stopPropagation();setActiveTopic('${t.id}')">${isAct?'⚡ نشط':'📌 تعيين نشط'}</button>
+      <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editTopic('${t.id}')">✏️ تعديل</button>
+      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteTopic('${t.id}')">🗑 حذف</button>
+    </div>`:'';
     card.innerHTML=`
       <div class="topic-header" onclick="toggleTopic('${t.id}')">
         <div class="t-left">
-          <div><span class="t-index">موضوع ${i+1}</span></div>
+          <div><span class="t-index${isAct?' active-idx':''}">${isAct?'⚡ نشط':archiveMode?'📦 مؤرشف':'موضوع '+(i+1)}</span></div>
           <div class="t-title">${esc(t.title)}</div>
           ${t.description?`<div class="t-desc">${esc(t.description)}</div>`:''}
           <div class="t-meta">
@@ -499,10 +725,7 @@ function renderTopics(){
         </div>
         <span class="t-chevron">›</span>
       </div>
-      ${isAdmin?`<div class="admin-bar">
-        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editTopic('${t.id}')">✏️ تعديل</button>
-        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteTopic('${t.id}')">🗑 حذف</button>
-      </div>`:''}
+      ${adminBar}
       <div class="topic-body" id="tb-${t.id}">
         <div class="topic-body-inner" id="tbi-${t.id}">
           <div class="state-empty"><div class="ldots"><span></span><span></span><span></span></div></div>
@@ -542,9 +765,9 @@ async function renderBody(tid){
   setupCooldown(tid);
 }
 
-// ── POLLS ──
-// store voted polls in memory per session
+// ── POLLS — with skip/preview support ──
 const votedPolls={};
+
 async function buildPollHTML(poll){
   const opts=poll.options;
   const [{data:votes},{data:mv}]=await Promise.all([
@@ -556,21 +779,32 @@ async function buildPollHTML(poll){
   const voted=!!mv;
   if(voted)votedPolls[poll.id]=mv.option_index;
   const choice=mv?.option_index;
-  return buildPollMarkup(poll,opts,counts,total,voted,choice);
+  const isPreviewing=pollPreviews.has(poll.id);
+  return buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing);
 }
-function buildPollMarkup(poll,opts,counts,total,voted,choice){
+
+function buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing){
+  const isArchived=!!viewingArchiveId;
   let h=`<div class="poll-wrap" id="pw-${poll.id}">
     <div><span class="poll-tag">📊 استطلاع رأي</span></div>
-    ${isAdmin?`<div style="display:flex;gap:6px;margin-bottom:8px">
-      <button class="btn btn-ghost btn-sm" onclick="editPoll('${poll.id}')">✏️ تعديل</button>
+    ${isAdmin&&!isArchived?`<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="editPoll('${poll.id}')">✏️ تعديل السؤال</button>
+      <button class="btn btn-ghost btn-sm" onclick="editPollOptions('${poll.id}')">🔧 تعديل الخيارات</button>
       <button class="btn btn-danger btn-sm" onclick="deletePoll('${poll.id}')">🗑 حذف</button>
     </div>`:''}
     <div class="poll-question">${esc(poll.question)}</div>`;
-  if(!voted){
+
+  if(!voted && !isPreviewing && !isArchived){
+    // Normal voting state — show options + vote button + skip button
     h+=`<form id="pf-${poll.id}">`;
     opts.forEach((o,i)=>{h+=`<label class="poll-opt-label"><input type="radio" name="p${poll.id}" value="${i}"> ${esc(o)}</label>`;});
-    h+=`</form><button class="btn btn-vote" id="pvb-${poll.id}" onclick="castVote('${poll.id}')">تصويت</button>`;
+    h+=`</form>
+    <div class="poll-actions">
+      <button class="btn-vote-now" id="pvb-${poll.id}" onclick="castVote('${poll.id}')">🗳 تصويت</button>
+      <button class="btn-skip" onclick="skipToPreview('${poll.id}')">معاينة النتائج أولاً 👁</button>
+    </div>`;
   } else {
+    // Show results (either voted, previewing, or archived)
     h+=`<div class="poll-results" id="pr-${poll.id}">`;
     opts.forEach((o,i)=>{
       const pct=total>0?Math.round((counts[i]/total)*100):0;
@@ -582,20 +816,71 @@ function buildPollMarkup(poll,opts,counts,total,voted,choice){
         <div class="poll-count" id="pc-${poll.id}-${i}">${cnt}</div>
       </div>`;
     });
-    h+=`</div><div class="poll-footer">
-      <div class="poll-total-txt" id="pt-${poll.id}">${total} صوت <span class="rt-pulse"></span></div>
-      <div class="voted-badge">✓ تم التصويت</div>
-    </div>`;
+    h+=`</div>`;
+
+    h+=`<div class="poll-footer">
+      <div class="poll-total-txt" id="pt-${poll.id}">${total} صوت ${!isArchived?'<span class="rt-pulse"></span>':''}</div>`;
+
+    if(voted){
+      h+=`<div class="voted-badge">✓ تم التصويت</div>`;
+    } else if(isPreviewing && !isArchived){
+      h+=`<div class="preview-badge">👁 معاينة فقط</div>`;
+    }
+    h+=`</div>`;
+
+    // If previewing (not voted, not archived), show "go back to vote" option
+    if(isPreviewing && !voted && !isArchived){
+      h+=`<div class="back-to-vote-row">
+        <span style="font-size:12px;color:var(--text3)">يمكنك التصويت متى أردت</span>
+        <button class="back-to-vote-btn" onclick="backToVote('${poll.id}')">← العودة للتصويت</button>
+      </div>`;
+    }
   }
-  h+=`</div>`;return h;
+  h+=`</div>`;
+  return h;
 }
 
-// Live-update poll bars without re-rendering
+// Skip to preview — show results without voting
+function skipToPreview(pollId){
+  pollPreviews.add(pollId);
+  // Re-render the poll widget in place
+  const box=document.getElementById('pw-'+pollId);
+  if(!box)return;
+  db.from('polls').select('*').eq('id',pollId).single().then(async({data:poll})=>{
+    if(!poll)return;
+    const [{data:votes}]=await Promise.all([
+      db.from('poll_votes').select('option_index').eq('poll_id',poll.id)
+    ]);
+    const total=votes?.length||0;
+    const counts=poll.options.map((_,i)=>(votes||[]).filter(v=>v.option_index===i).length);
+    const d=document.createElement('div');
+    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,null,true);
+    box.replaceWith(d.firstChild);
+    toast('يمكنك التصويت لاحقاً من زر "العودة للتصويت"');
+  });
+}
+
+// Go back to voting form
+function backToVote(pollId){
+  pollPreviews.delete(pollId);
+  const box=document.getElementById('pw-'+pollId);
+  if(!box)return;
+  db.from('polls').select('*').eq('id',pollId).single().then(async({data:poll})=>{
+    if(!poll)return;
+    const [{data:votes}]=await Promise.all([
+      db.from('poll_votes').select('option_index').eq('poll_id',poll.id)
+    ]);
+    const total=votes?.length||0;
+    const counts=poll.options.map((_,i)=>(votes||[]).filter(v=>v.option_index===i).length);
+    const d=document.createElement('div');
+    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,null,false);
+    box.replaceWith(d.firstChild);
+  });
+}
+
 function updatePollBars(pollId,votes,userChoice){
   const total=votes.length;
   const opts=votes.reduce((acc,v)=>{acc[v.option_index]=(acc[v.option_index]||0)+1;return acc;},{});
-  const maxIdx=Object.keys(opts).reduce((a,b)=>opts[a]>opts[b]?a:b,0);
-  // check if bars exist
   let i=0;
   while(document.getElementById(`pf-${pollId}-${i}`)){
     const cnt=opts[i]||0;
@@ -622,8 +907,8 @@ async function castVote(pollId){
   const {error}=await db.from('poll_votes').insert({poll_id:pollId,user_id:UID,option_index:optIdx});
   if(error){toast(error.code==='23505'?'لقد صوّتت مسبقاً':'خطأ في التصويت','error');if(btn)btn.disabled=false;return;}
   votedPolls[pollId]=optIdx;
+  pollPreviews.delete(pollId);
   toast('تم تسجيل تصويتك! 🎉','success');
-  // Re-render this poll
   const {data:poll}=await db.from('polls').select('*').eq('id',pollId).single();
   if(poll){
     const box=document.getElementById('pw-'+pollId);
@@ -632,26 +917,58 @@ async function castVote(pollId){
   loadStats();
 }
 
+// ── EDIT POLL OPTIONS ──
+async function editPollOptions(pollId){
+  const {data:poll}=await db.from('polls').select('*').eq('id',pollId).single();
+  if(!poll)return;
+  const list=document.getElementById('poll-opts-editor-list');
+  list.innerHTML='';
+  poll.options.forEach((opt,i)=>{
+    const row=document.createElement('div');
+    row.className='poe-row';
+    row.innerHTML=`<span style="font-size:12px;color:var(--text3);min-width:22px;text-align:center;font-weight:700">${i+1}</span>
+      <input class="poe-input" data-idx="${i}" value="${esc(opt)}" maxlength="200" placeholder="الخيار ${i+1}">`;
+    list.appendChild(row);
+  });
+  document.getElementById('poll-opts-save').onclick=async()=>{
+    const inputs=[...list.querySelectorAll('.poe-input')];
+    const newOpts=inputs.map(inp=>inp.value.trim());
+    if(newOpts.some(o=>!o)){toast('لا يمكن ترك خيار فارغاً','error');return;}
+    const {error}=await db.from('polls').update({options:newOpts}).eq('id',pollId);
+    if(error){toast('خطأ في الحفظ','error');return;}
+    closeModal('poll-opts-modal');
+    toast('تم تحديث الخيارات ✓','success');
+    if(expandedId)renderBody(expandedId);
+  };
+  openModal('poll-opts-modal');
+}
+
 // ── COMMENTS ──
 function buildCommentsHTML(tid,comments){
+  const isArchived=!!viewingArchiveId;
   let h=`<div class="comments-section">
     <div class="comments-header">
-      <div class="comments-title">التعليقات <span class="rt-pulse"></span></div>
+      <div class="comments-title">التعليقات ${!isArchived?'<span class="rt-pulse"></span>':''}</div>
       <div class="comments-count-badge" id="cc-${tid}">${comments.length}</div>
     </div>
     <div id="cl-${tid}">`;
-  if(!comments.length)h+=`<div class="no-comments">لا توجد تعليقات بعد — كن أول المشاركين ✍️</div>`;
+  if(!comments.length)h+=`<div class="no-comments">${isArchived?'لا توجد تعليقات في هذا الموضوع المؤرشف':'لا توجد تعليقات بعد — كن أول المشاركين ✍️'}</div>`;
   else comments.forEach(c=>{h+=buildCItem(c);});
   h+=`</div>`;
-  const cool=coolLeft(tid);
-  h+=`<div class="cform-wrap">
-    <div class="cform-row">
-      <textarea class="cform-textarea" id="ci-${tid}" placeholder="شارك رأيك أو سؤالك…" maxlength="500"></textarea>
-      <button class="btn btn-primary" id="cb-${tid}" onclick="postComment('${tid}')" ${cool>0?'disabled':''}>إرسال</button>
-    </div>
-    <div class="cooldown-bar" id="cdb-${tid}" style="${cool>0?'display:block':''}"><div class="cooldown-fill" id="cdf-${tid}" style="width:${cool>0?Math.round((cool/60)*100):0}%"></div></div>
-    <div class="cooldown-txt" id="cdt-${tid}">${cool>0?'انتظر '+cool+' ثانية':''}</div>
-  </div></div>`;
+  if(!isArchived){
+    const cool=coolLeft(tid);
+    h+=`<div class="cform-wrap">
+      <div class="cform-row">
+        <textarea class="cform-textarea" id="ci-${tid}" placeholder="شارك رأيك أو سؤالك…" maxlength="500"></textarea>
+        <button class="btn btn-primary" id="cb-${tid}" onclick="postComment('${tid}')" ${cool>0?'disabled':''}>إرسال</button>
+      </div>
+      <div class="cooldown-bar" id="cdb-${tid}" style="${cool>0?'display:block':''}"><div class="cooldown-fill" id="cdf-${tid}" style="width:${cool>0?Math.round((cool/60)*100):0}%"></div></div>
+      <div class="cooldown-txt" id="cdt-${tid}">${cool>0?'انتظر '+cool+' ثانية':''}</div>
+    </div>`;
+  } else {
+    h+=`<div class="archive-notice">📦 هذه الجلسة مؤرشفة — لا يمكن إضافة تعليقات جديدة</div>`;
+  }
+  h+=`</div>`;
   return h;
 }
 function buildCItem(c){
@@ -660,7 +977,7 @@ function buildCItem(c){
   const isAdminC=c.is_admin;
   const time=new Date(c.created_at).toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
   const badges=(isMe?'<span class="c-you-badge">أنت</span>':'')+(isAdminC?'<span class="c-admin-badge">مشرف</span>':'');
-  const adminActs=isAdmin?`<div class="c-admin-acts">
+  const adminActs=isAdmin&&!viewingArchiveId?`<div class="c-admin-acts">
     <button class="btn btn-ghost btn-sm" onclick="editComment('${c.id}','${c.topic_id}')">✏️</button>
     <button class="btn btn-danger btn-sm" onclick="deleteComment('${c.id}','${c.topic_id}')">🗑</button>
   </div>`:'';
@@ -712,12 +1029,285 @@ function appendComment(tid,c,scrollTo=false){
   const cc=document.getElementById('cc-'+tid);if(cc)cc.textContent=parseInt(cc.textContent||0)+1;
 }
 
+// ── ARCHIVE SESSION ──
+async function loadArchiveSessions(){
+  const {data}=await db.from('archive_sessions').select('*').order('archived_at',{ascending:false});
+  archiveSessions=data||[];
+}
+async function loadAdminArchiveList(){
+  await loadArchiveSessions();
+  const el=document.getElementById('admin-archive-list');
+  if(!el)return;
+  if(!archiveSessions.length){el.innerHTML='<div style="font-size:12px;color:var(--text3)">لا توجد جلسات مؤرشفة بعد</div>';return;}
+  let html='';
+  archiveSessions.forEach(s=>{
+    const d=new Date(s.archived_at);
+    const dateStr=d.toLocaleDateString('ar-DZ',{month:'short',day:'numeric',year:'numeric'});
+    html+=`<div class="archive-list-item">
+      <div>
+        <div class="ali-name">${esc(s.name)}</div>
+        <div class="ali-date">${dateStr} · ${s.topic_count||0} مواضيع · ${s.comment_count||0} تعليق</div>
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button class="btn btn-ghost btn-sm" onclick="loadArchiveSession('${s.id}');closeModal&&closeModal()">👁</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteArchiveSession('${s.id}')">🗑</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+async function openArchiveView(){
+  await loadArchiveSessions();
+  const listEl=document.getElementById('archive-modal-list');
+  if(!archiveSessions.length){
+    listEl.innerHTML='<div class="state-empty"><span class="icon">📭</span>لا توجد جلسات مؤرشفة بعد</div>';
+    openModal('view-archive-modal');return;
+  }
+  let html='';
+  archiveSessions.forEach(s=>{
+    const d=new Date(s.archived_at);
+    const dateStr=d.toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric'});
+    html+=`<div class="past-session-item" onclick="loadArchiveSession('${s.id}');closeModal('view-archive-modal')" style="margin-bottom:10px">
+      <div class="psi-name">📦 ${esc(s.name)}</div>
+      <div class="psi-meta">
+        <span class="psi-badge">📅 ${dateStr}</span>
+        <span class="psi-badge">💬 ${s.comment_count||0} تعليق</span>
+        <span class="psi-badge">📊 ${s.poll_count||0} استطلاع</span>
+        <span class="psi-badge">🗳 ${s.vote_count||0} تصويت</span>
+        <span class="psi-badge">📝 ${s.topic_count||0} موضوع</span>
+      </div>
+    </div>`;
+  });
+  listEl.innerHTML=html;
+  openModal('view-archive-modal');
+}
+
+async function loadArchiveSession(archiveId){
+  viewingArchiveId=archiveId;
+  expandedId=null;
+
+  // Load archived topics from the archive_topics table
+  const {data:arTopics}=await db.from('archive_topics').select('*').eq('session_id',archiveId).order('original_created_at',{ascending:true});
+  // Load archived polls
+  const {data:arPolls}=await db.from('archive_polls').select('*').eq('session_id',archiveId);
+  // Load archived comments
+  const {data:arComments}=await db.from('archive_comments').select('*').eq('session_id',archiveId).order('original_created_at',{ascending:true});
+  // Load archived votes
+  const {data:arVotes}=await db.from('archive_votes').select('*').eq('session_id',archiveId);
+
+  // Build a "virtual topics" array with ids from archive
+  topics=(arTopics||[]).map(t=>({
+    id:'arc_'+t.id,
+    title:t.title,
+    description:t.description,
+    is_active:false,
+    _archive_id:t.id,
+    _polls:(arPolls||[]).filter(p=>p.topic_id===t.id).map(p=>({
+      ...p,
+      id:'arc_'+p.id,
+      _votes:(arVotes||[]).filter(v=>v.poll_id===p.id)
+    })),
+    _comments:(arComments||[]).filter(c=>c.topic_id===t.id).map(c=>({
+      ...c,
+      id:'arc_'+c.id,
+      created_at:c.original_created_at
+    }))
+  }));
+
+  const sess=archiveSessions.find(s=>s.id===archiveId);
+  document.getElementById('st-topics').textContent=topics.length;
+  document.getElementById('st-comments').textContent=(arComments||[]).length;
+  document.getElementById('st-polls').textContent=(arPolls||[]).length;
+  document.getElementById('st-votes').textContent=(arVotes||[]).length;
+
+  // Update UI
+  document.getElementById('live-row-banner').style.display='none';
+  document.getElementById('active-topic-banner').innerHTML='';
+  document.getElementById('back-live-btn').style.display='flex';
+  document.getElementById('brand-sub-txt').textContent='📦 عرض أرشيف: '+(sess?.name||'');
+  document.getElementById('brand-sub-txt').className='brand-sub archived-mode';
+  document.getElementById('stats-label').textContent='إحصائيات الأرشيف';
+  document.getElementById('stats-note').textContent='هذه الجلسة مؤرشفة — للاطلاع فقط، لا يمكن التعليق أو التصويت.';
+
+  // Show archive banner
+  if(sess){
+    const d=new Date(sess.archived_at);
+    const dateStr=d.toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric'});
+    document.getElementById('archive-view-banner').innerHTML=`
+      <div class="archive-view-banner">
+        <div class="archive-view-banner-left">
+          <div class="archive-view-icon">📦</div>
+          <div>
+            <div class="archive-view-name">${esc(sess.name)}</div>
+            <div class="archive-view-date">أُرشفت بتاريخ ${dateStr}</div>
+          </div>
+        </div>
+        <div class="archive-view-stats">
+          <span class="archive-stat-chip">📝 ${sess.topic_count||0} موضوع</span>
+          <span class="archive-stat-chip">💬 ${sess.comment_count||0} تعليق</span>
+          <span class="archive-stat-chip">🗳 ${sess.vote_count||0} تصويت</span>
+        </div>
+      </div>`;
+  }
+
+  renderTopics(true);
+  // Override renderBody for archive
+}
+
+function goBackToLive(){
+  viewingArchiveId=null;
+  expandedId=null;
+  document.getElementById('live-row-banner').style.display='flex';
+  document.getElementById('archive-view-banner').innerHTML='';
+  document.getElementById('back-live-btn').style.display='none';
+  document.getElementById('brand-sub-txt').textContent='لوحة نقاش تفاعلية • مباشر';
+  document.getElementById('brand-sub-txt').className='brand-sub';
+  document.getElementById('stats-label').textContent='إحصائيات الجلسة';
+  document.getElementById('stats-note').textContent='يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع. يمكنك معاينة نتائج الاستطلاع قبل التصويت.';
+  loadTopics();
+}
+
+// Override toggleTopic for archive mode
+const _origToggleTopic=toggleTopic;
+async function toggleTopic(id){
+  if(viewingArchiveId){
+    // Archive expand
+    if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
+    if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
+    expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
+    await renderArchiveBody(id);
+    return;
+  }
+  if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
+  if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
+  expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
+  await renderBody(id);
+}
+
+async function renderArchiveBody(virtualId){
+  const inner=document.getElementById('tbi-'+virtualId);if(!inner)return;
+  const t=topics.find(x=>x.id===virtualId);
+  if(!t){inner.innerHTML='<div class="state-empty">خطأ</div>';return;}
+  let html='';
+  for(const p of(t._polls||[])){
+    const total=p._votes.length;
+    const counts=p.options.map((_,i)=>p._votes.filter(v=>v.option_index===i).length);
+    html+=buildPollMarkup(p,p.options,counts,total,false,null,false);
+  }
+  html+=buildCommentsHTML(virtualId,t._comments||[]);
+  inner.innerHTML=html;
+}
+
+// ── DO ARCHIVE ──
+async function doArchiveSession(){
+  const name=document.getElementById('archive-session-name').value.trim();
+  if(!name){shake('archive-session-name');toast('أدخل اسم الجلسة','error');return;}
+
+  // Collect all live data
+  const [{data:liveTopics},{data:livePolls},{data:liveComments},{data:liveVotes}]=await Promise.all([
+    db.from('topics').select('*').order('created_at',{ascending:true}),
+    db.from('polls').select('*').order('created_at',{ascending:true}),
+    db.from('comments').select('*').order('created_at',{ascending:true}),
+    db.from('poll_votes').select('*')
+  ]);
+
+  const topicCount=(liveTopics||[]).length;
+  const commentCount=(liveComments||[]).length;
+  const pollCount=(livePolls||[]).length;
+  const voteCount=(liveVotes||[]).length;
+
+  // Create session record
+  const {data:sess,error:sessErr}=await db.from('archive_sessions').insert({
+    name,
+    topic_count:topicCount,
+    comment_count:commentCount,
+    poll_count:pollCount,
+    vote_count:voteCount,
+    archived_at:new Date().toISOString()
+  }).select().single();
+  if(sessErr){toast('خطأ في إنشاء الأرشيف','error');return;}
+
+  const sid=sess.id;
+
+  // Archive topics
+  if(liveTopics?.length){
+    const {error:te}=await db.from('archive_topics').insert(liveTopics.map(t=>({
+      session_id:sid,title:t.title,description:t.description||null,original_id:t.id,original_created_at:t.created_at
+    })));
+    if(te){toast('خطأ في أرشفة المواضيع','error');return;}
+  }
+
+  // Get archived topic id mapping
+  const {data:arTopics}=await db.from('archive_topics').select('id,original_id').eq('session_id',sid);
+  const topicMap={};(arTopics||[]).forEach(t=>{topicMap[t.original_id]=t.id;});
+
+  // Archive polls
+  if(livePolls?.length){
+    const {error:pe}=await db.from('archive_polls').insert(livePolls.map(p=>({
+      session_id:sid,topic_id:topicMap[p.topic_id]||null,question:p.question,options:p.options,original_id:p.id,original_created_at:p.created_at
+    })));
+    if(pe){toast('خطأ في أرشفة الاستطلاعات','error');return;}
+  }
+
+  // Get archived poll id mapping
+  const {data:arPolls}=await db.from('archive_polls').select('id,original_id').eq('session_id',sid);
+  const pollMap={};(arPolls||[]).forEach(p=>{pollMap[p.original_id]=p.id;});
+
+  // Archive comments
+  if(liveComments?.length){
+    const {error:ce}=await db.from('archive_comments').insert(liveComments.map(c=>({
+      session_id:sid,topic_id:topicMap[c.topic_id]||null,user_id:c.user_id,user_name:c.user_name,content:c.content,is_admin:c.is_admin,original_id:c.id,original_created_at:c.created_at
+    })));
+    if(ce){toast('خطأ في أرشفة التعليقات','error');return;}
+  }
+
+  // Archive votes
+  if(liveVotes?.length){
+    const {error:ve}=await db.from('archive_votes').insert(liveVotes.map(v=>({
+      session_id:sid,poll_id:pollMap[v.poll_id]||null,user_id:v.user_id,option_index:v.option_index,original_id:v.id,original_created_at:v.created_at
+    })));
+    if(ve){toast('خطأ في أرشفة الأصوات','error');return;}
+  }
+
+  // Delete live data (cascade order: votes → comments → polls → topics)
+  await Promise.all([
+    db.from('poll_votes').delete().neq('id','00000000-0000-0000-0000-000000000000'),
+    db.from('comments').delete().neq('id','00000000-0000-0000-0000-000000000000')
+  ]);
+  await db.from('polls').delete().neq('id','00000000-0000-0000-0000-000000000000');
+  await db.from('topics').delete().neq('id','00000000-0000-0000-0000-000000000000');
+
+  closeModal('archive-modal');
+  document.getElementById('archive-session-name').value='';
+  toast('📦 تمت الأرشفة بنجاح! جلسة جديدة جاهزة','archive');
+  await loadArchiveSessions();
+  await loadTopics();
+  loadAdminArchiveList();
+}
+
+async function deleteArchiveSession(sid){
+  showConfirm('حذف الأرشيف','سيُحذف هذا الأرشيف نهائياً ولا يمكن التراجع.',async()=>{
+    await Promise.all([
+      db.from('archive_votes').delete().eq('session_id',sid),
+      db.from('archive_comments').delete().eq('session_id',sid)
+    ]);
+    await db.from('archive_polls').delete().eq('session_id',sid);
+    await db.from('archive_topics').delete().eq('session_id',sid);
+    await db.from('archive_sessions').delete().eq('id',sid);
+    toast('تم حذف الأرشيف','success');
+    await loadArchiveSessions();
+    loadAdminArchiveList();
+    if(viewingArchiveId===sid)goBackToLive();
+  },'حذف نهائياً','btn-danger');
+}
+
 // ── ADMIN CRUD ──
 async function addTopic(){
   const title=document.getElementById('new-title').value.trim();
   const desc=document.getElementById('new-desc').value.trim();
   if(!title){toast('أدخل عنوان الموضوع','error');return;}
-  const {error}=await db.from('topics').insert({title,description:desc||null});
+  const {error}=await db.from('topics').insert({title,description:desc||null,is_active:false});
   if(error){toast('خطأ في الإضافة','error');return;}
   document.getElementById('new-title').value='';document.getElementById('new-desc').value='';
   toast('تمت إضافة الموضوع ✓','success');
@@ -753,17 +1343,18 @@ function editTopic(tid){
 }
 function deleteTopic(tid){
   const t=topics.find(x=>x.id===tid);
-  showConfirm(`حذف الموضوع "${t?.title||''}"؟ سيُحذف كل ما يتعلق به.`,async()=>{
+  showConfirm('حذف الموضوع',`حذف الموضوع "${t?.title||''}"؟ سيُحذف كل ما يتعلق به.`,async()=>{
     const {error}=await db.from('topics').delete().eq('id',tid);
     if(error){toast('خطأ','error');return;}
     if(expandedId===tid)expandedId=null;
+    if(activeTopicId===tid)activeTopicId=null;
     toast('تم الحذف','success');await loadTopics();populatePollSel();loadStats();
   });
 }
 function editPoll(pid){
   db.from('polls').select('*').eq('id',pid).single().then(({data:p})=>{
     if(!p)return;
-    showEdit('تعديل الاستطلاع','السؤال',p.question,undefined,async()=>{
+    showEdit('تعديل السؤال','السؤال',p.question,undefined,async()=>{
       const nq=document.getElementById('edit-val').value.trim();
       if(!nq){toast('أدخل السؤال','error');return;}
       const {error}=await db.from('polls').update({question:nq}).eq('id',pid);
@@ -773,7 +1364,7 @@ function editPoll(pid){
   });
 }
 function deletePoll(pid){
-  showConfirm('حذف هذا الاستطلاع؟ ستُحذف جميع أصواته.',async()=>{
+  showConfirm('حذف الاستطلاع','حذف هذا الاستطلاع؟ ستُحذف جميع أصواته.',async()=>{
     const {data:p}=await db.from('polls').select('topic_id').eq('id',pid).single();
     const {error}=await db.from('polls').delete().eq('id',pid);
     if(error){toast('خطأ','error');return;}
@@ -795,7 +1386,7 @@ function editComment(cid,tid){
   });
 }
 function deleteComment(cid,tid){
-  showConfirm('حذف هذا التعليق؟',async()=>{
+  showConfirm('حذف التعليق','حذف هذا التعليق؟',async()=>{
     const {error}=await db.from('comments').delete().eq('id',cid);
     if(error){toast('خطأ','error');return;}
     const el=document.getElementById('ci-'+cid);if(el)el.remove();
@@ -808,21 +1399,23 @@ function deleteComment(cid,tid){
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type||'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2800);}
 
-// ── REALTIME ──
-// Comments realtime
+// ── REALTIME (live session only) ──
 db.channel('rt-comments')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'comments'},payload=>{
+    if(viewingArchiveId)return;
     const c=payload.new;
-    if(c.user_id===UID)return; // already added locally
+    if(c.user_id===UID)return;
     loadMeta(c.topic_id);loadStats();
     if(expandedId===c.topic_id)appendComment(c.topic_id,c,false);
   })
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'comments'},payload=>{
+    if(viewingArchiveId)return;
     const c=payload.new;
     const el=document.getElementById('ci-'+c.id);
     if(el){const t=el.querySelector('.c-text');if(t)t.textContent=c.content;}
   })
   .on('postgres_changes',{event:'DELETE',schema:'public',table:'comments'},payload=>{
+    if(viewingArchiveId)return;
     const el=document.getElementById('ci-'+payload.old.id);
     if(el){
       const tid=payload.old.topic_id;
@@ -833,55 +1426,47 @@ db.channel('rt-comments')
   })
   .subscribe();
 
-// Poll votes realtime — update bars live for everyone
 db.channel('rt-votes')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'poll_votes'},async payload=>{
+    if(viewingArchiveId)return;
     const v=payload.new;
-    if(v.user_id===UID)return; // already handled locally
+    if(v.user_id===UID)return;
     loadStats();
-    // Fetch current votes for this poll and update bars
     const {data:votes}=await db.from('poll_votes').select('option_index').eq('poll_id',v.poll_id);
     if(votes){
       const choice=votedPolls[v.poll_id]??null;
-      if(choice!==null){
-        // user has voted — update bars live
-        updatePollBars(v.poll_id,votes,choice);
-      }
-      // If user hasn't voted yet, no bars shown — nothing to update
+      if(choice!==null||pollPreviews.has(v.poll_id))updatePollBars(v.poll_id,votes,choice);
     }
-    // Also update meta
     if(expandedId){const {data:p}=await db.from('polls').select('topic_id').eq('id',v.poll_id).maybeSingle();if(p)loadMeta(p.topic_id);}
   })
   .subscribe();
 
-// Topics realtime
 db.channel('rt-topics')
-  .on('postgres_changes',{event:'INSERT',schema:'public',table:'topics'},async()=>{await loadTopics();populatePollSel();})
-  .on('postgres_changes',{event:'UPDATE',schema:'public',table:'topics'},async()=>{await loadTopics();populatePollSel();})
-  .on('postgres_changes',{event:'DELETE',schema:'public',table:'topics'},async()=>{await loadTopics();populatePollSel();})
+  .on('postgres_changes',{event:'INSERT',schema:'public',table:'topics'},async()=>{if(!viewingArchiveId){await loadTopics();populatePollSel();}})
+  .on('postgres_changes',{event:'UPDATE',schema:'public',table:'topics'},async()=>{if(!viewingArchiveId){await loadTopics();populatePollSel();}})
+  .on('postgres_changes',{event:'DELETE',schema:'public',table:'topics'},async()=>{if(!viewingArchiveId){await loadTopics();populatePollSel();}})
   .subscribe();
 
-// Polls realtime
 db.channel('rt-polls')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'polls'},async payload=>{
+    if(viewingArchiveId)return;
     if(expandedId===payload.new.topic_id){renderBody(expandedId);}
     loadMeta(payload.new.topic_id);loadStats();
   })
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'polls'},async payload=>{
+    if(viewingArchiveId)return;
     if(expandedId===payload.new.topic_id){renderBody(expandedId);}
   })
   .on('postgres_changes',{event:'DELETE',schema:'public',table:'polls'},async payload=>{
+    if(viewingArchiveId)return;
     if(expandedId){renderBody(expandedId);}loadStats();
   })
   .subscribe();
 
 // ── INIT ──
-// Need is_admin column — add gracefully
-async function ensureSchema(){
-  // Try inserting with is_admin to check, no-op if it exists
-}
-if(userName)updateHdr();
-loadTopics();
+updateHdr();
+initOnboard();
+if(userName)loadTopics();
 </script>
 </body>
 </html>
