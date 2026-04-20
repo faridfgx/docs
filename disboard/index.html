@@ -6,6 +6,7 @@
 <title>لوحة المناقشة — هندسة أوامر الذكاء الاصطناعي</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -19,6 +20,7 @@
   --teal:#1a6a6e;--teal-bg:#edf6f7;
   --active-topic:#7c3aed;--active-topic-soft:rgba(124,58,237,0.08);--active-topic-border:#c4b5fd;--active-topic-bg:#f5f3ff;
   --archive:#5c4a1a;--archive-bg:#fdf8ed;--archive-border:#dfd0a0;--archive-soft:rgba(92,74,26,0.08);
+  --multi:#1a6a6e;--multi-bg:#edf6f7;--multi-border:#a8d9dc;--multi-soft:rgba(26,106,110,0.08);
   --radius:6px;--radius-lg:10px;--radius-xl:16px;
   --font:'Cairo',system-ui,sans-serif;--font-serif:'Amiri',Georgia,serif;
   --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 0 0 0.5px rgba(0,0,0,0.04);
@@ -32,7 +34,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ── ONBOARD ── */
 .onboard-overlay{position:fixed;inset:0;background:rgba(28,26,22,0.7);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1.5rem}
 .onboard-card{background:var(--surface);border-radius:var(--radius-xl);padding:2.75rem 2.25rem;max-width:460px;width:100%;text-align:center;box-shadow:var(--shadow-lg);animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
-.onboard-logo{width:64px;height:64px;background:var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:28px}
+.onboard-logo{width:64px;height:64px;background:var(--accent);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:28px;transition:background var(--tr)}
 .onboard-title{font-family:var(--font-serif);font-size:24px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.01em}
 .onboard-sub{font-size:13px;color:var(--text3);margin-bottom:2rem;line-height:1.7}
 .onboard-label{display:block;font-size:12px;font-weight:700;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px;text-align:right}
@@ -42,8 +44,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .onboard-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;transition:background var(--tr),transform var(--tr);letter-spacing:0.01em}
 .onboard-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 .onboard-btn:active{transform:none}
+.onboard-skeleton{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:1.5rem}
+.sk-line{border-radius:8px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.sk-circle{width:64px;height:64px;border-radius:16px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;margin:0 auto 1.5rem}
 
-/* ── PAST SESSIONS on onboard ── */
+/* ── PAST SESSIONS ── */
 .past-sessions-wrap{margin-top:1.5rem;text-align:right}
 .past-sessions-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
 .past-sessions-title::before,.past-sessions-title::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -57,7 +63,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:var(--shadow-sm)}
 .header-inner{max-width:1140px;margin:0 auto;padding:0 1.5rem;height:62px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:12px}
-.brand-mark{width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-mark{width:36px;height:36px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background var(--tr)}
 .brand-title{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.2}
 .brand-sub{font-size:11px;color:var(--text3);font-weight:400;letter-spacing:0.03em}
 .brand-sub.archived-mode{color:var(--archive);font-weight:700}
@@ -118,37 +124,72 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .topic-card.expanded .topic-body{display:block;animation:fadeIn 0.2s ease}
 .topic-body-inner{padding:1.4rem 1.5rem}
 
-/* ── POLL ── */
+/* ── POLL TYPE TOGGLE (admin form) ── */
+.poll-type-toggle{display:flex;gap:0;background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--radius);overflow:hidden;margin-bottom:0}
+.ptt-opt{flex:1;padding:8px 10px;font-size:13px;font-family:var(--font);font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:6px}
+.ptt-opt:first-child{border-left:1.5px solid var(--border2)}
+.ptt-opt.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow-sm)}
+.ptt-opt.active.single-mode{color:var(--accent)}
+.ptt-opt.active.multi-mode{color:var(--multi)}
+
+/* ── POLL WRAP ── */
 .poll-wrap{background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:var(--radius);padding:1.1rem 1.25rem 1rem;margin-bottom:1rem;position:relative}
+.poll-wrap.multi-choice{background:var(--multi-bg);border-color:var(--multi-border)}
 .poll-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase;background:rgba(138,106,26,0.1);padding:3px 10px;border-radius:20px;margin-bottom:10px}
+.poll-tag.multi-tag{color:var(--multi);background:var(--multi-soft)}
 .poll-question{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.5}
+.poll-type-hint{font-size:11px;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:5px;font-weight:600}
+.poll-type-hint.multi{color:var(--multi)}
+
+/* ── SINGLE CHOICE OPTIONS ── */
 .poll-opt-label{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text2);transition:background var(--tr),color var(--tr);margin-bottom:4px;border:1px solid transparent}
 .poll-opt-label:hover{background:rgba(138,106,26,0.07);color:var(--text);border-color:var(--gold-border)}
 .poll-opt-label input[type=radio]{accent-color:var(--gold);width:15px;height:15px;flex-shrink:0}
+.multi-choice .poll-opt-label:hover{background:var(--multi-soft);border-color:var(--multi-border)}
+
+/* ── MULTI CHOICE CHECKBOXES ── */
+.poll-check-label{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:var(--radius);cursor:pointer;font-size:13px;color:var(--text2);transition:all var(--tr);margin-bottom:5px;border:1.5px solid var(--border);background:var(--surface)}
+.poll-check-label:hover{border-color:var(--multi-border);background:var(--multi-soft);color:var(--text)}
+.poll-check-label.checked{border-color:var(--multi);background:var(--multi-bg);color:var(--multi);font-weight:600}
+.poll-check-label input[type=checkbox]{accent-color:var(--multi);width:15px;height:15px;flex-shrink:0}
+.multi-check-counter{font-size:11px;color:var(--multi);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+
+/* ── POLL RESULTS ── */
 .poll-results{margin-bottom:4px}
 .poll-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:13px}
 .poll-bar-name{flex:0 0 120px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
 .poll-bar-name.chosen{color:var(--accent);font-weight:700}
+.poll-bar-name.chosen-multi{color:var(--multi);font-weight:700}
 .poll-track{flex:1;height:8px;background:var(--bg3);border-radius:10px;overflow:hidden}
 .poll-fill{height:100%;background:linear-gradient(90deg,var(--accent) 0%,#2d6fc4 100%);border-radius:10px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);min-width:2px}
+.poll-fill.multi-fill{background:linear-gradient(90deg,var(--multi) 0%,#2da0a8 100%)}
 .poll-pct{flex:0 0 36px;text-align:left;color:var(--text3);font-size:12px;font-weight:600}
 .poll-count{flex:0 0 28px;text-align:left;color:var(--text3);font-size:11px}
 .poll-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--gold-border);flex-wrap:wrap;gap:8px}
+.multi-choice .poll-footer{border-color:var(--multi-border)}
 .poll-total-txt{font-size:12px;color:var(--text3)}
 .voted-badge{display:inline-flex;align-items:center;gap:5px;background:var(--success-bg);color:var(--success);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--success-border)}
+.voted-choices-badge{display:inline-flex;align-items:center;gap:5px;background:var(--multi-bg);color:var(--multi);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--multi-border)}
 .preview-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(138,106,26,0.1);color:var(--gold);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid var(--gold-border)}
 .rt-pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--success);animation:livePulse 2s infinite;margin-left:4px}
 
-/* ── SKIP VOTE BUTTON area ── */
+/* ── VOTE BUTTONS ── */
 .poll-actions{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
 .btn-skip{background:transparent;border:1px dashed var(--gold-border);color:var(--gold);font-size:12px;font-weight:700;font-family:var(--font);padding:7px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--tr)}
 .btn-skip:hover{background:rgba(138,106,26,0.07);border-color:var(--gold)}
+.multi-choice .btn-skip{border-color:var(--multi-border);color:var(--multi)}
+.multi-choice .btn-skip:hover{background:var(--multi-soft);border-color:var(--multi)}
 .btn-vote-now{background:var(--accent);color:#fff;font-size:13px;font-weight:700;font-family:var(--font);padding:8px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:all var(--tr);flex:1}
 .btn-vote-now:hover{background:var(--accent2)}
 .btn-vote-now:disabled{background:var(--border2);color:var(--text3);cursor:default}
+.btn-vote-multi{background:var(--multi);color:#fff;font-size:13px;font-weight:700;font-family:var(--font);padding:8px 18px;border-radius:var(--radius);border:none;cursor:pointer;transition:all var(--tr);flex:1}
+.btn-vote-multi:hover{background:var(--teal)}
+.btn-vote-multi:disabled{background:var(--border2);color:var(--text3);cursor:default}
 .back-to-vote-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px dashed var(--gold-border);flex-wrap:wrap;gap:8px}
 .back-to-vote-btn{background:none;border:1.5px solid var(--gold-border);color:var(--gold);font-size:12px;font-weight:700;font-family:var(--font);padding:6px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--tr);display:flex;align-items:center;gap:5px}
 .back-to-vote-btn:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.multi-choice .back-to-vote-btn{border-color:var(--multi-border);color:var(--multi)}
+.multi-choice .back-to-vote-btn:hover{background:var(--multi);color:#fff;border-color:var(--multi)}
 
 /* ── COMMENTS ── */
 .comments-section{margin-top:4px}
@@ -221,7 +262,7 @@ select.finput{cursor:pointer}
 .btn-addopt{background:none;border:none;color:var(--accent);font-size:13px;font-family:var(--font);cursor:pointer;padding:0 0 6px;font-weight:700}
 .btn-addopt:hover{color:var(--accent2)}
 
-/* ── Archive Admin section ── */
+/* ── Archive Admin ── */
 .archive-section{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .archive-list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);margin-bottom:6px;font-size:13px}
 .ali-name{font-weight:700;color:var(--archive);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -237,10 +278,20 @@ select.finput{cursor:pointer}
 .live-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--success);font-weight:600;padding:8px 12px;background:var(--success-bg);border:1px solid var(--success-border);border-radius:var(--radius);margin-bottom:12px}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:livePulse 2s infinite;flex-shrink:0}
 
-/* ── EDIT POLL OPTIONS ── */
+/* ── EDIT POLL OPTIONS MODAL ── */
 .poe-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
 .poe-input{flex:1;background:var(--surface);border:1.5px solid var(--gold-border);border-radius:var(--radius);padding:7px 10px;font-size:13px;font-family:var(--font);color:var(--text);outline:none;transition:border-color var(--tr)}
 .poe-input:focus{border-color:var(--gold);background:#fffef8}
+
+/* ── CONFIG FORM ── */
+.config-preview-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.config-preview-logo{width:44px;height:44px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;transition:background var(--tr)}
+.config-preview-texts .cp-title{font-size:14px;font-weight:700;color:var(--text);line-height:1.3}
+.config-preview-texts .cp-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.config-emoji-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.emoji-opt{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all var(--tr);background:var(--bg2)}
+.emoji-opt:hover{border-color:var(--accent);background:var(--accent-soft)}
+.emoji-opt.selected{border-color:var(--accent);background:var(--accent-soft);transform:scale(1.1)}
 
 /* ── MODALS ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(28,26,22,0.65);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn 0.18s ease}
@@ -250,8 +301,6 @@ select.finput{cursor:pointer}
 .modal-msg{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:4px}
 .modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:1.1rem}
 .divider{height:1px;background:var(--border);margin:1rem 0}
-
-/* ── ARCHIVE MODAL ── */
 #archive-modal .modal-card{max-width:520px}
 .archive-modal-info{background:var(--archive-bg);border:1px solid var(--archive-border);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--archive);line-height:1.7}
 .archive-modal-info strong{font-weight:800}
@@ -280,7 +329,6 @@ select.finput{cursor:pointer}
 @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 rgba(26,110,69,0.4)}50%{box-shadow:0 0 0 5px rgba(26,110,69,0)}}
 @keyframes activePulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0.5)}50%{box-shadow:0 0 0 5px rgba(255,255,255,0)}}
 
-/* Avatar colors */
 .av0{background:linear-gradient(135deg,#1a4f8a,#2d7dd2)}
 .av1{background:linear-gradient(135deg,#1a6e45,#2da05e)}
 .av2{background:linear-gradient(135deg,#6e1a1a,#c04040)}
@@ -294,9 +342,14 @@ select.finput{cursor:pointer}
 <!-- ONBOARD -->
 <div class="onboard-overlay" id="onboard-overlay">
   <div class="onboard-card">
-    <div class="onboard-logo">⚙️</div>
-    <div class="onboard-title">لوحة المناقشة</div>
-    <div class="onboard-sub">مرحباً بك في جلسة هندسة أوامر الذكاء الاصطناعي<br>أدخل اسمك للمشاركة في النقاش</div>
+    <div id="onboard-dynamic-content">
+      <div class="sk-circle"></div>
+      <div class="onboard-skeleton">
+        <div class="sk-line" style="width:180px;height:22px"></div>
+        <div class="sk-line" style="width:240px;height:14px"></div>
+        <div class="sk-line" style="width:200px;height:14px"></div>
+      </div>
+    </div>
     <label class="onboard-label">الاسم</label>
     <input class="onboard-input" id="onboard-name" type="text" placeholder="اكتب اسمك الكامل…" maxlength="30" autocomplete="off">
     <button class="onboard-btn" onclick="enterBoard()">دخول اللوحة →</button>
@@ -392,9 +445,9 @@ select.finput{cursor:pointer}
 <header>
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-mark">⚙️</div>
+      <div class="brand-mark" id="hdr-logo">⚙️</div>
       <div>
-        <div class="brand-title">هندسة اوامر الذكاء الاصطناعي</div>
+        <div class="brand-title" id="hdr-title">…</div>
         <div class="brand-sub" id="brand-sub-txt">لوحة نقاش تفاعلية • مباشر</div>
       </div>
     </div>
@@ -432,18 +485,38 @@ select.finput{cursor:pointer}
       <div class="admin-tabs">
         <div class="atab active" onclick="switchTab('topic')">موضوع</div>
         <div class="atab" onclick="switchTab('poll')">استطلاع</div>
+        <div class="atab" onclick="switchTab('settings')">إعدادات</div>
         <div class="atab" onclick="switchTab('archive')">أرشيف</div>
       </div>
+
       <!-- Topic form -->
       <div class="af open" id="f-topic">
         <div class="fg"><label class="flabel">العنوان</label><input class="finput" id="new-title" type="text" placeholder="عنوان الموضوع…" maxlength="120"></div>
         <div class="fg"><label class="flabel">الوصف</label><textarea class="finput" id="new-desc" placeholder="وصف مختصر (اختياري)…" rows="3"></textarea></div>
         <button class="btn btn-primary" style="width:100%;padding:10px;margin-top:2px" onclick="addTopic()">إضافة الموضوع</button>
       </div>
-      <!-- Poll form -->
+
+      <!-- Poll form — with type toggle -->
       <div class="af" id="f-poll">
         <div class="fg"><label class="flabel">الموضوع</label><select class="finput" id="poll-tsel"><option value="">اختر موضوعاً…</option></select></div>
         <div class="fg"><label class="flabel">السؤال</label><input class="finput" id="poll-q" type="text" placeholder="سؤال الاستطلاع…" maxlength="200"></div>
+
+        <!-- ★ NEW: Poll type toggle ★ -->
+        <div class="fg">
+          <label class="flabel">نوع الاستطلاع</label>
+          <div class="poll-type-toggle" id="poll-type-toggle">
+            <button class="ptt-opt active single-mode" id="ptt-single" onclick="setPollType('single')">
+              ◉ اختيار واحد
+            </button>
+            <button class="ptt-opt multi-mode" id="ptt-multi" onclick="setPollType('multi')">
+              ☑ اختيار متعدد
+            </button>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.6" id="poll-type-desc">
+            المستخدم يختار إجابة واحدة فقط من الخيارات.
+          </div>
+        </div>
+
         <div class="fg">
           <label class="flabel">الخيارات</label>
           <div id="poll-opts">
@@ -454,6 +527,28 @@ select.finput{cursor:pointer}
         </div>
         <button class="btn btn-primary" style="width:100%;padding:10px" onclick="addPoll()">إنشاء الاستطلاع</button>
       </div>
+
+      <!-- Settings form -->
+      <div class="af" id="f-settings">
+        <div style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.7">تخصيص شاشة الدخول ورأس الصفحة. تظهر هذه المعلومات للجميع عند الدخول.</div>
+        <div class="config-preview-box" id="cfg-preview">
+          <div class="config-preview-logo" id="cfg-prev-logo">⚙️</div>
+          <div class="config-preview-texts">
+            <div class="cp-title" id="cfg-prev-title">عنوان اللوحة</div>
+            <div class="cp-sub" id="cfg-prev-sub">وصف مختصر</div>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="flabel">الأيقونة</label>
+          <div class="config-emoji-grid" id="emoji-grid"></div>
+          <input class="finput" id="cfg-emoji-custom" type="text" placeholder="أو اكتب رمز تعبيري مخصص…" maxlength="4" style="margin-top:6px">
+        </div>
+        <div class="fg"><label class="flabel">عنوان اللوحة</label><input class="finput" id="cfg-title" type="text" placeholder="اسم الجلسة أو الموضوع…" maxlength="80"></div>
+        <div class="fg"><label class="flabel">الوصف (شاشة الدخول)</label><textarea class="finput" id="cfg-desc" rows="3" placeholder="وصف يظهر في شاشة الدخول…" maxlength="200"></textarea></div>
+        <div class="fg"><label class="flabel">النص الفرعي في الرأس</label><input class="finput" id="cfg-sub" type="text" placeholder="مثال: لوحة نقاش تفاعلية • مباشر" maxlength="80"></div>
+        <button class="btn btn-primary" style="width:100%;padding:10px" onclick="saveConfig()">💾 حفظ الإعدادات</button>
+      </div>
+
       <!-- Archive form -->
       <div class="af" id="f-archive">
         <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">أرشفة الجلسة الحالية تحفظ كل شيء (مواضيع، تعليقات، استطلاعات، أصوات) ثم تمسحها لبدء جلسة جديدة نظيفة.</p>
@@ -475,7 +570,7 @@ select.finput{cursor:pointer}
         <div class="stat-box"><div class="stat-num" id="st-votes">–</div><div class="stat-lbl">تصويت</div></div>
       </div>
       <div class="divider"></div>
-      <p style="font-size:12px;color:var(--text3);line-height:1.75" id="stats-note">يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع. يمكنك معاينة نتائج الاستطلاع قبل التصويت.</p>
+      <p style="font-size:12px;color:var(--text3);line-height:1.75" id="stats-note">يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع (اختيار واحد أو متعدد حسب نوع الاستطلاع). يمكنك معاينة نتائج الاستطلاع قبل التصويت.</p>
     </div>
   </aside>
 </div>
@@ -488,38 +583,160 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const ADMIN_PASS='CSDOCS';
 const db = window.supabase.createClient(SB_URL, SB_KEY);
 
+// ── CONFIG DEFAULTS ──
+const CONFIG_DEFAULTS = {
+  logo: '⚙️',
+  title: 'هندسة أوامر الذكاء الاصطناعي',
+  description: 'مرحباً بك في جلسة هندسة أوامر الذكاء الاصطناعي\nأدخل اسمك للمشاركة في النقاش',
+  header_sub: 'لوحة نقاش تفاعلية • مباشر'
+};
+let boardConfig = { ...CONFIG_DEFAULTS };
+const EMOJI_OPTIONS = [
+  '🎓','👨‍🏫','📚','📝','📖','📌','📢',
+  '💬','❓','✅','🧪','🧠','💡','🎯',
+  '📊','📈','🌐','💻','⌨️','⚙️','🚀'
+];
+
 // ── STATE ──
 let UID=sessionStorage.getItem('b_uid')||('u_'+Math.random().toString(36).slice(2,10));
 sessionStorage.setItem('b_uid',UID);
 let userName=sessionStorage.getItem('b_name')||'';
 let isAdmin=false,adminName='',topics=[],expandedId=null,lastComment={};
 let activeTopicId=null;
-// poll preview state: set of poll ids user chose to preview without voting
 const pollPreviews=new Set();
-// archive view state
 let viewingArchiveId=null;
 let archiveSessions=[];
+
+// ★ Poll type state for admin form
+let newPollType = 'single'; // 'single' | 'multi'
 
 const dname=()=>isAdmin?adminName:userName;
 const AV=['av0','av1','av2','av3','av4','av5'];
 function avc(s){let h=0;for(const c of(s||'u'))h=(h*31+c.charCodeAt(0))>>>0;return AV[h%6];}
 function ini(n){return(n||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
+// ── POLL TYPE TOGGLE (admin) ──
+function setPollType(type) {
+  newPollType = type;
+  const single = document.getElementById('ptt-single');
+  const multi  = document.getElementById('ptt-multi');
+  const desc   = document.getElementById('poll-type-desc');
+  if (type === 'single') {
+    single.classList.add('active');
+    multi.classList.remove('active');
+    desc.textContent = 'المستخدم يختار إجابة واحدة فقط من الخيارات.';
+    desc.style.color = 'var(--text3)';
+  } else {
+    multi.classList.add('active');
+    single.classList.remove('active');
+    desc.textContent = 'المستخدم يمكنه اختيار أكثر من إجابة في نفس الوقت.';
+    desc.style.color = 'var(--multi)';
+  }
+}
+
+// ── BOARD CONFIG ──
+async function loadBoardConfig(){
+  try {
+    const {data,error}=await db.from('board_config').select('*').eq('id',1).maybeSingle();
+    if(!error && data){
+      boardConfig={
+        logo: data.logo || CONFIG_DEFAULTS.logo,
+        title: data.title || CONFIG_DEFAULTS.title,
+        description: data.description || CONFIG_DEFAULTS.description,
+        header_sub: data.header_sub || CONFIG_DEFAULTS.header_sub
+      };
+    }
+  } catch(e){ boardConfig = { ...CONFIG_DEFAULTS }; }
+  applyBoardConfig();
+}
+function applyBoardConfig(){
+  const dynContent = document.getElementById('onboard-dynamic-content');
+  if(dynContent){
+    dynContent.innerHTML=`
+      <div class="onboard-logo" id="onboard-logo-el">${boardConfig.logo}</div>
+      <div class="onboard-title" id="onboard-title-el">${esc(boardConfig.title)}</div>
+      <div class="onboard-sub" id="onboard-sub-el">${esc(boardConfig.description).replace(/\n/g,'<br>')}</div>`;
+  }
+  const hdrLogo=document.getElementById('hdr-logo');
+  const hdrTitle=document.getElementById('hdr-title');
+  if(hdrLogo) hdrLogo.textContent=boardConfig.logo;
+  if(hdrTitle) hdrTitle.textContent=boardConfig.title;
+  if(!viewingArchiveId){
+    const subEl=document.getElementById('brand-sub-txt');
+    if(subEl && !subEl.classList.contains('archived-mode'))subEl.textContent=boardConfig.header_sub;
+  }
+  document.title='لوحة المناقشة — '+boardConfig.title;
+}
+async function saveConfig(){
+  const logo=document.getElementById('cfg-emoji-custom').value.trim()||document.querySelector('.emoji-opt.selected')?.dataset.emoji||boardConfig.logo;
+  const title=document.getElementById('cfg-title').value.trim();
+  const desc=document.getElementById('cfg-desc').value.trim();
+  const sub=document.getElementById('cfg-sub').value.trim();
+  if(!title){toast('أدخل عنوان اللوحة','error');return;}
+  const {error}=await db.from('board_config').upsert({
+    id:1,logo:logo||CONFIG_DEFAULTS.logo,title,
+    description:desc||CONFIG_DEFAULTS.description,
+    header_sub:sub||CONFIG_DEFAULTS.header_sub,
+    updated_at:new Date().toISOString()
+  });
+  if(error){toast('خطأ: تأكد من إنشاء جدول board_config في Supabase','error');return;}
+  boardConfig={logo:logo||CONFIG_DEFAULTS.logo,title,description:desc||CONFIG_DEFAULTS.description,header_sub:sub||CONFIG_DEFAULTS.header_sub};
+  applyBoardConfig();
+  toast('✅ تم حفظ الإعدادات وتطبيقها على الجميع','success');
+}
+function initSettingsForm(){
+  const grid=document.getElementById('emoji-grid');
+  if(!grid.innerHTML){
+    EMOJI_OPTIONS.forEach(e=>{
+      const d=document.createElement('div');
+      d.className='emoji-opt'+(boardConfig.logo===e?' selected':'');
+      d.dataset.emoji=e;d.textContent=e;
+      d.onclick=()=>{
+        grid.querySelectorAll('.emoji-opt').forEach(x=>x.classList.remove('selected'));
+        d.classList.add('selected');
+        document.getElementById('cfg-emoji-custom').value='';
+        updateConfigPreview();
+      };
+      grid.appendChild(d);
+    });
+  }
+  document.getElementById('cfg-title').value=boardConfig.title;
+  document.getElementById('cfg-desc').value=boardConfig.description;
+  document.getElementById('cfg-sub').value=boardConfig.header_sub;
+  grid.querySelectorAll('.emoji-opt').forEach(x=>{x.classList.toggle('selected',x.dataset.emoji===boardConfig.logo);});
+  document.getElementById('cfg-emoji-custom').value=EMOJI_OPTIONS.includes(boardConfig.logo)?'':boardConfig.logo;
+  updateConfigPreview();
+  ['cfg-title','cfg-desc','cfg-sub','cfg-emoji-custom'].forEach(id=>{document.getElementById(id).oninput=updateConfigPreview;});
+}
+function updateConfigPreview(){
+  const selEmoji=document.querySelector('.emoji-opt.selected')?.dataset.emoji;
+  const customEmoji=document.getElementById('cfg-emoji-custom')?.value.trim();
+  const logo=customEmoji||selEmoji||boardConfig.logo;
+  const title=document.getElementById('cfg-title')?.value.trim()||boardConfig.title;
+  const sub=document.getElementById('cfg-sub')?.value.trim()||boardConfig.header_sub;
+  document.getElementById('cfg-prev-logo').textContent=logo;
+  document.getElementById('cfg-prev-title').textContent=title;
+  document.getElementById('cfg-prev-sub').textContent=sub;
+}
+db.channel('rt-config')
+  .on('postgres_changes',{event:'UPDATE',schema:'public',table:'board_config'},payload=>{
+    if(!isAdmin){
+      const d=payload.new;
+      boardConfig={logo:d.logo||CONFIG_DEFAULTS.logo,title:d.title||CONFIG_DEFAULTS.title,description:d.description||CONFIG_DEFAULTS.description,header_sub:d.header_sub||CONFIG_DEFAULTS.header_sub};
+      applyBoardConfig();
+    }
+  }).subscribe();
+
 // ── ONBOARD ──
 async function initOnboard(){
-  await loadArchiveSessions();
-  if(userName){
-    document.getElementById('onboard-overlay').style.display='none';
-    updateHdr();
-  } else {
-    renderPastSessionsOnboard();
-  }
+  await Promise.all([loadBoardConfig(), loadArchiveSessions()]);
+  if(userName){document.getElementById('onboard-overlay').style.display='none';updateHdr();}
+  else renderPastSessionsOnboard();
 }
 function renderPastSessionsOnboard(){
   const wrap=document.getElementById('past-sessions-wrap');
   if(!archiveSessions.length){wrap.innerHTML='';return;}
-  let html=`<div class="past-sessions-wrap">
-    <div class="past-sessions-title">الجلسات السابقة</div>`;
+  let html=`<div class="past-sessions-wrap"><div class="past-sessions-title">الجلسات السابقة</div>`;
   archiveSessions.forEach(s=>{
     const d=new Date(s.archived_at);
     const dateStr=d.toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric'});
@@ -537,18 +754,11 @@ function renderPastSessionsOnboard(){
   wrap.innerHTML=html;
 }
 function viewArchiveFromOnboard(archiveId){
-  // Allow viewing without entering name — just peek. Enter prompts name.
   const name=document.getElementById('onboard-name').value.trim();
-  if(!name){
-    // highlight name field
-    shake('onboard-name');
-    toast('أدخل اسمك أولاً للدخول','error');
-    return;
-  }
+  if(!name){shake('onboard-name');toast('أدخل اسمك أولاً للدخول','error');return;}
   userName=name;sessionStorage.setItem('b_name',name);
   document.getElementById('onboard-overlay').style.display='none';
-  updateHdr();
-  loadArchiveSession(archiveId);
+  updateHdr();loadArchiveSession(archiveId);
 }
 document.getElementById('onboard-name').addEventListener('keydown',e=>{if(e.key==='Enter')enterBoard();});
 function enterBoard(){
@@ -557,6 +767,7 @@ function enterBoard(){
   userName=v;sessionStorage.setItem('b_name',v);
   document.getElementById('onboard-overlay').style.display='none';
   updateHdr();toast('مرحباً '+v+'!','success');
+  loadTopics();
 }
 function updateHdr(){
   const n=dname()||'…';
@@ -589,7 +800,7 @@ function showEdit(title,lbl,val,descVal,cb){
   openModal('edit-modal');
 }
 
-// ── ADMIN ──
+// ── ADMIN LOGIN / LOGOUT ──
 function doLogin(){
   const n=document.getElementById('aname').value.trim();
   const p=document.getElementById('apass').value;
@@ -615,14 +826,12 @@ function doLogout(){
   updateHdr();renderTopics();toast('تم تسجيل الخروج');
 }
 function switchTab(t){
-  document.querySelectorAll('.atab').forEach((el,i)=>{
-    el.classList.toggle('active',(i===0&&t==='topic')||(i===1&&t==='poll')||(i===2&&t==='archive'));
-  });
-  document.getElementById('f-topic').classList.toggle('open',t==='topic');
-  document.getElementById('f-poll').classList.toggle('open',t==='poll');
-  document.getElementById('f-archive').classList.toggle('open',t==='archive');
+  const tabs=['topic','poll','settings','archive'];
+  document.querySelectorAll('.atab').forEach((el,i)=>{el.classList.toggle('active',tabs[i]===t);});
+  tabs.forEach(name=>{const el=document.getElementById('f-'+name);if(el)el.classList.toggle('open',name===t);});
   if(t==='poll')populatePollSel();
   if(t==='archive')loadAdminArchiveList();
+  if(t==='settings')initSettingsForm();
 }
 function populatePollSel(){
   const sel=document.getElementById('poll-tsel');
@@ -632,14 +841,12 @@ function populatePollSel(){
 
 // ── ACTIVE TOPIC ──
 async function setActiveTopic(tid){
-  const newActive = (activeTopicId===tid) ? null : tid;
-  const updates = topics.map(t=>
-    db.from('topics').update({is_active: t.id===newActive}).eq('id',t.id)
-  );
+  const newActive=(activeTopicId===tid)?null:tid;
+  const updates=topics.map(t=>db.from('topics').update({is_active:t.id===newActive}).eq('id',t.id));
   await Promise.all(updates);
   activeTopicId=newActive;
   await loadTopics();
-  toast(newActive ? '✅ تم تعيين الموضوع النشط' : 'تم إلغاء الموضوع النشط','success');
+  toast(newActive?'✅ تم تعيين الموضوع النشط':'تم إلغاء الموضوع النشط','success');
 }
 function renderActiveBanner(){
   const banner=document.getElementById('active-topic-banner');
@@ -655,13 +862,12 @@ function renderActiveBanner(){
     </div>`;
 }
 function scrollToTopic(tid){
-  const card=document.getElementById('tc-'+tid);
-  if(!card)return;
+  const card=document.getElementById('tc-'+tid);if(!card)return;
   if(expandedId!==tid)toggleTopic(tid);
   setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'start'}),120);
 }
 
-// ── LOAD ──
+// ── LOAD DATA ──
 async function loadTopics(){
   const {data,error}=await db.from('topics').select('*').order('created_at',{ascending:true});
   if(error){document.getElementById('topics-list').innerHTML='<div class="state-empty">خطأ في تحميل البيانات</div>';return;}
@@ -669,13 +875,10 @@ async function loadTopics(){
   const active=topics.find(t=>t.is_active);
   activeTopicId=active?active.id:null;
   document.getElementById('st-topics').textContent=topics.length;
-  renderActiveBanner();
-  renderTopics();
-  loadStats();
+  renderActiveBanner();renderTopics();loadStats();
 }
 async function loadStats(archiveId=null){
   if(archiveId){
-    // Load stats from archive data
     const {data:sess}=await db.from('archive_sessions').select('comment_count,poll_count,vote_count,topic_count').eq('id',archiveId).single();
     if(sess){
       document.getElementById('st-topics').textContent=sess.topic_count??'–';
@@ -746,6 +949,12 @@ async function loadMeta(tid){
 
 // ── EXPAND ──
 async function toggleTopic(id){
+  if(viewingArchiveId){
+    if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
+    if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
+    expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
+    await renderArchiveBody(id);return;
+  }
   if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
   if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
   expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
@@ -765,28 +974,37 @@ async function renderBody(tid){
   setupCooldown(tid);
 }
 
-// ── POLLS — with skip/preview support ──
+// ── POLLS ──
+// Stores: { pollId: [0, 2] }  (array of chosen indices for multi, single-element for single)
 const votedPolls={};
 
 async function buildPollHTML(poll){
+  const isMulti = poll.poll_type === 'multi';
   const opts=poll.options;
-  const [{data:votes},{data:mv}]=await Promise.all([
-    db.from('poll_votes').select('option_index').eq('poll_id',poll.id),
-    db.from('poll_votes').select('option_index').eq('poll_id',poll.id).eq('user_id',UID).maybeSingle()
+  const [{data:votes},{data:myVotes}]=await Promise.all([
+    db.from('poll_votes').select('option_index,user_id').eq('poll_id',poll.id),
+    db.from('poll_votes').select('option_index').eq('poll_id',poll.id).eq('user_id',UID)
   ]);
-  const total=votes?.length||0;
+  const total = isMulti
+    ? (votes||[]).filter((v,i,a)=>a.findIndex(x=>x.user_id===v.user_id)===i).length // unique voters
+    : (votes||[]).length;
   const counts=opts.map((_,i)=>(votes||[]).filter(v=>v.option_index===i).length);
-  const voted=!!mv;
-  if(voted)votedPolls[poll.id]=mv.option_index;
-  const choice=mv?.option_index;
+  const voted=!!(myVotes&&myVotes.length>0);
+  const choiceIndices=myVotes?myVotes.map(v=>v.option_index):[];
+  if(voted)votedPolls[poll.id]=choiceIndices;
   const isPreviewing=pollPreviews.has(poll.id);
-  return buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing);
+  return buildPollMarkup(poll,opts,counts,total,voted,choiceIndices,isPreviewing);
 }
 
-function buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing){
+function buildPollMarkup(poll,opts,counts,total,voted,choiceIndices,isPreviewing){
   const isArchived=!!viewingArchiveId;
-  let h=`<div class="poll-wrap" id="pw-${poll.id}">
-    <div><span class="poll-tag">📊 استطلاع رأي</span></div>
+  const isMulti = poll.poll_type === 'multi';
+  const multiClass = isMulti ? ' multi-choice' : '';
+  const tagClass = isMulti ? ' multi-tag' : '';
+  const tagLabel = isMulti ? '📊 استطلاع متعدد الخيارات' : '📊 استطلاع رأي';
+
+  let h=`<div class="poll-wrap${multiClass}" id="pw-${poll.id}">
+    <div><span class="poll-tag${tagClass}">${tagLabel}</span></div>
     ${isAdmin&&!isArchived?`<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
       <button class="btn btn-ghost btn-sm" onclick="editPoll('${poll.id}')">✏️ تعديل السؤال</button>
       <button class="btn btn-ghost btn-sm" onclick="editPollOptions('${poll.id}')">🔧 تعديل الخيارات</button>
@@ -795,40 +1013,58 @@ function buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing){
     <div class="poll-question">${esc(poll.question)}</div>`;
 
   if(!voted && !isPreviewing && !isArchived){
-    // Normal voting state — show options + vote button + skip button
-    h+=`<form id="pf-${poll.id}">`;
-    opts.forEach((o,i)=>{h+=`<label class="poll-opt-label"><input type="radio" name="p${poll.id}" value="${i}"> ${esc(o)}</label>`;});
-    h+=`</form>
-    <div class="poll-actions">
-      <button class="btn-vote-now" id="pvb-${poll.id}" onclick="castVote('${poll.id}')">🗳 تصويت</button>
-      <button class="btn-skip" onclick="skipToPreview('${poll.id}')">معاينة النتائج أولاً 👁</button>
-    </div>`;
+    if(isMulti){
+      // Multi-choice: checkboxes with interactive styling
+      h+=`<div class="multi-check-counter" id="mcc-${poll.id}"><span id="mcc-count-${poll.id}">0</span> خيار محدد</div>`;
+      h+=`<div id="pf-${poll.id}">`;
+      opts.forEach((o,i)=>{
+        h+=`<label class="poll-check-label" id="pcl-${poll.id}-${i}" onclick="toggleCheck('${poll.id}',${i})">
+          <input type="checkbox" name="pm${poll.id}" value="${i}" onchange="updateCheckStyle('${poll.id}',${i},this.checked);updateCheckCounter('${poll.id}')"> ${esc(o)}
+        </label>`;
+      });
+      h+=`</div>`;
+      h+=`<div class="poll-type-hint multi">☑ حدد كل الخيارات المناسبة لك</div>`;
+    } else {
+      // Single-choice: radio buttons
+      h+=`<form id="pf-${poll.id}">`;
+      opts.forEach((o,i)=>{h+=`<label class="poll-opt-label"><input type="radio" name="p${poll.id}" value="${i}"> ${esc(o)}</label>`;});
+      h+=`</form>`;
+    }
+    const voteBtn = isMulti
+      ? `<button class="btn-vote-multi" id="pvb-${poll.id}" onclick="castVote('${poll.id}')">🗳 تصويت بخياراتي</button>`
+      : `<button class="btn-vote-now" id="pvb-${poll.id}" onclick="castVote('${poll.id}')">🗳 تصويت</button>`;
+    h+=`<div class="poll-actions">${voteBtn}<button class="btn-skip" onclick="skipToPreview('${poll.id}')">معاينة النتائج 👁</button></div>`;
   } else {
-    // Show results (either voted, previewing, or archived)
+    // Results view
     h+=`<div class="poll-results" id="pr-${poll.id}">`;
     opts.forEach((o,i)=>{
       const pct=total>0?Math.round((counts[i]/total)*100):0;
       const cnt=counts[i];
+      const isChosen=(choiceIndices||[]).includes(i);
+      const fillClass=isMulti?' multi-fill':'';
+      const nameClass=isChosen?(isMulti?' chosen-multi':' chosen'):'';
       h+=`<div class="poll-bar-row">
-        <div class="poll-bar-name${i===choice?' chosen':''}">${esc(o)}</div>
-        <div class="poll-track"><div class="poll-fill" style="width:${pct}%" id="pf-${poll.id}-${i}"></div></div>
+        <div class="poll-bar-name${nameClass}">${esc(o)}${isChosen?' ✓':''}</div>
+        <div class="poll-track"><div class="poll-fill${fillClass}" style="width:${pct}%" id="pf-${poll.id}-${i}"></div></div>
         <div class="poll-pct" id="pp-${poll.id}-${i}">${pct}%</div>
         <div class="poll-count" id="pc-${poll.id}-${i}">${cnt}</div>
       </div>`;
     });
     h+=`</div>`;
-
+    const voterLabel = isMulti ? `${total} مشارك` : `${total} صوت`;
     h+=`<div class="poll-footer">
-      <div class="poll-total-txt" id="pt-${poll.id}">${total} صوت ${!isArchived?'<span class="rt-pulse"></span>':''}</div>`;
-
+      <div class="poll-total-txt" id="pt-${poll.id}">${voterLabel} ${!isArchived?'<span class="rt-pulse"></span>':''}</div>`;
     if(voted){
-      h+=`<div class="voted-badge">✓ تم التصويت</div>`;
+      if(isMulti && choiceIndices && choiceIndices.length){
+        const chosen=choiceIndices.map(i=>esc(opts[i])).join('، ');
+        h+=`<div class="voted-choices-badge">✓ اخترت: ${chosen}</div>`;
+      } else {
+        h+=`<div class="voted-badge">✓ تم التصويت</div>`;
+      }
     } else if(isPreviewing && !isArchived){
       h+=`<div class="preview-badge">👁 معاينة فقط</div>`;
     }
     h+=`</div>`;
-
-    // If previewing (not voted, not archived), show "go back to vote" option
     if(isPreviewing && !voted && !isArchived){
       h+=`<div class="back-to-vote-row">
         <span style="font-size:12px;color:var(--text3)">يمكنك التصويت متى أردت</span>
@@ -840,46 +1076,60 @@ function buildPollMarkup(poll,opts,counts,total,voted,choice,isPreviewing){
   return h;
 }
 
-// Skip to preview — show results without voting
+// ── MULTI-CHOICE HELPERS ──
+function toggleCheck(pollId, idx) {
+  // handled by the input onchange already; this is a no-op target for label clicks
+}
+function updateCheckStyle(pollId, idx, checked) {
+  const lbl = document.getElementById(`pcl-${pollId}-${idx}`);
+  if(lbl) lbl.classList.toggle('checked', checked);
+}
+function updateCheckCounter(pollId) {
+  const form = document.getElementById('pf-'+pollId);
+  if(!form) return;
+  const count = form.querySelectorAll(`input[name="pm${pollId}"]:checked`).length;
+  const el = document.getElementById('mcc-count-'+pollId);
+  if(el) el.textContent = count;
+}
+
 function skipToPreview(pollId){
   pollPreviews.add(pollId);
-  // Re-render the poll widget in place
-  const box=document.getElementById('pw-'+pollId);
-  if(!box)return;
+  const box=document.getElementById('pw-'+pollId);if(!box)return;
   db.from('polls').select('*').eq('id',pollId).single().then(async({data:poll})=>{
     if(!poll)return;
-    const [{data:votes}]=await Promise.all([
-      db.from('poll_votes').select('option_index').eq('poll_id',poll.id)
-    ]);
-    const total=votes?.length||0;
+    const isMulti = poll.poll_type === 'multi';
+    const {data:votes}=await db.from('poll_votes').select('option_index,user_id').eq('poll_id',poll.id);
+    const total = isMulti
+      ? (votes||[]).filter((v,i,a)=>a.findIndex(x=>x.user_id===v.user_id)===i).length
+      : (votes||[]).length;
     const counts=poll.options.map((_,i)=>(votes||[]).filter(v=>v.option_index===i).length);
     const d=document.createElement('div');
-    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,null,true);
+    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,[],true);
     box.replaceWith(d.firstChild);
     toast('يمكنك التصويت لاحقاً من زر "العودة للتصويت"');
   });
 }
-
-// Go back to voting form
 function backToVote(pollId){
   pollPreviews.delete(pollId);
-  const box=document.getElementById('pw-'+pollId);
-  if(!box)return;
+  const box=document.getElementById('pw-'+pollId);if(!box)return;
   db.from('polls').select('*').eq('id',pollId).single().then(async({data:poll})=>{
     if(!poll)return;
-    const [{data:votes}]=await Promise.all([
-      db.from('poll_votes').select('option_index').eq('poll_id',poll.id)
-    ]);
-    const total=votes?.length||0;
+    const isMulti = poll.poll_type === 'multi';
+    const {data:votes}=await db.from('poll_votes').select('option_index,user_id').eq('poll_id',poll.id);
+    const total = isMulti
+      ? (votes||[]).filter((v,i,a)=>a.findIndex(x=>x.user_id===v.user_id)===i).length
+      : (votes||[]).length;
     const counts=poll.options.map((_,i)=>(votes||[]).filter(v=>v.option_index===i).length);
     const d=document.createElement('div');
-    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,null,false);
+    d.innerHTML=buildPollMarkup(poll,poll.options,counts,total,false,[],false);
     box.replaceWith(d.firstChild);
   });
 }
 
-function updatePollBars(pollId,votes,userChoice){
-  const total=votes.length;
+function updatePollBars(pollId,votes,isMulti){
+  const total = isMulti
+    ? (votes||[]).filter((v,i,a)=>a.findIndex(x=>x.user_id===v.user_id)===i).length
+    : (votes||[]).length;
   const opts=votes.reduce((acc,v)=>{acc[v.option_index]=(acc[v.option_index]||0)+1;return acc;},{});
   let i=0;
   while(document.getElementById(`pf-${pollId}-${i}`)){
@@ -894,38 +1144,55 @@ function updatePollBars(pollId,votes,userChoice){
     i++;
   }
   const pt=document.getElementById('pt-'+pollId);
-  if(pt)pt.innerHTML=total+' صوت <span class="rt-pulse"></span>';
+  const label = isMulti ? 'مشارك' : 'صوت';
+  if(pt)pt.innerHTML=total+` ${label} <span class="rt-pulse"></span>`;
 }
 
 async function castVote(pollId){
   if(!dname()){toast('يرجى إدخال اسمك أولاً','error');return;}
-  const form=document.getElementById('pf-'+pollId);if(!form)return;
-  const sel=form.querySelector(`input[name="p${pollId}"]:checked`);
-  if(!sel){toast('اختر خياراً أولاً','error');return;}
   const btn=document.getElementById('pvb-'+pollId);if(btn)btn.disabled=true;
-  const optIdx=parseInt(sel.value);
-  const {error}=await db.from('poll_votes').insert({poll_id:pollId,user_id:UID,option_index:optIdx});
-  if(error){toast(error.code==='23505'?'لقد صوّتت مسبقاً':'خطأ في التصويت','error');if(btn)btn.disabled=false;return;}
-  votedPolls[pollId]=optIdx;
-  pollPreviews.delete(pollId);
-  toast('تم تسجيل تصويتك! 🎉','success');
+
+  // Get poll type
   const {data:poll}=await db.from('polls').select('*').eq('id',pollId).single();
-  if(poll){
-    const box=document.getElementById('pw-'+pollId);
-    if(box){const d=document.createElement('div');d.innerHTML=await buildPollHTML(poll);box.replaceWith(d.firstChild);}
+  if(!poll){if(btn)btn.disabled=false;return;}
+  const isMulti = poll.poll_type === 'multi';
+
+  let chosenIndices=[];
+  if(isMulti){
+    const form=document.getElementById('pf-'+pollId);if(!form){if(btn)btn.disabled=false;return;}
+    const checked=[...form.querySelectorAll(`input[name="pm${pollId}"]:checked`)];
+    if(!checked.length){toast('اختر خياراً واحداً على الأقل','error');if(btn)btn.disabled=false;return;}
+    chosenIndices=checked.map(inp=>parseInt(inp.value));
+  } else {
+    const form=document.getElementById('pf-'+pollId);if(!form){if(btn)btn.disabled=false;return;}
+    const sel=form.querySelector(`input[name="p${pollId}"]:checked`);
+    if(!sel){toast('اختر خياراً أولاً','error');if(btn)btn.disabled=false;return;}
+    chosenIndices=[parseInt(sel.value)];
   }
+
+  // Insert one row per chosen option
+  const rows=chosenIndices.map(idx=>({poll_id:pollId,user_id:UID,option_index:idx}));
+  const {error}=await db.from('poll_votes').insert(rows);
+  if(error){
+    const msg=error.code==='23505'?'لقد صوّتت مسبقاً':'خطأ في التصويت';
+    toast(msg,'error');if(btn)btn.disabled=false;return;
+  }
+  votedPolls[pollId]=chosenIndices;
+  pollPreviews.delete(pollId);
+  toast(isMulti?`تم تسجيل ${chosenIndices.length} اختيارات! 🎉`:'تم تسجيل تصويتك! 🎉','success');
+
+  const box=document.getElementById('pw-'+pollId);
+  if(box){const d=document.createElement('div');d.innerHTML=await buildPollHTML(poll);box.replaceWith(d.firstChild);}
   loadStats();
 }
 
 // ── EDIT POLL OPTIONS ──
 async function editPollOptions(pollId){
-  const {data:poll}=await db.from('polls').select('*').eq('id',pollId).single();
-  if(!poll)return;
+  const {data:poll}=await db.from('polls').select('*').eq('id',pollId).single();if(!poll)return;
   const list=document.getElementById('poll-opts-editor-list');
   list.innerHTML='';
   poll.options.forEach((opt,i)=>{
-    const row=document.createElement('div');
-    row.className='poe-row';
+    const row=document.createElement('div');row.className='poe-row';
     row.innerHTML=`<span style="font-size:12px;color:var(--text3);min-width:22px;text-align:center;font-weight:700">${i+1}</span>
       <input class="poe-input" data-idx="${i}" value="${esc(opt)}" maxlength="200" placeholder="الخيار ${i+1}">`;
     list.appendChild(row);
@@ -936,8 +1203,7 @@ async function editPollOptions(pollId){
     if(newOpts.some(o=>!o)){toast('لا يمكن ترك خيار فارغاً','error');return;}
     const {error}=await db.from('polls').update({options:newOpts}).eq('id',pollId);
     if(error){toast('خطأ في الحفظ','error');return;}
-    closeModal('poll-opts-modal');
-    toast('تم تحديث الخيارات ✓','success');
+    closeModal('poll-opts-modal');toast('تم تحديث الخيارات ✓','success');
     if(expandedId)renderBody(expandedId);
   };
   openModal('poll-opts-modal');
@@ -1029,15 +1295,14 @@ function appendComment(tid,c,scrollTo=false){
   const cc=document.getElementById('cc-'+tid);if(cc)cc.textContent=parseInt(cc.textContent||0)+1;
 }
 
-// ── ARCHIVE SESSION ──
+// ── ARCHIVE ──
 async function loadArchiveSessions(){
   const {data}=await db.from('archive_sessions').select('*').order('archived_at',{ascending:false});
   archiveSessions=data||[];
 }
 async function loadAdminArchiveList(){
   await loadArchiveSessions();
-  const el=document.getElementById('admin-archive-list');
-  if(!el)return;
+  const el=document.getElementById('admin-archive-list');if(!el)return;
   if(!archiveSessions.length){el.innerHTML='<div style="font-size:12px;color:var(--text3)">لا توجد جلسات مؤرشفة بعد</div>';return;}
   let html='';
   archiveSessions.forEach(s=>{
@@ -1056,7 +1321,6 @@ async function loadAdminArchiveList(){
   });
   el.innerHTML=html;
 }
-
 async function openArchiveView(){
   await loadArchiveSessions();
   const listEl=document.getElementById('archive-modal-list');
@@ -1082,46 +1346,26 @@ async function openArchiveView(){
   listEl.innerHTML=html;
   openModal('view-archive-modal');
 }
-
 async function loadArchiveSession(archiveId){
-  viewingArchiveId=archiveId;
-  expandedId=null;
-
-  // Load archived topics from the archive_topics table
+  viewingArchiveId=archiveId;expandedId=null;
   const {data:arTopics}=await db.from('archive_topics').select('*').eq('session_id',archiveId).order('original_created_at',{ascending:true});
-  // Load archived polls
   const {data:arPolls}=await db.from('archive_polls').select('*').eq('session_id',archiveId);
-  // Load archived comments
   const {data:arComments}=await db.from('archive_comments').select('*').eq('session_id',archiveId).order('original_created_at',{ascending:true});
-  // Load archived votes
   const {data:arVotes}=await db.from('archive_votes').select('*').eq('session_id',archiveId);
-
-  // Build a "virtual topics" array with ids from archive
   topics=(arTopics||[]).map(t=>({
-    id:'arc_'+t.id,
-    title:t.title,
-    description:t.description,
-    is_active:false,
+    id:'arc_'+t.id,title:t.title,description:t.description,is_active:false,
     _archive_id:t.id,
     _polls:(arPolls||[]).filter(p=>p.topic_id===t.id).map(p=>({
-      ...p,
-      id:'arc_'+p.id,
+      ...p,id:'arc_'+p.id,
       _votes:(arVotes||[]).filter(v=>v.poll_id===p.id)
     })),
-    _comments:(arComments||[]).filter(c=>c.topic_id===t.id).map(c=>({
-      ...c,
-      id:'arc_'+c.id,
-      created_at:c.original_created_at
-    }))
+    _comments:(arComments||[]).filter(c=>c.topic_id===t.id).map(c=>({...c,id:'arc_'+c.id,created_at:c.original_created_at}))
   }));
-
   const sess=archiveSessions.find(s=>s.id===archiveId);
   document.getElementById('st-topics').textContent=topics.length;
   document.getElementById('st-comments').textContent=(arComments||[]).length;
   document.getElementById('st-polls').textContent=(arPolls||[]).length;
   document.getElementById('st-votes').textContent=(arVotes||[]).length;
-
-  // Update UI
   document.getElementById('live-row-banner').style.display='none';
   document.getElementById('active-topic-banner').innerHTML='';
   document.getElementById('back-live-btn').style.display='flex';
@@ -1129,8 +1373,6 @@ async function loadArchiveSession(archiveId){
   document.getElementById('brand-sub-txt').className='brand-sub archived-mode';
   document.getElementById('stats-label').textContent='إحصائيات الأرشيف';
   document.getElementById('stats-note').textContent='هذه الجلسة مؤرشفة — للاطلاع فقط، لا يمكن التعليق أو التصويت.';
-
-  // Show archive banner
   if(sess){
     const d=new Date(sess.archived_at);
     const dateStr=d.toLocaleDateString('ar-DZ',{year:'numeric',month:'long',day:'numeric'});
@@ -1150,142 +1392,91 @@ async function loadArchiveSession(archiveId){
         </div>
       </div>`;
   }
-
   renderTopics(true);
-  // Override renderBody for archive
 }
-
 function goBackToLive(){
-  viewingArchiveId=null;
-  expandedId=null;
+  viewingArchiveId=null;expandedId=null;
   document.getElementById('live-row-banner').style.display='flex';
   document.getElementById('archive-view-banner').innerHTML='';
   document.getElementById('back-live-btn').style.display='none';
-  document.getElementById('brand-sub-txt').textContent='لوحة نقاش تفاعلية • مباشر';
+  document.getElementById('brand-sub-txt').textContent=boardConfig.header_sub;
   document.getElementById('brand-sub-txt').className='brand-sub';
   document.getElementById('stats-label').textContent='إحصائيات الجلسة';
   document.getElementById('stats-note').textContent='يمكنك التعليق مرة كل دقيقة، والتصويت مرة واحدة لكل استطلاع. يمكنك معاينة نتائج الاستطلاع قبل التصويت.';
   loadTopics();
 }
-
-// Override toggleTopic for archive mode
-const _origToggleTopic=toggleTopic;
-async function toggleTopic(id){
-  if(viewingArchiveId){
-    // Archive expand
-    if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
-    if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
-    expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
-    await renderArchiveBody(id);
-    return;
-  }
-  if(expandedId===id){document.getElementById('tc-'+id)?.classList.remove('expanded');expandedId=null;return;}
-  if(expandedId)document.getElementById('tc-'+expandedId)?.classList.remove('expanded');
-  expandedId=id;document.getElementById('tc-'+id)?.classList.add('expanded');
-  await renderBody(id);
-}
-
 async function renderArchiveBody(virtualId){
   const inner=document.getElementById('tbi-'+virtualId);if(!inner)return;
   const t=topics.find(x=>x.id===virtualId);
   if(!t){inner.innerHTML='<div class="state-empty">خطأ</div>';return;}
   let html='';
   for(const p of(t._polls||[])){
-    const total=p._votes.length;
+    const isMulti = p.poll_type === 'multi';
+    const uniqueVoters = isMulti
+      ? [...new Set(p._votes.map(v=>v.user_id))].length
+      : p._votes.length;
     const counts=p.options.map((_,i)=>p._votes.filter(v=>v.option_index===i).length);
-    html+=buildPollMarkup(p,p.options,counts,total,false,null,false);
+    html+=buildPollMarkup(p,p.options,counts,uniqueVoters,false,[],false);
   }
   html+=buildCommentsHTML(virtualId,t._comments||[]);
   inner.innerHTML=html;
 }
-
-// ── DO ARCHIVE ──
 async function doArchiveSession(){
   const name=document.getElementById('archive-session-name').value.trim();
   if(!name){shake('archive-session-name');toast('أدخل اسم الجلسة','error');return;}
-
-  // Collect all live data
   const [{data:liveTopics},{data:livePolls},{data:liveComments},{data:liveVotes}]=await Promise.all([
     db.from('topics').select('*').order('created_at',{ascending:true}),
     db.from('polls').select('*').order('created_at',{ascending:true}),
     db.from('comments').select('*').order('created_at',{ascending:true}),
     db.from('poll_votes').select('*')
   ]);
-
-  const topicCount=(liveTopics||[]).length;
-  const commentCount=(liveComments||[]).length;
-  const pollCount=(livePolls||[]).length;
-  const voteCount=(liveVotes||[]).length;
-
-  // Create session record
   const {data:sess,error:sessErr}=await db.from('archive_sessions').insert({
     name,
-    topic_count:topicCount,
-    comment_count:commentCount,
-    poll_count:pollCount,
-    vote_count:voteCount,
+    topic_count:(liveTopics||[]).length,
+    comment_count:(liveComments||[]).length,
+    poll_count:(livePolls||[]).length,
+    vote_count:(liveVotes||[]).length,
     archived_at:new Date().toISOString()
   }).select().single();
   if(sessErr){toast('خطأ في إنشاء الأرشيف','error');return;}
-
   const sid=sess.id;
-
-  // Archive topics
   if(liveTopics?.length){
-    const {error:te}=await db.from('archive_topics').insert(liveTopics.map(t=>({
+    await db.from('archive_topics').insert(liveTopics.map(t=>({
       session_id:sid,title:t.title,description:t.description||null,original_id:t.id,original_created_at:t.created_at
     })));
-    if(te){toast('خطأ في أرشفة المواضيع','error');return;}
   }
-
-  // Get archived topic id mapping
   const {data:arTopics}=await db.from('archive_topics').select('id,original_id').eq('session_id',sid);
   const topicMap={};(arTopics||[]).forEach(t=>{topicMap[t.original_id]=t.id;});
-
-  // Archive polls
   if(livePolls?.length){
-    const {error:pe}=await db.from('archive_polls').insert(livePolls.map(p=>({
-      session_id:sid,topic_id:topicMap[p.topic_id]||null,question:p.question,options:p.options,original_id:p.id,original_created_at:p.created_at
+    await db.from('archive_polls').insert(livePolls.map(p=>({
+      session_id:sid,topic_id:topicMap[p.topic_id]||null,question:p.question,options:p.options,
+      poll_type:p.poll_type||'single', // ★ preserve poll type in archive
+      original_id:p.id,original_created_at:p.created_at
     })));
-    if(pe){toast('خطأ في أرشفة الاستطلاعات','error');return;}
   }
-
-  // Get archived poll id mapping
   const {data:arPolls}=await db.from('archive_polls').select('id,original_id').eq('session_id',sid);
   const pollMap={};(arPolls||[]).forEach(p=>{pollMap[p.original_id]=p.id;});
-
-  // Archive comments
   if(liveComments?.length){
-    const {error:ce}=await db.from('archive_comments').insert(liveComments.map(c=>({
+    await db.from('archive_comments').insert(liveComments.map(c=>({
       session_id:sid,topic_id:topicMap[c.topic_id]||null,user_id:c.user_id,user_name:c.user_name,content:c.content,is_admin:c.is_admin,original_id:c.id,original_created_at:c.created_at
     })));
-    if(ce){toast('خطأ في أرشفة التعليقات','error');return;}
   }
-
-  // Archive votes
   if(liveVotes?.length){
-    const {error:ve}=await db.from('archive_votes').insert(liveVotes.map(v=>({
+    await db.from('archive_votes').insert(liveVotes.map(v=>({
       session_id:sid,poll_id:pollMap[v.poll_id]||null,user_id:v.user_id,option_index:v.option_index,original_id:v.id,original_created_at:v.created_at
     })));
-    if(ve){toast('خطأ في أرشفة الأصوات','error');return;}
   }
-
-  // Delete live data (cascade order: votes → comments → polls → topics)
   await Promise.all([
     db.from('poll_votes').delete().neq('id','00000000-0000-0000-0000-000000000000'),
     db.from('comments').delete().neq('id','00000000-0000-0000-0000-000000000000')
   ]);
   await db.from('polls').delete().neq('id','00000000-0000-0000-0000-000000000000');
   await db.from('topics').delete().neq('id','00000000-0000-0000-0000-000000000000');
-
   closeModal('archive-modal');
   document.getElementById('archive-session-name').value='';
   toast('📦 تمت الأرشفة بنجاح! جلسة جديدة جاهزة','archive');
-  await loadArchiveSessions();
-  await loadTopics();
-  loadAdminArchiveList();
+  await loadArchiveSessions();await loadTopics();loadAdminArchiveList();
 }
-
 async function deleteArchiveSession(sid){
   showConfirm('حذف الأرشيف','سيُحذف هذا الأرشيف نهائياً ولا يمكن التراجع.',async()=>{
     await Promise.all([
@@ -1296,8 +1487,7 @@ async function deleteArchiveSession(sid){
     await db.from('archive_topics').delete().eq('session_id',sid);
     await db.from('archive_sessions').delete().eq('id',sid);
     toast('تم حذف الأرشيف','success');
-    await loadArchiveSessions();
-    loadAdminArchiveList();
+    await loadArchiveSessions();loadAdminArchiveList();
     if(viewingArchiveId===sid)goBackToLive();
   },'حذف نهائياً','btn-danger');
 }
@@ -1320,10 +1510,15 @@ async function addPoll(){
   if(!tid){toast('اختر موضوعاً','error');return;}
   if(!q){toast('أدخل سؤال الاستطلاع','error');return;}
   if(opts.length<2){toast('أضف خيارين على الأقل','error');return;}
-  const {error}=await db.from('polls').insert({topic_id:tid,question:q,options:opts});
+  // ★ Save poll_type to database
+  const {error}=await db.from('polls').insert({topic_id:tid,question:q,options:opts,poll_type:newPollType});
   if(error){toast('خطأ في إنشاء الاستطلاع','error');return;}
-  document.getElementById('poll-q').value='';document.querySelectorAll('.pov').forEach(i=>i.value='');
-  toast('تم إنشاء الاستطلاع ✓','success');
+  document.getElementById('poll-q').value='';
+  document.querySelectorAll('.pov').forEach(i=>i.value='');
+  // reset type toggle
+  setPollType('single');
+  const typeLabel = newPollType === 'multi' ? 'متعدد الخيارات' : 'اختيار واحد';
+  toast(`تم إنشاء الاستطلاع (${typeLabel}) ✓`,'success');
   loadMeta(tid);loadStats();if(expandedId===tid)renderBody(tid);
 }
 function addOpt(){const l=document.getElementById('poll-opts');const n=l.querySelectorAll('.popt-row').length+1;l.insertAdjacentHTML('beforeend',`<div class="popt-row"><input class="finput pov" type="text" placeholder="الخيار ${n}"><button class="btn-ropt" onclick="remOpt(this)">×</button></div>`);}
@@ -1399,12 +1594,11 @@ function deleteComment(cid,tid){
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function toast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type||'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='toast',2800);}
 
-// ── REALTIME (live session only) ──
+// ── REALTIME ──
 db.channel('rt-comments')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'comments'},payload=>{
     if(viewingArchiveId)return;
-    const c=payload.new;
-    if(c.user_id===UID)return;
+    const c=payload.new;if(c.user_id===UID)return;
     loadMeta(c.topic_id);loadStats();
     if(expandedId===c.topic_id)appendComment(c.topic_id,c,false);
   })
@@ -1418,28 +1612,26 @@ db.channel('rt-comments')
     if(viewingArchiveId)return;
     const el=document.getElementById('ci-'+payload.old.id);
     if(el){
-      const tid=payload.old.topic_id;
-      el.remove();
+      const tid=payload.old.topic_id;el.remove();
       const cc=document.getElementById('cc-'+tid);if(cc)cc.textContent=Math.max(0,parseInt(cc.textContent||1)-1);
       loadMeta(tid);loadStats();
     }
-  })
-  .subscribe();
+  }).subscribe();
 
 db.channel('rt-votes')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'poll_votes'},async payload=>{
     if(viewingArchiveId)return;
-    const v=payload.new;
-    if(v.user_id===UID)return;
+    const v=payload.new;if(v.user_id===UID)return;
     loadStats();
-    const {data:votes}=await db.from('poll_votes').select('option_index').eq('poll_id',v.poll_id);
+    const {data:poll}=await db.from('polls').select('poll_type').eq('id',v.poll_id).maybeSingle();
+    const {data:votes}=await db.from('poll_votes').select('option_index,user_id').eq('poll_id',v.poll_id);
     if(votes){
-      const choice=votedPolls[v.poll_id]??null;
-      if(choice!==null||pollPreviews.has(v.poll_id))updatePollBars(v.poll_id,votes,choice);
+      const isMulti=poll?.poll_type==='multi';
+      const myVotes=votedPolls[v.poll_id];
+      if(myVotes||pollPreviews.has(v.poll_id))updatePollBars(v.poll_id,votes,isMulti);
     }
     if(expandedId){const {data:p}=await db.from('polls').select('topic_id').eq('id',v.poll_id).maybeSingle();if(p)loadMeta(p.topic_id);}
-  })
-  .subscribe();
+  }).subscribe();
 
 db.channel('rt-topics')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'topics'},async()=>{if(!viewingArchiveId){await loadTopics();populatePollSel();}})
@@ -1450,23 +1642,114 @@ db.channel('rt-topics')
 db.channel('rt-polls')
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'polls'},async payload=>{
     if(viewingArchiveId)return;
-    if(expandedId===payload.new.topic_id){renderBody(expandedId);}
+    if(expandedId===payload.new.topic_id)renderBody(expandedId);
     loadMeta(payload.new.topic_id);loadStats();
   })
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'polls'},async payload=>{
     if(viewingArchiveId)return;
-    if(expandedId===payload.new.topic_id){renderBody(expandedId);}
+    if(expandedId===payload.new.topic_id)renderBody(expandedId);
   })
   .on('postgres_changes',{event:'DELETE',schema:'public',table:'polls'},async payload=>{
     if(viewingArchiveId)return;
-    if(expandedId){renderBody(expandedId);}loadStats();
-  })
-  .subscribe();
+    if(expandedId)renderBody(expandedId);loadStats();
+  }).subscribe();
 
 // ── INIT ──
-updateHdr();
-initOnboard();
+updateHdr();initOnboard();
 if(userName)loadTopics();
+</script>
+<script>
+// twemoji-auto.js
+
+(function () {
+  // 1) Load Twemoji if not already loaded
+  function loadTwemoji(callback) {
+    if (window.twemoji) return callback();
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js";
+    script.onload = callback;
+    document.head.appendChild(script);
+  }
+
+  // 2) Inject CSS (fix emoji size)
+  function injectStyles() {
+    if (document.getElementById("twemoji-style")) return;
+
+    const style = document.createElement("style");
+    style.id = "twemoji-style";
+    style.textContent = `
+      img.emoji {
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.1em;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // 3) Parse a DOM node safely
+function parseNode(node) {
+  if (!node) return;
+
+  // Handle TEXT nodes directly (this is your missing case)
+  if (node.nodeType === Node.TEXT_NODE) {
+    if (node.parentNode) {
+      twemoji.parse(node.parentNode);
+    }
+    return;
+  }
+
+  if (node.nodeType !== 1) return;
+
+  twemoji.parse(node, {
+    folder: "svg",
+    ext: ".svg"
+  });
+
+  node.querySelectorAll("img.emoji").forEach(img => {
+    img.loading = "lazy";
+    img.decoding = "async";
+  });
+}
+
+  // 4) Observe DOM changes (dynamic content)
+  function observeDOM() {
+    const observer = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        m.addedNodes.forEach(node => {
+          parseNode(node);
+        });
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // 5) Init
+  function init() {
+    injectStyles();
+
+    // Initial parse
+    parseNode(document.body);
+
+    // Watch for dynamic updates
+    observeDOM();
+  }
+
+  // Run
+  loadTwemoji(() => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  });
+
+})();
 </script>
 </body>
 </html>
