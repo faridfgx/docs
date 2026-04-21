@@ -12,15 +12,15 @@ const FIRST_LINE_RULES = [
 ];
 
 const VAR_TYPES = [
-    { key: "en", value: "Entier;\n" },
-    { key: "re", value: "Reel;\n" },
-    { key: "ch", value: "Chaine;\n" },
-    { key: "bo", value: "Booleen;\n" },
-    { key: "ca", value: "Caractere;\n" }
+    { key: "en", value: "Entier;" },
+    { key: "re", value: "Reel;" },
+    { key: "ch", value: "Chaine;" },
+    { key: "bo", value: "Booleen;" },
+    { key: "ca", value: "Caractere;" }
 ];
 
 const GENERAL_RULES = [
-    { key: "var", value: "Var\n" },
+    { key: "var", value: "Var " },
     { key: "co", value: "Const\n" },
     { key: "de", value: "Debut\n" },
     { key: "fi", value: "Fin" }
@@ -59,7 +59,7 @@ const BODY_RULES = [
                 label: "Si … alors … SiNon",
                 value: "Si condition alors\n    \nSiNon\n    \nFinSi"
             }
-			,
+		,
             {
                 label: "SiNon",
                 value: "SiNon\n"
@@ -140,7 +140,7 @@ function handleAutoComplete() {
 
     /* ---- FIRST LINE (Algorithme) ---- */
     if (ctx.lineIndex === 0) {
-        const match = line.match(/(\w+)$/);
+        const match = line.match(/([a-zA-Z]+)$/);
         if (!match) return hideBox();
 
         const key = match[1].toLowerCase();
@@ -181,7 +181,7 @@ function handleAutoComplete() {
     }
 
     /* ---- GENERAL KEYWORDS (Var, Const, Debut, Fin) ---- */
-    const generalMatch = line.match(/(?:^|\s)([a-zA-Z]{2,})$/);
+    const generalMatch = line.match(/(?:^|\s)([a-zA-Z]+)$/);
     if (generalMatch) {
         const key = generalMatch[1].toLowerCase();
         replaceStart = pos - key.length;
@@ -201,7 +201,7 @@ function handleAutoComplete() {
 
     /* ---- BODY KEYWORDS ---- */
     if (ctx.inBody) {
-        const match = line.match(/(?:^|\s)([a-zA-Z]{2,})$/);
+        const match = line.match(/(?:^|\s)([a-zA-Z]+)$/);
         if (!match) return hideBox();
 
         const key = match[1].toLowerCase();

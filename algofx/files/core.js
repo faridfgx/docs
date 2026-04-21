@@ -797,6 +797,37 @@ async function runAlgorithm() {
             if (line === 'var') {
                 inVar = true;
                 inConst = false;
+            } else if (line.startsWith('var ')) {
+                // Inline Var declaration: "Var x, y: Entier;" or "Var x: Entier; y: Reel;"
+                inVar = true;
+                inConst = false;
+                const inlineDecl = line.substring(4).trim(); // strip leading "var "
+                // Split on ";" to allow multiple declarations on one line
+                const declSegments = inlineDecl.split(';').map(s => s.trim()).filter(Boolean);
+                for (const seg of declSegments) {
+                    const parts = seg.split(':');
+                    if (parts.length === 2) {
+                        const varNames = parts[0].split(',').map(v => v.trim()).filter(Boolean);
+                        const type = parts[1].trim().toLowerCase();
+                        if (!Object.values(TYPES).includes(type)) {
+                            throw new Error(`Type inconnu: '${type}'. Types valides: ${Object.values(TYPES).join(', ')}`);
+                        }
+                        for (let varName of varNames) {
+                            if (!varName) continue;
+                            variableTypes[varName] = type;
+                            switch (type) {
+                                case TYPES.ENTIER:
+                                case TYPES.REEL:
+                                    variables[varName] = 0; break;
+                                case TYPES.CHAINE:
+                                case TYPES.CARACTERE:
+                                    variables[varName] = ''; break;
+                                case TYPES.BOOLEEN:
+                                    variables[varName] = false; break;
+                            }
+                        }
+                    }
+                }
             } else if (line === 'const') {
                 inConst = true;
                 inVar = false;
@@ -804,32 +835,33 @@ async function runAlgorithm() {
                 debutIndex = i;
                 break;
             } else if (inVar && line && !line.startsWith('//')) {
-                const parts = line.split(':');
-                if (parts.length === 2) {
-                    const varNames = parts[0].split(',').map(v => v.trim());
-                    const type = parts[1].replace(';', '').trim();
-                    
-                    if (!Object.values(TYPES).includes(type)) {
-                        throw new Error(`Type inconnu: '${type}'. Types valides: ${Object.values(TYPES).join(', ')}`);
-                    }
-                    
-                    for (let varName of varNames) {
-                        variableTypes[varName] = type;
-                        // Initialize with default value based on type
-                        switch(type) {
-                            case TYPES.ENTIER:
-                            case TYPES.REEL:
-                                variables[varName] = 0;
-                                break;
-                            case TYPES.CHAINE:
-                                variables[varName] = '';
-                                break;
-                            case TYPES.CARACTERE:
-                                variables[varName] = '';
-                                break;
-                            case TYPES.BOOLEEN:
-                                variables[varName] = false;
-                                break;
+                // Support multiple declarations on one line: "x: entier; y: reel; nom: chaine;"
+                const declSegments = line.split(';').map(s => s.trim()).filter(Boolean);
+                for (const seg of declSegments) {
+                    const parts = seg.split(':');
+                    if (parts.length === 2) {
+                        const varNames = parts[0].split(',').map(v => v.trim()).filter(Boolean);
+                        const type = parts[1].trim();
+
+                        if (!Object.values(TYPES).includes(type)) {
+                            throw new Error(`Type inconnu: '${type}'. Types valides: ${Object.values(TYPES).join(', ')}`);
+                        }
+
+                        for (let varName of varNames) {
+                            variableTypes[varName] = type;
+                            switch (type) {
+                                case TYPES.ENTIER:
+                                case TYPES.REEL:
+                                    variables[varName] = 0;
+                                    break;
+                                case TYPES.CHAINE:
+                                case TYPES.CARACTERE:
+                                    variables[varName] = '';
+                                    break;
+                                case TYPES.BOOLEEN:
+                                    variables[varName] = false;
+                                    break;
+                            }
                         }
                     }
                 }
