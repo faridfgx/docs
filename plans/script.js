@@ -279,17 +279,18 @@ async function showEditModal(plan) {
     
     if (plan.table_data && plan.table_data.length > 0) {
 plan.table_data.forEach(row => {
-    const tr = document.createElement('tr');
-
-    const fields = [
-        { tag: 'input',    field: 'situation',   value: row.situation   || '' },
-        { tag: 'textarea', field: 'resources',   value: row.resources   || '' },
-        { tag: 'textarea', field: 'teacherRole', value: row.teacherRole || '' },
-        { tag: 'textarea', field: 'studentRole', value: row.studentRole || '' },
-        { tag: 'input',    field: 'bloomLevel',  value: row.bloomLevel  || '' },
-        { tag: 'textarea', field: 'evaluation',  value: row.evaluation  || '' },
-        { tag: 'input',    field: 'duration',    value: row.duration    || '', placeholder: 'مثال: 10' },
-    ];
+    tableRows += `
+        <tr>
+            <td style="font-weight: bold;">${row.situation || ''}</td>
+            <td><div class="formatted-text">${row.resources || ''}</div></td>
+            <td><div class="formatted-text">${row.teacherRole || ''}</div></td>
+            <td><div class="formatted-text">${row.studentRole || ''}</div></td>
+            <td>${row.bloomLevel || ''}</td>
+            <td><div class="formatted-text">${row.evaluation || ''}</div></td>
+            <td style="text-align: center;">${row.duration || ''}</td>
+        </tr>
+    `;
+});
 
     fields.forEach(f => {
         const td = document.createElement('td');
