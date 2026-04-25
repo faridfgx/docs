@@ -278,22 +278,40 @@ async function showEditModal(plan) {
     tbody.innerHTML = '';
     
     if (plan.table_data && plan.table_data.length > 0) {
-        plan.table_data.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><input type="text" value="${row.situation || ''}" data-field="situation"></td>
-                <td><textarea data-field="resources">${row.resources || ''}</textarea></td>
-                <td><textarea data-field="teacherRole">${row.teacherRole || ''}</textarea></td>
-                <td><textarea data-field="studentRole">${row.studentRole || ''}</textarea></td>
-                <td><input type="text" value="${row.bloomLevel || ''}" data-field="bloomLevel"></td>
-                <td><textarea data-field="evaluation">${row.evaluation || ''}</textarea></td>
-                <td><input type="text" value="${row.duration || ''}" data-field="duration" placeholder="مثال: 10"></td>
-                <td style="text-align: center;">
-                    <button class="btn-danger" onclick="removeTableRow(this)">✕</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+plan.table_data.forEach(row => {
+    const tr = document.createElement('tr');
+
+    const fields = [
+        { tag: 'input',    field: 'situation',   value: row.situation   || '' },
+        { tag: 'textarea', field: 'resources',   value: row.resources   || '' },
+        { tag: 'textarea', field: 'teacherRole', value: row.teacherRole || '' },
+        { tag: 'textarea', field: 'studentRole', value: row.studentRole || '' },
+        { tag: 'input',    field: 'bloomLevel',  value: row.bloomLevel  || '' },
+        { tag: 'textarea', field: 'evaluation',  value: row.evaluation  || '' },
+        { tag: 'input',    field: 'duration',    value: row.duration    || '', placeholder: 'مثال: 10' },
+    ];
+
+    fields.forEach(f => {
+        const td = document.createElement('td');
+        const el = document.createElement(f.tag);
+        el.dataset.field = f.field;
+        el.value = f.value;
+        if (f.placeholder) el.placeholder = f.placeholder;
+        td.appendChild(el);
+        tr.appendChild(td);
+    });
+
+    const deleteTd = document.createElement('td');
+    deleteTd.style.textAlign = 'center';
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-danger';
+    delBtn.textContent = '✕';
+    delBtn.onclick = () => removeTableRow(delBtn);
+    deleteTd.appendChild(delBtn);
+    tr.appendChild(deleteTd);
+
+    tbody.appendChild(tr);
+});
     } else {
         addTableRow();
     }
