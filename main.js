@@ -70,12 +70,16 @@ sanitizeDownloadButtons() {
         const onclick = button.getAttribute('onclick');
         if (!onclick) return;
 
-        // supports: downloadFile('x.zip') or downloadFile("x.zip")
-        const match = onclick.match(/downloadFile\s*\(\s*['"]([^'"]+)['"]\s*\)/);
-        if (!match) return;
+        // Handle: window.open('url', '_blank')
+        const openMatch = onclick.match(/window\.open\s*\(\s*['"]([^'"]+)['"]/);
+        // Handle: downloadFile('url')
+        const dlMatch = onclick.match(/downloadFile\s*\(\s*['"]([^'"]+)['"]\s*\)/);
 
-        button.dataset.downloadUrl = match[1];
-        button.removeAttribute('onclick'); // IMPORTANT
+        const url = (openMatch || dlMatch)?.[1];
+        if (!url) return;
+
+        button.dataset.downloadUrl = url;
+        button.removeAttribute('onclick');
     });
 }
     createAdModal() {
@@ -726,38 +730,40 @@ closeAdModal() {
     document.body.style.overflow = '';
 }
 
-    async incrementDownloadCountOptimized(fileId) {
-        try {
-            const currentData = this.cache.downloads.get(fileId) || { count: 0 };
-            const newCount = currentData.count + 1;
-            
-            this.cache.downloads.set(fileId, { ...currentData, count: newCount });
-            this.updateDownloadDisplay(fileId, newCount);
-            
-            const { data, error } = await this.supabase
-                .from('downloads')
-                .upsert({ 
-                    id: fileId,
-                    count: newCount,
-                    last_download: new Date().toISOString()
-                }, { 
-                    onConflict: 'id',
-                    ignoreDuplicates: false 
-                })
-                .select();
-            
-            if (error) {
-                console.warn('Database update failed, reverting UI update:', error);
-                this.cache.downloads.set(fileId, currentData);
-                this.updateDownloadDisplay(fileId, currentData.count);
-                throw error;
-            }
-            
-        } catch (error) {
-            console.warn('Could not increment download count for', fileId, ':', error.message);
-            throw error;
-        }
+async incrementDownloadCountOptimized(fileId) {
+    try {
+        // Fetch current count from DB to avoid stale cache overwrite
+        const { data: existing } = await this.supabase
+            .from('downloads')
+            .select('count')
+            .eq('id', fileId)
+            .single();
+
+        const currentCount = existing?.count ?? 0;
+        const newCount = currentCount + 1;
+
+        const { error } = await this.supabase
+            .from('downloads')
+            .upsert({
+                id: fileId,
+                count: newCount,
+                last_download: new Date().toISOString()
+            }, {
+                onConflict: 'id',
+                ignoreDuplicates: false
+            });
+
+        if (error) throw error;
+
+        // Update cache and UI with confirmed DB value
+        this.cache.downloads.set(fileId, { id: fileId, count: newCount });
+        this.updateDownloadDisplay(fileId, newCount);
+
+    } catch (error) {
+        console.warn('Could not increment download count for', fileId, ':', error.message);
+        throw error;
     }
+}
 
     startCooldownTimer(duration) {
         this.disableAllDownloadButtons();
