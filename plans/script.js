@@ -266,11 +266,11 @@ async function showEditModal(plan) {
     updateUnits();
     document.getElementById('unit').value = plan.unit;
     document.getElementById('lessonName').value = plan.lesson_name;
-    document.getElementById('objectives').value = plan.learning_objectives || '';
-    document.getElementById('competency').value = plan.target_competency || '';
-    document.getElementById('usedResources').value = plan.used_resources || '';
-    document.getElementById('lessonDuration').value = plan.lesson_duration || '';
-    document.getElementById('usedStrategies').value = plan.used_strategies || '';
+    document.getElementById('objectives').value = unescapeHTML(plan.learning_objectives || '');
+    document.getElementById('competency').value = unescapeHTML(plan.target_competency || '');
+    document.getElementById('usedResources').value = unescapeHTML(plan.used_resources || '');
+    document.getElementById('lessonDuration').value = unescapeHTML(plan.lesson_duration || '');
+    document.getElementById('usedStrategies').value = unescapeHTML(plan.used_strategies || '');
     document.querySelector(`input[name="classType"][value="${plan.class_type}"]`).checked = true;
     document.querySelector(`input[name="planType"][value="${plan.plan_type}"]`).checked = true;
     
@@ -554,28 +554,28 @@ async function saveCoursePlan() {
 
     const rows = document.querySelectorAll('#tableBody tr');
     const tableData = [];
-    rows.forEach(row => {
-        const data = {};
-        row.querySelectorAll('[data-field]').forEach(input => {
-            data[input.dataset.field] = input.value;
-        });
-        tableData.push(data);
+ rows.forEach(row => {
+    const data = {};
+    row.querySelectorAll('[data-field]').forEach(input => {
+        data[input.dataset.field] = escapeHTML(input.value);
     });
+    tableData.push(data);
+});
 
-    const coursePlan = {
-        area,
-        unit,
-        class_type: classType,
-        plan_type: planType,
-        lesson_name: lessonName,
-        learning_objectives: objectives,
-        target_competency: competency,
-        used_resources: usedResources,
-        lesson_duration: lessonDuration,
-        used_strategies: usedStrategies,
-        table_data: tableData,
-        created_by: getUserFingerprint()
-    };
+const coursePlan = {
+    area,
+    unit,
+    class_type: classType,
+    plan_type: planType,
+    lesson_name: lessonName,
+    learning_objectives: escapeHTML(objectives),
+    target_competency: escapeHTML(competency),
+    used_resources: escapeHTML(usedResources),
+    lesson_duration: lessonDuration,
+    used_strategies: escapeHTML(usedStrategies),
+    table_data: tableData,
+    created_by: getUserFingerprint()
+};
 
     try {
         if (currentEditId) {
@@ -763,6 +763,22 @@ function updateAIButton() {
         }
     }
 }
+// Escape HTML so tags stored as text don't get interpreted as markup
+function escapeHTML(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
 
+// Unescape for putting back into textarea .value (plain text editing)
+function unescapeHTML(str) {
+    if (!str) return '';
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value;
+}
 // Initialize on page load
 loadCoursePlans();
