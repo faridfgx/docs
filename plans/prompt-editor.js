@@ -210,24 +210,44 @@ async function executeAIGeneration(promptText) {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             
-            lessonPlan.stages.forEach((stage, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'ai-generated-row';
-                tr.style.animationDelay = `${index * 0.1}s`;
-                tr.innerHTML = `
-                    <td><input type="text" value="${stage.situation || ''}" data-field="situation"></td>
-                    <td><textarea data-field="resources">${stage.resources || ''}</textarea></td>
-                    <td><textarea data-field="teacherRole">${stage.teacherRole || ''}</textarea></td>
-                    <td><textarea data-field="studentRole">${stage.studentRole || ''}</textarea></td>
-                    <td><input type="text" value="${stage.bloomLevel || ''}" data-field="bloomLevel"></td>
-                    <td><textarea data-field="evaluation">${stage.evaluation || ''}</textarea></td>
-                    <td><input type="text" value="${stage.duration || ''}" data-field="duration" placeholder="مثال: 10"></td>
-                    <td style="text-align: center;">
-                        <button class="btn-danger" onclick="removeTableRow(this)">✕</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+lessonPlan.stages.forEach((stage, index) => {
+    const tr = document.createElement('tr');
+    tr.className = 'ai-generated-row';
+    tr.style.animationDelay = `${index * 0.1}s`;
+
+    // Build cells using DOM — never innerHTML for textarea content
+    const fields = [
+        { tag: 'input',    field: 'situation',   value: stage.situation  || '' },
+        { tag: 'textarea', field: 'resources',   value: stage.resources  || '' },
+        { tag: 'textarea', field: 'teacherRole', value: stage.teacherRole|| '' },
+        { tag: 'textarea', field: 'studentRole', value: stage.studentRole|| '' },
+        { tag: 'input',    field: 'bloomLevel',  value: stage.bloomLevel || '' },
+        { tag: 'textarea', field: 'evaluation',  value: stage.evaluation || '' },
+        { tag: 'input',    field: 'duration',    value: stage.duration   || '', placeholder: 'مثال: 10' },
+    ];
+
+    fields.forEach(f => {
+        const td = document.createElement('td');
+        const el = document.createElement(f.tag);
+        el.dataset.field = f.field;
+        el.value = f.value;          // .value is safe — no HTML parsing
+        if (f.placeholder) el.placeholder = f.placeholder;
+        td.appendChild(el);
+        tr.appendChild(td);
+    });
+
+    // Delete button cell
+    const deleteTd = document.createElement('td');
+    deleteTd.style.textAlign = 'center';
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-danger';
+    delBtn.textContent = '✕';
+    delBtn.onclick = () => removeTableRow(delBtn);
+    deleteTd.appendChild(delBtn);
+    tr.appendChild(deleteTd);
+
+    tbody.appendChild(tr);
+});
             
             updateDeleteButtons();
         }
