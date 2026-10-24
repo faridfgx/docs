@@ -212,6 +212,12 @@ body.hk #stand{display:none}
 .sdm.open{display:block}
 .sdm .it:hover{background:#cde8ff}
 .start{height:430px}
+.kb{background:linear-gradient(#3a3d43,#1b1d21);border:2px solid #0b0c0e;border-radius:12px;padding:10px 12px 14px;box-shadow:0 5px 0 #0a0b0c,0 14px 24px #000a,inset 0 1px 0 #6a6f78}
+.kb button.key{background:linear-gradient(#4d525b,#33373e);border-color:#15171a;color:#e6e9ee;box-shadow:0 3px 0 #0f1012,inset 0 1px 0 #70767f}
+@media(max-width:560px){.kb{padding:6px 5px 8px;border-radius:8px}}
+.ch{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.ch button{width:200px;padding:12px;font-size:15px;background:#1b2b3d;color:#fff;border-color:#4aa3e8}
+.ch button.on{background:#2a6db0;border-color:#fff}
 </style>
 </head>
 <body>
@@ -239,6 +245,9 @@ const W = () => K.ui == 'en' ? 'en' : 'fr';
 const T = (e, f) => W() == 'en' ? e : f;
 const L3 = (e, f, a) => K.ui == 'en' ? e : K.ui == 'fr' ? f : a;
 const flag = (s=80) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100" aria-hidden="true"><path d="M10 22q18-8 36 0v32q-18-8-36 0z" fill="#f25022"/><path d="M54 26q18 8 36 0v32q-18 8-36 0z" fill="#7fba00"/><path d="M10 60q18-8 36 0v28q-18-8-36 0z" fill="#00a4ef"/><path d="M54 64q18 8 36 0v28q-18 8-36 0z" fill="#ffb900"/></svg>`;
+const isMed = d => d[0]=='U' || d[0]=='C';
+const defBoot = () => ["HDD: Samsung SSD 250GB", K.med=='dvd' ? "CD/DVD: DVD-RW Drive" : "USB: Windows 7 Setup Drive", "Network Boot (PXE)"];
+function setMedium(m){ K.med=m; K.usb=K.ins=0; K.boot=defBoot(); K.sel=0 }
 let KH = null;
 const KEYROWS = [['Esc','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','Del'],['~','1','2','3','4','5','6','7','8','9','0','-','+','←'],['Tab','Q','W','E','R','T','Y','U','I','O','P','[',']'],['Caps','A','S','D','F','G','H','J','K','L',';',"'",'Enter'],['Shift','Z','X','C','V','B','N','M',',','.','/','↑'],['Ctrl','Win','Alt','Space','Alt','←','↓','→','F10']];
 const KM = {Delete:'Del',Escape:'Esc',' ':'Space',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓',ArrowRight:'→','=':'+','_':'-'};
@@ -254,9 +263,8 @@ function every(fn, ms) {
     const g = gen, t = setInterval(() => { if (g != gen) clearInterval(t); else fn(() => clearInterval(t)) }, ms)
 }
 const isoSvg = `<svg viewBox="0 0 200 110" class="img" role="img" aria-label="ISO"><rect x="22" y="12" width="66" height="86" rx="5" fill="#eef2f6"/><path d="M68 12l20 20H68z" fill="#c4ccd6"/><text x="55" y="66" font-size="18" font-weight="700" fill="#2a7fc9" text-anchor="middle" font-family="sans-serif">ISO</text><circle cx="145" cy="55" r="42" fill="#c9d2dc"/><circle cx="145" cy="55" r="36" fill="#7fb8e6"/><circle cx="145" cy="55" r="9" fill="#14202e"/><path d="M112 42a38 38 0 0 1 26-17" stroke="#fff" stroke-width="3" fill="none"/></svg>`;
-const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="4" y="16" width="46" height="28" rx="3" fill="#c0c8d2"/><rect x="12" y="22" width="10" height="7" fill="#555"/><rect x="28" y="22" width="10" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="10" fill="#2a7fc9"/><circle cx="142" cy="30" r="5" fill="#fff"/><text x="94" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
-const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect width="84" height="28" rx="9" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/><rect x="84" y="7" width="28" height="14" fill="#c0c8d2"/><rect x="92" y="11" width="6" height="6" fill="#555"/><rect x="104" y="11" width="6" height="6" fill="#555"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/><rect x="219" y="139.5" width="14" height="8" fill="#c0c8d2"/><rect x="221" y="142" width="4" height="3" fill="#555"/><rect x="228" y="142" width="4" height="3" fill="#555"/></g></svg>`;
-const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr','ltr','rtl')}"><div class="dots">${[1,2,3,4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step','Étape','الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous','Précédent','السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next','Suivant','التالي')}</button>` : ''}</div></div>`;
+const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="20" y="16" width="32" height="28" rx="3" fill="#c0c8d2"/><rect x="28" y="20" width="8" height="7" fill="#555"/><rect x="28" y="33" width="8" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="5" fill="#2a7fc9"/><circle cx="145" cy="30" r="5" fill="#fff"/><text x="98" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
+const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect x="80" y="5" width="32" height="18" rx="2" fill="#c0c8d2"/><rect x="94" y="7" width="6" height="4" fill="#555"/><rect x="94" y="14" width="6" height="4" fill="#555"/><rect width="84" height="28" rx="6" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/></g></svg>`;const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr','ltr','rtl')}"><div class="dots">${[1,2,3,4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step','Étape','الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous','Précédent','السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next','Suivant','التالي')}</button>` : ''}</div></div>`;
 function show(h, c) {
     gen++;
     KH = null;
@@ -289,6 +297,7 @@ function renderProgress() {
     const i0 = progressOrder.indexOf(cur);
     if (i0 > pIdx) pIdx = i0;
     $('progressSummary').textContent = pIdx < 0 ? 'لم يبدأ التثبيت بعد' : `تم الوصول إلى ${pIdx + 1} من ${progressSteps.length} مرحلة`;
+    const DV = {p2:'حرق ملف ISO على DVD باستخدام Nero', p3:'إدخال القرص في القارئ', pak:'بدء الإقلاع من القرص'};
     $('progressList').innerHTML = progressSteps.map(([id, label], i) => {
         const active = id === cur, done = i < pIdx || (i == pIdx && !active);
         return `<li class="${done ? 'done' : active ? 'current' : ''}"><span class="status">${done ? '✓' : active ? '▶' : '○'}</span>${i + 1}. ${label}${active ? ' — الحالية' : ''}</li>`;
@@ -334,7 +343,16 @@ const H = {
     o4: ["“Use recommended settings” turns on automatic updates and protection. It is the usual choice.", "« Utiliser les paramètres recommandés » active les mises à jour et la protection. C’est le choix habituel.", "«استخدام الإعدادات الموصى بها» يفعّل التحديثات والحماية تلقائياً. وهو الاختيار المعتاد."],
     o5: ["Check the time zone and date, then continue.", "Vérifiez le fuseau horaire et la date, puis continuez.", "تحقق من المنطقة الزمنية والتاريخ ثم تابع."],
     desk: ["Installation finished. Double-click Computer to see your drives, open Start for the menu, and use Shut down to power off.", "Installation terminée. Double-cliquez sur Ordinateur pour voir vos lecteurs, ouvrez Démarrer pour le menu, et Arrêter pour éteindre.", "انتهى التثبيت. انقر مرتين على «الكمبيوتر» لرؤية الأقراص، افتح قائمة «ابدأ»، واستخدم «إيقاف التشغيل» لإطفاء الجهاز."]
+
 };
+const DH = {p2:["Insert a blank DVD, check the recorder and the ISO in Nero, then click Burn. Wait for the success message, then click Next.","Insérez un DVD vierge, vérifiez le graveur et l’ISO dans Nero, puis cliquez sur Burn. Attendez le message de réussite, puis cliquez sur Suivant.","ضع قرص DVD فارغاً وتأكد من القارئ وملف ISO في Nero ثم اضغط Burn. انتظر رسالة النجاح ثم اضغط «التالي»."],
+ p3:["Click Insert disc: the tray opens, the disc is placed, the tray closes.","Cliquez sur Insérer le disque : le tiroir s’ouvre, le disque est posé, le tiroir se referme.","اضغط «إدخال القرص»: يفتح الدرج ويوضع القرص ثم يُغلق."],
+ post:["The PC is starting. Press F2 or Del now to open the BIOS, or F12 for the boot menu.","Le PC démarre. Appuyez sur F2 ou Suppr pour le BIOS, ou F12 pour le menu de démarrage.","الجهاز يقلع. اضغط F2 أو Del لفتح BIOS أو F12 لقائمة الإقلاع."],
+bios:["Open the Boot tab, select the CD/DVD device with ↑ ↓, move it to 1st place with +, then press F10 to save and exit.","Ouvrez l’onglet Boot, sélectionnez le périphérique CD/DVD avec ↑ ↓, placez-le en 1re position avec +, puis F10 pour enregistrer et quitter.","افتح تبويب Boot واختر جهاز CD/DVD بالأسهم ↑ ↓ وانقله للموضع الأول بالزر + ثم F10 للحفظ والخروج."],
+bmenu:["Use ↑ ↓ to choose the CD/DVD drive, then press Enter. The PC boots from the disc once.","Utilisez ↑ ↓ pour choisir le lecteur CD/DVD, puis Entrée. Le PC démarre une seule fois sur le disque.","استخدم ↑ ↓ لاختيار قارئ CD/DVD ثم Enter. يقلع الجهاز من القرص مرة واحدة."],
+pak:["Press any key now to start the installer from the DVD. After Windows is installed, do not press a key.","Appuyez sur une touche pour lancer l’installation depuis le DVD. Une fois Windows installé, n’appuyez sur rien.","اضغط أي زر الآن لبدء المثبّت من DVD. بعد تثبيت ويندوز لا تضغط أي زر."],
+err:["No bootable device was found. Press any key to restart, then F2 to open the BIOS and put the CD/DVD drive first (or F12 for the boot menu).","Aucun périphérique de démarrage. Appuyez sur une touche, puis F2 pour le BIOS et placez le lecteur CD/DVD en premier (ou F12).","لم يتم العثور على جهاز إقلاع. اضغط أي زر ثم F2 لفتح BIOS واجعل قارئ CD/DVD أولاً (أو F12)."]
+ };
 function help() {
     const p = $('hp'), h = H[cur] || H.wait, i = K.ui == 'en' ? 0 : K.ui == 'fr' ? 1 : 2;
     if (p.classList.contains('open')) { p.classList.remove('open'); return }
@@ -348,16 +366,15 @@ const G = {
         show(`<h1>Choose your language<br>Choisissez votre langue<br>اختر اللغة</h1><button onclick="setUi('ar')">العربية</button><button onclick="setUi('fr')">Français</button><button onclick="setUi('en')">English</button>`, 'pick')
     },
     p1() {
-        show(pg(1, L3('Download the Windows 7 ISO','Télécharger l’ISO de Windows 7','تحميل ملف ISO لويندوز 7'), L3('An ISO is a disc image: one file with everything needed to install Windows. Get it from your licensed source.','Une ISO est une image de disque : un seul fichier contenant tout le nécessaire pour installer Windows. Obtenez-la depuis votre source sous licence.','ملف ISO هو صورة قرص: ملف واحد فيه كل ما يلزم لتثبيت ويندوز. احصل عليه من مصدرك المرخّص.'), isoSvg + (K.iso ? `<p class="okt">✓ Windows7_x64.iso (3.1 ${T('GB','Go')})</p>` : `<div class="mini" id="dm" style="display:none"><i id="dp"></i></div><div style="text-align:center;margin-top:10px"><button class="def" onclick="dl()">${L3('Download','Télécharger','تحميل')}</button></div>`), K.iso), 'prep')
-    },
+        show(pg(1, L3('Download the Windows 7 ISO','Télécharger l’ISO de Windows 7','تحميل ملف ISO لويندوز 7'), L3('An ISO is a disc image: one file with everything needed to install Windows. Get it from your licensed source.','Une ISO est une image de disque : un seul fichier contenant tout le nécessaire pour installer Windows. Obtenez-la depuis votre source sous licence.','ملف ISO هو صورة قرص: ملف واحد فيه كل ما يلزم لتثبيت ويندوز. احصل عليه من مصدرك المرخّص.'), isoSvg + (K.iso ? `<p class="okt">✓ Windows7_x64.iso (3.1 ${T('GB','Go')})</p><p style="text-align:center">${L3('How do you want to install?','Comment installer ?','كيف تريد التثبيت؟')}</p><div class="ch"><button class="${K.med=='dvd'?'on':''}" onclick="setMedium('dvd');go('p1')">📀 ${L3('Burn to DVD','Graver sur DVD','حرق على DVD')}</button><button class="${K.med=='usb'?'on':''}" onclick="setMedium('usb');go('p1')">💾 ${L3('Use a USB drive','Clé USB','استخدام فلاشة USB')}</button></div>` : `<div class="mini" id="dm" style="display:none"><i id="dp"></i></div><div style="text-align:center;margin-top:10px"><button class="def" onclick="dl()">${L3('Download','Télécharger','تحميل')}</button></div>`), K.iso && K.med), 'prep')    },
     p2() {
-        show(pg(2, L3('Create a bootable USB with Rufus','Créer une clé USB amorçable avec Rufus','إنشاء فلاشة إقلاع باستخدام Rufus'), L3('Rufus copies the ISO onto the USB drive and makes it bootable. All data on the drive will be erased.','Rufus copie l’ISO sur la clé USB et la rend amorçable. Toutes les données de la clé seront effacées.','يقوم Rufus بنسخ ملف ISO إلى الفلاشة وجعلها قابلة للإقلاع. سيتم مسح كل بيانات الفلاشة.'), usbSvg + `<div class="rufus"><div class="rb">Rufus</div><div class="rbd"><label>Device</label><div class="f">USB DRIVE (E:) [8 GB]</div><label>Boot selection</label><div class="f">Windows7_x64.iso</div>${rsel('rs','Partition scheme',['MBR','GPT'])}${rsel('rfs','File system',['NTFS','FAT32','exFAT'])}<div class="pbr"><i id="rp" style="width:100%"></i><span id="rt">READY</span></div><div style="text-align:center"><button class="def" onclick="rf()" ${K.usb || !K.iso ? 'disabled' : ''}>START</button></div></div></div>` + (K.usb ? `<p class="okt">✓ ${L3('USB drive is ready','La clé USB est prête','فلاشة USB جاهزة')}</p>` : ''), K.usb), 'prep')
+        if (K.med=='dvd') return burnP2(); show(pg(2, L3('Create a bootable USB with Rufus','Créer une clé USB amorçable avec Rufus','إنشاء فلاشة إقلاع باستخدام Rufus'), L3('Rufus copies the ISO onto the USB drive and makes it bootable. All data on the drive will be erased.','Rufus copie l’ISO sur la clé USB et la rend amorçable. Toutes les données de la clé seront effacées.','يقوم Rufus بنسخ ملف ISO إلى الفلاشة وجعلها قابلة للإقلاع. سيتم مسح كل بيانات الفلاشة.'), usbSvg + `<div class="rufus"><div class="rb">Rufus</div><div class="rbd"><label>Device</label><div class="f">USB DRIVE (E:) [8 GB]</div><label>Boot selection</label><div class="f">Windows7_x64.iso</div>${rsel('rs','Partition scheme',['MBR','GPT'])}${rsel('rfs','File system',['NTFS','FAT32','exFAT'])}<div class="pbr"><i id="rp" style="width:100%"></i><span id="rt">READY</span></div><div style="text-align:center"><button class="def" onclick="rf()" ${K.usb || !K.iso ? 'disabled' : ''}>START</button></div></div></div>` + (K.usb ? `<p class="okt">✓ ${L3('USB drive is ready','La clé USB est prête','فلاشة USB جاهزة')}</p>` : ''), K.usb), 'prep')
     },
     p3() {
-        show(pg(3, L3('Insert the USB drive into the PC','Insérer la clé USB dans le PC','أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).','Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).','أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), pcSvg(K.ins, 0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected','Clé USB branchée','تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive','Insérer la clé','إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
+        if (K.med=='dvd') return dvdP3(); show(pg(3, L3('Insert the USB drive into the PC','Insérer la clé USB dans le PC','أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).','Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).','أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), pcSvg(K.ins, 0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected','Clé USB branchée','تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive','Insérer la clé','إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
     },
     p4() {
-        show(pg(4, L3('Restart the PC','Redémarrer le PC','إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del) to open the BIOS, or F12 for the boot menu.','Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage.','اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع.'), pcSvg(1, K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()">⏻ ${L3('Restart PC','Redémarrer le PC','إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
+        show(pg(4, L3('Restart the PC','Redémarrer le PC','إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del) to open the BIOS, or F12 for the boot menu.','Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage.','اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع.'), caseSvg(K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()">⏻ ${L3('Restart PC','Redémarrer le PC','إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
     },
     bios() {
         const tabs = ['Main','Advanced','Security','Boot','Exit'];
@@ -365,15 +382,14 @@ const G = {
         const row = (a, b) => `<div class="bf"><span>${a}</span><b>${b}</b></div>`;
         let body = '';
         if (t == 0) {
-            body = `<div class="bh">System Overview</div>${row('BIOS Version','v2.14')}${row('Processor','Intel Core i5 3.2GHz')}${row('System Memory','8192 MB')}${row('System Date', new Date().toLocaleDateString('en-US'))}${row('System Time', new Date().toLocaleTimeString('en-GB'))}${row('SATA Port 0','Samsung SSD 250GB')}${row('USB Devices', K.ins ? '1 Mass Storage Device' : 'None')}`;
-        } else if (t == 1) {
+            body = `<div class="bh">System Overview</div>${row('BIOS Version','v2.14')}${row('Processor','Intel Core i5 3.2GHz')}${row('System Memory','8192 MB')}${row('System Date', new Date().toLocaleDateString('en-US'))}${row('System Time', new Date().toLocaleTimeString('en-GB'))}${row('SATA Port 0','Samsung SSD 250GB')}${row('SATA Port 1','HL-DT-ST DVD-RW')}${row('USB Devices', K.ins && K.med!='dvd' ? '1 Mass Storage Device' : 'None')}`;        } else if (t == 1) {
             body = `<div class="bh">Advanced Settings</div>${row('SATA Mode','[AHCI]')}${row('Legacy USB Support','[Enabled]')}${row('Virtualization Technology','[Disabled]')}${row('Onboard LAN','[Enabled]')}${row('Onboard Audio','[Enabled]')}`;
         } else if (t == 2) {
             body = `<div class="bh">Security</div>${row('Supervisor Password','Not Installed')}${row('User Password','Not Installed')}${row('Secure Boot','[Disabled]')}`;
         } else if (t == 3) {
             const ord = ['1st','2nd','3rd'];
             const Lst = K.boot.map((d, i) => `<div class="dev ${i == K.sel ? 'on' : ''}" onclick="K.sel=${i};go('bios')">${ord[i]} Boot Device : ${d}</div>`).join('');
-            body = `<div class="bh">Boot Device Priority</div>${Lst}<div><button onclick="mv(-1)">Move up (+)</button><button onclick="mv(1)">Move down (-)</button></div><div class="ft">The PC starts from the 1st Boot Device. Select the USB device, move it to 1st place, then save and exit (F10).</div>`;
+            body = `<div class="bh">Boot Device Priority</div>${Lst}<div class="ft">The PC starts from the 1st Boot Device. Select the ${K.med=='dvd'?'CD/DVD':'USB'} device, move it to 1st place with the + key, then save and exit (F10).</div>`
         } else {
             body = `<div class="bh">Exit Options</div><div class="dev" onclick="save()">Save Changes and Exit (F10)</div><div class="dev" onclick="biosDiscard()">Discard Changes and Exit</div><div class="dev" onclick="biosDefault()">Load Setup Defaults</div>`;
         }
@@ -396,7 +412,7 @@ const G = {
     off() { show('', 'dos'); later(() => go('post'), 1200) },
     post() {
         let n = 8;
-        show(`<div>ALFATRON PC BIOS v2.14 &middot; CPU: Core i5 3.2GHz<br>Memory test: 8192MB OK<br>USB: ${K.ins ? '1 Mass Storage Device' : 'none'}<br><br><b>Press F2 / Del for Setup &middot; F12 for Boot Menu...</b> <span id="pn">${n}</span></div><div class="kbw">${kbd(['F2','Del','F12'])}</div>`, 'dos');
+        show(`<div>ALFATRON PC BIOS v2.14 &middot; CPU: Core i5 3.2GHz<br>Memory test: 8192MB OK<br>${K.med=='dvd'?'CD/DVD':'USB'}: ${K.ins ? (K.med=='dvd'?'Disc detected (Windows 7 Setup)':'1 Mass Storage Device') : 'none'}<br><br><b>Press F2 / Del for Setup &middot; F12 for Boot Menu...</b> <span id="pn">${n}</span></div><div class="kbw">${kbd(['F2','Del','F12'])}</div>`, 'dos');
         KH = k => {
             if (k == 'F2' || k == 'Del') { K.bt = 0; K.bo0 = [...K.boot]; go('bios') }
             else if (k == 'F12') { K.bm = 0; go('bmenu') }
@@ -419,8 +435,7 @@ const G = {
     pak() {
         let n = 7;
         const i = K.bi;
-        show(`<div>Press any key to boot from USB..<span class="cur">_</span> <span id="c2">${n}</span></div>${K.stage ? `<p style="color:#e88">${L3('Windows is already installed: do NOT press a key, just wait.','Windows est déjà installé : n’appuyez sur AUCUNE touche, patientez.','ويندوز مثبّت بالفعل: لا تضغط أي زر، فقط انتظر.')}</p>` : ''}<div class="kbw">${kbd([], 1)}</div>`, 'dos');
-        KH = () => { K.after = 'lang'; go('load') };
+        show(`<div>Press any key to boot from ${K.med=='dvd'?'CD or DVD':'USB'}..<span class="cur">_</span> <span id="c2">${n}</span></div>${K.stage ? `<p style="color:#e88">${L3('Windows is already installed: do NOT press a key, just wait.','Windows est déjà installé : n’appuyez sur AUCUNE touche, patientez.','ويندوز مثبّت بالفعل: لا تضغط أي زر، فقط انتظر.')}</p>` : ''}<div class="kbw">${kbd([], 1)}</div>`, 'dos');        KH = () => { K.after = 'lang'; go('load') };
         every(stop => {
             $('c2').textContent = --n;
             if (n <= 0) { stop(); bootFrom(i + 1) }
@@ -456,18 +471,10 @@ const G = {
         show(win(`<h2>${T('Where do you want to install Windows?','Où souhaitez-vous installer Windows ?')}</h2><p style="font-size:12.5px;color:#555;margin:0 0 8px">${T('Create a partition for Windows (at least 20 GB), select it, then click Next.','Créez une partition pour Windows (au moins 20 Go), sélectionnez-la, puis cliquez sur Suivant.')}</p><div id="dl"></div><div class="act" id="ac"></div><div id="nw" class="warn"></div>`, 'nextDisk()', {back: 'type'}), 'setup');
         drawDisk()
     },
-    inst() {
-        const S = [T("Copying Windows files","Copie des fichiers Windows"), T("Expanding Windows files","Décompression des fichiers Windows"), T("Installing features","Installation des fonctionnalités"), T("Installing updates","Installation des mises à jour"), T("Completing installation","Fin de l’installation")];
-        show(win(`<h2>${T('Installing Windows...','Installation de Windows...')}</h2><p>${T('Your computer will restart several times during installation.','Votre ordinateur redémarrera plusieurs fois pendant l’installation.')}</p><ul class="steps" id="st">${S.map(s => `<li>${s}</li>`).join('')}</ul><div class="pb bl"><i id="p"></i></div><p id="pc" style="text-align:center">0%</p>`, '', {dis: 1}), 'setup');
-        fill('#p', 16000, () => go('rst'), p => {
-            const n = Math.min(4, Math.floor(p * 5));
-            [...$('st').children].forEach((l, i) => l.className = i < n ? 'ok' : i == n ? 'on' : '');
-            $('pc').textContent = Math.floor(p * 100) + '%'
-        })
-    },
+    inst(){ instScreen(0,.4,8000,'rst') },
     rst() { rstScreen(1) },
     rst2() { rstScreen(2) },
-    svc() { svcScreen([T("Setup is updating registry settings","Mise à jour des paramètres du Registre"), T("Setup is starting services","Démarrage des services")], 'rst2', 6000) },
+    svc(){ instScreen(.4,1,8000,'rst2',T('Setup is updating registry settings and starting services...','Mise à jour du Registre et démarrage des services...')) },
     svc2() { svcScreen([T("Setup is preparing your computer for first use","Préparation de l’ordinateur pour la première utilisation"), T("Checking video performance","Vérification des performances vidéo")], 'o1', 6000) },
     shut() {
         show(`<div class="pulse">${flag(90)}</div><div class="w">${T('Shutting down','Arrêt en cours')}</div>`, 'logo');
@@ -511,8 +518,10 @@ const G = {
             return `<div class="drv"><span style="font-size:40px">💽</span><div><b>${T('Local Disk','Disque local')} (${ltr}:)</b><div class="g"><i style="width:${Math.max(1, Math.round(used / p.s * 100))}%"></i></div><small>${mb(p.s - used)} ${T('free of','libres sur')} ${mb(p.s)}</small></div></div>`
         }).join('');
         const usbL = String.fromCharCode(67 + ord.length),
-        usbDrv = K.ins ? `<div style="padding:6px 16px 0;font-size:12px;color:#555;border-top:1px solid #eee">${T('Devices with Removable Storage','Périphériques utilisant des supports amovibles')}</div><div class="drv"><span style="font-size:40px">💾</span><div><b>${T('Removable Disk','Disque amovible')} (${usbL}:)</b><div class="g"><i style="width:41%"></i></div><small>${mb(4600)} ${T('free of','libres sur')} ${mb(7680)}</small></div></div>` : '',
-        usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="$('w1').classList.add('open')"><span>💾</span>${T('Removable Disk','Disque amovible')} (${usbL}:)</div>` : '',
+usbDrv = !K.ins ? '' : K.med=='dvd'
+  ? `<div style="padding:6px 16px 0;font-size:12px;color:#555;border-top:1px solid #eee">${T('Devices with Removable Storage','Périphériques utilisant des supports amovibles')}</div><div class="drv"><span style="font-size:40px">📀</span><div><b>${T('DVD RW Drive','Lecteur de DVD-RW')} (${usbL}:) Windows 7 x64</b><div class="g"><i style="width:100%"></i></div><small>0 ${T('bytes free of','octets libres sur')} ${mb(3200)}</small></div></div>`
+  : `<div style="padding:6px 16px 0;font-size:12px;color:#555;border-top:1px solid #eee">${T('Devices with Removable Storage','Périphériques utilisant des supports amovibles')}</div><div class="drv"><span style="font-size:40px">💾</span><div><b>${T('Removable Disk','Disque amovible')} (${usbL}:)</b><div class="g"><i style="width:41%"></i></div><small>${mb(4600)} ${T('free of','libres sur')} ${mb(7680)}</small></div></div>`,
+usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="$('w1').classList.add('open')"><span>${K.med=='dvd'?'📀':'💾'}</span>${K.med=='dvd'?T('DVD RW Drive','Lecteur DVD-RW'):T('Removable Disk','Disque amovible')} (${usbL}:)</div>` : '',
         edn = EDN[K.ed ?? 3];
         show(`<div class="ico" style="top:14px" onclick="alert(T('Recycle Bin is empty.','La Corbeille est vide.'))"><span>🗑️</span>${T('Recycle Bin','Corbeille')}</div><div class="ico" style="top:110px" ondblclick="$('w1').classList.add('open')"><span>🖥️</span>${T('Computer','Ordinateur')}</div>${usbIco}<div class="win" id="w1"><div class="bar"><span>${T('Computer','Ordinateur')}</span><button onclick="$('w1').classList.remove('open')">✕</button></div>${drv}${usbDrv}<div style="padding:0 16px 14px;font-size:12px;color:#555">${T('Computer name','Nom de l’ordinateur')} : ${K.pc || 'WIN7-PC'} · Windows 7 ${T(edn[0], edn[1])}</div></div>${startHtml()}<div class="tb"><button class="orb" aria-label="Start" onclick="$('sm').classList.toggle('open')">${flag(26)}</button><div class="tray" id="ck"></div></div>`, 'desk');
         const tick = () => {
@@ -551,7 +560,7 @@ function bootFrom(i) {
         K.after = K.stage == 1 ? 'svc' : K.stage == 2 ? 'svc2' : K.pw ? 'login' : 'desk';
         return go('start')
     }
-    if (d[0] == 'U' && K.ins) { K.bi = i; return go('pak') }
+    if (isMed(d) && K.ins) { K.bi = i; return go('pak') }
     bootFrom(i + 1)
 }
 function mv(d) {
@@ -743,7 +752,36 @@ function startHtml() {
 H.edi = ["Pick the Windows edition that matches your product key (Ultimate is the most complete), then click Next.", "Choisissez l’édition de Windows qui correspond à votre clé de produit (Intégrale est la plus complète), puis cliquez sur Suivant.", "اختر إصدار ويندوز المطابق لمفتاح المنتج (Ultimate هو الأكمل) ثم اضغط «التالي»."];
 H.bmenu = ["Use ↑ ↓ to choose the USB drive, then press Enter. The PC boots from it once, without changing the BIOS.", "Utilisez ↑ ↓ pour choisir la clé USB, puis Entrée. Le PC démarre dessus une seule fois, sans modifier le BIOS.", "استخدم ↑ ↓ لاختيار فلاشة USB ثم Enter. يقلع الجهاز منها مرة واحدة دون تغيير BIOS."];
 H.rst2 = H.rst;
+function burnP2(){
+ show(pg(2,L3('Burn the ISO to a DVD with Nero','Graver l’ISO sur un DVD avec Nero','حرق ملف ISO على قرص DVD باستخدام Nero'),L3('Put a blank DVD in the burner. Nero Burning ROM writes the ISO image to the disc.','Placez un DVD vierge dans le graveur. Nero Burning ROM écrit l’image ISO sur le disque.','ضع قرص DVD فارغاً في القارئ. يقوم Nero Burning ROM بكتابة ملف ISO على القرص.'),
+ isoSvg+`<div class="rufus"><div class="rb" style="background:#c8102e;color:#fff;font-weight:600">Nero Burning ROM — Burn Image</div><div class="rbd"><label>Recorder</label><div class="f">D: HL-DT-ST DVD-RW (blank DVD+R)</div><label>Image file</label><div class="f">Windows7_x64.iso</div><label>Write speed</label><div class="f">Maximum (16x)</div><label><input type="checkbox" checked> Verify written data on disc</label><label><input type="checkbox" checked> Finalize disc</label><div class="pbr"><i id="rp" style="width:${K.usb?100:0}%;background:#c8102e"></i><span id="rt">${K.usb?'Burn process was completed successfully':'Ready'}</span></div><div style="text-align:center"><button class="def" onclick="burn()" ${K.usb||!K.iso?'disabled':''}>Burn</button></div></div></div>`+(K.usb?`<p class="okt">✓ ${L3('Disc is ready','Le disque est prêt','القرص جاهز')}</p>`:''),K.usb),'prep')
+}
+function burn(){ $('rt').textContent='Burning...'; fill('#rp',6000,()=>{K.usb=1;go('p2')},p=>$('rt').textContent='Burning... '+Math.floor(p*100)+'%') }
 
+const dvdSvg=(st,glow)=>`<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="40" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="40" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="62" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow?'class="glow" onclick="pcRestart()" style="cursor:pointer"':''}/><text x="275" y="69" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="213" y="92" width="114" height="22" rx="2" fill="#c3c9d1" stroke="#7b838d"/><rect x="220" y="101" width="66" height="4" fill="#333"/><circle cx="312" cy="103" r="4" fill="#2a7fc9"/>${st==1||st==2?`<rect x="218" y="114" width="104" height="52" rx="3" fill="#aab1ba" stroke="#6b737d"/><ellipse cx="270" cy="140" rx="40" ry="18" fill="#8892a0"/>`:''}${st==2?`<ellipse cx="270" cy="140" rx="36" ry="15" fill="#7fb8e6"/><ellipse cx="270" cy="140" rx="6" ry="2.5" fill="#14202e"/>`:''}</svg>`;
+const caseSvg = glow => K.med=='dvd' ? dvdSvg(K.ins ? 3 : 0, glow) : pcSvg(K.ins ? 1 : 0, glow);
+function dvdP3(){
+ show(pg(3,L3('Insert the disc into the PC','Insérer le disque dans le PC','أدخل القرص في الجهاز'),L3('Open the DVD tray, place the disc label up, then close the tray.','Ouvrez le tiroir DVD, posez le disque face imprimée vers le haut, puis refermez.','افتح درج DVD وضع القرص والوجه المطبوع للأعلى ثم أغلق الدرج.'),
+ `<div id="dv">${dvdSvg(0,0)}</div>`+(K.ins?`<p class="okt">✓ ${L3('Disc inserted','Disque inséré','تم إدخال القرص')}</p>`:`<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insDvd()">${L3('Insert disc','Insérer le disque','إدخال القرص')}</button></div>`),K.ins),'prep')
+}
+function insDvd(){
+ const c=$('cap'),d=n=>$('dv').innerHTML=dvdSvg(n,0);
+ $('ib').disabled=true;
+ c.textContent=L3('1. Press eject: the tray opens.','1. Appuyez sur éjecter : le tiroir s’ouvre.','1. اضغط زر الإخراج: يفتح الدرج.'); d(1);
+ later(()=>{c.textContent=L3('2. Place the disc on the tray.','2. Posez le disque sur le tiroir.','2. ضع القرص على الدرج.'); d(2)},1800);
+ later(()=>{c.textContent=L3('3. Close the tray.','3. Refermez le tiroir.','3. أغلق الدرج.'); d(0)},3600);
+ later(()=>{K.ins=1;go('p3')},4800)
+}
+function instScreen(a,b,ms,next,sub){
+ const S=[T("Copying Windows files","Copie des fichiers Windows"),T("Expanding Windows files","Décompression des fichiers Windows"),T("Installing features","Installation des fonctionnalités"),T("Installing updates","Installation des mises à jour"),T("Completing installation","Fin de l’installation")];
+ show(win(`<h2>${T('Installing Windows...','Installation de Windows...')}</h2><p>${sub||T('Your computer will restart several times during installation.','Votre ordinateur redémarrera plusieurs fois pendant l’installation.')}</p><ul class="steps" id="st">${S.map(s=>`<li>${s}</li>`).join('')}</ul><div class="pb bl"><i id="p"></i></div><p id="pc" style="text-align:center">0%</p>`,'',{dis:1}),'setup');
+ fill('#p',ms,()=>go(next),p=>{
+  const q=a+(b-a)*p,n=Math.min(4,Math.floor(q*5));
+  $('p').style.width=q*100+'%';
+  [...$('st').children].forEach((l,i)=>l.className=i<n?'ok':i==n?'on':'');
+  $('pc').textContent=Math.floor(q*100)+'%'
+ })
+}
 go('pick');
 </script>
 </body>
