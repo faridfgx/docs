@@ -1,1293 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <title>Windows 7 Installation Simulator</title>
-        <style>
-            :root {
-                box-sizing: border-box;
-                padding-top: env(safe-area-inset-top,0px);
-                padding-bottom: env(safe-area-inset-bottom,0px)
-            }
-
-            html {
-                height: 100%;
-                scroll-padding-top: env(safe-area-inset-top,0px)
-            }
-
-            *,*:before,*:after {
-                box-sizing: inherit
-            }
-
-            body {
-                margin: 0;
-                height: 100%;
-                background: #000;
-                font: 14px/1.45 "Segoe UI",Tahoma,Arial,sans-serif;
-                color: #1b1b1b;
-                overflow: hidden
-            }
-
-            #s {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-                display: flex;
-                align-items: center;
-                justify-content: center
-            }
-
-            button {
-                font: inherit;
-                padding: 5px 18px;
-                border: 1px solid #707070;
-                border-radius: 3px;
-                background: linear-gradient(#f2f2f2,#d9d9d9 50%,#cfcfcf);
-                color: #111;
-                cursor: pointer
-            }
-
-            button:hover:not(:disabled) {
-                border-color: #3c7fb1;
-                background: linear-gradient(#eaf6fd,#bee6fd 50%,#a7d9f5)
-            }
-
-            button:disabled {
-                color: #888;
-                border-color: #aaa;
-                cursor: default
-            }
-
-            button.def {
-                border-color: #3c7fb1
-            }
-
-            button:focus-visible,input:focus-visible,select:focus-visible {
-                outline: 2px solid #2a7fc9;
-                outline-offset: 2px
-            }
-
-            input[type=text],input[type=password],select {
-                font: inherit;
-                padding: 4px 6px;
-                border: 1px solid #8e8f8f;
-                border-radius: 2px;
-                width: 100%;
-                max-width: 340px
-            }
-
-            /* prep + bios + dos */
-            .prep {
-                background: #14202e;
-                color: #e8eef5
-            }
-
-            .card {
-                width: min(620px,94vw);
-                padding: 24px
-            }
-
-            .card h1 {
-                font-size: 22px;
-                font-weight: 600;
-                margin: 0 0 4px
-            }
-
-            .card p.sub {
-                margin: 0 0 18px;
-                color: #9fb3c8
-            }
-
-            .task {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 12px;
-                margin-bottom: 8px;
-                border: 1px solid #2c4058;
-                border-radius: 6px;
-                background: #1b2b3d
-            }
-
-            .task.off {
-                opacity: .45
-            }
-
-            .task.done {
-                border-color: #3f8f5f
-            }
-
-            .task .t {
-                flex: 1
-            }
-
-            .task .t small {
-                display: block;
-                color: #9fb3c8
-            }
-
-            .tick {
-                width: 22px;
-                height: 22px;
-                border-radius: 50%;
-                border: 2px solid #587;
-                display: grid;
-                place-items: center;
-                font-size: 13px
-            }
-
-            .done .tick {
-                background: #3f8f5f;
-                border-color: #3f8f5f
-            }
-
-            .mini {
-                height: 6px;
-                background: #2c4058;
-                border-radius: 3px;
-                margin-top: 6px;
-                overflow: hidden
-            }
-
-            .mini i {
-                display: block;
-                height: 100%;
-                width: 0;
-                background: #4aa3e8
-            }
-
-            .bios {
-                background: #0000a8;
-                color: #c8c8ff;
-                font: 15px/1.5 "Courier New",monospace;
-                align-items: flex-start;
-                justify-content: flex-start;
-                padding: 20px 28px;
-                flex-direction: column
-            }
-
-            .bios h3 {
-                margin: 0 0 10px;
-                background: #a8a8a8;
-                color: #0000a8;
-                padding: 0 8px;
-                font-weight: 400
-            }
-
-            .bios .dev {
-                padding: 2px 10px;
-                cursor: pointer;
-                width: min(520px,100%)
-            }
-
-            .bios .dev.on {
-                background: #fff;
-                color: #0000a8
-            }
-
-            .bios button {
-                font-family: inherit;
-                margin: 10px 8px 0 0;
-                padding: 2px 12px;
-                border-radius: 0;
-                background: #a8a8a8;
-                border-color: #fff
-            }
-
-            .dos {
-                background: #000;
-                color: #ddd;
-                font: 16px/1.5 "Courier New",monospace;
-                align-items: flex-start;
-                justify-content: flex-start;
-                padding: 20px 28px;
-                flex-direction: column;
-                cursor: default
-            }
-
-            .cur {
-                animation: bl 1s steps(1) infinite
-            }
-
-            @keyframes bl {
-                50% {
-                    opacity: 0
-                }
-            }
-
-            .load {
-                background: #000;
-                color: #fff;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: stretch;
-                padding: 0 0 12vh
-            }
-
-            .load .t {
-                text-align: center;
-                font-size: 17px;
-                margin-bottom: 16px
-            }
-
-            .pb {
-                height: 16px;
-                width: min(520px,80%);
-                margin: 0 auto;
-                border: 1px solid #7a8;
-                background: #111;
-                border-radius: 2px;
-                overflow: hidden
-            }
-
-            .pb i {
-                display: block;
-                height: 100%;
-                width: 0;
-                background: linear-gradient(#9ee06a,#3da020)
-            }
-
-            .pb.bl i {
-                background: linear-gradient(#8fd1ff,#1f7fd0)
-            }
-
-            .logo {
-                background: #000;
-                color: #fff;
-                flex-direction: column;
-                gap: 14px
-            }
-
-            .logo .w {
-                font-size: 30px;
-                font-weight: 300;
-                letter-spacing: 1px
-            }
-
-            .logo .w b {
-                font-weight: 600
-            }
-
-            .logo .sm {
-                font-size: 15px;
-                opacity: .8
-            }
-
-            .pulse {
-                animation: pu 2.4s ease-in-out infinite
-            }
-
-            @keyframes pu {
-                50% {
-                    transform: scale(1.07);
-                    filter: brightness(1.3)
-                }
-            }
-
-            /* setup dialog */
-            .setup {
-                background: radial-gradient(ellipse at 30% 20%,#9ed3f2,#4a8fc8 45%,#1f4f8a)
-            }
-
-            .dlg {
-                width: min(820px,95vw);
-                height: min(560px,90%);
-                display: flex;
-                flex-direction: column;
-                background: #fff;
-                border: 1px solid #2b4a6e;
-                border-radius: 6px;
-                box-shadow: 0 12px 50px #0008;
-                overflow: hidden
-            }
-
-            .bar {
-                padding: 6px 12px;
-                background: linear-gradient(#cfe5f7,#a9cdea);
-                border-bottom: 1px solid #7ea6c8;
-                font-size: 12px
-            }
-
-            .pane {
-                flex: 1;
-                padding: 18px 28px;
-                overflow: auto;
-                background: #fff
-            }
-
-            .pane h2 {
-                margin: 0 0 12px;
-                color: #003399;
-                font-weight: 400;
-                font-size: 20px
-            }
-
-            .foot {
-                padding: 10px 16px;
-                background: #f0f0f0;
-                border-top: 1px solid #ccc;
-                display: flex;
-                justify-content: flex-end;
-                gap: 8px
-            }
-
-            .row {
-                display: grid;
-                grid-template-columns: 200px 1fr;
-                gap: 10px;
-                align-items: center;
-                margin: 10px 0
-            }
-
-            @media(max-width: 560px) {
-                .row {
-                    grid-template-columns:1fr
-                }
-            }
-
-            .big {
-                text-align: center;
-                padding: 30px 0
-            }
-
-            .big button {
-                font-size: 22px;
-                padding: 14px 30px;
-                border-radius: 8px
-            }
-
-            .lic {
-                border: 1px solid #999;
-                padding: 10px;
-                height: 220px;
-                overflow: auto;
-                font-size: 12.5px;
-                background: #fafafa
-            }
-
-            .opt {
-                display: block;
-                padding: 10px 12px;
-                border: 1px solid transparent;
-                margin: 6px 0;
-                cursor: pointer
-            }
-
-            .opt:hover {
-                background: #eaf4fc;
-                border-color: #a8d4f0
-            }
-
-            .opt b {
-                display: block;
-                color: #003399
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 13px
-            }
-
-            th {
-                background: #f4f4f4;
-                text-align: left;
-                padding: 4px 8px;
-                border: 1px solid #ddd;
-                font-weight: 400
-            }
-
-            td {
-                padding: 5px 8px;
-                border-bottom: 1px solid #eee;
-                cursor: pointer
-            }
-
-            tr.sel td {
-                background: #cde8ff
-            }
-
-            .link {
-                color: #0645ad;
-                cursor: pointer;
-                text-decoration: underline
-            }
-
-            .act {
-                margin: 10px 0;
-                display: flex;
-                gap: 8px;
-                flex-wrap: wrap;
-                align-items: center
-            }
-
-            .warn {
-                color: #b00020;
-                margin-top: 8px;
-                min-height: 20px
-            }
-
-            .steps {
-                list-style: none;
-                padding: 0;
-                margin: 20px 0
-            }
-
-            .steps li {
-                padding: 5px 0;
-                color: #888
-            }
-
-            .steps li.on {
-                color: #000;
-                font-weight: 600
-            }
-
-            .steps li.ok {
-                color: #000
-            }
-
-            .steps li:before {
-                content: "\25CB  "
-            }
-
-            .steps li.ok:before {
-                content: "\2713  ";
-                color: #2a8a2a
-            }
-
-            .steps li.on:before {
-                content: "\25B6  ";
-                color: #2a7fc9
-            }
-
-            /* oobe */
-            .oobe {
-                background: radial-gradient(ellipse at 50% 0,#d9f0fb,#7ec3ea 55%,#3d86c0)
-            }
-
-            .oobe .dlg {
-                background: rgba(255,255,255,.93);
-                height: min(500px,90%);
-                width: min(760px,95vw);
-                border-color: #fff8
-            }
-
-            .oobe .bar {
-                display: none
-            }
-
-            .oobe .foot {
-                background: transparent;
-                border: 0
-            }
-
-            .oobe .pane {
-                background: transparent
-            }
-
-            .oobe h2 {
-                color: #1a5a8a
-            }
-
-            .welcome {
-                background: radial-gradient(ellipse at 50% 40%,#3aa0e0,#0c3d86);
-                color: #fff;
-                font-size: 44px;
-                font-weight: 300;
-                flex-direction: column;
-                gap: 10px
-            }
-
-            /* desktop */
-            .desk {
-                background: radial-gradient(ellipse at 72% 45%,#9ee0fb 0,#3a97dc 30%,#0c4a9e 65%,#05224f);
-                align-items: flex-start;
-                justify-content: flex-start
-            }
-
-            .desk:before {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background: conic-gradient(from 200deg at 72% 45%,#fff0,#fff3 8%,#fff0 16%,#fff2 26%,#fff0 40%);
-                pointer-events: none
-            }
-
-            .ico {
-                position: absolute;
-                left: 14px;
-                width: 76px;
-                text-align: center;
-                color: #fff;
-                font-size: 12px;
-                text-shadow: 0 1px 3px #000;
-                cursor: pointer;
-                user-select: none
-            }
-
-            .ico span {
-                display: block;
-                font-size: 38px
-            }
-
-            .tb {
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                background: linear-gradient(#5d7a9acc,#233a55ee 50%,#10253fee);
-                border-top: 1px solid #9bc;
-                color: #fff;
-                font-size: 12px
-            }
-
-            .orb {
-                width: 46px;
-                height: 46px;
-                margin: -8px 8px 0 8px;
-                border-radius: 50%;
-                border: 2px solid #cfe6f5;
-                background: radial-gradient(circle at 50% 30%,#8fd0ff,#1b6fc2 60%,#0a3c7a);
-                display: grid;
-                place-items: center;
-                padding: 0
-            }
-
-            .tray {
-                margin-left: auto;
-                padding: 0 14px;
-                text-align: center;
-                line-height: 1.2
-            }
-
-            .start {
-                position: absolute;
-                left: 4px;
-                bottom: 40px;
-                width: min(380px,96vw);
-                height: 360px;
-                display: none;
-                background: linear-gradient(90deg,#fff 58%,#2d4f7a 58%);
-                border: 1px solid #9bc;
-                border-radius: 8px 8px 0 0;
-                color: #000;
-                padding: 12px;
-                box-shadow: 0 0 20px #0008
-            }
-
-            .start.open {
-                display: block
-            }
-
-            .start .l {
-                width: 56%
-            }
-
-            .start .r {
-                position: absolute;
-                right: 12px;
-                top: 12px;
-                width: 36%;
-                color: #fff
-            }
-
-            .start div.it {
-                padding: 8px;
-                cursor: pointer;
-                border-radius: 3px
-            }
-
-            .start .l .it:hover {
-                background: #cde8ff
-            }
-
-            .start .r .it:hover {
-                background: #ffffff33
-            }
-
-            .win {
-                position: absolute;
-                left: 12%;
-                top: 10%;
-                width: min(520px,86vw);
-                background: #fff;
-                border: 1px solid #2b4a6e;
-                border-radius: 6px;
-                box-shadow: 0 8px 30px #0009;
-                display: none;
-                color: #000
-            }
-
-            .win.open {
-                display: block
-            }
-
-            .win .bar {
-                display: flex;
-                justify-content: space-between
-            }
-
-            .win .bar button {
-                padding: 0 10px;
-                background: #c9483a;
-                color: #fff;
-                border-color: #7a2218
-            }
-
-            .drv {
-                display: flex;
-                gap: 12px;
-                padding: 16px;
-                align-items: center
-            }
-
-            .drv .g {
-                height: 14px;
-                background: #e6e6e6;
-                border: 1px solid #bbb;
-                width: 240px
-            }
-
-            .drv .g i {
-                display: block;
-                height: 100%;
-                background: linear-gradient(#5fb4f0,#2078c8)
-            }
-
-            #hb,#gb {
-                position: fixed;
-                top: calc(env(safe-area-inset-top,0px) + 8px);
-                right: 10px;
-                z-index: 50;
-                border-radius: 14px;
-                background: #fff;
-                border-color: #2a7fc9;
-                color: #0b4a8a;
-                padding: 3px 14px
-            }
-
-            #gb {
-                right: auto;
-                left: 10px;
-                padding: 3px 10px
-            }
-
-            #hp {
-                position: fixed;
-                z-index: 60;
-                right: 10px;
-                top: calc(env(safe-area-inset-top,0px) + 46px);
-                width: min(360px,92vw);
-                max-height: 70%;
-                overflow: auto;
-                background: #fffbe6;
-                color: #222;
-                border: 1px solid #c9a227;
-                border-radius: 8px;
-                padding: 14px 16px;
-                box-shadow: 0 8px 30px #0008;
-                display: none;
-                font-size: 14px;
-                line-height: 1.6
-            }
-
-            #hp.open {
-                display: block
-            }
-
-            #hp h4 {
-                margin: 0 0 6px;
-                font-size: 15px;
-                color: #6b4e00
-            }
-
-            #hp button {
-                margin-top: 10px
-            }
-
-            #progressWrap {
-                position: fixed;
-                z-index: 55;
-                top: calc(env(safe-area-inset-top,0px) + 8px);
-                left: 190px;
-                right: auto;
-                max-width: none
-            }
-
-            #progressToggle {
-                white-space: nowrap
-            }
-
-            @media(max-width: 560px) {
-                #progressWrap {
-                    left:174px
-                }
-
-                #progressToggle {
-                    padding: 5px 7px;
-                    font-size: 12px
-                }
-
-                #rb {
-                    padding: 3px 8px
-                }
-            }
-
-            #progressToggle {
-                background: #fff;
-                color: #173a5e;
-                border: 1px solid #6ba5d8;
-                border-radius: 7px;
-                padding: 6px 10px;
-                box-shadow: 0 2px 8px #0003
-            }
-
-            #progressPanel {
-                display: none;
-                margin-top: 5px;
-                padding: 12px;
-                background: #f7fbff;
-                color: #172536;
-                border: 1px solid #8bb8dd;
-                border-radius: 8px;
-                box-shadow: 0 8px 24px #0006;
-                max-height: 65vh;
-                overflow: auto
-            }
-
-            #progressPanel.open {
-                display: block
-            }
-
-            #progressPanel h4 {
-                margin: 0 0 8px;
-                color: #174c7a
-            }
-
-            #progressList {
-                padding: 0;
-                margin: 0;
-                list-style: none
-            }
-
-            #progressList li {
-                padding: 7px 8px;
-                border-bottom: 1px solid #dbe6ef;
-                font-size: 13px
-            }
-
-            #progressList li.done {
-                color: #18743b
-            }
-
-            #progressList li.current {
-                background: #e0f0ff;
-                color: #064f8a;
-                font-weight: 700;
-                border-radius: 4px
-            }
-
-            #progressList li .status {
-                float: left;
-                margin-inline-end:8px}
-
-            .kb {
-                width: min(720px,96vw);
-                gap: 5px
-            }
-
-            .kb div {
-                width: 100%;
-                gap: 4px;
-                flex-wrap: nowrap
-            }
-
-            .kb button.key {
-                flex: 1;
-                min-width: 0;
-                padding: 8px 2px;
-                font-size: clamp(9px,1.3vw,12px)
-            }
-
-            .kb button.key.sp {
-                flex: 5;
-                min-width: 0
-            }
-
-            .kbw {
-                width: 100%;
-                padding: 14px 8px 8px;
-                overflow-x: auto
-            }
-
-            @media(max-width: 560px) {
-                .kb {
-                    width:96vw
-                }
-
-                .kb div {
-                    gap: 2px
-                }
-
-                .kb button.key {
-                    padding: 7px 1px;
-                    font-size: 9px
-                }
-            }
-
-            .pick {
-                background: #14202e;
-                color: #e8eef5;
-                flex-direction: column;
-                gap: 14px
-            }
-
-            .pick h1 {
-                font-size: 20px;
-                font-weight: 600;
-                margin: 0;
-                text-align: center;
-                line-height: 1.7
-            }
-
-            .pick button {
-                width: min(300px,86vw);
-                font-size: 20px;
-                padding: 14px;
-                background: #1b2b3d;
-                color: #fff;
-                border-color: #4aa3e8
-            }
-
-            .pick button:hover:not(:disabled) {
-                background: #254463
-            }
-
-            #rb {
-                position: fixed;
-                top: calc(env(safe-area-inset-top,0px) + 8px);
-                left: 58px;
-                z-index: 50;
-                border-radius: 14px;
-                background: #fff;
-                border-color: #c33;
-                color: #a00;
-                padding: 3px 12px
-            }
-
-            .prep {
-                overflow: auto;
-                align-items: flex-start
-            }
-
-            .prep .card {
-                margin: auto
-            }
-
-            .dots {
-                display: flex;
-                gap: 6px;
-                margin-bottom: 10px
-            }
-
-            .dots i {
-                width: 28px;
-                height: 5px;
-                border-radius: 3px;
-                background: #2c4058
-            }
-
-            .dots i.on {
-                background: #4aa3e8
-            }
-
-            .dots i.ok {
-                background: #3f8f5f
-            }
-
-            .stp {
-                font-size: 12px;
-                color: #7fb1e0;
-                margin-bottom: 2px
-            }
-
-            .nav {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 18px
-            }
-
-            .okt {
-                text-align: center;
-                color: #7fdc9f;
-                font-weight: 600
-            }
-
-            .img {
-                display: block;
-                margin: 8px auto;
-                width: 100%;
-                max-width: 340px
-            }
-
-            .rufus {
-                background: #f0f0f0;
-                color: #111;
-                border: 1px solid #555;
-                max-width: 380px;
-                margin: 10px auto;
-                font-size: 12.5px
-            }
-
-            .rufus .rb {
-                background: #fff;
-                padding: 4px 8px;
-                border-bottom: 1px solid #aaa
-            }
-
-            .rufus .rbd {
-                padding: 10px 12px
-            }
-
-            .rufus label {
-                display: block;
-                margin-top: 6px;
-                color: #333
-            }
-
-            .rufus .f {
-                background: #fff;
-                border: 1px solid #888;
-                padding: 3px 6px
-            }
-
-            .pbr {
-                height: 22px;
-                border: 1px solid #888;
-                background: #e6e6e6;
-                position: relative;
-                margin: 12px 0 8px
-            }
-
-            .pbr i {
-                display: block;
-                height: 100%;
-                background: #06b025
-            }
-
-            .pbr span {
-                position: absolute;
-                inset: 0;
-                text-align: center;
-                font-size: 12px;
-                line-height: 22px
-            }
-
-            .kbw {
-                margin-top: auto;
-                align-self: center;
-                padding-top: 14px;
-                max-width: 100%
-            }
-
-            .kb {
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-                align-items: center;
-                font-family: "Segoe UI",sans-serif
-            }
-
-            .kb div {
-                display: flex;
-                gap: 3px;
-                flex-wrap: wrap;
-                justify-content: center
-            }
-
-            .kb button.key {
-                min-width: 30px;
-                padding: 5px 7px;
-                font-size: 11px;
-                border-radius: 4px;
-                background: #3a3f47;
-                color: #ddd;
-                border: 1px solid #666;
-                box-shadow: 0 2px 0 #222
-            }
-
-            .kb button.key.sp {
-                min-width: 130px
-            }
-
-            .kb button.key.hl {
-                background: #ffd23f;
-                color: #000;
-                border-color: #fff;
-                animation: kp .8s infinite alternate
-            }
-
-            .kb button.key.any {
-                background: #5a6b80;
-                color: #fff;
-                animation: kp 1.2s infinite alternate
-            }
-
-            @keyframes kp {
-                to {
-                    box-shadow: 0 0 12px 3px #ffd23f
-                }
-            }
-
-            .glow {
-                animation: gl .9s infinite alternate
-            }
-
-            @keyframes gl {
-                to {
-                    fill: #ff9a9a;
-                    filter: drop-shadow(0 0 6px #f55)
-                }
-            }
-
-            @media(prefers-reduced-motion:reduce) {
-                .pulse,.cur {
-                    animation: none
-                }
-            }
-
-            /* ===== Monitor frame ===== */
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                transition: background .5s
-            }
-
-            #mon {
-                position: relative;
-                display: flex;
-                width: 100%;
-                height: 100%;
-                transition: all .5s ease
-            }
-
-            #mon #s {
-                flex: 1;
-                min-width: 0;
-                min-height: 0;
-                width: auto;
-                height: auto
-            }
-
-            #stand {
-                display: none
-            }
-
-            body.mon {
-                background: radial-gradient(ellipse at 50% 30%,#2c313a,#0a0b0d)
-            }
-
-            body.mon #mon {
-                width: min(94vw,calc((100dvh - 110px) * 1.6));
-                height: auto;
-                aspect-ratio: 16/10;
-                padding: 12px 12px 26px;
-                background: linear-gradient(145deg,#2a2c30,#0e0f11);
-                border-radius: 14px;
-                box-shadow: 0 0 0 2px #444,0 18px 50px #000c,inset 0 0 6px #000;
-            }
-
-            body.mon #mon #s {
-                border-radius: 3px;
-                box-shadow: 0 0 0 2px #000,0 0 30px #4aa3e855
-            }
-
-            /* power LED + brand */
-            body.mon #mon::after {
-                content: "";
-                position: absolute;
-                right: 22px;
-                bottom: 9px;
-                width: 7px;
-                height: 7px;
-                border-radius: 50%;
-                background: #3f8;
-                box-shadow: 0 0 6px #3f8
-            }
-
-            body.mon #mon::before {
-                content: "ALFATRON";
-                position: absolute;
-                left: 50%;
-                bottom: 6px;
-                transform: translateX(-50%);
-                font: 600 10px/1 Arial,sans-serif;
-                letter-spacing: 3px;
-                color: #8a8f98
-            }
-
-            /* stand */
-            body.mon #stand {
-                display: block;
-                width: 90px;
-                height: 34px;
-                background: linear-gradient(90deg,#1a1b1d,#3a3c40,#1a1b1d);
-                clip-path: polygon(18% 0,82% 0,100% 100%,0 100%);
-                margin-top: -1px
-            }
-
-            body.mon #stand:after {
-                content: "";
-                display: block;
-                width: 180px;
-                height: 8px;
-                margin: 34px auto 0;
-                background: #222
-            }
-
-            body.mon #stand {
-                position: relative;
-                height: 42px
-            }
-
-            body.mon #stand:after {
-                position: absolute;
-                left: 50%;
-                top: 34px;
-                transform: translateX(-50%);
-                margin: 0;
-                border-radius: 4px
-            }
-
-            @media(max-width: 560px) {
-                body.mon #mon {
-                    padding:6px 6px 16px;
-                    border-radius: 8px
-                }
-
-                body.mon #stand {
-                    display: none
-                }
-            }
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Windows 7 Installation Simulator</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;height:100%;background:#000;font:14px/1.45 "Segoe UI",Tahoma,Arial,sans-serif;color:#1b1b1b;overflow:hidden}
+#s{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center}
+button{font:inherit;padding:5px 18px;border:1px solid #707070;border-radius:3px;background:linear-gradient(#f2f2f2,#d9d9d9 50%,#cfcfcf);color:#111;cursor:pointer}
+button:hover:not(:disabled){border-color:#3c7fb1;background:linear-gradient(#eaf6fd,#bee6fd 50%,#a7d9f5)}
+button:disabled{color:#888;border-color:#aaa;cursor:default}
+button.def{border-color:#3c7fb1}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #2a7fc9;outline-offset:2px}
+input[type=text],input[type=password],select{font:inherit;padding:4px 6px;border:1px solid #8e8f8f;border-radius:2px;width:100%;max-width:340px}
+/* prep + bios + dos */
+.prep{background:#14202e;color:#e8eef5}
+.card{width:min(620px,94vw);padding:24px}
+.card h1{font-size:22px;font-weight:600;margin:0 0 4px}
+.card p.sub{margin:0 0 18px;color:#9fb3c8}
+.task{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;border:1px solid #2c4058;border-radius:6px;background:#1b2b3d}
+.task.off{opacity:.45}
+.task.done{border-color:#3f8f5f}
+.task .t{flex:1}
+.task .t small{display:block;color:#9fb3c8}
+.tick{width:22px;height:22px;border-radius:50%;border:2px solid #587;display:grid;place-items:center;font-size:13px}
+.done .tick{background:#3f8f5f;border-color:#3f8f5f}
+.mini{height:6px;background:#2c4058;border-radius:3px;margin-top:6px;overflow:hidden}
+.mini i{display:block;height:100%;width:0;background:#4aa3e8}
+.bios{background:#0000a8;color:#c8c8ff;font:15px/1.5 "Courier New",monospace;align-items:flex-start;justify-content:flex-start;padding:20px 28px;flex-direction:column}
+.bios h3{margin:0 0 10px;background:#a8a8a8;color:#0000a8;padding:0 8px;font-weight:400}
+.bios .dev{padding:2px 10px;cursor:pointer;width:min(520px,100%)}
+.bios .dev.on{background:#fff;color:#0000a8}
+.bios button{font-family:inherit;margin:10px 8px 0 0;padding:2px 12px;border-radius:0;background:#a8a8a8;border-color:#fff}
+.dos{background:#000;color:#ddd;font:16px/1.5 "Courier New",monospace;align-items:flex-start;justify-content:flex-start;padding:20px 28px;flex-direction:column;cursor:default}
+.cur{animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.load{background:#000;color:#fff;flex-direction:column;justify-content:flex-end;align-items:stretch;padding:0 0 12vh}
+.load .t{text-align:center;font-size:17px;margin-bottom:16px}
+.pb{height:16px;width:min(520px,80%);margin:0 auto;border:1px solid #7a8;background:#111;border-radius:2px;overflow:hidden}
+.pb i{display:block;height:100%;width:0;background:linear-gradient(#9ee06a,#3da020)}
+.pb.bl i{background:linear-gradient(#8fd1ff,#1f7fd0)}
+.logo{background:#000;color:#fff;flex-direction:column;gap:14px}
+.logo .w{font-size:30px;font-weight:300;letter-spacing:1px}
+.logo .w b{font-weight:600}
+.logo .sm{font-size:15px;opacity:.8}
+.pulse{animation:pu 2.4s ease-in-out infinite}
+@keyframes pu{50%{transform:scale(1.07);filter:brightness(1.3)}}
+/* setup dialog */
+.setup{background:radial-gradient(ellipse at 30% 20%,#9ed3f2,#4a8fc8 45%,#1f4f8a)}
+.dlg{width:min(820px,95vw);height:min(560px,90%);display:flex;flex-direction:column;background:#fff;border:1px solid #2b4a6e;border-radius:6px;box-shadow:0 12px 50px #0008;overflow:hidden}
+.bar{padding:6px 12px;background:linear-gradient(#cfe5f7,#a9cdea);border-bottom:1px solid #7ea6c8;font-size:12px}
+.pane{flex:1;padding:18px 28px;overflow:auto;background:#fff}
+.pane h2{margin:0 0 12px;color:#003399;font-weight:400;font-size:20px}
+.foot{padding:10px 16px;background:#f0f0f0;border-top:1px solid #ccc;display:flex;justify-content:flex-end;gap:8px}
+.row{display:grid;grid-template-columns:200px 1fr;gap:10px;align-items:center;margin:10px 0}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.big{text-align:center;padding:30px 0}
+.big button{font-size:22px;padding:14px 30px;border-radius:8px}
+.lic{border:1px solid #999;padding:10px;height:220px;overflow:auto;font-size:12.5px;background:#fafafa}
+.opt{display:block;padding:10px 12px;border:1px solid transparent;margin:6px 0;cursor:pointer}
+.opt:hover{background:#eaf4fc;border-color:#a8d4f0}
+.opt b{display:block;color:#003399}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f4f4f4;text-align:left;padding:4px 8px;border:1px solid #ddd;font-weight:400}
+td{padding:5px 8px;border-bottom:1px solid #eee;cursor:pointer}
+tr.sel td{background:#cde8ff}
+.link{color:#0645ad;cursor:pointer;text-decoration:underline}
+.act{margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.warn{color:#b00020;margin-top:8px;min-height:20px}
+.steps{list-style:none;padding:0;margin:20px 0}
+.steps li{padding:5px 0;color:#888}
+.steps li.on{color:#000;font-weight:600}
+.steps li.ok{color:#000}
+.steps li:before{content:"\25CB  "}
+.steps li.ok:before{content:"\2713  ";color:#2a8a2a}
+.steps li.on:before{content:"\25B6  ";color:#2a7fc9}
+/* oobe */
+.oobe{background:radial-gradient(ellipse at 50% 0,#d9f0fb,#7ec3ea 55%,#3d86c0)}
+.oobe .dlg{background:rgba(255,255,255,.93);height:min(500px,90%);width:min(760px,95vw);border-color:#fff8}
+.oobe .bar{display:none}
+.oobe .foot{background:transparent;border:0}
+.oobe .pane{background:transparent}
+.oobe h2{color:#1a5a8a}
+.welcome{background:radial-gradient(ellipse at 50% 40%,#3aa0e0,#0c3d86);color:#fff;font-size:44px;font-weight:300;flex-direction:column;gap:10px}
+/* desktop */
+.desk{background:radial-gradient(ellipse at 72% 45%,#9ee0fb 0,#3a97dc 30%,#0c4a9e 65%,#05224f);align-items:flex-start;justify-content:flex-start}
+.desk:before{content:"";position:absolute;inset:0;background:conic-gradient(from 200deg at 72% 45%,#fff0,#fff3 8%,#fff0 16%,#fff2 26%,#fff0 40%);pointer-events:none}
+.ico{position:absolute;left:14px;width:76px;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 3px #000;cursor:pointer;user-select:none}
+.ico span{display:block;font-size:38px}
+.tb{position:absolute;left:0;right:0;bottom:0;height:40px;display:flex;align-items:center;background:linear-gradient(#5d7a9acc,#233a55ee 50%,#10253fee);border-top:1px solid #9bc;color:#fff;font-size:12px}
+.orb{width:46px;height:46px;margin:-8px 8px 0 8px;border-radius:50%;border:2px solid #cfe6f5;background:radial-gradient(circle at 50% 30%,#8fd0ff,#1b6fc2 60%,#0a3c7a);display:grid;place-items:center;padding:0}
+.tray{margin-left:auto;padding:0 14px;text-align:center;line-height:1.2}
+.start{position:absolute;left:4px;bottom:40px;width:min(380px,96vw);height:360px;display:none;background:linear-gradient(90deg,#fff 58%,#2d4f7a 58%);border:1px solid #9bc;border-radius:8px 8px 0 0;color:#000;padding:12px;box-shadow:0 0 20px #0008}
+.start.open{display:block}
+.start .l{width:56%}
+.start .r{position:absolute;right:12px;top:12px;width:36%;color:#fff}
+.start div.it{padding:8px;cursor:pointer;border-radius:3px}
+.start .l .it:hover{background:#cde8ff}
+.start .r .it:hover{background:#ffffff33}
+.win{position:absolute;left:12%;top:10%;width:min(520px,86vw);background:#fff;border:1px solid #2b4a6e;border-radius:6px;box-shadow:0 8px 30px #0009;display:none;color:#000}
+.win.open{display:block}
+.win .bar{display:flex;justify-content:space-between}
+.win .bar button{padding:0 10px;background:#c9483a;color:#fff;border-color:#7a2218}
+.drv{display:flex;gap:12px;padding:16px;align-items:center}
+.drv .g{height:14px;background:#e6e6e6;border:1px solid #bbb;width:240px}
+.drv .g i{display:block;height:100%;background:linear-gradient(#5fb4f0,#2078c8)}
+#hb,#gb{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:10px;z-index:50;border-radius:14px;background:#fff;border-color:#2a7fc9;color:#0b4a8a;padding:3px 14px}
+#gb{right:auto;left:10px;padding:3px 10px}
+#hp{position:fixed;z-index:60;right:10px;top:calc(env(safe-area-inset-top,0px) + 46px);width:min(360px,92vw);max-height:70%;overflow:auto;background:#fffbe6;color:#222;border:1px solid #c9a227;border-radius:8px;padding:14px 16px;box-shadow:0 8px 30px #0008;display:none;font-size:14px;line-height:1.6}
+#hp.open{display:block}
+#hp h4{margin:0 0 6px;font-size:15px;color:#6b4e00}
+#hp button{margin-top:10px}
+#progressWrap{position:fixed;z-index:55;top:calc(env(safe-area-inset-top,0px) + 8px);left:190px;right:auto;max-width:none}
+#progressToggle{white-space:nowrap}
+@media(max-width:560px){#progressWrap{left:174px}#progressToggle{padding:5px 7px;font-size:12px}#rb{padding:3px 8px}}
+#progressToggle{background:#fff;color:#173a5e;border:1px solid #6ba5d8;border-radius:7px;padding:6px 10px;box-shadow:0 2px 8px #0003}
+#progressPanel{display:none;margin-top:5px;padding:12px;background:#f7fbff;color:#172536;border:1px solid #8bb8dd;border-radius:8px;box-shadow:0 8px 24px #0006;max-height:65vh;overflow:auto}
+#progressPanel.open{display:block}
+#progressPanel h4{margin:0 0 8px;color:#174c7a}
+#progressList{padding:0;margin:0;list-style:none}
+#progressList li{padding:7px 8px;border-bottom:1px solid #dbe6ef;font-size:13px}
+#progressList li.done{color:#18743b}
+#progressList li.current{background:#e0f0ff;color:#064f8a;font-weight:700;border-radius:4px}
+#progressList li .status{float:left;margin-inline-end:8px}
+.kb{width:min(720px,96vw);gap:5px}
+.kb div{width:100%;gap:4px;flex-wrap:nowrap}
+.kb button.key{flex:1;min-width:0;padding:8px 2px;font-size:clamp(9px,1.3vw,12px)}
+.kb button.key.sp{flex:5;min-width:0}
+.kbw{width:100%;padding:14px 8px 8px;overflow-x:auto}
+@media(max-width:560px){.kb{width:96vw}.kb div{gap:2px}.kb button.key{padding:7px 1px;font-size:9px}}
+.pick{background:#14202e;color:#e8eef5;flex-direction:column;gap:14px}
+.pick h1{font-size:20px;font-weight:600;margin:0;text-align:center;line-height:1.7}
+.pick button{width:min(300px,86vw);font-size:20px;padding:14px;background:#1b2b3d;color:#fff;border-color:#4aa3e8}
+.pick button:hover:not(:disabled){background:#254463}
+#rb{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:58px;z-index:50;border-radius:14px;background:#fff;border-color:#c33;color:#a00;padding:3px 12px}
+.prep{overflow:auto;align-items:flex-start}
+.prep .card{margin:auto}
+.dots{display:flex;gap:6px;margin-bottom:10px}
+.dots i{width:28px;height:5px;border-radius:3px;background:#2c4058}
+.dots i.on{background:#4aa3e8}
+.dots i.ok{background:#3f8f5f}
+.stp{font-size:12px;color:#7fb1e0;margin-bottom:2px}
+.nav{display:flex;justify-content:space-between;margin-top:18px}
+.okt{text-align:center;color:#7fdc9f;font-weight:600}
+.img{display:block;margin:8px auto;width:100%;max-width:340px}
+.rufus{background:#f0f0f0;color:#111;border:1px solid #555;max-width:380px;margin:10px auto;font-size:12.5px}
+.rufus .rb{background:#fff;padding:4px 8px;border-bottom:1px solid #aaa}
+.rufus .rbd{padding:10px 12px}
+.rufus label{display:block;margin-top:6px;color:#333}
+.rufus .f{background:#fff;border:1px solid #888;padding:3px 6px}
+.rufus select{max-width:none;border-radius:0;border-color:#888;padding:2px 4px}
+.pbr{height:22px;border:1px solid #888;background:#e6e6e6;position:relative;margin:12px 0 8px}
+.pbr i{display:block;height:100%;background:#06b025}
+.pbr span{position:absolute;inset:0;text-align:center;font-size:12px;line-height:22px}
+.kbw{margin-top:auto;align-self:center;padding-top:14px;max-width:100%}
+.kb{display:flex;flex-direction:column;gap:4px;align-items:center;font-family:"Segoe UI",sans-serif}
+.kb div{display:flex;gap:3px;flex-wrap:wrap;justify-content:center}
+.kb button.key{min-width:30px;padding:5px 7px;font-size:11px;border-radius:4px;background:#3a3f47;color:#ddd;border:1px solid #666;box-shadow:0 2px 0 #222}
+.kb button.key.sp{min-width:130px}
+.kb button.key.hl{background:#ffd23f;color:#000;border-color:#fff;animation:kp .8s infinite alternate}
+.kb button.key.any{background:#5a6b80;color:#fff;animation:kp 1.2s infinite alternate}
+@keyframes kp{to{box-shadow:0 0 12px 3px #ffd23f}}
+.glow{animation:gl .9s infinite alternate}
+@keyframes gl{to{fill:#ff9a9a;filter:drop-shadow(0 0 6px #f55)}}
+@media(prefers-reduced-motion:reduce){.pulse,.cur{animation:none}}
+/* ===== Monitor frame ===== */
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;transition:background .5s}
+#mon{position:relative;display:flex;width:100%;height:100%;transition:all .5s ease}
+#mon #s{flex:1;min-width:0;min-height:0;width:auto;height:auto}
+#stand{display:none}
+body.mon{background:radial-gradient(ellipse at 50% 30%,#2c313a,#0a0b0d)}
+body.mon #mon{width:min(94vw,calc((100dvh - 110px) * 1.6));height:auto;aspect-ratio:16/10;padding:12px 12px 26px;background:linear-gradient(145deg,#2a2c30,#0e0f11);border-radius:14px;box-shadow:0 0 0 2px #444,0 18px 50px #000c,inset 0 0 6px #000}
+body.mon #mon #s{border-radius:3px;box-shadow:0 0 0 2px #000,0 0 30px #4aa3e855}
+body.mon #mon::after{content:"";position:absolute;right:22px;bottom:9px;width:7px;height:7px;border-radius:50%;background:#3f8;box-shadow:0 0 6px #3f8}
+body.mon #mon::before{content:"ALFATRON";position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font:600 10px/1 Arial,sans-serif;letter-spacing:3px;color:#8a8f98}
+body.mon #stand{display:block;width:90px;height:34px;background:linear-gradient(90deg,#1a1b1d,#3a3c40,#1a1b1d);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);margin-top:-1px;position:relative;height:42px}
+body.mon #stand:after{content:"";display:block;width:180px;height:8px;background:#222;position:absolute;left:50%;top:34px;transform:translateX(-50%);margin:0;border-radius:4px}
+@media(max-width:560px){body.mon #mon{padding:6px 6px 16px;border-radius:8px}body.mon #stand{display:none}}
 /* keyboard below the screen */
 #mon{flex:1;min-height:0;height:auto}
 body.mon #mon{flex:none}
-#kbc{display:none;width:100%;flex:none;justify-content:center;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 8px);background:#14202e}
+#kbc{display:none;width:100%;flex:none;justify-content:center;align-items:center;padding:8px 0 calc(env(safe-area-inset-bottom,0px) + 8px);background:#14202e;position:relative;z-index:100;pointer-events:auto}
 body.hk #kbc{display:flex}
 body.mon.hk #kbc{background:transparent}
 body.mon.hk #mon{width:min(94vw,calc((100dvh - 300px) * 1.6))}
 body.hk #stand{display:none}
-#kbc .kbw{margin:0;padding:0 8px}
-#kbc .kb{width:min(900px,96vw)}
+#kbc .kbw{margin:0 auto;padding:0 8px;width:100%;display:flex;justify-content:center}
+#kbc .kb{width:min(900px,96vw);margin:0 auto}
+#kbc button.key{cursor:pointer;pointer-events:auto}
 #s .kbw{display:none}
 .toast{display:none;position:fixed;z-index:90;left:50%;top:calc(env(safe-area-inset-top,0px) + 50px);transform:translateX(-50%);width:80%;background:#fffbe6;color:#222;border:1px solid #c9a227;border-radius:10px;padding:16px 20px;font-size:22px;line-height:1.6;text-align:center;box-shadow:0 8px 30px #0008}
 .toast button{margin-top:10px;font-size:20px}
-     #kbc{justify-content:center;align-items:center}
-#kbc .kbw{width:100%;display:flex;justify-content:center;margin:0 auto}
-#kbc .kb{margin:0 auto}
-#kbc{position:relative;z-index:100;pointer-events:auto}
-#kbc button.key{cursor:pointer;pointer-events:auto}
- .bios .tabs{display:flex;background:#a8a8a8;width:min(640px,100%);margin-bottom:12px;flex-wrap:wrap}
+.bios .tabs{display:flex;background:#a8a8a8;width:min(640px,100%);margin-bottom:12px;flex-wrap:wrap}
 .bios .tabs span{padding:0 16px;color:#0000a8;cursor:pointer}
 .bios .tabs span.on{background:#0000a8;color:#ffff55}
 .bios .bf{display:flex;justify-content:space-between;width:min(600px,100%);padding:2px 10px}
 .bios .bf b{font-weight:400;color:#fff}
 .bios .bh{color:#ffff55;margin:10px 0 6px}
 .bios .ft{margin-top:14px;color:#ffff55;font-size:13px}
-
-  </style>
-    </head>
-    <body>
-        <div id="progressWrap" style="display:none">
-            <button id="progressToggle" onclick="toggleProgress()">خطوات التثبيت ▾</button>
-            <div id="progressPanel" dir="rtl">
-                <h4>متابعة تقدم التثبيت </h4>
-                <div id="progressSummary"></div>
-                <ul id="progressList"></ul>
-            </div>
-        </div>
-        <div id="mon">
-            <div id="s"></div>
-        </div>
-        <div id="stand"></div>
+/* --- new: dialogs, boot menu, shut down, start menu --- */
+.md{position:absolute;inset:0;z-index:80;background:#0006;display:flex;align-items:center;justify-content:center}
+.mb{width:min(440px,90%);background:#fff;border:1px solid #2b4a6e;border-radius:6px;box-shadow:0 10px 40px #000a;color:#000;overflow:hidden}
+.mb .bd{display:flex;gap:14px;padding:18px 20px;font-size:13.5px}
+.mb .bt{display:flex;justify-content:flex-end;gap:8px;padding:10px 14px;background:#f0f0f0;border-top:1px solid #ccc}
+.dos .dev{padding:2px 10px;cursor:pointer;width:min(420px,100%)}
+.dos .dev.on{background:#ddd;color:#000}
+.sdm{display:none;position:absolute;right:0;bottom:34px;width:100%;background:#fff;color:#000;border:1px solid #9bc;box-shadow:0 4px 12px #0008}
+.sdm.open{display:block}
+.sdm .it:hover{background:#cde8ff}
+.start{height:430px}
+</style>
+</head>
+<body>
+<div id="progressWrap" style="display:none">
+    <button id="progressToggle" onclick="toggleProgress()">خطوات التثبيت ▾</button>
+    <div id="progressPanel" dir="rtl">
+        <h4>متابعة تقدم التثبيت </h4>
+        <div id="progressSummary"></div>
+        <ul id="progressList"></ul>
+    </div>
+</div>
+<div id="mon"><div id="s"></div></div>
+<div id="stand"></div>
 <div id="kbc"></div>
 <div id="toast" class="toast"></div>
-        <button id="hb" onclick="help()" style="display:none"></button>
-        <button id="rb" onclick="pcRestart()" style="display:none"></button>
-        <button id="gb" onclick="go('pick')" aria-label="Language" style="display:none">🌐</button>
-        <div id="hp"></div>
-        <script>
-            const root = document.getElementById('s')
-              , $ = id => document.getElementById(id);
-            let gen = 0
-              , cur = 'pick';
-            const K = {
-                ui: null,
-                pw: '',
-                stage: 0,
-                pe: 0,
-                after: 'lang',
-                bi: 0,
-                iso: 0,
-                usb: 0,
-                ins: 0,
-                boot: ["HDD: Samsung SSD 250GB", "USB: Windows 7 Setup Drive", "Network Boot (PXE)"],
-                sel: 0,
-                user: "",
-                pc: "",
-                parts: [],
-                ps: 0,
-                adv: 0
-            };
-            const W = () => K.ui == 'en' ? 'en' : 'fr';
-            const T = (e, f) => W() == 'en' ? e : f;
-            const L3 = (e, f, a) => K.ui == 'en' ? e : K.ui == 'fr' ? f : a;
-            const flag = (s=80) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100" aria-hidden="true"><path d="M10 22q18-8 36 0v32q-18-8-36 0z" fill="#f25022"/><path d="M54 26q18 8 36 0v32q-18 8-36 0z" fill="#7fba00"/><path d="M10 60q18-8 36 0v28q-18-8-36 0z" fill="#00a4ef"/><path d="M54 64q18 8 36 0v28q-18 8-36 0z" fill="#ffb900"/></svg>`;
-            let KH = null;
-            const KEYROWS = [['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'Del'], ['~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', '←'], ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']'], ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'], ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '↑'], ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', '←', '↓', '→', 'F10']];
-            const KM = {
-                Delete: 'Del',
-                Escape: 'Esc',
-                ' ': 'Space',
-                ArrowLeft: '←',
-                ArrowUp: '↑',
-                ArrowDown: '↓',
-                ArrowRight: '→',
-                '=': '+',
-                '_': '-'
-            };
-            addEventListener('keydown', e => {
-                if (!KH || e.repeat)
-                    return;
-                e.preventDefault();
-                KH(KM[e.key] || e.key)
-            }
-            );
+<button id="hb" onclick="help()" style="display:none"></button>
+<button id="rb" onclick="pcRestart()" style="display:none"></button>
+<button id="gb" onclick="go('pick')" aria-label="Language" style="display:none">🌐</button>
+<div id="hp"></div>
+<script>
+const root = document.getElementById('s'), $ = id => document.getElementById(id);
+let gen = 0, cur = 'pick';
+const K = {ui:null,pw:'',stage:0,pe:0,after:'lang',bi:0,iso:0,usb:0,ins:0,boot:["HDD: Samsung SSD 250GB","USB: Windows 7 Setup Drive","Network Boot (PXE)"],sel:0,user:"",pc:"",parts:[],ps:0,adv:0};
+const W = () => K.ui == 'en' ? 'en' : 'fr';
+const T = (e, f) => W() == 'en' ? e : f;
+const L3 = (e, f, a) => K.ui == 'en' ? e : K.ui == 'fr' ? f : a;
+const flag = (s=80) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100" aria-hidden="true"><path d="M10 22q18-8 36 0v32q-18-8-36 0z" fill="#f25022"/><path d="M54 26q18 8 36 0v32q-18 8-36 0z" fill="#7fba00"/><path d="M10 60q18-8 36 0v28q-18-8-36 0z" fill="#00a4ef"/><path d="M54 64q18 8 36 0v28q-18 8-36 0z" fill="#ffb900"/></svg>`;
+let KH = null;
+const KEYROWS = [['Esc','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','Del'],['~','1','2','3','4','5','6','7','8','9','0','-','+','←'],['Tab','Q','W','E','R','T','Y','U','I','O','P','[',']'],['Caps','A','S','D','F','G','H','J','K','L',';',"'",'Enter'],['Shift','Z','X','C','V','B','N','M',',','.','/','↑'],['Ctrl','Win','Alt','Space','Alt','←','↓','→','F10']];
+const KM = {Delete:'Del',Escape:'Esc',' ':'Space',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓',ArrowRight:'→','=':'+','_':'-'};
+addEventListener('keydown', e => {
+    if (!KH || e.repeat) return;
+    e.preventDefault();
+    KH(KM[e.key] || e.key)
+});
 let PK = null;
 const kbHtml = (hl, any) => `<div class="kbw"><div class="kb">${KEYROWS.map(r => `<div>${r.map(k => `<button class="key ${any ? 'any' : hl.includes(k) ? 'hl' : ''} ${k == 'Space' ? 'sp' : ''}" aria-label="${k}">${k}</button>`).join('')}</div>`).join('')}</div></div>`;
 const kbd = (hl, any) => { PK = [hl, any]; return ''; };
-            function every(fn, ms) {
-                const g = gen
-                  , t = setInterval( () => {
-                    if (g != gen)
-                        clearInterval(t);
-                    else
-                        fn( () => clearInterval(t))
-                }
-                , ms)
-            }
-            const isoSvg = `<svg viewBox="0 0 200 110" class="img" role="img" aria-label="ISO"><rect x="22" y="12" width="66" height="86" rx="5" fill="#eef2f6"/><path d="M68 12l20 20H68z" fill="#c4ccd6"/><text x="55" y="66" font-size="18" font-weight="700" fill="#2a7fc9" text-anchor="middle" font-family="sans-serif">ISO</text><circle cx="145" cy="55" r="42" fill="#c9d2dc"/><circle cx="145" cy="55" r="36" fill="#7fb8e6"/><circle cx="145" cy="55" r="9" fill="#14202e"/><path d="M112 42a38 38 0 0 1 26-17" stroke="#fff" stroke-width="3" fill="none"/></svg>`;
-            const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="4" y="16" width="46" height="28" rx="3" fill="#c0c8d2"/><rect x="12" y="22" width="10" height="7" fill="#555"/><rect x="28" y="22" width="10" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="10" fill="#2a7fc9"/><circle cx="142" cy="30" r="5" fill="#fff"/><text x="94" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
-            const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect width="84" height="28" rx="9" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/><rect x="84" y="7" width="28" height="14" fill="#c0c8d2"/><rect x="92" y="11" width="6" height="6" fill="#555"/><rect x="104" y="11" width="6" height="6" fill="#555"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/><rect x="219" y="139.5" width="14" height="8" fill="#c0c8d2"/><rect x="221" y="142" width="4" height="3" fill="#555"/><rect x="228" y="142" width="4" height="3" fill="#555"/></g></svg>`;
-            const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr', 'ltr', 'rtl')}"><div class="dots">${[1, 2, 3, 4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step', 'Étape', 'الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous', 'Précédent', 'السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next', 'Suivant', 'التالي')}</button>` : ''}</div></div>`;
+function every(fn, ms) {
+    const g = gen, t = setInterval(() => { if (g != gen) clearInterval(t); else fn(() => clearInterval(t)) }, ms)
+}
+const isoSvg = `<svg viewBox="0 0 200 110" class="img" role="img" aria-label="ISO"><rect x="22" y="12" width="66" height="86" rx="5" fill="#eef2f6"/><path d="M68 12l20 20H68z" fill="#c4ccd6"/><text x="55" y="66" font-size="18" font-weight="700" fill="#2a7fc9" text-anchor="middle" font-family="sans-serif">ISO</text><circle cx="145" cy="55" r="42" fill="#c9d2dc"/><circle cx="145" cy="55" r="36" fill="#7fb8e6"/><circle cx="145" cy="55" r="9" fill="#14202e"/><path d="M112 42a38 38 0 0 1 26-17" stroke="#fff" stroke-width="3" fill="none"/></svg>`;
+const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="4" y="16" width="46" height="28" rx="3" fill="#c0c8d2"/><rect x="12" y="22" width="10" height="7" fill="#555"/><rect x="28" y="22" width="10" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="10" fill="#2a7fc9"/><circle cx="142" cy="30" r="5" fill="#fff"/><text x="94" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
+const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect width="84" height="28" rx="9" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/><rect x="84" y="7" width="28" height="14" fill="#c0c8d2"/><rect x="92" y="11" width="6" height="6" fill="#555"/><rect x="104" y="11" width="6" height="6" fill="#555"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/><rect x="219" y="139.5" width="14" height="8" fill="#c0c8d2"/><rect x="221" y="142" width="4" height="3" fill="#555"/><rect x="228" y="142" width="4" height="3" fill="#555"/></g></svg>`;
+const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr','ltr','rtl')}"><div class="dots">${[1,2,3,4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step','Étape','الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous','Précédent','السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next','Suivant','التالي')}</button>` : ''}</div></div>`;
 function show(h, c) {
     gen++;
     KH = null;
@@ -1298,602 +267,484 @@ function show(h, c) {
     $('kbc').innerHTML = k ? kbHtml(k[0], k[1]) : '';
     document.body.classList.toggle('hk', !!k);
 }
-            function later(f, ms) {
-                const g = gen;
-                setTimeout( () => {
-                    if (g == gen)
-                        f()
-                }
-                , ms)
-            }
-            function fill(sel, ms, cb, on) {
-                const g = gen
-                  , t0 = performance.now();
-                (function f(t) {
-                    if (g != gen)
-                        return;
-                    const p = Math.max(0, Math.min(1, (t - t0) / ms))
-                      , e = document.querySelector(sel);
-                    if (e)
-                        e.style.width = p * 100 + '%';
-                    on && on(p);
-                    p < 1 ? requestAnimationFrame(f) : cb && cb()
-                }
-                )(t0)
-            }
-
-            const progressSteps = [['p1', 'تحميل ملف Windows ISO'], ['p2', 'إنشاء فلاشة إقلاع باستخدام Rufus'], ['p3', 'توصيل الفلاشة بالحاسوب'], ['p4', 'إعادة تشغيل الحاسوب'], ['post', 'الدخول إلى BIOS'], ['bios', 'ضبط أولوية الإقلاع من USB'], ['pak', 'بدء الإقلاع من الفلاشة'], ['load', 'تحميل ملفات Windows'], ['lang', 'اختيار اللغة والمنطقة ولوحة المفاتيح'], ['home', 'بدء التثبيت'], ['lic', 'الموافقة على شروط الترخيص'], ['type', 'اختيار نوع التثبيت'], ['disk', 'اختيار القرص وإنشاء القسم'], ['inst', 'نسخ الملفات وتثبيت Windows'], ['rst', 'إعادة تشغيل الحاسوب'], ['svc', 'إكمال إعداد النظام'], ['o1', 'إنشاء حساب المستخدم واسم الحاسوب'], ['o2', 'إعداد كلمة المرور'], ['o3', 'إدخال مفتاح المنتج أو تخطيه'], ['o4', 'اختيار إعدادات التحديث والحماية'], ['o5', 'ضبط الوقت والتاريخ'], ['wel', 'التهيئة لأول تشغيل'], ['login', 'تسجيل الدخول'], ['desk', 'الوصول إلى سطح المكتب']];
-            const progressOrder = progressSteps.map(x => x[0]);
-            function toggleProgress() {
-                $('progressPanel').classList.toggle('open');
-                renderProgress()
-            }
-            function renderProgress() {
-                const wrap = $('progressWrap');
-                if (!wrap)
-                    return;
-                wrap.style.display = K.ui ? 'block' : 'none';
-                const idx = progressOrder.indexOf(cur);
-                $('progressSummary').textContent = idx < 0 ? 'المرحلة الحالية: ' + (cur || 'غير محددة') : `تم الوصول إلى ${Math.max(0, idx + 1)} من ${progressSteps.length} مرحلة`;
-                $('progressList').innerHTML = progressSteps.map( ([id,label], i) => {
-                    const done = idx >= 0 && i < idx
-                      , active = id === cur;
-                    return `<li class="${done ? 'done' : active ? 'current' : ''}"><span class="status">${done ? '✓' : active ? '▶' : '○'}</span>${i + 1}. ${label}${active ? ' — الحالية' : ''}</li>`;
-                }
-                ).join('');
-            }
-            const MON = new Set(['off', 'post', 'bios', 'err', 'pak', 'load', 'start', 'lang', 'home', 'lic', 'type', 'disk', 'inst', 'rst', 'svc', 'o1', 'o2', 'o3', 'o4', 'o5', 'wel', 'login', 'desk']);
-
-            function go(n) {
-                cur = n;
-                document.body.classList.toggle('mon', MON.has(n));
-                $('hp').classList.remove('open');
-                $('hb').style.display = $('gb').style.display = $('rb').style.display = K.ui ? '' : 'none';
-                if (K.ui) {
-                    $('hb').textContent = '? ' + L3('Help', 'Aide', 'مساعدة');
-                    $('rb').textContent = ' ' + L3('Restart PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز')
-                }
-                G[n]();
-                renderProgress()
-            }
-            const win = (body, next, o={}) => `<div class="dlg"><div class="bar">${T('Install Windows', 'Installer Windows')}</div><div class="pane">${body}</div><div class="foot">${o.back ? `<button onclick='go("${o.back}")'>${T('Back', 'Précédent')}</button>` : ''}<button id="nx" class="def" onclick='${next}' ${o.dis ? 'disabled' : ''}>${o.label || T('Next', 'Suivant')}</button></div></div>`;
-            const mb = n => n >= 1024 ? (n / 1024).toFixed(1) + T(' GB', ' Go') : n + T(' MB', ' Mo');
-            /* help texts: [en, fr, ar] */
-            const H = {
-                p1: ["Click Download to get the Windows 7 ISO file (about 3 GB). When it finishes, click Next.", "Cliquez sur Télécharger pour obtenir le fichier ISO de Windows 7 (environ 3 Go). Quand c’est fini, cliquez sur Suivant.", "اضغط «تحميل» للحصول على ملف ISO لويندوز 7 (حوالي 3 غيغابايت). عند الانتهاء اضغط «التالي»."],
-                p2: ["In Rufus keep MBR and NTFS, check the ISO is selected, then click START. This erases the USB drive. Wait for READY, then click Next.", "Dans Rufus, gardez MBR et NTFS, vérifiez que l’ISO est sélectionnée, puis cliquez sur START. La clé sera effacée. Attendez READY, puis cliquez sur Suivant.", "في Rufus اترك MBR وNTFS وتأكد من اختيار ملف ISO ثم اضغط START. سيتم مسح الفلاشة. انتظر READY ثم اضغط «التالي»."],
-                p3: ["Push the USB drive into a USB port of the computer: click Insert drive to see it plugged in.", "Enfoncez la clé dans un port USB de l’ordinateur : cliquez sur Insérer la clé pour la voir branchée.", "أدخل الفلاشة في منفذ USB بالجهاز: اضغط «إدخال» لترى توصيلها."],
-                p4: ["Press the red RESET button on the PC (or the Restart PC button at the top). When the screen goes black, press F2 (or Del) to enter the BIOS.", "Appuyez sur le bouton rouge RESET du PC (ou sur Redémarrer le PC en haut). Quand l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS.", "اضغط زر RESET الأحمر في الجهاز (أو زر إعادة تشغيل الجهاز في الأعلى). عندما تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS."],
-                post: ["The PC is starting. Press F2 or Del now (the highlighted keys) to open the BIOS. If you do nothing, it keeps booting.", "Le PC démarre. Appuyez maintenant sur F2 ou Suppr (touches en surbrillance) pour ouvrir le BIOS. Sinon, le démarrage continue.", "الجهاز يقلع. اضغط F2 أو Del الآن (الأزرار المضيئة) لفتح BIOS. إذا لم تفعل شيئاً يتابع الإقلاع."],
-                bios: ["You are in the BIOS. Use ← → to switch tabs and open the Boot tab. Select the USB with ↑ ↓, move it to 1st place with +, then save and exit with F10 (or from the Exit tab).", "Vous êtes dans le BIOS. Utilisez ← → pour changer d’onglet et ouvrez l’onglet Boot. Sélectionnez la clé USB avec ↑ ↓, placez-la en 1re position avec +, puis enregistrez et quittez avec F10 (ou depuis l’onglet Exit).", "أنت الآن في BIOS. استخدم ← → للتنقل بين التبويبات وافتح تبويب Boot. اختر فلاشة USB بالأسهم ↑ ↓ وانقلها إلى الموضع الأول بالزر + ثم احفظ واخرج بالزر F10 (أو من تبويب Exit)."],
-                err: ["No bootable device was found. Press any key to restart, then press F2 to open the BIOS and put the USB drive first.", "Aucun périphérique de démarrage trouvé. Appuyez sur une touche pour redémarrer, puis sur F2 pour ouvrir le BIOS et placer la clé USB en premier.", "لم يتم العثور على جهاز إقلاع. اضغط أي زر لإعادة التشغيل ثم F2 لفتح BIOS واجعل فلاشة USB أولاً."],
-                pak: ["Press any key now to start the installer from the USB drive. If you wait, the PC skips it and boots from the hard disk. After Windows is installed, do not press a key.", "Appuyez sur une touche maintenant pour lancer l’installation depuis la clé USB. Si vous attendez, le PC l’ignore et démarre sur le disque dur. Une fois Windows installé, n’appuyez sur aucune touche.", "اضغط أي زر الآن لبدء المثبّت من فلاشة USB. إذا انتظرت يتجاوزها الجهاز ويقلع من القرص الصلب. بعد تثبيت ويندوز لا تضغط أي زر."],
-                wait: ["Windows is loading. Nothing to do: just wait.", "Windows se charge. Rien à faire : patientez.", "ويندوز يقوم بالتحميل. لا حاجة لأي إجراء: فقط انتظر."],
-                lang: ["Choose the installation language, the time and currency format and the keyboard, then click Next. Here the installer is in French (for French and Arabic) or in English.", "Choisissez la langue d’installation, le format de l’heure et de la devise et le clavier, puis cliquez sur Suivant. Ici l’installateur est en français (pour français et arabe) ou en anglais.", "اختر لغة التثبيت وتنسيق الوقت والعملة ولوحة المفاتيح ثم اضغط «التالي». هنا يظهر المثبّت بالفرنسية (للفرنسية والعربية) أو بالإنجليزية."],
-                home: ["Click “Install now” to begin. “Repair your computer” is only for fixing an existing Windows.", "Cliquez sur « Installer maintenant » pour commencer. « Réparer l’ordinateur » sert seulement à réparer un Windows existant.", "اضغط «تثبيت الآن» للبدء. خيار «إصلاح الكمبيوتر» مخصص فقط لإصلاح ويندوز موجود."],
-                lic: ["Read the license terms and tick the box to accept. Next stays disabled until you do.", "Lisez le contrat de licence et cochez la case pour l’accepter. Le bouton Suivant reste désactivé tant que ce n’est pas fait.", "اقرأ شروط الترخيص وضع علامة للموافقة. يبقى زر «التالي» معطلاً حتى توافق."],
-                type: ["Choose Custom (advanced) for a clean install. Upgrade needs an older Windows already installed, so it is not available here.", "Choisissez Personnalisée (avancée) pour une installation propre. La mise à niveau nécessite un ancien Windows déjà installé, donc elle n’est pas disponible ici.", "اختر «مخصص (متقدم)» لتثبيت نظيف. الترقية تحتاج ويندوز قديماً مثبتاً مسبقاً، لذلك غير متاحة هنا."],
-                disk: ["Pick where Windows goes. Open “Drive options”, select the unallocated space and click New to create a partition (at least 20 GB; the rest can stay free). Windows adds its own 100 MB System Reserved partition: do not choose it. Select your big partition and click Next. Delete and Format erase data.", "Choisissez où installer Windows. Ouvrez « Options de lecteur », sélectionnez l’espace non alloué et cliquez sur Nouveau pour créer une partition (au moins 20 Go ; le reste peut rester libre). Windows ajoute sa propre partition Système réservé de 100 Mo : ne la choisissez pas. Sélectionnez votre grande partition puis cliquez sur Suivant. Supprimer et Formater effacent les données.", "اختر مكان تثبيت ويندوز. افتح «خيارات القرص»، حدد المساحة غير المخصصة واضغط «جديد» لإنشاء قسم (20 غيغابايت على الأقل ويمكن ترك الباقي). يضيف ويندوز قسم «محجوز للنظام» بحجم 100 ميغابايت: لا تختره. حدد القسم الكبير ثم اضغط «التالي». الحذف والتهيئة يمسحان البيانات."],
-                inst: ["Windows copies and installs its files. The PC restarts by itself. Do not turn it off.", "Windows copie et installe ses fichiers. Le PC redémarre tout seul. Ne l’éteignez pas.", "ويندوز ينسخ ملفاته ويثبتها. يعيد الجهاز التشغيل تلقائياً. لا تطفئه."],
-                rst: ["Windows restarts by itself to continue the installation. Click Restart now or wait a few seconds.", "Windows redémarre tout seul pour poursuivre l’installation. Cliquez sur Redémarrer maintenant ou patientez quelques secondes.", "يعيد ويندوز التشغيل تلقائياً لمتابعة التثبيت. اضغط «إعادة التشغيل الآن» أو انتظر ثواني."],
-                login: ["Type the password you created during setup, then press Enter or the arrow. This screen appears only because you set a password.", "Saisissez le mot de passe créé pendant la configuration, puis appuyez sur Entrée ou sur la flèche. Cet écran n’apparaît que parce que vous avez défini un mot de passe.", "اكتب كلمة المرور التي أنشأتها أثناء الإعداد ثم اضغط Enter أو السهم. تظهر هذه الشاشة فقط لأنك وضعت كلمة مرور."],
-                o1: ["Enter the name of your user account and a name for the computer (shown on the network).", "Saisissez le nom de votre compte utilisateur et un nom pour l’ordinateur (visible sur le réseau).", "أدخل اسم حساب المستخدم واسماً للحاسوب (يظهر في الشبكة)."],
-                o2: ["A password is optional but recommended. Leave both boxes empty to skip it.", "Le mot de passe est facultatif mais recommandé. Laissez les deux champs vides pour l’ignorer.", "كلمة المرور اختيارية لكنها موصى بها. اترك الحقلين فارغين لتخطيها."],
-                o3: ["Enter the product key from your license, or leave it empty and activate Windows within 30 days.", "Saisissez la clé de produit de votre licence, ou laissez vide et activez Windows dans les 30 jours.", "أدخل مفتاح المنتج من ترخيصك، أو اتركه فارغاً وفعّل ويندوز خلال 30 يوماً."],
-                o4: ["“Use recommended settings” turns on automatic updates and protection. It is the usual choice.", "« Utiliser les paramètres recommandés » active les mises à jour et la protection. C’est le choix habituel.", "«استخدام الإعدادات الموصى بها» يفعّل التحديثات والحماية تلقائياً. وهو الاختيار المعتاد."],
-                o5: ["Check the time zone and date, then continue.", "Vérifiez le fuseau horaire et la date, puis continuez.", "تحقق من المنطقة الزمنية والتاريخ ثم تابع."],
-                desk: ["Installation finished. Double-click Computer to see drive C:, open Start for the menu, and use Shut down to start over.", "Installation terminée. Double-cliquez sur Ordinateur pour voir le lecteur C:, ouvrez Démarrer pour le menu, et Arrêter pour recommencer.", "انتهى التثبيت. انقر مرتين على «الكمبيوتر» لرؤية القرص C:، افتح قائمة «ابدأ»، واستخدم «إيقاف التشغيل» للبدء من جديد."]
-            };
-            function help() {
-                const p = $('hp')
-                  , h = H[cur] || H.wait
-                  , i = K.ui == 'en' ? 0 : K.ui == 'fr' ? 1 : 2;
-                if (p.classList.contains('open')) {
-                    p.classList.remove('open');
-                    return
-                }
-                p.dir = i == 2 ? 'rtl' : 'ltr';
-                p.innerHTML = `<h4>${L3('What to do in this step', 'Que faire à cette étape', 'ماذا تفعل في هذه الخطوة')}</h4>${h[i]}<br><button onclick="$('hp').classList.remove('open')">${L3('Close', 'Fermer', 'إغلاق')}</button>`;
-                p.classList.add('open')
-            }
-            const G = {
-                pick() {
-                    K.ui = null;
-                    show(`<h1>Choose your language<br>Choisissez votre langue<br>اختر اللغة</h1><button onclick="setUi('ar')">العربية</button><button onclick="setUi('fr')">Français</button><button onclick="setUi('en')">English</button>`, 'pick')
-                },
-                p1() {
-                    show(pg(1, L3('Download the Windows 7 ISO', 'Télécharger l’ISO de Windows 7', 'تحميل ملف ISO لويندوز 7'), L3('An ISO is a disc image: one file with everything needed to install Windows. Get it from your licensed source.', 'Une ISO est une image de disque : un seul fichier contenant tout le nécessaire pour installer Windows. Obtenez-la depuis votre source sous licence.', 'ملف ISO هو صورة قرص: ملف واحد فيه كل ما يلزم لتثبيت ويندوز. احصل عليه من مصدرك المرخّص.'), isoSvg + (K.iso ? `<p class="okt">✓ Windows7_x64.iso (3.1 ${T('GB', 'Go')})</p>` : `<div class="mini" id="dm" style="display:none"><i id="dp"></i></div><div style="text-align:center;margin-top:10px"><button class="def" onclick="dl()">${L3('Download', 'Télécharger', 'تحميل')}</button></div>`), K.iso), 'prep')
-                },
-                p2() {
-                    show(pg(2, L3('Create a bootable USB with Rufus', 'Créer une clé USB amorçable avec Rufus', 'إنشاء فلاشة إقلاع باستخدام Rufus'), L3('Rufus copies the ISO onto the USB drive and makes it bootable. All data on the drive will be erased.', 'Rufus copie l’ISO sur la clé USB et la rend amorçable. Toutes les données de la clé seront effacées.', 'يقوم Rufus بنسخ ملف ISO إلى الفلاشة وجعلها قابلة للإقلاع. سيتم مسح كل بيانات الفلاشة.'), usbSvg + `<div class="rufus"><div class="rb">Rufus</div><div class="rbd"><label>Device</label><div class="f">USB DRIVE (E:) [8 GB]</div><label>Boot selection</label><div class="f">Windows7_x64.iso</div><label>Partition scheme</label><div class="f">MBR</div><label>File system</label><div class="f">NTFS</div><div class="pbr"><i id="rp" style="width:100%"></i><span id="rt">READY</span></div><div style="text-align:center"><button class="def" onclick="rf()" ${K.usb || !K.iso ? 'disabled' : ''}>START</button></div></div></div>` + (K.usb ? `<p class="okt">✓ ${L3('USB drive is ready', 'La clé USB est prête', 'فلاشة USB جاهزة')}</p>` : ''), K.usb), 'prep')
-                },
-                p3() {
-                    show(pg(3, L3('Insert the USB drive into the PC', 'Insérer la clé USB dans le PC', 'أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).', 'Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).', 'أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), pcSvg(K.ins, 0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected', 'Clé USB branchée', 'تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive', 'Insérer la clé', 'إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
-                },
-                p4() {
-                    show(pg(4, L3('Restart the PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del / F12 depending on the brand) to open the BIOS.', 'Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr / F12 selon la marque) pour ouvrir le BIOS.', 'اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del / F12 حسب الشركة) لفتح BIOS.'), pcSvg(1, K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()">⏻ ${L3('Restart PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
-                },
-bios() {
-    const tabs = ['Main', 'Advanced', 'Security', 'Boot', 'Exit'];
-    const t = K.bt || 0;
-    const row = (a, b) => `<div class="bf"><span>${a}</span><b>${b}</b></div>`;
-    let body = '';
-    if (t == 0) {
-        body = `<div class="bh">System Overview</div>${row('BIOS Version', 'v2.14')}${row('Processor', 'Intel Core i5 3.2GHz')}${row('System Memory', '8192 MB')}${row('System Date', new Date().toLocaleDateString('en-US'))}${row('System Time', new Date().toLocaleTimeString('en-GB'))}${row('SATA Port 0', 'Samsung SSD 250GB')}${row('USB Devices', K.ins ? '1 Mass Storage Device' : 'None')}`;
-    } else if (t == 1) {
-        body = `<div class="bh">Advanced Settings</div>${row('SATA Mode', '[AHCI]')}${row('Legacy USB Support', '[Enabled]')}${row('Virtualization Technology', '[Disabled]')}${row('Onboard LAN', '[Enabled]')}${row('Onboard Audio', '[Enabled]')}`;
-    } else if (t == 2) {
-        body = `<div class="bh">Security</div>${row('Supervisor Password', 'Not Installed')}${row('User Password', 'Not Installed')}${row('Secure Boot', '[Disabled]')}`;
-    } else if (t == 3) {
-        const ord = ['1st', '2nd', '3rd'];
-        const L = K.boot.map((d, i) => `<div class="dev ${i == K.sel ? 'on' : ''}" onclick="K.sel=${i};go('bios')">${ord[i]} Boot Device : ${d}</div>`).join('');
-        body = `<div class="bh">Boot Device Priority</div>${L}<div><button onclick="mv(-1)">Move up (+)</button><button onclick="mv(1)">Move down (-)</button></div><div class="ft">The PC starts from the 1st Boot Device. Select the USB device, move it to 1st place, then save and exit (F10).</div>`;
-    } else {
-        body = `<div class="bh">Exit Options</div><div class="dev" onclick="save()">Save Changes and Exit (F10)</div><div class="dev" onclick="biosDiscard()">Discard Changes and Exit</div><div class="dev" onclick="biosDefault()">Load Setup Defaults</div>`;
+function later(f, ms) { const g = gen; setTimeout(() => { if (g == gen) f() }, ms) }
+function fill(sel, ms, cb, on) {
+    const g = gen, t0 = performance.now();
+    (function f(t) {
+        if (g != gen) return;
+        const p = Math.max(0, Math.min(1, (t - t0) / ms)), e = document.querySelector(sel);
+        if (e) e.style.width = p * 100 + '%';
+        on && on(p);
+        p < 1 ? requestAnimationFrame(f) : cb && cb()
+    })(t0)
+}
+const progressSteps = [['p1','تحميل ملف Windows ISO'],['p2','إنشاء فلاشة إقلاع باستخدام Rufus'],['p3','توصيل الفلاشة بالحاسوب'],['p4','إعادة تشغيل الحاسوب'],['post','الدخول إلى BIOS'],['bios','ضبط أولوية الإقلاع من USB'],['pak','بدء الإقلاع من الفلاشة'],['load','تحميل ملفات Windows'],['lang','اختيار اللغة والمنطقة ولوحة المفاتيح'],['home','بدء التثبيت'],['edi','اختيار إصدار ويندوز'],['lic','الموافقة على شروط الترخيص'],['type','اختيار نوع التثبيت'],['disk','اختيار القرص وإنشاء القسم'],['inst','نسخ الملفات وتثبيت Windows'],['rst','إعادة تشغيل الحاسوب'],['svc','إكمال إعداد النظام'],['rst2','إعادة التشغيل الثانية'],['svc2','التهيئة النهائية للنظام'],['o1','إنشاء حساب المستخدم واسم الحاسوب'],['o2','إعداد كلمة المرور'],['o3','إدخال مفتاح المنتج أو تخطيه'],['o4','اختيار إعدادات التحديث والحماية'],['o5','ضبط الوقت والتاريخ'],['wel','التهيئة لأول تشغيل'],['login','تسجيل الدخول'],['desk','الوصول إلى سطح المكتب']];
+const progressOrder = progressSteps.map(x => x[0]);
+let pIdx = -1; // furthest step reached, so screens outside the list never show a raw id
+function toggleProgress() { $('progressPanel').classList.toggle('open'); renderProgress() }
+function renderProgress() {
+    const wrap = $('progressWrap');
+    if (!wrap) return;
+    wrap.style.display = K.ui ? 'block' : 'none';
+    const i0 = progressOrder.indexOf(cur);
+    if (i0 > pIdx) pIdx = i0;
+    $('progressSummary').textContent = pIdx < 0 ? 'لم يبدأ التثبيت بعد' : `تم الوصول إلى ${pIdx + 1} من ${progressSteps.length} مرحلة`;
+    $('progressList').innerHTML = progressSteps.map(([id, label], i) => {
+        const active = id === cur, done = i < pIdx || (i == pIdx && !active);
+        return `<li class="${done ? 'done' : active ? 'current' : ''}"><span class="status">${done ? '✓' : active ? '▶' : '○'}</span>${i + 1}. ${label}${active ? ' — الحالية' : ''}</li>`;
+    }).join('');
+}
+const MON = new Set(['off','post','bios','err','pak','load','start','lang','home','edi','lic','type','disk','inst','rst','rst2','svc','svc2','o1','o2','o3','o4','o5','wel','login','desk','bmenu','shut','poff']);
+function go(n) {
+    cur = n;
+    document.body.classList.toggle('mon', MON.has(n));
+    $('hp').classList.remove('open');
+    $('hb').style.display = $('gb').style.display = $('rb').style.display = K.ui ? '' : 'none';
+    if (K.ui) {
+        $('hb').textContent = '? ' + L3('Help', 'Aide', 'مساعدة');
+        $('rb').textContent = ' ' + L3('Restart PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز')
     }
-    show(`<h3>BIOS Setup Utility</h3><div class="tabs">${tabs.map((n, i) => `<span class="${i == t ? 'on' : ''}" onclick="K.bt=${i};go('bios')">${n}</span>`).join('')}</div>${body}<div class="ft">&larr;&rarr; Select Screen &nbsp; &uarr;&darr; Select Item &nbsp; +/- Change &nbsp; F10 Save &amp; Exit &nbsp; Esc Exit</div>${kbd(['←', '→', '↑', '↓', '+', '-', 'F10', 'Esc'])}`, 'bios');
-    KH = k => {
-        if (k == '→') { K.bt = (t + 1) % 5; go('bios') }
-        else if (k == '←') { K.bt = (t + 4) % 5; go('bios') }
-        else if (t == 3 && k == '↑' && K.sel > 0) { K.sel--; go('bios') }
-        else if (t == 3 && k == '↓' && K.sel < 2) { K.sel++; go('bios') }
-        else if (t == 3 && k == '+') mv(-1);
-        else if (t == 3 && k == '-') mv(1);
-        else if (k == 'F10') save();
-        else if (k == 'Esc') { K.bt = 4; go('bios') }
+    G[n]();
+    renderProgress()
+}
+const win = (body, next, o={}) => `<div class="dlg"><div class="bar">${T('Install Windows','Installer Windows')}</div><div class="pane">${body}</div><div class="foot">${o.back ? `<button onclick='go("${o.back}")'>${T('Back','Précédent')}</button>` : ''}<button id="nx" class="def" onclick='${next}' ${o.dis ? 'disabled' : ''}>${o.label || T('Next','Suivant')}</button></div></div>`;
+const mb = n => n >= 1024 ? (n / 1024).toFixed(1) + T(' GB', ' Go') : n + T(' MB', ' Mo');
+/* help texts: [en, fr, ar] */
+const H = {
+    p1: ["Click Download to get the Windows 7 ISO file (about 3 GB). When it finishes, click Next.", "Cliquez sur Télécharger pour obtenir le fichier ISO de Windows 7 (environ 3 Go). Quand c’est fini, cliquez sur Suivant.", "اضغط «تحميل» للحصول على ملف ISO لويندوز 7 (حوالي 3 غيغابايت). عند الانتهاء اضغط «التالي»."],
+    p2: ["In Rufus keep MBR and NTFS (or FAT32), check the ISO is selected, then click START. This erases the USB drive. Wait for READY, then click Next.", "Dans Rufus, gardez MBR et NTFS (ou FAT32), vérifiez que l’ISO est sélectionnée, puis cliquez sur START. La clé sera effacée. Attendez READY, puis cliquez sur Suivant.", "في Rufus اترك MBR وNTFS (أو FAT32) وتأكد من اختيار ملف ISO ثم اضغط START. سيتم مسح الفلاشة. انتظر READY ثم اضغط «التالي»."],
+    p3: ["Push the USB drive into a USB port of the computer: click Insert drive to see it plugged in.", "Enfoncez la clé dans un port USB de l’ordinateur : cliquez sur Insérer la clé pour la voir branchée.", "أدخل الفلاشة في منفذ USB بالجهاز: اضغط «إدخال» لترى توصيلها."],
+    p4: ["Press the red RESET button on the PC (or the Restart PC button at the top). When the screen goes black, press F2 (or Del) to enter the BIOS, or F12 for the one-time boot menu.", "Appuyez sur le bouton rouge RESET du PC (ou sur Redémarrer le PC en haut). Quand l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage ponctuel.", "اضغط زر RESET الأحمر في الجهاز (أو زر إعادة تشغيل الجهاز في الأعلى). عندما تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع لمرة واحدة."],
+    post: ["The PC is starting. Press F2 or Del now to open the BIOS, or F12 for the boot menu. If you do nothing, it keeps booting.", "Le PC démarre. Appuyez maintenant sur F2 ou Suppr pour ouvrir le BIOS, ou F12 pour le menu de démarrage. Sinon, le démarrage continue.", "الجهاز يقلع. اضغط F2 أو Del الآن لفتح BIOS، أو F12 لقائمة الإقلاع. إذا لم تفعل شيئاً يتابع الإقلاع."],
+    bios: ["You are in the BIOS. Use ← → to switch tabs and open the Boot tab. Select the USB with ↑ ↓, move it to 1st place with +, then save and exit with F10 (or from the Exit tab).", "Vous êtes dans le BIOS. Utilisez ← → pour changer d’onglet et ouvrez l’onglet Boot. Sélectionnez la clé USB avec ↑ ↓, placez-la en 1re position avec +, puis enregistrez et quittez avec F10 (ou depuis l’onglet Exit).", "أنت الآن في BIOS. استخدم ← → للتنقل بين التبويبات وافتح تبويب Boot. اختر فلاشة USB بالأسهم ↑ ↓ وانقلها إلى الموضع الأول بالزر + ثم احفظ واخرج بالزر F10 (أو من تبويب Exit)."],
+    err: ["No bootable device was found. Press any key to restart, then press F2 to open the BIOS and put the USB drive first (or F12 for the boot menu).", "Aucun périphérique de démarrage trouvé. Appuyez sur une touche pour redémarrer, puis sur F2 pour ouvrir le BIOS et placer la clé USB en premier (ou F12 pour le menu de démarrage).", "لم يتم العثور على جهاز إقلاع. اضغط أي زر لإعادة التشغيل ثم F2 لفتح BIOS واجعل فلاشة USB أولاً (أو F12 لقائمة الإقلاع)."],
+    pak: ["Press any key now to start the installer from the USB drive. If you wait, the PC skips it and boots from the hard disk. After Windows is installed, do not press a key.", "Appuyez sur une touche maintenant pour lancer l’installation depuis la clé USB. Si vous attendez, le PC l’ignore et démarre sur le disque dur. Une fois Windows installé, n’appuyez sur aucune touche.", "اضغط أي زر الآن لبدء المثبّت من فلاشة USB. إذا انتظرت يتجاوزها الجهاز ويقلع من القرص الصلب. بعد تثبيت ويندوز لا تضغط أي زر."],
+    wait: ["Windows is loading. Nothing to do: just wait.", "Windows se charge. Rien à faire : patientez.", "ويندوز يقوم بالتحميل. لا حاجة لأي إجراء: فقط انتظر."],
+    lang: ["Choose the installation language, the time and currency format and the keyboard, then click Next. Here the installer is in French (for French and Arabic) or in English.", "Choisissez la langue d’installation, le format de l’heure et de la devise et le clavier, puis cliquez sur Suivant. Ici l’installateur est en français (pour français et arabe) ou en anglais.", "اختر لغة التثبيت وتنسيق الوقت والعملة ولوحة المفاتيح ثم اضغط «التالي». هنا يظهر المثبّت بالفرنسية (للفرنسية والعربية) أو بالإنجليزية."],
+    home: ["Click “Install now” to begin. “Repair your computer” is only for fixing an existing Windows.", "Cliquez sur « Installer maintenant » pour commencer. « Réparer l’ordinateur » sert seulement à réparer un Windows existant.", "اضغط «تثبيت الآن» للبدء. خيار «إصلاح الكمبيوتر» مخصص فقط لإصلاح ويندوز موجود."],
+    lic: ["Read the license terms and tick the box to accept. Next stays disabled until you do.", "Lisez le contrat de licence et cochez la case pour l’accepter. Le bouton Suivant reste désactivé tant que ce n’est pas fait.", "اقرأ شروط الترخيص وضع علامة للموافقة. يبقى زر «التالي» معطلاً حتى توافق."],
+    type: ["Choose Custom (advanced) for a clean install. Upgrade needs an older Windows already installed, so it is not available here.", "Choisissez Personnalisée (avancée) pour une installation propre. La mise à niveau nécessite un ancien Windows déjà installé, donc elle n’est pas disponible ici.", "اختر «مخصص (متقدم)» لتثبيت نظيف. الترقية تحتاج ويندوز قديماً مثبتاً مسبقاً، لذلك غير متاحة هنا."],
+    disk: ["Pick where Windows goes. Open “Drive options”, select the unallocated space and click New to create a partition (at least 20 GB; the rest can stay free). Windows adds its own 100 MB System Reserved partition: do not choose it. Select your big partition and click Next. Delete and Format erase data.", "Choisissez où installer Windows. Ouvrez « Options de lecteur », sélectionnez l’espace non alloué et cliquez sur Nouveau pour créer une partition (au moins 20 Go ; le reste peut rester libre). Windows ajoute sa propre partition Système réservé de 100 Mo : ne la choisissez pas. Sélectionnez votre grande partition puis cliquez sur Suivant. Supprimer et Formater effacent les données.", "اختر مكان تثبيت ويندوز. افتح «خيارات القرص»، حدد المساحة غير المخصصة واضغط «جديد» لإنشاء قسم (20 غيغابايت على الأقل ويمكن ترك الباقي). يضيف ويندوز قسم «محجوز للنظام» بحجم 100 ميغابايت: لا تختره. حدد القسم الكبير ثم اضغط «التالي». الحذف والتهيئة يمسحان البيانات."],
+    inst: ["Windows copies and installs its files. The PC restarts by itself. Do not turn it off.", "Windows copie et installe ses fichiers. Le PC redémarre tout seul. Ne l’éteignez pas.", "ويندوز ينسخ ملفاته ويثبتها. يعيد الجهاز التشغيل تلقائياً. لا تطفئه."],
+    rst: ["Windows restarts by itself to continue the installation. Click Restart now or wait a few seconds.", "Windows redémarre tout seul pour poursuivre l’installation. Cliquez sur Redémarrer maintenant ou patientez quelques secondes.", "يعيد ويندوز التشغيل تلقائياً لمتابعة التثبيت. اضغط «إعادة التشغيل الآن» أو انتظر ثواني."],
+    login: ["Type the password you created during setup, then press Enter or the arrow. This screen appears only because you set a password.", "Saisissez le mot de passe créé pendant la configuration, puis appuyez sur Entrée ou sur la flèche. Cet écran n’apparaît que parce que vous avez défini un mot de passe.", "اكتب كلمة المرور التي أنشأتها أثناء الإعداد ثم اضغط Enter أو السهم. تظهر هذه الشاشة فقط لأنك وضعت كلمة مرور."],
+    o1: ["Enter the name of your user account and a name for the computer (shown on the network).", "Saisissez le nom de votre compte utilisateur et un nom pour l’ordinateur (visible sur le réseau).", "أدخل اسم حساب المستخدم واسماً للحاسوب (يظهر في الشبكة)."],
+    o2: ["A password is optional but recommended. If you set one, you must also type a hint that helps you remember it (not the password itself). Leave all boxes empty to skip.", "Le mot de passe est facultatif mais recommandé. Si vous en définissez un, vous devez aussi saisir un indice pour vous en souvenir (pas le mot de passe lui-même). Laissez tout vide pour ignorer.", "كلمة المرور اختيارية لكنها موصى بها. إذا وضعتها فيجب أيضاً كتابة تلميح يساعدك على تذكرها (وليس كلمة المرور نفسها). اترك كل الحقول فارغة لتخطيها."],
+    o3: ["Enter the product key from your license, or leave it empty and activate Windows within 30 days.", "Saisissez la clé de produit de votre licence, ou laissez vide et activez Windows dans les 30 jours.", "أدخل مفتاح المنتج من ترخيصك، أو اتركه فارغاً وفعّل ويندوز خلال 30 يوماً."],
+    o4: ["“Use recommended settings” turns on automatic updates and protection. It is the usual choice.", "« Utiliser les paramètres recommandés » active les mises à jour et la protection. C’est le choix habituel.", "«استخدام الإعدادات الموصى بها» يفعّل التحديثات والحماية تلقائياً. وهو الاختيار المعتاد."],
+    o5: ["Check the time zone and date, then continue.", "Vérifiez le fuseau horaire et la date, puis continuez.", "تحقق من المنطقة الزمنية والتاريخ ثم تابع."],
+    desk: ["Installation finished. Double-click Computer to see your drives, open Start for the menu, and use Shut down to power off.", "Installation terminée. Double-cliquez sur Ordinateur pour voir vos lecteurs, ouvrez Démarrer pour le menu, et Arrêter pour éteindre.", "انتهى التثبيت. انقر مرتين على «الكمبيوتر» لرؤية الأقراص، افتح قائمة «ابدأ»، واستخدم «إيقاف التشغيل» لإطفاء الجهاز."]
+};
+function help() {
+    const p = $('hp'), h = H[cur] || H.wait, i = K.ui == 'en' ? 0 : K.ui == 'fr' ? 1 : 2;
+    if (p.classList.contains('open')) { p.classList.remove('open'); return }
+    p.dir = i == 2 ? 'rtl' : 'ltr';
+    p.innerHTML = `<h4>${L3('What to do in this step','Que faire à cette étape','ماذا تفعل في هذه الخطوة')}</h4>${h[i]}<br><button onclick="$('hp').classList.remove('open')">${L3('Close','Fermer','إغلاق')}</button>`;
+    p.classList.add('open')
+}
+const G = {
+    pick() {
+        K.ui = null;
+        show(`<h1>Choose your language<br>Choisissez votre langue<br>اختر اللغة</h1><button onclick="setUi('ar')">العربية</button><button onclick="setUi('fr')">Français</button><button onclick="setUi('en')">English</button>`, 'pick')
+    },
+    p1() {
+        show(pg(1, L3('Download the Windows 7 ISO','Télécharger l’ISO de Windows 7','تحميل ملف ISO لويندوز 7'), L3('An ISO is a disc image: one file with everything needed to install Windows. Get it from your licensed source.','Une ISO est une image de disque : un seul fichier contenant tout le nécessaire pour installer Windows. Obtenez-la depuis votre source sous licence.','ملف ISO هو صورة قرص: ملف واحد فيه كل ما يلزم لتثبيت ويندوز. احصل عليه من مصدرك المرخّص.'), isoSvg + (K.iso ? `<p class="okt">✓ Windows7_x64.iso (3.1 ${T('GB','Go')})</p>` : `<div class="mini" id="dm" style="display:none"><i id="dp"></i></div><div style="text-align:center;margin-top:10px"><button class="def" onclick="dl()">${L3('Download','Télécharger','تحميل')}</button></div>`), K.iso), 'prep')
+    },
+    p2() {
+        show(pg(2, L3('Create a bootable USB with Rufus','Créer une clé USB amorçable avec Rufus','إنشاء فلاشة إقلاع باستخدام Rufus'), L3('Rufus copies the ISO onto the USB drive and makes it bootable. All data on the drive will be erased.','Rufus copie l’ISO sur la clé USB et la rend amorçable. Toutes les données de la clé seront effacées.','يقوم Rufus بنسخ ملف ISO إلى الفلاشة وجعلها قابلة للإقلاع. سيتم مسح كل بيانات الفلاشة.'), usbSvg + `<div class="rufus"><div class="rb">Rufus</div><div class="rbd"><label>Device</label><div class="f">USB DRIVE (E:) [8 GB]</div><label>Boot selection</label><div class="f">Windows7_x64.iso</div>${rsel('rs','Partition scheme',['MBR','GPT'])}${rsel('rfs','File system',['NTFS','FAT32','exFAT'])}<div class="pbr"><i id="rp" style="width:100%"></i><span id="rt">READY</span></div><div style="text-align:center"><button class="def" onclick="rf()" ${K.usb || !K.iso ? 'disabled' : ''}>START</button></div></div></div>` + (K.usb ? `<p class="okt">✓ ${L3('USB drive is ready','La clé USB est prête','فلاشة USB جاهزة')}</p>` : ''), K.usb), 'prep')
+    },
+    p3() {
+        show(pg(3, L3('Insert the USB drive into the PC','Insérer la clé USB dans le PC','أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).','Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).','أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), pcSvg(K.ins, 0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected','Clé USB branchée','تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive','Insérer la clé','إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
+    },
+    p4() {
+        show(pg(4, L3('Restart the PC','Redémarrer le PC','إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del) to open the BIOS, or F12 for the boot menu.','Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage.','اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع.'), pcSvg(1, K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()">⏻ ${L3('Restart PC','Redémarrer le PC','إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
+    },
+    bios() {
+        const tabs = ['Main','Advanced','Security','Boot','Exit'];
+        const t = K.bt || 0;
+        const row = (a, b) => `<div class="bf"><span>${a}</span><b>${b}</b></div>`;
+        let body = '';
+        if (t == 0) {
+            body = `<div class="bh">System Overview</div>${row('BIOS Version','v2.14')}${row('Processor','Intel Core i5 3.2GHz')}${row('System Memory','8192 MB')}${row('System Date', new Date().toLocaleDateString('en-US'))}${row('System Time', new Date().toLocaleTimeString('en-GB'))}${row('SATA Port 0','Samsung SSD 250GB')}${row('USB Devices', K.ins ? '1 Mass Storage Device' : 'None')}`;
+        } else if (t == 1) {
+            body = `<div class="bh">Advanced Settings</div>${row('SATA Mode','[AHCI]')}${row('Legacy USB Support','[Enabled]')}${row('Virtualization Technology','[Disabled]')}${row('Onboard LAN','[Enabled]')}${row('Onboard Audio','[Enabled]')}`;
+        } else if (t == 2) {
+            body = `<div class="bh">Security</div>${row('Supervisor Password','Not Installed')}${row('User Password','Not Installed')}${row('Secure Boot','[Disabled]')}`;
+        } else if (t == 3) {
+            const ord = ['1st','2nd','3rd'];
+            const Lst = K.boot.map((d, i) => `<div class="dev ${i == K.sel ? 'on' : ''}" onclick="K.sel=${i};go('bios')">${ord[i]} Boot Device : ${d}</div>`).join('');
+            body = `<div class="bh">Boot Device Priority</div>${Lst}<div><button onclick="mv(-1)">Move up (+)</button><button onclick="mv(1)">Move down (-)</button></div><div class="ft">The PC starts from the 1st Boot Device. Select the USB device, move it to 1st place, then save and exit (F10).</div>`;
+        } else {
+            body = `<div class="bh">Exit Options</div><div class="dev" onclick="save()">Save Changes and Exit (F10)</div><div class="dev" onclick="biosDiscard()">Discard Changes and Exit</div><div class="dev" onclick="biosDefault()">Load Setup Defaults</div>`;
+        }
+        show(`<h3>BIOS Setup Utility</h3><div class="tabs">${tabs.map((n, i) => `<span class="${i == t ? 'on' : ''}" onclick="K.bt=${i};go('bios')">${n}</span>`).join('')}</div>${body}<div class="ft">&larr;&rarr; Select Screen &nbsp; &uarr;&darr; Select Item &nbsp; +/- Change &nbsp; F10 Save &amp; Exit &nbsp; Esc Exit</div>${kbd(['←','→','↑','↓','+','-','F10','Esc'])}`, 'bios');
+        KH = k => {
+            if (k == '→') { K.bt = (t + 1) % 5; go('bios') }
+            else if (k == '←') { K.bt = (t + 4) % 5; go('bios') }
+            else if (t == 3 && k == '↑' && K.sel > 0) { K.sel--; go('bios') }
+            else if (t == 3 && k == '↓' && K.sel < 2) { K.sel++; go('bios') }
+            else if (t == 3 && k == '+') mv(-1);
+            else if (t == 3 && k == '-') mv(1);
+            else if (k == 'F10') save();
+            else if (k == 'Esc') { K.bt = 4; go('bios') }
+        }
+    },
+    err() {
+        show(`<div>No bootable device -- insert boot disk and press any key<span class="cur">_</span></div><div class="kbw">${kbd([], 1)}</div>`, 'dos');
+        KH = () => pcRestart()
+    },
+    off() { show('', 'dos'); later(() => go('post'), 1200) },
+    post() {
+        let n = 8;
+        show(`<div>ALFATRON PC BIOS v2.14 &middot; CPU: Core i5 3.2GHz<br>Memory test: 8192MB OK<br>USB: ${K.ins ? '1 Mass Storage Device' : 'none'}<br><br><b>Press F2 / Del for Setup &middot; F12 for Boot Menu...</b> <span id="pn">${n}</span></div><div class="kbw">${kbd(['F2','Del','F12'])}</div>`, 'dos');
+        KH = k => {
+            if (k == 'F2' || k == 'Del') { K.bt = 0; K.bo0 = [...K.boot]; go('bios') }
+            else if (k == 'F12') { K.bm = 0; go('bmenu') }
+        };
+        every(stop => {
+            $('pn').textContent = --n;
+            if (n <= 0) { stop(); bootFrom(0) }
+        }, 1000)
+    },
+    bmenu() {
+        const s = K.bm | 0;
+        show(`<div style="color:#fff"><b>Please select boot device:</b></div><br>${K.boot.map((d, i) => `<div class="dev ${i == s ? 'on' : ''}" onclick="bootFrom(${i})">${d}</div>`).join('')}<br><div>&uarr; and &darr; to move selection<br>ENTER to select boot device<br>ESC to boot using defaults</div>${kbd(['↑','↓','Enter','Esc'])}`, 'dos');
+        KH = k => {
+            if (k == '↑' && s > 0) { K.bm = s - 1; go('bmenu') }
+            else if (k == '↓' && s < K.boot.length - 1) { K.bm = s + 1; go('bmenu') }
+            else if (k == 'Enter') bootFrom(s);
+            else if (k == 'Esc') bootFrom(0)
+        }
+    },
+    pak() {
+        let n = 7;
+        const i = K.bi;
+        show(`<div>Press any key to boot from USB..<span class="cur">_</span> <span id="c2">${n}</span></div>${K.stage ? `<p style="color:#e88">${L3('Windows is already installed: do NOT press a key, just wait.','Windows est déjà installé : n’appuyez sur AUCUNE touche, patientez.','ويندوز مثبّت بالفعل: لا تضغط أي زر، فقط انتظر.')}</p>` : ''}<div class="kbw">${kbd([], 1)}</div>`, 'dos');
+        KH = () => { K.after = 'lang'; go('load') };
+        every(stop => {
+            $('c2').textContent = --n;
+            if (n <= 0) { stop(); bootFrom(i + 1) }
+        }, 1000)
+    },
+    load() {
+        show(`<div class="t">${T('Windows is loading files...','Windows charge les fichiers...')}</div><div class="pb"><i id="p"></i></div>`, 'load');
+        fill('#p', 4500, () => go('start'))
+    },
+    start() {
+        const a = K.after || 'lang';
+        show(`<div class="pulse">${flag(110)}</div><div class="w">${T('Starting','Démarrage de')} <b>Windows</b></div>`, 'logo');
+        later(() => go(a), 3200)
+    },
+    lang() {
+        const f = W() == 'fr', o = (a, b) => `<option ${f == b ? 'selected' : ''}>${a}</option>`;
+        show(win(`<div style="text-align:center;margin-bottom:8px">${flag(56)}<div style="font-size:26px;font-weight:300">Windows<sup style="font-size:12px"> 7</sup></div></div><div class="row"><label for="a">${T('Language to install:','Langue à installer :')}</label><select id="a">${o('English (United States)',0)}${o('Français (France)',1)}</select></div><div class="row"><label for="b">${T('Time and currency format:','Format de l’heure et de la devise :')}</label><select id="b">${o('English (United States)',0)}${o('Français (France)',1)}</select></div><div class="row"><label for="c">${T('Keyboard or input method:','Clavier ou méthode de saisie :')}</label><select id="c"><option>${f ? 'Français' : 'US'}</option><option>${f ? 'Arabe (102)' : 'Arabic (102)'}</option></select></div><p style="font-size:12px;color:#555;margin-top:24px">${T('Enter your language and other preferences and click “Next” to continue.','Entrez votre langue et d’autres préférences, puis cliquez sur « Suivant » pour continuer.')}</p>`, 'go("home")'), 'setup')
+    },
+    home() {
+        show(win(`<div class="big">${flag(90)}<div style="margin:14px 0"><button onclick='go("edi")'>${T('Install now','Installer maintenant')}</button></div></div><p><span class="link" onclick="alert(T('The repair tools are not part of this simulation.','Les outils de réparation ne font pas partie de cette simulation.'))">${T('Repair your computer','Réparer l’ordinateur')}</span></p><p style="font-size:12px;color:#555">Copyright © 2009 Microsoft Corporation. ${T('All rights reserved.','Tous droits réservés.')}</p>`, 'go("edi")', {label: T('Install now','Installer maintenant'), back: 'lang'}), 'setup')
+    },
+    edi() {
+        show(win(`<h2>${T('Select the operating system you want to install','Sélectionnez le système d’exploitation à installer')}</h2><table><tr><th>${T('Operating system','Système d’exploitation')}</th><th>Architecture</th><th>${T('Date modified','Date de modification')}</th></tr>${ED.map((e, i) => `<tr class="${i === K.ed ? 'sel' : ''}" onclick="K.ed=${i};go('edi')"><td>${e}</td><td>x64</td><td>${T('7/14/2009','14/07/2009')}</td></tr>`).join('')}</table><p style="font-size:12.5px;color:#555;margin-top:12px">${T('Choose the edition that matches your product key, otherwise activation will fail.','Choisissez l’édition correspondant à votre clé de produit, sinon l’activation échouera.')}</p>`, 'go("lic")', {back: 'home', dis: K.ed === undefined}), 'setup')
+    },
+    lic() {
+        show(win(`<h2>${T('Please read the license terms','Veuillez lire les termes du contrat de licence')}</h2><div class="lic"><b>${T('MICROSOFT SOFTWARE LICENSE TERMS','TERMES DU CONTRAT DE LICENCE LOGICIEL MICROSOFT')}</b><br><br>${T('These license terms are an agreement between Microsoft Corporation and you. Please read them. They apply to the software named above, which includes the media on which you received it, if any.<br><br>By using the software, you accept these terms. If you do not accept them, do not use the software.','Les présents termes du contrat de licence constituent un contrat entre Microsoft Corporation et vous. Veuillez les lire. Ils s’appliquent au logiciel désigné ci-dessus, y compris au support sur lequel vous l’avez reçu, le cas échéant.<br><br>En utilisant le logiciel, vous acceptez ces termes. Si vous ne les acceptez pas, n’utilisez pas le logiciel.')}<br><br>${T('(This is a simulation.)','(Ceci est une simulation.)')}</div><p><label><input type="checkbox" onchange="$('nx').disabled=!this.checked"> ${T('I accept the license terms','J’accepte les termes du contrat de licence')}</label></p>`, 'go("type")', {dis: 1, back: 'edi'}), 'setup')
+    },
+    type() {
+        show(win(`<h2>${T('Which type of installation do you want?','Quel type d’installation souhaitez-vous effectuer ?')}</h2><div class="opt" onclick="alert(T('Upgrade is unavailable: there is no earlier version of Windows on this disk.','Mise à niveau impossible : aucune version antérieure de Windows sur ce disque.'))"><b>${T('Upgrade','Mise à niveau')}</b>${T('Keep your files, settings, and programs. (Not available when booted from the drive.)','Conservez vos fichiers, paramètres et programmes. (Indisponible lors d’un démarrage depuis le support.)')}</div><div class="opt" onclick='go("disk")'><b>${T('Custom (advanced)','Personnalisée (avancée)')}</b>${T('Install a new copy of Windows, pick where to install it, or change disks and partitions. Your files, settings and programs are not kept.','Installez une nouvelle copie de Windows, choisissez l’emplacement ou modifiez les disques et partitions. Vos fichiers, paramètres et programmes ne sont pas conservés.')}</div>`, 'go("disk")', {dis: 1, back: 'lic'}), 'setup')
+    },
+    disk() {
+        if (!K.parts.length) K.parts = [{k: 'u', s: DISK}];
+        show(win(`<h2>${T('Where do you want to install Windows?','Où souhaitez-vous installer Windows ?')}</h2><p style="font-size:12.5px;color:#555;margin:0 0 8px">${T('Create a partition for Windows (at least 20 GB), select it, then click Next.','Créez une partition pour Windows (au moins 20 Go), sélectionnez-la, puis cliquez sur Suivant.')}</p><div id="dl"></div><div class="act" id="ac"></div><div id="nw" class="warn"></div>`, 'nextDisk()', {back: 'type'}), 'setup');
+        drawDisk()
+    },
+    inst() {
+        const S = [T("Copying Windows files","Copie des fichiers Windows"), T("Expanding Windows files","Décompression des fichiers Windows"), T("Installing features","Installation des fonctionnalités"), T("Installing updates","Installation des mises à jour"), T("Completing installation","Fin de l’installation")];
+        show(win(`<h2>${T('Installing Windows...','Installation de Windows...')}</h2><p>${T('Your computer will restart several times during installation.','Votre ordinateur redémarrera plusieurs fois pendant l’installation.')}</p><ul class="steps" id="st">${S.map(s => `<li>${s}</li>`).join('')}</ul><div class="pb bl"><i id="p"></i></div><p id="pc" style="text-align:center">0%</p>`, '', {dis: 1}), 'setup');
+        fill('#p', 16000, () => go('rst'), p => {
+            const n = Math.min(4, Math.floor(p * 5));
+            [...$('st').children].forEach((l, i) => l.className = i < n ? 'ok' : i == n ? 'on' : '');
+            $('pc').textContent = Math.floor(p * 100) + '%'
+        })
+    },
+    rst() { rstScreen(1) },
+    rst2() { rstScreen(2) },
+    svc() { svcScreen([T("Setup is updating registry settings","Mise à jour des paramètres du Registre"), T("Setup is starting services","Démarrage des services")], 'rst2', 6000) },
+    svc2() { svcScreen([T("Setup is preparing your computer for first use","Préparation de l’ordinateur pour la première utilisation"), T("Checking video performance","Vérification des performances vidéo")], 'o1', 6000) },
+    shut() {
+        show(`<div class="pulse">${flag(90)}</div><div class="w">${T('Shutting down','Arrêt en cours')}</div>`, 'logo');
+        later(() => go('poff'), 2500)
+    },
+    poff() {
+        show(`<button class="def" onclick="go('off')" style="font-size:18px;padding:12px 26px">⏻ ${T('Power on','Allumer le PC')}</button>`, 'logo')
+    },
+    o1() {
+        show(win(`<h2>${T('Choose a user name and computer name','Choisissez un nom d’utilisateur et un nom d’ordinateur')}</h2><p>${T('This name appears on the Welcome screen and your Start menu.','Ce nom apparaît sur l’écran d’accueil et dans le menu Démarrer.')}</p><div class="row"><label for="u">${T('Type a user name (for example, John):','Entrez un nom d’utilisateur (par exemple, Jean) :')}</label><input type="text" id="u" value="${K.user}" oninput="chk()" maxlength="12"></div><div class="row"><label for="pcn">${T('Type a computer name:','Entrez un nom d’ordinateur :')}</label><input type="text" id="pcn" value="${K.pc}" oninput="pce()" maxlength="15"></div>`, 'oobe1()', {dis: !K.user}), 'oobe')
+    },
+    o2() {
+        show(win(`<h2>${T('Set a password for your account','Définissez un mot de passe pour votre compte')}</h2><p>${T('Creating a password is a smart security precaution. Leave the boxes empty to skip it.','Créer un mot de passe est une précaution de sécurité judicieuse. Laissez les champs vides pour l’ignorer.')}</p><div class="row"><label for="p1">${T('Type a password (recommended):','Entrez un mot de passe (recommandé) :')}</label><input type="password" id="p1"></div><div class="row"><label for="p2">${T('Retype your password:','Retapez votre mot de passe :')}</label><input type="password" id="p2"></div><div class="row"><label for="ph">${T('Type a password hint:','Entrez un indice de mot de passe :')}</label><input type="text" id="ph" maxlength="40"></div><p style="font-size:12px;color:#555">${T('Choose a word or phrase that helps you remember your password. If you forget it, Windows will show you the hint.','Choisissez un mot ou une phrase qui vous aide à retenir votre mot de passe. Si vous l’oubliez, Windows affichera l’indice.')}</p><div class="warn" id="pw"></div>`, 'oobe2()', {back: 'o1'}), 'oobe');
+        $('p1').value = $('p2').value = K.pw;
+        $('ph').value = K.hint || ''
+    },
+    o3() {
+        show(win(`<h2>${T('Type your Windows product key','Entrez votre clé de produit Windows')}</h2><p>${T('You can find the key on the packaging or the case of the disc.','Vous trouverez la clé sur l’emballage ou sur le boîtier du disque.')}</p><div class="row"><label for="k">${T('Product key:','Clé de produit :')}</label><input type="text" id="k" placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"></div><p><label><input type="checkbox" checked> ${T('Automatically activate Windows when I’m online','Activer Windows automatiquement quand je suis en ligne')}</label></p><p style="font-size:12px;color:#555">${T('You can leave this empty and activate within 30 days.','Vous pouvez laisser vide et activer dans les 30 jours.')}</p>`, 'go("o4")', {back: 'o2'}), 'oobe')
+    },
+    o4() {
+        show(win(`<h2>${T('Help protect your computer and improve Windows automatically','Aidez à protéger votre ordinateur et à améliorer Windows automatiquement')}</h2><div class="opt" onclick='go("o5")'><b>${T('Use recommended settings','Utiliser les paramètres recommandés')}</b>${T('Install important and recommended updates and help make browsing safer.','Installez les mises à jour importantes et recommandées et sécurisez la navigation.')}</div><div class="opt" onclick='go("o5")'><b>${T('Install important updates only','Installer uniquement les mises à jour importantes')}</b>${T('Only install security and other critical updates.','Installe seulement les mises à jour de sécurité et critiques.')}</div><div class="opt" onclick='go("o5")'><b>${T('Ask me later','Me poser la question ultérieurement')}</b>${T('Until you decide, your computer will be at risk.','Tant que vous ne décidez pas, votre ordinateur est exposé.')}</div>`, 'go("o5")', {back: 'o3', dis: 1}), 'oobe')
+    },
+    o5() {
+        show(win(`<h2>${T('Review your time and date settings','Vérifiez vos paramètres d’heure et de date')}</h2><div class="row"><label for="tz">${T('Time zone:','Fuseau horaire :')}</label><select id="tz"><option>(UTC+01:00) ${T('West Central Africa','Afrique centrale occidentale')}</option><option>(UTC+01:00) Paris, Bruxelles</option><option>(UTC+00:00) GMT</option></select></div><div class="row"><label>${T('Date and time:','Date et heure :')}</label><b>${new Date().toLocaleString(T('en-US','fr-FR'))}</b></div><p style="margin-top:20px">${T('Select your computer’s current location:','Sélectionnez l’emplacement actuel de l’ordinateur :')} <b>${T('Home network','Réseau domestique')}</b></p>`, 'go("wel")', {back: 'o4'}), 'oobe')
+    },
+    wel() {
+        K.stage = 3;
+        show(`<div class="pulse">${flag(90)}</div>${T('Welcome','Bienvenue')}${K.user ? ', ' + K.user : ''}<div id="pr" style="font-size:15px;opacity:0">${T('Preparing your desktop...','Préparation de votre Bureau...')}</div>`, 'welcome');
+        later(() => $('pr').style.opacity = .85, 1800);
+        later(() => go(K.pw ? 'login' : 'desk'), 5200)
+    },
+    login() {
+        show(`<div style="text-align:center;color:#fff"><div style="width:128px;height:128px;margin:0 auto 12px;border-radius:10px;border:3px solid #fff9;background:linear-gradient(135deg,#f6a52e,#e8602c);display:grid;place-items:center;font-size:64px">🌼</div><div style="font-size:26px;text-shadow:0 1px 4px #0006;margin-bottom:14px">${K.user}</div><div style="display:flex;gap:6px;justify-content:center"><input type="password" id="lp" placeholder="${T('Password','Mot de passe')}" onkeydown="if(event.key=='Enter')doLogin()" style="width:220px"><button class="def" onclick="doLogin()" aria-label="OK">➜</button></div><div id="le" style="min-height:44px;margin-top:12px;font-size:13px;text-shadow:0 1px 3px #0008"></div></div><button style="position:absolute;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)" onclick="pcRestart()">⏻ ${T('Restart','Redémarrer')}</button>`, 'oobe');
+        $('lp').focus()
+    },
+    desk() {
+        const ps = K.parts.filter(p => p.k == 'p'), ip = ps.includes(K.ip) ? K.ip : ps[0],
+        ord = ip ? [ip, ...ps.filter(p => p !== ip)] : [{s: 61440}],
+        drv = ord.map((p, i) => {
+            const used = i ? Math.round(p.s * 0.001) : Math.round(p.s * 0.07), ltr = String.fromCharCode(67 + i);
+            return `<div class="drv"><span style="font-size:40px">💽</span><div><b>${T('Local Disk','Disque local')} (${ltr}:)</b><div class="g"><i style="width:${Math.max(1, Math.round(used / p.s * 100))}%"></i></div><small>${mb(p.s - used)} ${T('free of','libres sur')} ${mb(p.s)}</small></div></div>`
+        }).join('');
+        const usbL = String.fromCharCode(67 + ord.length),
+        usbDrv = K.ins ? `<div style="padding:6px 16px 0;font-size:12px;color:#555;border-top:1px solid #eee">${T('Devices with Removable Storage','Périphériques utilisant des supports amovibles')}</div><div class="drv"><span style="font-size:40px">💾</span><div><b>${T('Removable Disk','Disque amovible')} (${usbL}:)</b><div class="g"><i style="width:41%"></i></div><small>${mb(4600)} ${T('free of','libres sur')} ${mb(7680)}</small></div></div>` : '',
+        usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="$('w1').classList.add('open')"><span>💾</span>${T('Removable Disk','Disque amovible')} (${usbL}:)</div>` : '',
+        edn = EDN[K.ed ?? 3];
+        show(`<div class="ico" style="top:14px" onclick="alert(T('Recycle Bin is empty.','La Corbeille est vide.'))"><span>🗑️</span>${T('Recycle Bin','Corbeille')}</div><div class="ico" style="top:110px" ondblclick="$('w1').classList.add('open')"><span>🖥️</span>${T('Computer','Ordinateur')}</div>${usbIco}<div class="win" id="w1"><div class="bar"><span>${T('Computer','Ordinateur')}</span><button onclick="$('w1').classList.remove('open')">✕</button></div>${drv}${usbDrv}<div style="padding:0 16px 14px;font-size:12px;color:#555">${T('Computer name','Nom de l’ordinateur')} : ${K.pc || 'WIN7-PC'} · Windows 7 ${T(edn[0], edn[1])}</div></div>${startHtml()}<div class="tb"><button class="orb" aria-label="Start" onclick="$('sm').classList.toggle('open')">${flag(26)}</button><div class="tray" id="ck"></div></div>`, 'desk');
+        const tick = () => {
+            const e = $('ck');
+            if (!e) return;
+            const d = new Date(), l = T('en-US', 'fr-FR');
+            e.innerHTML = d.toLocaleTimeString(l, {hour: 'numeric', minute: '2-digit'}) + '<br>' + d.toLocaleDateString(l);
+            later(tick, 10000)
+        };
+        tick()
     }
-
-                },
-                err() {
-                    show(`<div>No bootable device -- insert boot disk and press any key<span class="cur">_</span></div><div class="kbw">${kbd([], 1)}</div>`, 'dos');
-                    KH = () => pcRestart()
-                },
-                off() {
-                    show('', 'dos');
-                    later( () => go('post'), 1200)
-                },
-                post() {
-                    let n = 8;
-                    show(`<div>ALFATRON PC BIOS v2.14 &middot; CPU: Core i5 3.2GHz<br>Memory test: 8192MB OK<br>USB: ${K.ins ? '1 Mass Storage Device' : 'none'}<br><br><b>Press F2 or Del to enter Setup...</b> <span id="pn">${n}</span></div><div class="kbw">${kbd(['F2', 'Del'])}</div>`, 'dos');
-                    KH = k => {
-if (k == 'F2' || k == 'Del') {
-    K.bt = 0;
-    K.bo0 = [...K.boot];
+};
+function setUi(x) { K.ui = x; document.documentElement.lang = x; $('progressPanel').classList.remove('open'); reset() }
+function dl() { $('dm').style.display = 'block'; fill('#dp', 2500, () => { K.iso = 1; go('p1') }) }
+function insUsb() {
+    const s = $('sd'), f = $('fr'), c = $('cap');
+    $('ib').disabled = true;
+    c.textContent = L3('1. The flash drive seen from the side: the metal plug is on the right.', '1. La clé USB vue de côté : la prise métallique est à droite.', '');
+    later(() => { c.textContent = L3('2. Turn it so the plug faces the USB port.', '2. Tournez-la pour que la prise soit face au port USB.', ''); s.style.transform = 'scaleX(.1)' }, 1800);
+    later(() => { s.style.opacity = 0; f.style.opacity = 1 }, 2700);
+    later(() => { c.textContent = L3('3. Push the plug straight into the port.', '3. Enfoncez la prise droit dans le port.', ''); f.style.transform = 'translate(0px,0px) scale(1)' }, 3300);
+    later(() => { K.ins = 1; go('p3') }, 4600)
+}
+function doLogin() {
+    if ($('lp').value === K.pw) return go('desk');
+    $('le').innerHTML = T('The user name or password is incorrect.', 'Le nom d’utilisateur ou le mot de passe est incorrect.') + (K.hint ? `<br><b>${T('Password hint:', 'Indice du mot de passe :')}</b> ${esc(K.hint)}` : '');
+    $('lp').value = '';
+    $('lp').focus()
+}
+function pcRestart() { go('off') }
+function bootFrom(i) {
+    const d = K.boot[i];
+    if (!d) return go('err');
+    if (d[0] == 'H') {
+        if (!K.stage) return go('err');
+        K.after = K.stage == 1 ? 'svc' : K.stage == 2 ? 'svc2' : K.pw ? 'login' : 'desk';
+        return go('start')
+    }
+    if (d[0] == 'U' && K.ins) { K.bi = i; return go('pak') }
+    bootFrom(i + 1)
+}
+function mv(d) {
+    const a = K.boot, i = K.sel, j = i + d;
+    if (j < 0 || j > 2) return;
+    [a[i], a[j]] = [a[j], a[i]];
+    K.sel = j;
     go('bios')
 }
-                    }
-                    ;
-                    every(stop => {
-                        $('pn').textContent = --n;
-                        if (n <= 0) {
-                            stop();
-                            bootFrom(0)
-                        }
-                    }
-                    , 1000)
-                },
-                pak() {
-                    let n = 7;
-                    const i = K.bi;
-                    show(`<div>Press any key to boot from USB..<span class="cur">_</span> <span id="c2">${n}</span></div>${K.stage ? `<p style="color:#e88">${L3('Windows is already installed: do NOT press a key, just wait.', 'Windows est déjà installé : n’appuyez sur AUCUNE touche, patientez.', 'ويندوز مثبّت بالفعل: لا تضغط أي زر، فقط انتظر.')}</p>` : ''}<div class="kbw">${kbd([], 1)}</div>`, 'dos');
-                    KH = () => {
-                        K.after = 'lang';
-                        go('load')
-                    }
-                    ;
-                    every(stop => {
-                        $('c2').textContent = --n;
-                        if (n <= 0) {
-                            stop();
-                            bootFrom(i + 1)
-                        }
-                    }
-                    , 1000)
-                },
-                load() {
-                    show(`<div class="t">${T('Windows is loading files...', 'Windows charge les fichiers...')}</div><div class="pb"><i id="p"></i></div>`, 'load');
-                    cur = 'wait';
-                    fill('#p', 4500, () => go('start'))
-                },
-                start() {
-                    cur = 'wait';
-                    const a = K.after || 'lang';
-                    show(`<div class="pulse">${flag(110)}</div><div class="w">${T('Starting', 'Démarrage de')} <b>Windows</b></div>`, 'logo');
-                    later( () => go(a), 3200)
-                },
-                lang() {
-                    const f = W() == 'fr'
-                      , o = (a, b) => `<option ${f == b ? 'selected' : ''}>${a}</option>`;
-                    show(win(`<div style="text-align:center;margin-bottom:8px">${flag(56)}<div style="font-size:26px;font-weight:300">Windows<sup style="font-size:12px"> 7</sup></div></div><div class="row"><label for="a">${T('Language to install:', 'Langue à installer :')}</label><select id="a">${o('English (United States)', 0)}${o('Français (France)', 1)}</select></div><div class="row"><label for="b">${T('Time and currency format:', 'Format de l’heure et de la devise :')}</label><select id="b">${o('English (United States)', 0)}${o('Français (France)', 1)}</select></div><div class="row"><label for="c">${T('Keyboard or input method:', 'Clavier ou méthode de saisie :')}</label><select id="c"><option>${f ? 'Français' : 'US'}</option><option>${f ? 'Arabe (102)' : 'Arabic (102)'}</option></select></div><p style="font-size:12px;color:#555;margin-top:24px">${T('Enter your language and other preferences and click “Next” to continue.', 'Entrez votre langue et d’autres préférences, puis cliquez sur « Suivant » pour continuer.')}</p>`, 'go("home")'), 'setup')
-                },
-                home() {
-                    show(win(`<div class="big">${flag(90)}<div style="margin:14px 0"><button onclick='go("lic")'>${T('Install now', 'Installer maintenant')}</button></div></div><p><span class="link" onclick="alert(T('The repair tools are not part of this simulation.','Les outils de réparation ne font pas partie de cette simulation.'))">${T('Repair your computer', 'Réparer l’ordinateur')}</span></p><p style="font-size:12px;color:#555">Copyright © 2009 Microsoft Corporation. ${T('All rights reserved.', 'Tous droits réservés.')}</p>`, 'go("lic")', {
-                        label: T('Install now', 'Installer maintenant'),
-                        back: 'lang'
-                    }), 'setup')
-                },
-                lic() {
-                    show(win(`<h2>${T('Please read the license terms', 'Veuillez lire les termes du contrat de licence')}</h2><div class="lic"><b>${T('MICROSOFT SOFTWARE LICENSE TERMS', 'TERMES DU CONTRAT DE LICENCE LOGICIEL MICROSOFT')}</b><br><br>${T('These license terms are an agreement between Microsoft Corporation and you. Please read them. They apply to the software named above, which includes the media on which you received it, if any.<br><br>By using the software, you accept these terms. If you do not accept them, do not use the software.', 'Les présents termes du contrat de licence constituent un contrat entre Microsoft Corporation et vous. Veuillez les lire. Ils s’appliquent au logiciel désigné ci-dessus, y compris au support sur lequel vous l’avez reçu, le cas échéant.<br><br>En utilisant le logiciel, vous acceptez ces termes. Si vous ne les acceptez pas, n’utilisez pas le logiciel.')}<br><br>${T('(This is a simulation.)', '(Ceci est une simulation.)')}</div><p><label><input type="checkbox" onchange="$('nx').disabled=!this.checked"> ${T('I accept the license terms', 'J’accepte les termes du contrat de licence')}</label></p>`, 'go("type")', {
-                        dis: 1,
-                        back: 'home'
-                    }), 'setup')
-                },
-                type() {
-                    show(win(`<h2>${T('Which type of installation do you want?', 'Quel type d’installation souhaitez-vous effectuer ?')}</h2><div class="opt" onclick="alert(T('Upgrade is unavailable: there is no earlier version of Windows on this disk.','Mise à niveau impossible : aucune version antérieure de Windows sur ce disque.'))"><b>${T('Upgrade', 'Mise à niveau')}</b>${T('Keep your files, settings, and programs. (Not available when booted from the drive.)', 'Conservez vos fichiers, paramètres et programmes. (Indisponible lors d’un démarrage depuis le support.)')}</div><div class="opt" onclick='go("disk")'><b>${T('Custom (advanced)', 'Personnalisée (avancée)')}</b>${T('Install a new copy of Windows, pick where to install it, or change disks and partitions. Your files, settings and programs are not kept.', 'Installez une nouvelle copie de Windows, choisissez l’emplacement ou modifiez les disques et partitions. Vos fichiers, paramètres et programmes ne sont pas conservés.')}</div>`, 'go("disk")', {
-                        dis: 1,
-                        back: 'lic'
-                    }), 'setup')
-                },
-                disk() {
-                    if (!K.parts.length)
-                        K.parts = [{
-                            k: 'u',
-                            s: 256000
-                        }];
-                    show(win(`<h2>${T('Where do you want to install Windows?', 'Où souhaitez-vous installer Windows ?')}</h2><p style="font-size:12.5px;color:#555;margin:0 0 8px">${T('Create a partition for Windows (at least 20 GB), select it, then click Next.', 'Créez une partition pour Windows (au moins 20 Go), sélectionnez-la, puis cliquez sur Suivant.')}</p><div id="dl"></div><div class="act" id="ac"></div><div id="nw" class="warn"></div>`, 'nextDisk()', {
-                        back: 'type'
-                    }), 'setup');
-                    drawDisk()
-                },
-                inst() {
-                    const S = [T("Copying Windows files", "Copie des fichiers Windows"), T("Expanding Windows files", "Décompression des fichiers Windows"), T("Installing features", "Installation des fonctionnalités"), T("Installing updates", "Installation des mises à jour"), T("Completing installation", "Fin de l’installation")];
-                    show(win(`<h2>${T('Installing Windows...', 'Installation de Windows...')}</h2><p>${T('Your computer will restart several times during installation.', 'Votre ordinateur redémarrera plusieurs fois pendant l’installation.')}</p><ul class="steps" id="st">${S.map(s => `<li>${s}</li>`).join('')}</ul><div class="pb bl"><i id="p"></i></div><p id="pc" style="text-align:center">0%</p>`, '', {
-                        dis: 1
-                    }), 'setup');
-                    fill('#p', 16000, () => go('rst'), p => {
-                        const n = Math.min(4, Math.floor(p * 5));
-                        [...$('st').children].forEach( (l, i) => l.className = i < n ? 'ok' : i == n ? 'on' : '');
-                        $('pc').textContent = Math.floor(p * 100) + '%'
-                    }
-                    )
-                },
-                rst() {
-                    K.stage = 1;
-                    let n = 8;
-                    show(`<div class="dlg"><div class="bar">${T('Installing Windows', 'Installation de Windows')}</div><div class="pane"><h2>${T('Windows needs to restart to continue', 'Windows doit redémarrer pour continuer')}</h2><p>${T('Restarting in', 'Redémarrage dans')} <b id="n">${n}</b> ${T('seconds...', 'secondes...')}</p></div><div class="foot"><button class="def" onclick="pcRestart()">${T('Restart now', 'Redémarrer maintenant')}</button></div></div>`, 'setup');
-                    every(stop => {
-                        $('n').textContent = --n;
-                        if (n <= 0) {
-                            stop();
-                            pcRestart()
-                        }
-                    }
-                    , 1000)
-                },
-                svc() {
-                    cur = 'wait';
-                    const M = [T("Setup is updating registry settings", "Mise à jour des paramètres du Registre"), T("Setup is starting services", "Démarrage des services"), T("Setup is preparing your computer for first use", "Préparation de l’ordinateur pour la première utilisation"), T("Checking video performance", "Vérification des performances vidéo")];
-                    show(`<div class="pulse">${flag(90)}</div><div class="w">${T('Setup is <b>completing installation</b>', 'L’installation de <b>Windows</b> se termine')}</div><div class="sm" id="mm">${M[0]}</div><div class="pb bl" style="width:300px"><i id="p"></i></div>`, 'logo');
-                    fill('#p', 9000, () => go('o1'), p => {
-                        const e = $('mm');
-                        if (e)
-                            e.textContent = M[Math.min(3, Math.floor(p * 4))]
-                    }
-                    )
-                },
-                o1() {
-                    show(win(`<h2>${T('Choose a user name and computer name', 'Choisissez un nom d’utilisateur et un nom d’ordinateur')}</h2><p>${T('This name appears on the Welcome screen and your Start menu.', 'Ce nom apparaît sur l’écran d’accueil et dans le menu Démarrer.')}</p><div class="row"><label for="u">${T('Type a user name (for example, John):', 'Entrez un nom d’utilisateur (par exemple, Jean) :')}</label><input type="text" id="u" value="${K.user}" oninput="chk()" maxlength="12"></div><div class="row"><label for="pcn">${T('Type a computer name:', 'Entrez un nom d’ordinateur :')}</label><input type="text" id="pcn" value="${K.pc}" oninput="pce()" maxlength="15"></div>`, 'oobe1()', {
-                        dis: !K.user
-                    }), 'oobe')
-                },
-                o2() {
-                    show(win(`<h2>${T('Set a password for your account', 'Définissez un mot de passe pour votre compte')}</h2><p>${T('Creating a password is a smart security precaution. Leave the boxes empty to skip it.', 'Créer un mot de passe est une précaution de sécurité judicieuse. Laissez les champs vides pour l’ignorer.')}</p><div class="row"><label for="p1">${T('Type a password (recommended):', 'Entrez un mot de passe (recommandé) :')}</label><input type="password" id="p1"></div><div class="row"><label for="p2">${T('Retype your password:', 'Retapez votre mot de passe :')}</label><input type="password" id="p2"></div><div class="warn" id="pw"></div>`, 'oobe2()', {
-                        back: 'o1'
-                    }), 'oobe');
-                    $('p1').value = $('p2').value = K.pw
-                },
-                o3() {
-                    show(win(`<h2>${T('Type your Windows product key', 'Entrez votre clé de produit Windows')}</h2><p>${T('You can find the key on the packaging or the case of the disc.', 'Vous trouverez la clé sur l’emballage ou sur le boîtier du disque.')}</p><div class="row"><label for="k">${T('Product key:', 'Clé de produit :')}</label><input type="text" id="k" placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"></div><p><label><input type="checkbox" checked> ${T('Automatically activate Windows when I’m online', 'Activer Windows automatiquement quand je suis en ligne')}</label></p><p style="font-size:12px;color:#555">${T('You can leave this empty and activate within 30 days.', 'Vous pouvez laisser vide et activer dans les 30 jours.')}</p>`, 'go("o4")', {
-                        back: 'o2'
-                    }), 'oobe')
-                },
-                o4() {
-                    show(win(`<h2>${T('Help protect your computer and improve Windows automatically', 'Aidez à protéger votre ordinateur et à améliorer Windows automatiquement')}</h2><div class="opt" onclick='go("o5")'><b>${T('Use recommended settings', 'Utiliser les paramètres recommandés')}</b>${T('Install important and recommended updates and help make browsing safer.', 'Installez les mises à jour importantes et recommandées et sécurisez la navigation.')}</div><div class="opt" onclick='go("o5")'><b>${T('Install important updates only', 'Installer uniquement les mises à jour importantes')}</b>${T('Only install security and other critical updates.', 'Installe seulement les mises à jour de sécurité et critiques.')}</div><div class="opt" onclick='go("o5")'><b>${T('Ask me later', 'Me poser la question ultérieurement')}</b>${T('Until you decide, your computer will be at risk.', 'Tant que vous ne décidez pas, votre ordinateur est exposé.')}</div>`, 'go("o5")', {
-                        back: 'o3',
-                        dis: 1
-                    }), 'oobe')
-                },
-                o5() {
-                    show(win(`<h2>${T('Review your time and date settings', 'Vérifiez vos paramètres d’heure et de date')}</h2><div class="row"><label for="tz">${T('Time zone:', 'Fuseau horaire :')}</label><select id="tz"><option>(UTC+01:00) ${T('West Central Africa', 'Afrique centrale occidentale')}</option><option>(UTC+01:00) Paris, Bruxelles</option><option>(UTC+00:00) GMT</option></select></div><div class="row"><label>${T('Date and time:', 'Date et heure :')}</label><b>${new Date().toLocaleString(T('en-US', 'fr-FR'))}</b></div><p style="margin-top:20px">${T('Select your computer’s current location:', 'Sélectionnez l’emplacement actuel de l’ordinateur :')} <b>${T('Home network', 'Réseau domestique')}</b></p>`, 'go("wel")', {
-                        back: 'o4'
-                    }), 'oobe')
-                },
-                wel() {
-                    cur = 'wait';
-                    K.stage = 2;
-                    show(`<div class="pulse">${flag(90)}</div>${T('Welcome', 'Bienvenue')}${K.user ? ', ' + K.user : ''}<div id="pr" style="font-size:15px;opacity:0">${T('Preparing your desktop...', 'Préparation de votre Bureau...')}</div>`, 'welcome');
-                    later( () => $('pr').style.opacity = .85, 1800);
-                    later( () => go(K.pw ? 'login' : 'desk'), 5200)
-                },
-                login() {
-                    show(`<div style="text-align:center;color:#fff"><div style="width:128px;height:128px;margin:0 auto 12px;border-radius:10px;border:3px solid #fff9;background:linear-gradient(135deg,#f6a52e,#e8602c);display:grid;place-items:center;font-size:64px">🌼</div><div style="font-size:26px;text-shadow:0 1px 4px #0006;margin-bottom:14px">${K.user}</div><div style="display:flex;gap:6px;justify-content:center"><input type="password" id="lp" placeholder="${T('Password', 'Mot de passe')}" onkeydown="if(event.key=='Enter')doLogin()" style="width:220px"><button class="def" onclick="doLogin()" aria-label="OK">➜</button></div><div id="le" style="min-height:44px;margin-top:12px;font-size:13px;text-shadow:0 1px 3px #0008"></div></div><button style="position:absolute;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)" onclick="pcRestart()">⏻ ${T('Restart', 'Redémarrer')}</button>`, 'oobe');
-                    $('lp').focus()
-                },
-                desk() {
-                    const ps = K.parts.filter(p => p.k == 'p')
-                      , ip = ps.includes(K.ip) ? K.ip : ps[0]
-                      , ord = ip ? [ip, ...ps.filter(p => p !== ip)] : [{
-                        s: 61440
-                    }]
-                      , drv = ord.map( (p, i) => {
-                        const used = i ? Math.round(p.s * 0.001) : Math.round(p.s * 0.07)
-                          , ltr = String.fromCharCode(67 + i);
-                        return `<div class="drv"><span style="font-size:40px">💽</span><div><b>${T('Local Disk', 'Disque local')} (${ltr}:)</b><div class="g"><i style="width:${Math.max(1, Math.round(used / p.s * 100))}%"></i></div><small>${mb(p.s - used)} ${T('free of', 'libres sur')} ${mb(p.s)}</small></div></div>`
-                    }
-).join('');
-const usbL = String.fromCharCode(67 + ord.length)
-  , usbDrv = K.ins ? `<div style="padding:6px 16px 0;font-size:12px;color:#555;border-top:1px solid #eee">${T('Devices with Removable Storage', 'Périphériques utilisant des supports amovibles')}</div><div class="drv"><span style="font-size:40px">💾</span><div><b>${T('Removable Disk', 'Disque amovible')} (${usbL}:)</b><div class="g"><i style="width:41%"></i></div><small>${mb(4600)} ${T('free of', 'libres sur')} ${mb(7680)}</small></div></div>` : ''
-  , usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="$('w1').classList.add('open')"><span>💾</span>${T('Removable Disk', 'Disque amovible')} (${usbL}:)</div>` : '';
-show(`<div class="ico" style="top:14px" onclick="alert(T('Recycle Bin is empty.','La Corbeille est vide.'))"><span>🗑️</span>${T('Recycle Bin', 'Corbeille')}</div><div class="ico" style="top:110px" ondblclick="$('w1').classList.add('open')"><span>🖥️</span>${T('Computer', 'Ordinateur')}</div>${usbIco}<div class="win" id="w1"><div class="bar">...</div>${drv}${usbDrv}<div style="padding:0 16px 14px;font-size:12px;color:#555">${T('Computer name', 'Nom de l’ordinateur')} : ${K.pc || 'WIN7-PC'} · Windows 7 ${T('Ultimate', 'Édition Intégrale')}</div></div><div class="start" id="sm"><div class="l"><div class="it" onclick="$('w1').classList.add('open');$('sm').classList.remove('open')">🖥️ ${T('Computer', 'Ordinateur')}</div><div class="it">⚙️ ${T('Control Panel', 'Panneau de configuration')}</div><div class="it">📁 Documents</div></div><div class="r"><div class="it"><b>${K.user || 'User'}</b></div><div class="it" onclick="pcRestart()">⏻ ${T('Restart', 'Redémarrer')}</div></div></div><div class="tb"><button class="orb" aria-label="Start" onclick="$('sm').classList.toggle('open')">${flag(26)}</button><div class="tray" id="ck"></div></div>`, 'desk');
-                    const tick = () => {
-                        const e = $('ck');
-                        if (!e)
-                            return;
-                        const d = new Date()
-                          , l = T('en-US', 'fr-FR');
-                        e.innerHTML = d.toLocaleTimeString(l, {
-                            hour: 'numeric',
-                            minute: '2-digit'
-                        }) + '<br>' + d.toLocaleDateString(l);
-                        later(tick, 10000)
-                    }
-                    ;
-                    tick()
-                }
-            };
-            function setUi(x) {
-                K.ui = x;
-                document.documentElement.lang = x;
-                $('progressPanel').classList.remove('open');
-                reset()
-            }
-            function dl() {
-                $('dm').style.display = 'block';
-                fill('#dp', 2500, () => {
-                    K.iso = 1;
-                    go('p1')
-                }
-                )
-            }
-            function rf() {
-                $('rt').textContent = 'PREPARING...';
-                fill('#rp', 3500, () => {
-                    K.usb = 1;
-                    go('p2')
-                }
-                , p => {
-                    $('rt').textContent = 'COPYING ISO... ' + Math.floor(p * 100) + '%'
-                }
-                )
-            }
-            function insUsb() {
-                const s = $('sd')
-                  , f = $('fr')
-                  , c = $('cap');
-                $('ib').disabled = true;
-                c.textContent = L3('1. The flash drive seen from the side: the metal plug is on the right.', '1. La clé USB vue de côté : la prise métallique est à droite.', '');
-                later( () => {
-                    c.textContent = L3('2. Turn it so the plug faces the USB port.', '2. Tournez-la pour que la prise soit face au port USB.', '');
-                    s.style.transform = 'scaleX(.1)'
-                }
-                , 1800);
-                later( () => {
-                    s.style.opacity = 0;
-                    f.style.opacity = 1
-                }
-                , 2700);
-                later( () => {
-                    c.textContent = L3('3. Push the plug straight into the port.', '3. Enfoncez la prise droit dans le port.', '');
-                    f.style.transform = 'translate(0px,0px) scale(1)'
-                }
-                , 3300);
-                later( () => {
-                    K.ins = 1;
-                    go('p3')
-                }
-                , 4600)
-            }
-            function doLogin() {
-                if ($('lp').value === K.pw)
-                    return go('desk');
-                $('le').textContent = T('The user name or password is incorrect.', 'Le nom d’utilisateur ou le mot de passe est incorrect.');
-                $('lp').value = '';
-                $('lp').focus()
-            }
-            function pcRestart() {
-                go('off')
-            }
-            function bootFrom(i) {
-                const d = K.boot[i];
-                if (!d)
-                    return go('err');
-                if (d[0] == 'H') {
-                    if (!K.stage)
-                        return go('err');
-                    K.after = K.stage == 1 ? 'svc' : K.pw ? 'login' : 'desk';
-                    return go('start')
-                }
-                if (d[0] == 'U' && K.ins) {
-                    K.bi = i;
-                    return go('pak')
-                }
-                bootFrom(i + 1)
-            }
-            function mv(d) {
-                const a = K.boot
-                  , i = K.sel
-                  , j = i + d;
-                if (j < 0 || j > 2)
-                    return;
-                [a[i],a[j]] = [a[j], a[i]];
-                K.sel = j;
-                go('bios')
-            }
-            function save() {
-                pcRestart()
-            }
-            function chk() {
-                K.user = $('u').value.trim();
-                if (!K.pe)
-                    $('pcn').value = K.pc = K.user ? (K.user + '-PC').replace(/\s/g, '') : '';
-                $('nx').disabled = !K.user
-            }
-            function pce() {
-                K.pe = 1;
-                K.pc = $('pcn').value.trim()
-            }
-            function oobe1() {
-                if (!K.pc)
-                    K.pc = K.user + '-PC';
-                go('o2')
-            }
-            function oobe2() {
-                if ($('p1').value !== $('p2').value) {
-                    $('pw').textContent = T('The passwords do not match. Retype them.', 'Les mots de passe ne correspondent pas. Retapez-les.');
-                    return
-                }
-                K.pw = $('p1').value;
-                go('o3')
-            }
-            const pname = (p, i) => {
-                const n = K.parts.slice(0, i).filter(q => q.k != 'u').length + 1;
-                return p.k == 'u' ? T('Disk 0 Unallocated Space', 'Espace non alloué sur le disque 0') : T('Disk 0 Partition ', 'Disque 0 partition ') + n + (p.k == 's' ? T(': System Reserved', ' : Réservé au système') : '')
-            }
-            ;
-            function drawDisk() {
-                const P = K.parts;
-                if (K.ps >= P.length)
-                    K.ps = 0;
-                $('dl').innerHTML = `<table><tr><th>${T('Name', 'Nom')}</th><th>${T('Total size', 'Taille totale')}</th><th>${T('Free space', 'Espace libre')}</th><th>Type</th></tr>${P.map( (p, i) => `<tr class="${i == K.ps ? 'sel' : ''}" onclick="K.ps=${i};drawDisk()"><td>${pname(p, i)}</td><td>${mb(p.s)}</td><td>${mb(p.k == 's' ? p.s - 32 : p.s)}</td><td>${p.k == 'u' ? '' : p.k == 's' ? T('System', 'Système') : T('Primary', 'Principale')}</td></tr>`).join('')}</table>`;
-                const s = P[K.ps];
-                $('ac').innerHTML = K.adv ? `<button onclick="delP()" ${s.k == 'u' ? 'disabled' : ''}>${T('Delete', 'Supprimer')}</button><button onclick="fmt()" ${s.k != 'p' ? 'disabled' : ''}>${T('Format', 'Formater')}</button><button onclick="newP()" ${s.k != 'u' ? 'disabled' : ''}>${T('New', 'Nouveau')}</button><button onclick="K.parts=[{k:'u',s:256000}];K.ps=0;drawDisk()">${T('Refresh', 'Actualiser')}</button>` : `<span class="link" onclick="K.adv=1;drawDisk()">${T('Drive options (advanced)', 'Options de lecteur (avancées)')}</span>`
-            }
-            function newP() {
-                const s = K.parts[K.ps]
-                  , max = s.s - (K.parts.some(p => p.k == 's') ? 0 : 100);
-                $('ac').innerHTML = `<label>${T('Size', 'Taille')} : <input type="text" id="sz" value="${max}" style="width:90px"> ${T('MB', 'Mo')}</label><button onclick="applyP(${max})">${T('Apply', 'Appliquer')}</button><button onclick="drawDisk()">${T('Cancel', 'Annuler')}</button><small>(max ${max})</small>`
-            }
-            function applyP(max) {
-                const v = parseInt($('sz').value, 10);
-                if (!v || v < 1 || v > max) {
-                    $('nw').textContent = T('Enter a size between 1 and ', 'Entrez une taille entre 1 et ') + max + T(' MB.', ' Mo.');
-                    return
-                }
-                if (!K.parts.some(p => p.k == 's'))
-                    alert(T('To ensure that all Windows features work correctly, Windows might create additional partitions for system files.', 'Pour garantir le bon fonctionnement de toutes les fonctionnalités de Windows, Windows peut créer des partitions supplémentaires pour les fichiers système.'));
-                mk(K.ps, v);
-                $('nw').textContent = '';
-                drawDisk()
-            }
-            function mk(i, v) {
-                const s = K.parts[i]
-                  , hasS = K.parts.some(p => p.k == 's')
-                  , out = [];
-                if (!hasS)
-                    out.push({
-                        k: 's',
-                        s: 100
-                    });
-                out.push({
-                    k: 'p',
-                    s: v
-                });
-                const left = s.s - v - (hasS ? 0 : 100);
-                if (left > 0)
-                    out.push({
-                        k: 'u',
-                        s: left
-                    });
-                K.parts.splice(i, 1, ...out);
-                K.ps = i + (hasS ? 0 : 1)
-            }
-            function delP() {
-                if (!confirm(T('If you delete this partition, all data on it will be lost. Click OK to continue.', 'Si vous supprimez cette partition, toutes les données seront perdues. Cliquez sur OK pour continuer.')))
-                    return;
-                K.parts[K.ps] = {
-                    k: 'u',
-                    s: K.parts[K.ps].s
-                };
-                const m = [];
-                K.parts.forEach(p => {
-                    const l = m[m.length - 1];
-                    if (l && l.k == 'u' && p.k == 'u')
-                        l.s += p.s;
-                    else
-                        m.push({
-                            ...p
-                        })
-                }
-                );
-                K.parts = m;
-                if (K.parts.length == 1 && K.parts[0].k == 'u')
-                    K.parts[0].s = 256000;
-                K.ps = 0;
-                drawDisk()
-            }
-            function fmt() {
-                if (!confirm(T('If you format this partition, any data on it will be lost. Click OK to continue.', 'Si vous formatez cette partition, toutes les données seront perdues. Cliquez sur OK pour continuer.')))
-                    return;
-                $('nw').textContent = T('Formatted successfully.', 'Formatage terminé.')
-            }
-            function nextDisk() {
-                const s = K.parts[K.ps]
-                  , n = pname(s, K.ps)
-                  , w = $('nw')
-                  , c = T('Windows cannot be installed to ', 'Windows ne peut pas être installé sur ') + n;
-                if (s.k == 'u') {
-                    w.textContent = c + T('. Create a partition first (Drive options, then New).', '. Créez d’abord une partition (Options de lecteur, puis Nouveau).');
-                    return
-                }
-                if (s.k == 's') {
-                    w.textContent = c + T('. This small partition is reserved for system boot files. Select another partition.', '. Cette petite partition est réservée aux fichiers de démarrage. Sélectionnez une autre partition.');
-                    return
-                }
-                if (s.s < 20480) {
-                    w.textContent = c + T('. The partition is too small: Windows 7 needs at least 20 GB.', '. La partition est trop petite : Windows 7 nécessite au moins 20 Go.');
-                    return
-                }
-                K.ip = s;
-                go('inst')
-            }
-            function reset() {
-                K.iso = K.usb = K.ins = 0;
-                K.stage = 0;
-                K.pe = 0;
-                K.pw = '';
-                K.user = K.pc = '';
-                K.parts = [];
-                K.boot = ["HDD: Samsung SSD 250GB", "USB: Windows 7 Setup Drive", "Network Boot (PXE)"];
-                K.sel = 0;
-                K.adv = 0;
-K.bt = 0;
-                go('p1')
-            }
+function save() { pcRestart() }
+function chk() {
+    K.user = $('u').value.trim();
+    if (!K.pe) $('pcn').value = K.pc = K.user ? (K.user + '-PC').replace(/\s/g, '') : '';
+    $('nx').disabled = !K.user
+}
+function pce() { K.pe = 1; K.pc = $('pcn').value.trim() }
+function oobe1() { if (!K.pc) K.pc = K.user + '-PC'; go('o2') }
+function oobe2() {
+    const p = $('p1').value, hn = $('ph').value.trim(), w = $('pw');
+    if (p !== $('p2').value) { w.textContent = T('The passwords do not match. Retype them.', 'Les mots de passe ne correspondent pas. Retapez-les.'); return }
+    if (p && !hn) { w.textContent = T('Type a password hint. It is required when you set a password.', 'Entrez un indice de mot de passe. Il est obligatoire quand vous définissez un mot de passe.'); return }
+    if (p && hn.toLowerCase().includes(p.toLowerCase())) { w.textContent = T('The hint cannot contain your password. Choose a different hint.', 'L’indice ne peut pas contenir votre mot de passe. Choisissez un autre indice.'); return }
+    K.pw = p;
+    K.hint = p ? hn : '';
+    go('o3')
+}
+const esc = s => s.replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const pname = (p, i) => {
+    const n = K.parts.slice(0, i).filter(q => q.k != 'u').length + 1;
+    return p.k == 'u' ? T('Disk 0 Unallocated Space', 'Espace non alloué sur le disque 0') : T('Disk 0 Partition ', 'Disque 0 partition ') + n + (p.k == 's' ? T(': System Reserved', ' : Réservé au système') : '')
+};
+function drawDisk() {
+    const P = K.parts;
+    if (K.ps >= P.length) K.ps = 0;
+    $('dl').innerHTML = `<table><tr><th>${T('Name','Nom')}</th><th>${T('Total size','Taille totale')}</th><th>${T('Free space','Espace libre')}</th><th>Type</th></tr>${P.map((p, i) => `<tr class="${i == K.ps ? 'sel' : ''}" onclick="K.ps=${i};drawDisk()"><td>${pname(p, i)}</td><td>${mb(p.s)}</td><td>${mb(p.k == 's' ? p.s - 32 : p.s)}</td><td>${p.k == 'u' ? '' : p.k == 's' ? T('System', 'Système') : T('Primary', 'Principale')}</td></tr>`).join('')}</table>`;
+    const s = P[K.ps];
+    $('ac').innerHTML = K.adv ? `<button onclick="delP()" ${s.k == 'u' ? 'disabled' : ''}>${T('Delete','Supprimer')}</button><button onclick="fmt()" ${s.k != 'p' ? 'disabled' : ''}>${T('Format','Formater')}</button><button onclick="newP()" ${s.k != 'u' ? 'disabled' : ''}>${T('New','Nouveau')}</button><button onclick="K.parts=[{k:'u',s:DISK}];K.ps=0;drawDisk()">${T('Refresh','Actualiser')}</button>` : `<span class="link" onclick="K.adv=1;drawDisk()">${T('Drive options (advanced)','Options de lecteur (avancées)')}</span>`
+}
+function newP() {
+    const s = K.parts[K.ps], max = s.s - (K.parts.some(p => p.k == 's') ? 0 : 100);
+    $('ac').innerHTML = `<label>${T('Size','Taille')} : <input type="text" id="sz" value="${max}" style="width:90px"> ${T('MB','Mo')}</label><button onclick="applyP(${max})">${T('Apply','Appliquer')}</button><button onclick="drawDisk()">${T('Cancel','Annuler')}</button><small>(max ${max})</small>`
+}
+function applyP(max) {
+    const v = parseInt($('sz').value, 10);
+    if (!v || v < 1 || v > max) { $('nw').textContent = T('Enter a size between 1 and ', 'Entrez une taille entre 1 et ') + max + T(' MB.', ' Mo.'); return }
+    if (!K.parts.some(p => p.k == 's'))
+        alert(T('To ensure that all Windows features work correctly, Windows might create additional partitions for system files.', 'Pour garantir le bon fonctionnement de toutes les fonctionnalités de Windows, Windows peut créer des partitions supplémentaires pour les fichiers système.'));
+    mk(K.ps, v);
+    $('nw').textContent = '';
+    drawDisk()
+}
+function mk(i, v) {
+    const s = K.parts[i], hasS = K.parts.some(p => p.k == 's'), out = [];
+    if (!hasS) out.push({k: 's', s: 100});
+    out.push({k: 'p', s: v});
+    const left = s.s - v - (hasS ? 0 : 100);
+    if (left > 0) out.push({k: 'u', s: left});
+    K.parts.splice(i, 1, ...out);
+    K.ps = i + (hasS ? 0 : 1)
+}
+function delP() {
+    ask(T('If you delete this partition, all data on it will be lost. Click OK to continue.', 'Si vous supprimez cette partition, toutes les données seront perdues. Cliquez sur OK pour continuer.'), () => {
+        K.parts[K.ps] = {k: 'u', s: K.parts[K.ps].s};
+        const m = [];
+        K.parts.forEach(p => {
+            const l = m[m.length - 1];
+            if (l && l.k == 'u' && p.k == 'u') l.s += p.s; else m.push({...p})
+        });
+        K.parts = m;
+        if (K.parts.length == 1 && K.parts[0].k == 'u') K.parts[0].s = DISK;
+        K.ps = 0;
+        drawDisk()
+    })
+}
+function fmt() {
+    ask(T('If you format this partition, any data on it will be lost. Click OK to continue.', 'Si vous formatez cette partition, toutes les données seront perdues. Cliquez sur OK pour continuer.'), () => {
+        $('nw').textContent = T('Formatted successfully.', 'Formatage terminé.')
+    })
+}
+function nextDisk() {
+    const s = K.parts[K.ps], n = pname(s, K.ps), w = $('nw'), c = T('Windows cannot be installed to ', 'Windows ne peut pas être installé sur ') + n;
+    if (s.k == 'u') { w.textContent = c + T('. Create a partition first (Drive options, then New).', '. Créez d’abord une partition (Options de lecteur, puis Nouveau).'); return }
+    if (s.k == 's') { w.textContent = c + T('. This small partition is reserved for system boot files. Select another partition.', '. Cette petite partition est réservée aux fichiers de démarrage. Sélectionnez une autre partition.'); return }
+    if (s.s < 20480) { w.textContent = c + T('. The partition is too small: Windows 7 needs at least 20 GB.', '. La partition est trop petite : Windows 7 nécessite au moins 20 Go.'); return }
+    K.ip = s;
+    go('inst')
+}
+function reset() {
+    K.iso = K.usb = K.ins = 0;
+    K.stage = 0;
+    K.pe = 0;
+    K.pw = '';
+    K.user = K.pc = '';
+    K.parts = [];
+    K.boot = ["HDD: Samsung SSD 250GB", "USB: Windows 7 Setup Drive", "Network Boot (PXE)"];
+    K.sel = 0;
+    K.adv = 0;
+    K.bt = 0;
+    K.bm = 0;
+    K.hint = '';
+    pIdx = -1;
+    K.rs = K.rfs = K.ed = undefined;
+    go('p1')
+}
 (function () {
     const mobile = matchMedia('(pointer:coarse)').matches && Math.min(screen.width, screen.height) < 700;
     if (!mobile) return;
-    // تفعيل عرض سطح المكتب مباشرة
     document.querySelector('meta[name=viewport]').setAttribute('content', 'width=1100, viewport-fit=cover');
     const t = $('toast');
     t.innerHTML = 'للحصول على أفضل تجربة، استخدم وضع سطح المكتب وأدر الهاتف أفقياً.<br>For the best experience, use desktop view and rotate your phone.<br>Pour une meilleure expérience, utilisez la vue ordinateur et tournez votre téléphone.<br><button onclick="this.parentNode.style.display=\'none\'">OK</button>';
     t.style.display = 'block';
     setTimeout(() => t.style.display = 'none', 12000);
 })();
-
-   $('kbc').addEventListener('click', e => {
-       const b = e.target.closest('button.key');
-       if (b && KH) KH(b.getAttribute('aria-label'));
-   });
-function biosDiscard() {
-    K.boot = [...(K.bo0 || K.boot)];
-    pcRestart();
-}
+/* on-screen keyboard: forward clicks to the current key handler */
+$('kbc').addEventListener('click', e => {
+    const b = e.target.closest('button.key');
+    if (b && KH) KH(b.getAttribute('aria-label'));
+});
+function biosDiscard() { K.boot = [...(K.bo0 || K.boot)]; pcRestart() }
 function biosDefault() {
     K.boot = ["HDD: Samsung SSD 250GB", "USB: Windows 7 Setup Drive", "Network Boot (PXE)"];
     K.sel = 0;
-    go('bios');
+    go('bios')
 }
-            go('pick');
-        </script>
-    </body>
+
+/* ===== new features ===== */
+const DISK = 238475; // real size of a "250 GB" drive, in MB
+const ED = ['Windows 7 HOMEBASIC','Windows 7 HOMEPREMIUM','Windows 7 PROFESSIONAL','Windows 7 ULTIMATE'];
+const EDN = [['Home Basic','Édition Familiale Basique'],['Home Premium','Édition Familiale Premium'],['Professional','Professionnel'],['Ultimate','Édition Intégrale']];
+
+/* styled dialogs */
+function msgBox(txt, btns, title, ic) {
+    const d = document.createElement('div');
+    d.className = 'md';
+    d.innerHTML = `<div class="mb" role="dialog" aria-modal="true"><div class="bar">${title || 'Windows'}</div><div class="bd"><span style="font-size:30px">${ic || (btns ? '⚠️' : 'ℹ️')}</span><div>${txt}</div></div><div class="bt"></div></div>`;
+    (btns || [['OK']]).forEach(([l, f], i) => {
+        const b = document.createElement('button');
+        b.textContent = l;
+        if (!i) b.className = 'def';
+        b.onclick = () => { d.remove(); f && f() };
+        d.querySelector('.bt').appendChild(b)
+    });
+    root.appendChild(d);
+    d.querySelector('button').focus()
+}
+const ask = (t, ok) => msgBox(t, [['OK', ok], [T('Cancel', 'Annuler')]]);
+window.alert = t => msgBox(t);
+const nyi = () => msgBox(T('This feature is not part of the simulation.', 'Cette fonction ne fait pas partie de la simulation.'));
+
+/* two-phase "completing installation" with a restart after each phase */
+function svcScreen(M, next, ms) {
+    show(`<div class="pulse">${flag(90)}</div><div class="w">${T('Setup is <b>completing installation</b>', 'L’installation de <b>Windows</b> se termine')}</div><div class="sm" id="mm">${M[0]}</div><div class="pb bl" style="width:300px"><i id="p"></i></div>`, 'logo');
+    fill('#p', ms, () => go(next), p => {
+        const e = $('mm');
+        if (e) e.textContent = M[Math.min(M.length - 1, Math.floor(p * M.length))]
+    })
+}
+function rstScreen(st) {
+    K.stage = st;
+    let n = 8;
+    show(`<div class="dlg"><div class="bar">${T('Installing Windows', 'Installation de Windows')}</div><div class="pane"><h2>${T('Windows needs to restart to continue', 'Windows doit redémarrer pour continuer')}</h2><p>${T('Restarting in', 'Redémarrage dans')} <b id="n">${n}</b> ${T('seconds...', 'secondes...')}</p></div><div class="foot"><button class="def" onclick="pcRestart()">${T('Restart now', 'Redémarrer maintenant')}</button></div></div>`, 'setup');
+    every(stop => {
+        $('n').textContent = --n;
+        if (n <= 0) { stop(); pcRestart() }
+    }, 1000)
+}
+
+/* Rufus: selects, validation, warning */
+const rsel = (id, l, o) => `<label for="${id}">${l}</label><select id="${id}" ${K.usb ? 'disabled' : ''} onchange="K.${id}=this.value">${o.map(x => `<option ${x == (K[id] || o[0]) ? 'selected' : ''}>${x}</option>`).join('')}</select>`;
+function rf() {
+    const s = K.rs || 'MBR', f = K.rfs || 'NTFS';
+    if (s == 'GPT') return msgBox(T('This PC uses a legacy BIOS (no UEFI), which cannot boot a GPT drive. Choose <b>MBR</b>.', 'Ce PC utilise un BIOS classique (sans UEFI) qui ne peut pas démarrer sur un disque GPT. Choisissez <b>MBR</b>.'), null, 'Rufus', '❌');
+    if (f == 'exFAT') return msgBox(T('Windows 7 setup cannot start from an exFAT drive. Choose <b>NTFS</b> or <b>FAT32</b>.', 'L’installation de Windows 7 ne peut pas démarrer depuis un disque exFAT. Choisissez <b>NTFS</b> ou <b>FAT32</b>.'), null, 'Rufus', '❌');
+    msgBox("<b>WARNING: ALL DATA ON DEVICE 'USB DRIVE (E:) [8 GB]' WILL BE DESTROYED.</b><br>To continue with this operation, click OK. To quit click CANCEL.", [['OK', rfGo], ['Cancel']], 'Rufus')
+}
+function rfGo() {
+    $('rt').textContent = 'PREPARING...';
+    fill('#rp', 3500, () => { K.usb = 1; go('p2') }, p => { $('rt').textContent = 'COPYING ISO... ' + Math.floor(p * 100) + '%' })
+}
+
+/* start menu */
+function startHtml() {
+    const it = (ic, t, f) => `<div class="it" onclick="${f || 'nyi()'}">${ic} ${t}</div>`;
+    const openC = "$('w1').classList.add('open');$('sm').classList.remove('open')";
+    return `<div class="start" id="sm"><div class="l">${it('🚀', T('Getting Started', 'Mise en route'))}${it('🧮', T('Calculator', 'Calculatrice'))}${it('📝', 'Notepad')}${it('🎨', 'Paint')}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}<div style="position:absolute;left:12px;width:52%;bottom:12px">${it('▶', T('All Programs', 'Tous les programmes'))}<input type="text" placeholder="${T('Search programs and files', 'Rechercher dans les programmes et fichiers')}" style="width:100%"></div></div><div class="r" style="bottom:12px"><div class="it"><b>${K.user || 'User'}</b></div>${it('📁', 'Documents')}${it('🖼️', T('Pictures', 'Images'))}${it('🎵', T('Music', 'Musique'))}${it('🎮', T('Games', 'Jeux'))}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}${it('🖨️', T('Devices and Printers', 'Périphériques et imprimantes'))}${it('❔', T('Help and Support', 'Aide et support'))}<div id="sdm" class="sdm">${it('👤', T('Log off', 'Fermer la session'), "go(K.pw?'login':'wel')")}${it('🔄', T('Restart', 'Redémarrer'), 'pcRestart()')}</div><div style="position:absolute;left:0;right:0;bottom:0;display:flex;gap:2px"><button class="def" style="flex:1;padding:5px 4px" onclick="go('shut')">⏻ ${T('Shut down', 'Arrêter')}</button><button style="padding:5px 8px" aria-label="More" onclick="$('sdm').classList.toggle('open')">▸</button></div></div></div>`;
+}
+
+/* help texts for new screens */
+H.edi = ["Pick the Windows edition that matches your product key (Ultimate is the most complete), then click Next.", "Choisissez l’édition de Windows qui correspond à votre clé de produit (Intégrale est la plus complète), puis cliquez sur Suivant.", "اختر إصدار ويندوز المطابق لمفتاح المنتج (Ultimate هو الأكمل) ثم اضغط «التالي»."];
+H.bmenu = ["Use ↑ ↓ to choose the USB drive, then press Enter. The PC boots from it once, without changing the BIOS.", "Utilisez ↑ ↓ pour choisir la clé USB, puis Entrée. Le PC démarre dessus une seule fois, sans modifier le BIOS.", "استخدم ↑ ↓ لاختيار فلاشة USB ثم Enter. يقلع الجهاز منها مرة واحدة دون تغيير BIOS."];
+H.rst2 = H.rst;
+
+go('pick');
+</script>
+</body>
 </html>
