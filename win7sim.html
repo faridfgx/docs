@@ -11,7 +11,7 @@ html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;background:#000;font:14px/1.45 "Segoe UI",Tahoma,Arial,sans-serif;color:#1b1b1b;overflow:hidden}
 #s{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center}
 button{font:inherit;padding:5px 18px;border:1px solid #707070;border-radius:3px;background:linear-gradient(#f2f2f2,#d9d9d9 50%,#cfcfcf);color:#111;cursor:pointer}
-button:hover:not(:disabled){border-color:#3c7fb1;background:linear-gradient(#eaf6fd,#bee6fd 50%,#a7d9f5)}
+button:hover:not(:disabled){border-color:#3c7fb1;}
 button:disabled{color:#888;border-color:#aaa;cursor:default}
 button.def{border-color:#3c7fb1}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #2a7fc9;outline-offset:2px}
@@ -114,18 +114,7 @@ tr.sel td{background:#cde8ff}
 #hp.open{display:block}
 #hp h4{margin:0 0 6px;font-size:15px;color:#6b4e00}
 #hp button{margin-top:10px}
-#progressWrap{position:fixed;z-index:55;top:calc(env(safe-area-inset-top,0px) + 8px);left:190px;right:auto;max-width:none}
-#progressToggle{white-space:nowrap}
-@media(max-width:560px){#progressWrap{left:174px}#progressToggle{padding:5px 7px;font-size:12px}#rb{padding:3px 8px}}
-#progressToggle{background:#fff;color:#173a5e;border:1px solid #6ba5d8;border-radius:7px;padding:6px 10px;box-shadow:0 2px 8px #0003}
-#progressPanel{display:none;margin-top:5px;padding:12px;background:#f7fbff;color:#172536;border:1px solid #8bb8dd;border-radius:8px;box-shadow:0 8px 24px #0006;max-height:65vh;overflow:auto}
-#progressPanel.open{display:block}
-#progressPanel h4{margin:0 0 8px;color:#174c7a}
-#progressList{padding:0;margin:0;list-style:none}
-#progressList li{padding:7px 8px;border-bottom:1px solid #dbe6ef;font-size:13px}
-#progressList li.done{color:#18743b}
-#progressList li.current{background:#e0f0ff;color:#064f8a;font-weight:700;border-radius:4px}
-#progressList li .status{float:left;margin-inline-end:8px}
+
 .kb{width:min(720px,96vw);gap:5px}
 .kb div{width:100%;gap:4px;flex-wrap:nowrap}
 .kb button.key{flex:1;min-width:0;padding:8px 2px;font-size:clamp(9px,1.3vw,12px)}
@@ -218,22 +207,62 @@ body.hk #stand{display:none}
 .ch{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}
 .ch button{width:200px;padding:12px;font-size:15px;background:#1b2b3d;color:#fff;border-color:#4aa3e8}
 .ch button.on{background:#2a6db0;border-color:#fff}
+#ctl{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:10px;z-index:50;display:flex;gap:6px}
+#ctl button{position:static;border-radius:14px;background:#fff;border-color:#2a7fc9;color:#0b4a8a;padding:3px 12px;white-space:nowrap}
+body.paused *{animation-play-state:paused!important}
+/* fixed BIOS frame: nothing moves when tabs change */
+.bios .bt1{width:min(640px,100%)}
+.bios h3{width:min(640px,100%);box-sizing:border-box}
+.bios .bbody{width:min(640px,100%);height:270px;box-sizing:border-box;border:1px solid #a8a8a8;padding:6px 0;overflow:hidden}
+.bios .bbody .dev{width:100%;box-sizing:border-box}
+.bios .bfoot{margin-top:auto;width:min(640px,100%);color:#ffff55;font-size:13px;border-top:1px solid #a8a8a8;padding-top:6px}
+/* confirmation box */
+.bdlg{position:absolute;inset:0;z-index:80;background:#0005;display:flex;align-items:center;justify-content:center;font:15px/1.5 "Courier New",monospace}
+.bbox{width:min(420px,90%);background:#a8a8a8;color:#000;border:2px solid #fff;box-shadow:6px 6px 0 #000}
+.bbox .bttl{background:#0000a8;color:#ffff55;text-align:center}
+.bbox p{margin:16px 12px;text-align:center}
+.bbox .bbtn{display:flex;justify-content:center;gap:30px;padding-bottom:14px}
+.bbox .bbtn span{padding:0 8px;cursor:pointer}
+.bbox .bbtn span.on{background:#0000a8;color:#fff}
+/* side progress bar */
+#side{position:fixed;z-index:45;top:calc(env(safe-area-inset-top,0px) + 44px);bottom:0;right:0;width:min(260px,80vw);background:#0f1a27;color:#dbe8f5;border-left:1px solid #2c4058;padding:12px 12px calc(env(safe-area-inset-bottom,0px) + 12px);overflow:auto;transform:translateX(100%);transition:transform .25s;font-size:13px;line-height:1.5}
+#side.open{transform:none}
+#side h4{margin:0 0 4px;font-size:15px;color:#7fb1e0}
+#progressSummary{font-size:12px;color:#9fb3c8;margin-bottom:10px}
+#sideList,#sideList ul{list-style:none;margin:0;padding:0}
+#sideList>li{padding:7px 8px;border-bottom:1px solid #1e2f43;color:#7f93a8}
+#sideList>li.done{color:#7fdc9f}
+#sideList>li.cur{background:#17324f;color:#fff;font-weight:600;border-radius:4px}
+#sideList .st{display:inline-block;width:18px}
+#sideList ul{margin:6px 18px 2px 0;font-size:12.5px;font-weight:400}
+#sideList ul li{padding:3px 0;color:#7f93a8}
+#sideList ul li.done{color:#7fdc9f}
+#sideList ul li.cur{color:#ffd23f;font-weight:600}
+#sideList .note{display:block;font-size:12px;font-weight:400;color:#ffd23f;margin-right:18px}
+/* when wide enough, the bar pushes the simulator instead of covering it */
+body.sb{padding-right:260px}
+body.sb.mon #mon{width:min(calc(94vw - 260px),calc((100dvh - 110px) * 1.6))}
+body.sb.mon.hk #mon{width:min(calc(94vw - 260px),calc((100dvh - 300px) * 1.6))}
+body.sb #kbc .kb{width:min(900px,calc(96vw - 260px))}
 </style>
 </head>
 <body>
-<div id="progressWrap" style="display:none">
-    <button id="progressToggle" onclick="toggleProgress()">خطوات التثبيت ▾</button>
-    <div id="progressPanel" dir="rtl">
-        <h4>متابعة تقدم التثبيت </h4>
-        <div id="progressSummary"></div>
-        <ul id="progressList"></ul>
-    </div>
-</div>
+<aside id="side" dir="rtl" aria-label="مراحل التثبيت">
+  <h4>مراحل التثبيت</h4>
+  <div id="progressSummary"></div>
+  <ol id="sideList"></ol>
+</aside>
 <div id="mon"><div id="s"></div></div>
 <div id="stand"></div>
 <div id="kbc"></div>
 <div id="toast" class="toast"></div>
-<button id="hb" onclick="help()" style="display:none"></button>
+<div id="ctl">
+<button id="pt" onclick="toggleSide()" style="display:none"></button>
+  <button id="pz" onclick="togglePause()" style="display:none"></button>
+  <button id="kt" onclick="toggleKb()" style="display:none"></button>
+  <button id="sr" onclick="simRestart()" style="display:none"></button>
+  <button id="hb" onclick="help()" style="display:none"></button>
+</div>
 <button id="rb" onclick="pcRestart()" style="display:none"></button>
 <button id="gb" onclick="go('pick')" aria-label="Language" style="display:none">🌐</button>
 <div id="hp"></div>
@@ -252,70 +281,152 @@ let KH = null;
 const KEYROWS = [['Esc','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12','Del'],['~','1','2','3','4','5','6','7','8','9','0','-','+','←'],['Tab','Q','W','E','R','T','Y','U','I','O','P','[',']'],['Caps','A','S','D','F','G','H','J','K','L',';',"'",'Enter'],['Shift','Z','X','C','V','B','N','M',',','.','/','↑'],['Ctrl','Win','Alt','Space','Alt','←','↓','→','F10']];
 const KM = {Delete:'Del',Escape:'Esc',' ':'Space',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓',ArrowRight:'→','=':'+','_':'-'};
 addEventListener('keydown', e => {
-    if (!KH || e.repeat) return;
+    if (!KH || e.repeat || paused) return;    
     e.preventDefault();
     KH(KM[e.key] || e.key)
 });
 let PK = null;
 const kbHtml = (hl, any) => `<div class="kbw"><div class="kb">${KEYROWS.map(r => `<div>${r.map(k => `<button class="key ${any ? 'any' : hl.includes(k) ? 'hl' : ''} ${k == 'Space' ? 'sp' : ''}" aria-label="${k}">${k}</button>`).join('')}</div>`).join('')}</div></div>`;
 const kbd = (hl, any) => { PK = [hl, any]; return ''; };
-function every(fn, ms) {
-    const g = gen, t = setInterval(() => { if (g != gen) clearInterval(t); else fn(() => clearInterval(t)) }, ms)
+
+let paused=false,pAt=0,pOff=0,busy=false,KB=true,LK=null;
+const vnow=()=>(paused?pAt:performance.now())-pOff;
+const Q=[];
+function later(f,ms){Q.push({g:gen,at:vnow()+ms,f})}
+function every(fn,ms){Q.push({g:gen,at:vnow()+ms,ms,fn,dead:false})}
+setInterval(()=>{
+  if(paused)return;
+  const t=vnow();
+  for(const q of Q.slice()){
+    if(q.g!=gen||q.dead){Q.splice(Q.indexOf(q),1);continue}
+    if(t<q.at)continue;
+    if(q.fn){q.at+=q.ms;q.fn(()=>q.dead=true)}
+    else{Q.splice(Q.indexOf(q),1);q.f()}
+  }
+},50);
+function fill(sel,ms,cb,on){
+  const g=gen,t0=vnow();
+  (function f(){
+    if(g!=gen)return;
+    const p=Math.max(0,Math.min(1,(vnow()-t0)/ms)),e=document.querySelector(sel);
+    if(e)e.style.width=p*100+'%';
+    on&&on(p);
+    p<1?requestAnimationFrame(f):cb&&cb()
+  })()
+}
+
+/* pause */
+const TIMED=new Set(['off','post','pak','load','start','inst','rst','rst2','svc','svc2','wel','shut']);
+function updatePause(){
+  const b=$('pz'); if(!b)return;
+  b.style.display=(K.ui&&(TIMED.has(cur)||busy))?'':'none';
+  b.textContent=paused?'▶ '+L3('Resume','Reprendre','متابعة'):'⏸ '+L3('Pause','Pause','إيقاف مؤقت');
+}
+function setPaused(v){
+  if(v==paused)return;
+  if(v)pAt=performance.now(); else pOff+=performance.now()-pAt;
+  paused=v; document.body.classList.toggle('paused',v); updatePause()
+}
+function togglePause(){setPaused(!paused);$('pz').blur()}
+function setBusy(){busy=true;updatePause()}
+
+/* keyboard on/off (real keyboard always works) */
+function applyKb(){
+  const screenOn = MON.has(cur) && cur !== 'poff';  
+  const on = KB && screenOn;
+  $('kbc').innerHTML = on ? (LK ? kbHtml(LK[0], LK[1]) : kbHtml([], false)) : '';
+  document.body.classList.toggle('hk', on)
+}
+function kbLabel(){
+  $('kt').textContent = '⌨ ' + (KB
+    ? L3('Hide keyboard','Masquer le clavier','إخفاء لوحة المفاتيح')
+    : L3('Show keyboard','Afficher le clavier','إظهار لوحة المفاتيح'))
+}
+function toggleKb(){KB=!KB;kbLabel();applyKb();$('kt').blur()}
+
+/* restart whole simulation */
+function simRestart(){
+  $('sr').blur();
+  msgBox(L3('Restart the whole simulation from the beginning?','Recommencer toute la simulation depuis le début ?','هل تريد إعادة المحاكاة كلها من البداية؟'),
+    [['OK',reset],[L3('Cancel','Annuler','إلغاء')]],'Windows');
 }
 const isoSvg = `<svg viewBox="0 0 200 110" class="img" role="img" aria-label="ISO"><rect x="22" y="12" width="66" height="86" rx="5" fill="#eef2f6"/><path d="M68 12l20 20H68z" fill="#c4ccd6"/><text x="55" y="66" font-size="18" font-weight="700" fill="#2a7fc9" text-anchor="middle" font-family="sans-serif">ISO</text><circle cx="145" cy="55" r="42" fill="#c9d2dc"/><circle cx="145" cy="55" r="36" fill="#7fb8e6"/><circle cx="145" cy="55" r="9" fill="#14202e"/><path d="M112 42a38 38 0 0 1 26-17" stroke="#fff" stroke-width="3" fill="none"/></svg>`;
-const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="4" y="16" width="46" height="28" rx="3" fill="#c0c8d2"/><rect x="12" y="22" width="10" height="7" fill="#555"/><rect x="28" y="22" width="10" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="10" fill="#2a7fc9"/><circle cx="142" cy="30" r="5" fill="#fff"/><text x="94" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
-const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect width="84" height="28" rx="9" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/><rect x="84" y="7" width="28" height="14" fill="#c0c8d2"/><rect x="92" y="11" width="6" height="6" fill="#555"/><rect x="104" y="11" width="6" height="6" fill="#555"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/><rect x="219" y="139.5" width="14" height="8" fill="#c0c8d2"/><rect x="221" y="142" width="4" height="3" fill="#555"/><rect x="228" y="142" width="4" height="3" fill="#555"/></g></svg>`;
-const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr','ltr','rtl')}"><div class="dots">${[1,2,3,4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step','Étape','الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous','Précédent','السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next','Suivant','التالي')}</button>` : ''}</div></div>`;
+const usbSvg = `<svg viewBox="0 0 170 60" class="img" style="max-width:230px" role="img" aria-label="USB"><rect x="20" y="16" width="32" height="28" rx="3" fill="#c0c8d2"/><rect x="28" y="20" width="8" height="7" fill="#555"/><rect x="28" y="33" width="8" height="7" fill="#555"/><rect x="50" y="8" width="112" height="44" rx="5" fill="#2a7fc9"/><circle cx="145" cy="30" r="5" fill="#fff"/><text x="98" y="35" font-size="13" fill="#fff" text-anchor="middle" font-family="sans-serif">USB 8GB</text></svg>`;
+const pcSvg = (ins, glow) => `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="48" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="48" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="75" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/><text x="275" y="82" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="217" y="140" width="18" height="7" fill="#222"/><text x="265" y="143.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><rect x="217" y="164" width="18" height="7" fill="#222"/><text x="265" y="167.5" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">USB</text><g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${ins ? 0 : 1}"><g transform="translate(25,168)"><rect x="80" y="5" width="32" height="18" rx="2" fill="#c0c8d2"/><rect x="94" y="7" width="6" height="4" fill="#555"/><rect x="94" y="14" width="6" height="4" fill="#555"/><rect width="84" height="28" rx="6" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/></g></g><g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${ins ? 1 : 0};transform:${ins ? 'none' : 'translate(-145px,38px) scale(2.6)'}"><rect x="213" y="135.5" width="26" height="16" rx="3" fill="#2a7fc9" stroke="#1a5a9a"/></g></svg>`;const pg = (n, title, sub, body, ok) => `<div class="card" dir="${L3('ltr','ltr','rtl')}"><div class="dots">${[1,2,3,4].map(i => `<i class="${i == n ? 'on' : i < n ? 'ok' : ''}"></i>`).join('')}</div><div class="stp">${L3('Step','Étape','الخطوة')} ${n}/4</div><h1>${title}</h1><p class="sub">${sub}</p>${body}<div class="nav"><button ${n == 1 ? 'disabled' : ''} onclick="go('p${n - 1}')">${L3('Previous','Précédent','السابق')}</button>${n < 4 ? `<button class="def" ${ok ? '' : 'disabled'} onclick="go('p${n + 1}')">${L3('Next','Suivant','التالي')}</button>` : ''}</div></div>`;
 function show(h, c) {
     gen++;
     KH = null;
     root.onclick = null;
     root.className = c || '';
     root.innerHTML = h;
-    const k = PK; PK = null;
-    $('kbc').innerHTML = k ? kbHtml(k[0], k[1]) : '';
-    document.body.classList.toggle('hk', !!k);
+LK = PK; PK = null; applyKb();
 }
-function later(f, ms) { const g = gen; setTimeout(() => { if (g == gen) f() }, ms) }
-function fill(sel, ms, cb, on) {
-    const g = gen, t0 = performance.now();
-    (function f(t) {
-        if (g != gen) return;
-        const p = Math.max(0, Math.min(1, (t - t0) / ms)), e = document.querySelector(sel);
-        if (e) e.style.width = p * 100 + '%';
-        on && on(p);
-        p < 1 ? requestAnimationFrame(f) : cb && cb()
-    })(t0)
-}
-const progressSteps = [['p1','تحميل ملف Windows ISO'],['p2','إنشاء فلاشة إقلاع باستخدام Rufus'],['p3','توصيل الفلاشة بالحاسوب'],['p4','إعادة تشغيل الحاسوب'],['post','الدخول إلى BIOS'],['bios','ضبط أولوية الإقلاع من USB'],['pak','بدء الإقلاع من الفلاشة'],['load','تحميل ملفات Windows'],['lang','اختيار اللغة والمنطقة ولوحة المفاتيح'],['home','بدء التثبيت'],['edi','اختيار إصدار ويندوز'],['lic','الموافقة على شروط الترخيص'],['type','اختيار نوع التثبيت'],['disk','اختيار القرص وإنشاء القسم'],['inst','نسخ الملفات وتثبيت Windows'],['rst','إعادة تشغيل الحاسوب'],['svc','إكمال إعداد النظام'],['rst2','إعادة التشغيل الثانية'],['svc2','التهيئة النهائية للنظام'],['o1','إنشاء حساب المستخدم واسم الحاسوب'],['o2','إعداد كلمة المرور'],['o3','إدخال مفتاح المنتج أو تخطيه'],['o4','اختيار إعدادات التحديث والحماية'],['o5','ضبط الوقت والتاريخ'],['wel','التهيئة لأول تشغيل'],['login','تسجيل الدخول'],['desk','الوصول إلى سطح المكتب']];
-const progressOrder = progressSteps.map(x => x[0]);
+
+
+
 let pIdx = -1; // furthest step reached, so screens outside the list never show a raw id
-function toggleProgress() { $('progressPanel').classList.toggle('open'); renderProgress() }
+
+const PH = ['تجهيز وسيط التثبيت','توصيل الوسيط وإعادة التشغيل','ضبط الإقلاع من BIOS','بدء برنامج التثبيت','إعدادات التثبيت','نسخ الملفات وتثبيت Windows','الإعداد الأولي للحساب','تسجيل الدخول وسطح المكتب'];
+const SUBP = {
+    3: ['الإقلاع من الوسيط','تحميل ملفات Windows','اختيار اللغة والمنطقة ولوحة المفاتيح','بدء التثبيت'],
+    4: ['اختيار إصدار ويندوز','الموافقة على شروط الترخيص','اختيار نوع التثبيت','اختيار القرص وإنشاء القسم']
+};
+const SCR = {p1:[0],p2:[0],p3:[1],p4:[1],pak:[3,0],load:[3,1],lang:[3,2],home:[3,3],edi:[4,0],lic:[4,1],type:[4,2],disk:[4,3],inst:[5],rst:[5],rst2:[5],svc:[5],svc2:[5],o1:[6],o2:[6],o3:[6],o4:[6],o5:[6],wel:[6],login:[7],desk:[7],shut:[7],poff:[7]};
+/* [phase, sub] of a screen; boot screens after the first restart belong to the install or to the finished system */
+function where(c) {
+    if (['off','post','bios','bmenu','err','start','pak'].includes(c)) {
+        if (K.stage == 3) return [7];
+        if (K.stage > 0) return [5];
+        return c == 'start' ? [3,1] : c == 'pak' ? [3,0] : [2];
+    }
+    return SCR[c] || null;
+}
+function note(c) {
+    const d = K.med == 'dvd';
+    return ({p1:'تحميل ملف ISO', p2: d ? 'حرق ملف ISO على DVD بـ Nero' : 'إنشاء فلاشة إقلاع بـ Rufus', p3: d ? 'إدخال القرص في القارئ' : 'إدخال الفلاشة في المنفذ', p4:'إعادة تشغيل الجهاز',
+        off:'إعادة تشغيل الجهاز', post:'الدخول إلى BIOS', bios:'ضبط أولوية الإقلاع وحفظ الإعدادات', bmenu:'قائمة الإقلاع F12', err:'لا يوجد جهاز إقلاع',
+        inst:'نسخ الملفات وتثبيتها', rst:'إعادة التشغيل', rst2:'إعادة التشغيل الثانية', svc:'إكمال إعداد النظام', svc2:'التهيئة النهائية', start:'بدء التشغيل', pak:'بدء التشغيل',
+        o1:'اسم المستخدم واسم الحاسوب', o2:'كلمة المرور', o3:'مفتاح المنتج', o4:'التحديث والحماية', o5:'الوقت والتاريخ', wel:'التهيئة لأول تشغيل',
+        login:'تسجيل الدخول', desk:'سطح المكتب', shut:'إيقاف التشغيل', poff:'الجهاز مطفأ'})[c] || '';
+}
+let SB = innerWidth > 900;
+function toggleSide() { SB = !SB; renderProgress(); $('pt').blur() }
+addEventListener('resize', () => renderProgress());
 function renderProgress() {
-    const wrap = $('progressWrap');
-    if (!wrap) return;
-    wrap.style.display = K.ui ? 'block' : 'none';
-    const i0 = progressOrder.indexOf(cur);
-    if (i0 > pIdx) pIdx = i0;
-    $('progressSummary').textContent = pIdx < 0 ? 'لم يبدأ التثبيت بعد' : `تم الوصول إلى ${pIdx + 1} من ${progressSteps.length} مرحلة`;
-    const DV = {p2:'حرق ملف ISO على DVD باستخدام Nero', p3:'إدخال القرص في القارئ', pak:'بدء الإقلاع من القرص'};
-    $('progressList').innerHTML = progressSteps.map(([id, label], i) => {
-        const active = id === cur, done = i < pIdx || (i == pIdx && !active);
-        return `<li class="${done ? 'done' : active ? 'current' : ''}"><span class="status">${done ? '✓' : active ? '▶' : '○'}</span>${i + 1}. ${label}${active ? ' — الحالية' : ''}</li>`;
-    }).join('');
+    const on = !!K.ui, open = on && SB;
+    $('pt').style.display = on ? '' : 'none';
+    $('pt').textContent = '☰ ' + (SB ? 'إخفاء المراحل' : 'إظهار المراحل');
+    $('side').classList.toggle('open', open);
+    document.body.classList.toggle('sb', open && innerWidth > 900);
+    const w = where(cur);
+    if (w) { const pos = w[0] * 10 + (w[1] || 0); if (pos > pIdx) pIdx = pos }
+    const cp = w ? w[0] : -1, cs = w && w[1] !== undefined ? w[1] : -1, fp = Math.floor(pIdx / 10);
+    $('progressSummary').textContent = pIdx < 0 ? 'لم يبدأ التثبيت بعد' : `المرحلة ${(cp >= 0 ? cp : fp) + 1} من ${PH.length}`;
+    $('sideList').innerHTML = PH.map((name, i) => {
+        const cur_ = i == cp, done = i < fp;
+        const sub = SUBP[i] ? `<ul>${SUBP[i].map((s, j) => {
+            const c = cur_ && j == cs, d = i * 10 + j < pIdx;
+            return `<li class="${c ? 'cur' : d ? 'done' : ''}"${c ? ' aria-current="step"' : ''}><span class="st">${d ? '✓' : c ? '▶' : '○'}</span>${s}</li>`
+        }).join('')}</ul>` : '';
+        const n = cur_ && !SUBP[i] && note(cur) ? `<span class="note">${note(cur)}</span>` : '';
+        return `<li class="${cur_ ? 'cur' : done ? 'done' : ''}"${cur_ ? ' aria-current="step"' : ''}><span class="st">${done ? '✓' : cur_ ? '▶' : '○'}</span>${i + 1}. ${name}${n}${sub}</li>`
+    }).join('')
 }
 const MON = new Set(['off','post','bios','err','pak','load','start','lang','home','edi','lic','type','disk','inst','rst','rst2','svc','svc2','o1','o2','o3','o4','o5','wel','login','desk','bmenu','shut','poff']);
 function go(n) {
+    setPaused(false); busy = false;            // ← added (first lines)
     cur = n;
     document.body.classList.toggle('mon', MON.has(n));
     $('hp').classList.remove('open');
-    $('hb').style.display = $('gb').style.display = $('rb').style.display = K.ui ? '' : 'none';
+    $('hb').style.display = $('gb').style.display = $('rb').style.display = $('kt').style.display = $('sr').style.display = K.ui ? '' : 'none';   // ← changed
     if (K.ui) {
         $('hb').textContent = '? ' + L3('Help', 'Aide', 'مساعدة');
-        $('rb').textContent = ' ' + L3('Restart PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز')
+        $('rb').textContent = ' ' + L3('Restart PC', 'Redémarrer le PC', 'إعادة تشغيل الجهاز');   // ← added the ; at the end
+        $('sr').textContent = '↺ ' + L3('Restart simulation','Recommencer la simulation','إعادة المحاكاة'); kbLabel();   // ← added
     }
     G[n]();
-    renderProgress()
+    renderProgress();                           
+    updatePause()                               
 }
 const win = (body, next, o={}) => `<div class="dlg"><div class="bar">${T('Install Windows','Installer Windows')}</div><div class="pane">${body}</div><div class="foot">${o.back ? `<button onclick='go("${o.back}")'>${T('Back','Précédent')}</button>` : ''}<button id="nx" class="def" onclick='${next}' ${o.dis ? 'disabled' : ''}>${o.label || T('Next','Suivant')}</button></div></div>`;
 const mb = n => n >= 1024 ? (n / 1024).toFixed(1) + T(' GB', ' Go') : n + T(' MB', ' Mo');
@@ -372,10 +483,10 @@ const G = {
         if (K.med=='dvd') return burnP2(); show(pg(2, L3('Create a bootable USB with Rufus','Créer une clé USB amorçable avec Rufus','إنشاء فلاشة إقلاع باستخدام Rufus'), L3('Rufus copies the ISO onto the USB drive and makes it bootable. All data on the drive will be erased.','Rufus copie l’ISO sur la clé USB et la rend amorçable. Toutes les données de la clé seront effacées.','يقوم Rufus بنسخ ملف ISO إلى الفلاشة وجعلها قابلة للإقلاع. سيتم مسح كل بيانات الفلاشة.'), usbSvg + `<div class="rufus"><div class="rb">Rufus</div><div class="rbd"><label>Device</label><div class="f">USB DRIVE (E:) [8 GB]</div><label>Boot selection</label><div class="f">Windows7_x64.iso</div>${rsel('rs','Partition scheme',['MBR','GPT'])}${rsel('rfs','File system',['NTFS','FAT32','exFAT'])}<div class="pbr"><i id="rp" style="width:100%"></i><span id="rt">READY</span></div><div style="text-align:center"><button class="def" onclick="rf()" ${K.usb || !K.iso ? 'disabled' : ''}>START</button></div></div></div>` + (K.usb ? `<p class="okt">✓ ${L3('USB drive is ready','La clé USB est prête','فلاشة USB جاهزة')}</p>` : ''), K.usb), 'prep')
     },
     p3() {
-        if (K.med=='dvd') return dvdP3(); show(pg(3, L3('Insert the USB drive into the PC','Insérer la clé USB dans le PC','أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).','Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).','أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), pcSvg(K.ins, 0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected','Clé USB branchée','تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive','Insérer la clé','إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
+        if (K.med=='dvd') return dvdP3(); show(pg(3, L3('Insert the USB drive into the PC','Insérer la clé USB dans le PC','أدخل فلاشة USB في الجهاز'), L3('Push the drive into a USB port on the computer (a DVD would go in the optical drive).','Enfoncez la clé dans un port USB de l’ordinateur (un DVD irait dans le lecteur optique).','أدخل الفلاشة في منفذ USB بالجهاز (أما قرص DVD فيوضع في قارئ الأقراص).'), caseSvg(0) + (K.ins ? `<p class="okt">✓ ${L3('USB drive connected','Clé USB branchée','تم توصيل الفلاشة')}</p>` : `<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insUsb()">${L3('Insert drive','Insérer la clé','إدخال الفلاشة')}</button></div>`), K.ins), 'prep')
     },
     p4() {
-        show(pg(4, L3('Restart the PC','Redémarrer le PC','إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del) to open the BIOS, or F12 for the boot menu.','Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage.','اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع.'), caseSvg(K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()">⏻ ${L3('Restart PC','Redémarrer le PC','إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
+        show(pg(4, L3('Restart the PC','Redémarrer le PC','إعادة تشغيل الجهاز'), L3('Press the red RESET button on the case. As soon as the screen goes black, press F2 (or Del) to open the BIOS, or F12 for the boot menu.','Appuyez sur le bouton rouge RESET du boîtier. Dès que l’écran devient noir, appuyez sur F2 (ou Suppr) pour ouvrir le BIOS, ou F12 pour le menu de démarrage.','اضغط زر RESET الأحمر في علبة الجهاز. بمجرد أن تصبح الشاشة سوداء اضغط F2 (أو Del) لفتح BIOS، أو F12 لقائمة الإقلاع.'), caseSvg(K.ins) + `<div style="text-align:center;margin:6px 0 10px"><button class="def" ${K.ins ? '' : 'disabled'} onclick="pcRestart()"> ${L3('Restart PC','Redémarrer le PC','إعادة تشغيل الجهاز')}</button></div>`, K.ins), 'prep')
     },
     bios() {
         const tabs = ['Main','Advanced','Security','Boot','Exit'];
@@ -394,7 +505,7 @@ const G = {
         } else {
             body = `<div class="bh">Exit Options</div><div class="dev" onclick="save()">Save Changes and Exit (F10)</div><div class="dev" onclick="biosDiscard()">Discard Changes and Exit</div><div class="dev" onclick="biosDefault()">Load Setup Defaults</div>`;
         }
-        show(`<h3>BIOS Setup Utility</h3><div class="tabs">${tabs.map((n, i) => `<span class="${i == t ? 'on' : ''}" onclick="K.bt=${i};go('bios')">${n}</span>`).join('')}</div>${body}<div class="ft">&larr;&rarr; Select Screen &nbsp; &uarr;&darr; Select Item &nbsp; +/- Change &nbsp; F10 Save &amp; Exit &nbsp; Esc Exit</div>${kbd(['←','→','↑','↓','+','-','F10','Esc'])}`, 'bios');
+        show(`<h3>BIOS Setup Utility</h3><div class="tabs">${tabs.map((n, i) => `<span class="${i == t ? 'on' : ''}" onclick="K.bt=${i};go('bios')">${n}</span>`).join('')}</div><div class="bbody">${body}</div><div class="bfoot">&larr;&rarr; Select Screen &nbsp; &uarr;&darr; Select Item &nbsp; +/- Change &nbsp; F10 Save &amp; Exit &nbsp; Esc Exit</div>${kbd(['←','→','↑','↓','+','-','F10','Esc'])}`, 'bios');show(`<h3>BIOS Setup Utility</h3><div class="tabs">${tabs.map((n, i) => `<span class="${i == t ? 'on' : ''}" onclick="K.bt=${i};go('bios')">${n}</span>`).join('')}</div><div class="bbody">${body}</div><div class="bfoot">&larr;&rarr; Select Screen &nbsp; &uarr;&darr; Select Item &nbsp; +/- Change &nbsp; F10 Save &amp; Exit &nbsp; Esc Exit</div>${kbd(['←','→','↑','↓','+','-','F10','Esc'])}`, 'bios');
         KH = k => {
             if (k == '→') { K.bt = (t + 1) % 5; go('bios') }
             else if (k == '←') { K.bt = (t + 4) % 5; go('bios') }
@@ -482,7 +593,7 @@ const G = {
         later(() => go('poff'), 2500)
     },
     poff() {
-        show(`<button class="def" onclick="go('off')" style="font-size:18px;padding:12px 26px">⏻ ${T('Power on','Allumer le PC')}</button>`, 'logo')
+        show(`<button class="def" onclick="go('off')" style="font-size:18px;padding:12px 26px"> ${T('Power on','Allumer le PC')}</button>`, 'logo')
     },
     o1() {
         show(win(`<h2>${T('Choose a user name and computer name','Choisissez un nom d’utilisateur et un nom d’ordinateur')}</h2><p>${T('This name appears on the Welcome screen and your Start menu.','Ce nom apparaît sur l’écran d’accueil et dans le menu Démarrer.')}</p><div class="row"><label for="u">${T('Type a user name (for example, John):','Entrez un nom d’utilisateur (par exemple, Jean) :')}</label><input type="text" id="u" value="${K.user}" oninput="chk()" maxlength="12"></div><div class="row"><label for="pcn">${T('Type a computer name:','Entrez un nom d’ordinateur :')}</label><input type="text" id="pcn" value="${K.pc}" oninput="pce()" maxlength="15"></div>`, 'oobe1()', {dis: !K.user}), 'oobe')
@@ -508,7 +619,7 @@ const G = {
         later(() => go(K.pw ? 'login' : 'desk'), 5200)
     },
     login() {
-        show(`<div style="text-align:center;color:#fff"><div style="width:128px;height:128px;margin:0 auto 12px;border-radius:10px;border:3px solid #fff9;background:linear-gradient(135deg,#f6a52e,#e8602c);display:grid;place-items:center;font-size:64px">🌼</div><div style="font-size:26px;text-shadow:0 1px 4px #0006;margin-bottom:14px">${K.user}</div><div style="display:flex;gap:6px;justify-content:center"><input type="password" id="lp" placeholder="${T('Password','Mot de passe')}" onkeydown="if(event.key=='Enter')doLogin()" style="width:220px"><button class="def" onclick="doLogin()" aria-label="OK">➜</button></div><div id="le" style="min-height:44px;margin-top:12px;font-size:13px;text-shadow:0 1px 3px #0008"></div></div><button style="position:absolute;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)" onclick="pcRestart()">⏻ ${T('Restart','Redémarrer')}</button>`, 'oobe');
+        show(`<div style="text-align:center;color:#fff"><div style="width:128px;height:128px;margin:0 auto 12px;border-radius:10px;border:3px solid #fff9;background:linear-gradient(135deg,#f6a52e,#e8602c);display:grid;place-items:center;font-size:64px">🌼</div><div style="font-size:26px;text-shadow:0 1px 4px #0006;margin-bottom:14px">${K.user}</div><div style="display:flex;gap:6px;justify-content:center"><input type="password" id="lp" placeholder="${T('Password','Mot de passe')}" onkeydown="if(event.key=='Enter')doLogin()" style="width:220px"><button class="def" onclick="doLogin()" aria-label="OK">➜</button></div><div id="le" style="min-height:44px;margin-top:12px;font-size:13px;text-shadow:0 1px 3px #0008"></div></div><button style="position:absolute;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)" onclick="pcRestart()"> ${T('Restart','Redémarrer')}</button>`, 'oobe');
         $('lp').focus()
     },
     desk() {
@@ -535,7 +646,7 @@ usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="$('w1').classLi
         tick()
     }
 };
-function setUi(x) { K.ui = x; document.documentElement.lang = x; $('progressPanel').classList.remove('open'); reset() }
+function setUi(x) { K.ui = x; document.documentElement.lang = x;  reset() }
 function dl() { $('dm').style.display = 'block'; fill('#dp', 2500, () => { K.iso = 1; go('p1') }) }
 function insUsb() {
     const s = $('sd'), f = $('fr'), c = $('cap');
@@ -571,7 +682,27 @@ function mv(d) {
     K.sel = j;
     go('bios')
 }
-function save() { pcRestart() }
+
+function biosDlg(msg, yes) {
+    let s = 0;
+    const d = document.createElement('div'), old = KH;
+    d.className = 'bdlg';
+    const close = () => { d.remove(); KH = old };
+    const pick = i => { close(); if (i == 0) yes() };
+    const draw = () => {
+        d.innerHTML = `<div class="bbox"><div class="bttl">Setup Confirmation</div><p>${msg}</p><div class="bbtn"><span class="${s == 0 ? 'on' : ''}" data-i="0">[Ok]</span><span class="${s == 1 ? 'on' : ''}" data-i="1">[Cancel]</span></div></div>`;
+        d.querySelectorAll('span').forEach(x => x.onclick = () => pick(+x.dataset.i))
+    };
+    KH = k => {
+        if (k == '←' || k == '→') { s = 1 - s; draw() }
+        else if (k == 'Enter') pick(s);
+        else if (k == 'Esc') pick(1)
+    };
+    draw();
+    root.appendChild(d)
+}
+function save() { biosDlg('Save configuration changes and exit now?', pcRestart) }
+function biosDiscard() { biosDlg('Discard changes and exit setup now?', () => { K.boot = [...(K.bo0 || K.boot)]; pcRestart() }) }
 function chk() {
     K.user = $('u').value.trim();
     if (!K.pe) $('pcn').value = K.pc = K.user ? (K.user + '-PC').replace(/\s/g, '') : '';
@@ -664,6 +795,7 @@ function reset() {
     K.hint = '';
     pIdx = -1;
     K.rs = K.rfs = K.ed = undefined;
+    K.med = undefined; K.ip = null; K.after = 'lang'; K.bi = 0;   
     go('p1')
 }
 (function () {
@@ -680,7 +812,7 @@ $('kbc').addEventListener('click', e => {
     const b = e.target.closest('button.key');
     if (b && KH) KH(b.getAttribute('aria-label'));
 });
-function biosDiscard() { K.boot = [...(K.bo0 || K.boot)]; pcRestart() }
+
 function biosDefault() {
     K.boot = ["HDD: Samsung SSD 250GB", "USB: Windows 7 Setup Drive", "Network Boot (PXE)"];
     K.sel = 0;
@@ -746,7 +878,7 @@ function rfGo() {
 function startHtml() {
     const it = (ic, t, f) => `<div class="it" onclick="${f || 'nyi()'}">${ic} ${t}</div>`;
     const openC = "$('w1').classList.add('open');$('sm').classList.remove('open')";
-    return `<div class="start" id="sm"><div class="l">${it('🚀', T('Getting Started', 'Mise en route'))}${it('🧮', T('Calculator', 'Calculatrice'))}${it('📝', 'Notepad')}${it('🎨', 'Paint')}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}<div style="position:absolute;left:12px;width:52%;bottom:12px">${it('▶', T('All Programs', 'Tous les programmes'))}<input type="text" placeholder="${T('Search programs and files', 'Rechercher dans les programmes et fichiers')}" style="width:100%"></div></div><div class="r" style="bottom:12px"><div class="it"><b>${K.user || 'User'}</b></div>${it('📁', 'Documents')}${it('🖼️', T('Pictures', 'Images'))}${it('🎵', T('Music', 'Musique'))}${it('🎮', T('Games', 'Jeux'))}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}${it('🖨️', T('Devices and Printers', 'Périphériques et imprimantes'))}${it('❔', T('Help and Support', 'Aide et support'))}<div id="sdm" class="sdm">${it('👤', T('Log off', 'Fermer la session'), "go(K.pw?'login':'wel')")}${it('🔄', T('Restart', 'Redémarrer'), 'pcRestart()')}</div><div style="position:absolute;left:0;right:0;bottom:0;display:flex;gap:2px"><button class="def" style="flex:1;padding:5px 4px" onclick="go('shut')">⏻ ${T('Shut down', 'Arrêter')}</button><button style="padding:5px 8px" aria-label="More" onclick="$('sdm').classList.toggle('open')">▸</button></div></div></div>`;
+    return `<div class="start" id="sm"><div class="l">${it('🚀', T('Getting Started', 'Mise en route'))}${it('🧮', T('Calculator', 'Calculatrice'))}${it('📝', 'Notepad')}${it('🎨', 'Paint')}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}<div style="position:absolute;left:12px;width:52%;bottom:12px">${it('▶', T('All Programs', 'Tous les programmes'))}<input type="text" placeholder="${T('Search programs and files', 'Rechercher dans les programmes et fichiers')}" style="width:100%"></div></div><div class="r" style="bottom:12px"><div class="it"><b>${K.user || 'User'}</b></div>${it('📁', 'Documents')}${it('🖼️', T('Pictures', 'Images'))}${it('🎵', T('Music', 'Musique'))}${it('🎮', T('Games', 'Jeux'))}${it('🖥️', T('Computer', 'Ordinateur'), openC)}${it('⚙️', T('Control Panel', 'Panneau de configuration'))}${it('🖨️', T('Devices and Printers', 'Périphériques et imprimantes'))}${it('❔', T('Help and Support', 'Aide et support'))}<div id="sdm" class="sdm">${it('👤', T('Log off', 'Fermer la session'), "go(K.pw?'login':'wel')")}${it('🔄', T('Restart', 'Redémarrer'), 'pcRestart()')}</div><div style="position:absolute;left:0;right:0;bottom:0;display:flex;gap:2px"><button class="def" style="flex:1;padding:5px 4px" onclick="go('shut')"> ${T('Shut down', 'Arrêter')}</button><button style="padding:5px 8px" aria-label="More" onclick="$('sdm').classList.toggle('open')">▸</button></div></div></div>`;
 }
 
 /* help texts for new screens */
@@ -760,13 +892,38 @@ function burnP2(){
 function burn(){ $('rt').textContent='Burning...'; fill('#rp',6000,()=>{K.usb=1;go('p2')},p=>$('rt').textContent='Burning... '+Math.floor(p*100)+'%') }
 
 const dvdSvg=(st,glow)=>`<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC"><rect x="10" y="14" width="150" height="100" rx="6" fill="#222"/><rect x="18" y="22" width="134" height="84" fill="#1d5aa0"/><rect x="75" y="114" width="20" height="30" fill="#444"/><rect x="50" y="144" width="70" height="8" rx="3" fill="#555"/><rect x="205" y="10" width="130" height="190" rx="6" fill="#d9dde3" stroke="#8a929c"/><circle cx="225" cy="40" r="10" fill="#4a4" stroke="#222" stroke-width="2"/><text x="285" y="40" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">POWER</text><rect x="215" y="62" width="20" height="14" rx="3" fill="#d33" stroke="#700" ${glow?'class="glow" onclick="pcRestart()" style="cursor:pointer"':''}/><text x="275" y="69" dominant-baseline="central" font-size="12" font-weight="600" fill="#222" font-family="sans-serif">RESET</text><rect x="213" y="92" width="114" height="22" rx="2" fill="#c3c9d1" stroke="#7b838d"/><rect x="220" y="101" width="66" height="4" fill="#333"/><circle cx="312" cy="103" r="4" fill="#2a7fc9"/>${st==1||st==2?`<rect x="218" y="114" width="104" height="52" rx="3" fill="#aab1ba" stroke="#6b737d"/><ellipse cx="270" cy="140" rx="40" ry="18" fill="#8892a0"/>`:''}${st==2?`<ellipse cx="270" cy="140" rx="36" ry="15" fill="#7fb8e6"/><ellipse cx="270" cy="140" rx="6" ry="2.5" fill="#14202e"/>`:''}</svg>`;
-const caseSvg = glow => K.med=='dvd' ? dvdSvg(K.ins ? 3 : 0, glow) : pcSvg(K.ins ? 1 : 0, glow);
+const caseSvg = (glow, tray = 0) => {
+    const dvd = K.med == 'dvd', usbIn = !dvd && K.ins, led = (dvd && K.ins && !tray) ? '#ffb000' : '#5a4a20';
+    const grille = [0,1,2,3,4,5,6].map(i => `<line x1="214" x2="321" y1="${116 + i * 4}" y2="${116 + i * 4}"/>`).join('');
+    const lbl = (x, y, t) => `<text x="${x}" y="${y}" dominant-baseline="central" font-size="11" font-weight="600" fill="#222" font-family="sans-serif">${t}</text>`;
+    return `<svg viewBox="0 0 340 210" class="img" role="img" aria-label="PC">
+<defs><linearGradient id="gc" x1="0" x2="1"><stop offset="0" stop-color="#eef1f5"/><stop offset=".5" stop-color="#d3d8df"/><stop offset="1" stop-color="#aeb5bf"/></linearGradient><linearGradient id="gs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a8fe0"/><stop offset="1" stop-color="#14498a"/></linearGradient></defs>
+<rect x="10" y="14" width="150" height="100" rx="6" fill="#1c1d20" stroke="#000"/><rect x="18" y="22" width="134" height="84" fill="url(#gs)"/><path d="M18 22h70l-30 84H18z" fill="#fff" opacity=".08"/><circle cx="85" cy="110" r="1.6" fill="#3f8"/>
+<path d="M78 114h14l4 28H74z" fill="#3a3c40"/><rect x="50" y="142" width="70" height="8" rx="3" fill="#4a4d52"/>
+<rect x="206" y="202" width="16" height="8" rx="1" fill="#333"/><rect x="313" y="202" width="16" height="8" rx="1" fill="#333"/>
+<rect x="200" y="6" width="135" height="198" rx="7" fill="url(#gc)" stroke="#7b838d"/><rect x="205" y="10" width="125" height="190" rx="5" fill="none" stroke="#fff" opacity=".6"/>
+<circle cx="216" cy="30" r="9" fill="#4a4" stroke="#222" stroke-width="2"/>${lbl(270, 30, 'POWER')}
+
+<rect x="207" y="48" width="18" height="12" rx="3" fill="#d33" stroke="#700" ${glow ? 'class="glow" onclick="pcRestart()" style="cursor:pointer"' : ''}/>${lbl(262, 54, 'RESET')}
+<rect x="207" y="70" width="121" height="22" rx="2" fill="#c3c9d1" stroke="#7b838d"/><rect x="212" y="80" width="80" height="4" fill="#333"/><text x="240" y="78" font-size="6.5" fill="#555" font-family="sans-serif">DVD-RW</text><rect x="300" y="80" width="12" height="5" rx="1" fill="#8a929c"/><circle cx="318" cy="76" r="2.5" fill="${led}"/>
+<rect x="207" y="96" width="121" height="14" rx="2" fill="#cdd2d9" stroke="#9aa1ab"/>
+<g stroke="#8a929c" stroke-width="1.5">${grille}</g>
+<rect x="207" y="148" width="121" height="50" rx="4" fill="#c4cad2" stroke="#8a929c"/>
+<rect x="216" y="160" width="22" height="8" rx="1" fill="#222"/><rect x="218" y="162" width="18" height="2.5" fill="#667"/>${lbl(264, 164, 'USB')}
+<rect x="216" y="180" width="22" height="8" rx="1" fill="#222"/><rect x="218" y="182" width="18" height="2.5" fill="#667"/>${lbl(264, 184, 'USB')}
+<circle cx="296" cy="164" r="4" fill="#333" stroke="#e377c2" stroke-width="1.5"/><circle cx="316" cy="164" r="4" fill="#333" stroke="#6c6" stroke-width="1.5"/>
+${tray ? `<rect x="214" y="92" width="107" height="38" rx="3" fill="#aab1ba" stroke="#6b737d"/><ellipse cx="267" cy="111" rx="34" ry="14" fill="#8892a0"/>` : ''}
+${tray == 2 ? `<ellipse cx="267" cy="111" rx="31" ry="12.5" fill="#7fb8e6"/><path d="M240 108a30 11 0 0 1 20-7" stroke="#fff" stroke-width="2" fill="none"/><ellipse cx="267" cy="111" rx="5" ry="2" fill="#14202e"/>` : ''}
+${dvd ? '' : `<g id="sd" style="transform-box:fill-box;transform-origin:center;transition:transform .8s ease-in-out,opacity .2s;opacity:${usbIn ? 0 : 1}"><g transform="translate(25,158)"><rect x="80" y="5" width="32" height="18" rx="2" fill="#c0c8d2"/><rect x="94" y="7" width="6" height="4" fill="#555"/><rect x="94" y="14" width="6" height="4" fill="#555"/><rect width="84" height="28" rx="6" fill="#2a7fc9"/><circle cx="68" cy="14" r="4" fill="#fff"/></g></g>
+<g id="fr" style="transform-box:fill-box;transform-origin:center;transition:transform 1s ease-in-out,opacity .3s;opacity:${usbIn ? 1 : 0};transform:${usbIn ? 'none' : 'translate(-150px,8px) scale(2.6)'}"><rect x="214" y="158" width="26" height="12" rx="2" fill="#2a7fc9" stroke="#1a5a9a"/></g>`}
+</svg>`;
+};
 function dvdP3(){
  show(pg(3,L3('Insert the disc into the PC','Insérer le disque dans le PC','أدخل القرص في الجهاز'),L3('Open the DVD tray, place the disc label up, then close the tray.','Ouvrez le tiroir DVD, posez le disque face imprimée vers le haut, puis refermez.','افتح درج DVD وضع القرص والوجه المطبوع للأعلى ثم أغلق الدرج.'),
- `<div id="dv">${dvdSvg(0,0)}</div>`+(K.ins?`<p class="okt">✓ ${L3('Disc inserted','Disque inséré','تم إدخال القرص')}</p>`:`<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insDvd()">${L3('Insert disc','Insérer le disque','إدخال القرص')}</button></div>`),K.ins),'prep')
+ `<div id="dv">${caseSvg(0,0)}</div>`+(K.ins?`<p class="okt">✓ ${L3('Disc inserted','Disque inséré','تم إدخال القرص')}</p>`:`<p class="okt" id="cap" style="color:#ffd23f;min-height:22px"></p><div style="text-align:center"><button class="def" id="ib" onclick="insDvd()">${L3('Insert disc','Insérer le disque','إدخال القرص')}</button></div>`),K.ins),'prep')
 }
 function insDvd(){
- const c=$('cap'),d=n=>$('dv').innerHTML=dvdSvg(n,0);
+ const c=$('cap'),d=n=>$('dv').innerHTML=caseSvg(0,n);
  $('ib').disabled=true;
  c.textContent=L3('1. Press eject: the tray opens.','1. Appuyez sur éjecter : le tiroir s’ouvre.','1. اضغط زر الإخراج: يفتح الدرج.'); d(1);
  later(()=>{c.textContent=L3('2. Place the disc on the tray.','2. Posez le disque sur le tiroir.','2. ضع القرص على الدرج.'); d(2)},1800);
