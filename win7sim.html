@@ -80,7 +80,7 @@ tr.sel td{background:#cde8ff}
 .oobe h2{color:#1a5a8a}
 .welcome{background:radial-gradient(ellipse at 50% 40%,#3aa0e0,#0c3d86);color:#fff;font-size:44px;font-weight:300;flex-direction:column;gap:10px}
 /* desktop (Aero style) */
-.desk{background:url('img/win7.jpg') center/cover no-repeat,radial-gradient(ellipse 50% 35% at 72% 48%,#d8f6ff,#6cc4f4 40%,#0000 75%),linear-gradient(160deg,#2a8be0,#0a3f90 55%,#04204d);align-items:flex-start;justify-content:flex-start}
+.desk{background:url('img/win7.webp') center/cover no-repeat,radial-gradient(ellipse 50% 35% at 72% 48%,#d8f6ff,#6cc4f4 40%,#0000 75%),linear-gradient(160deg,#2a8be0,#0a3f90 55%,#04204d);align-items:flex-start;justify-content:flex-start}
 .ico{position:absolute;left:14px;width:76px;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 3px #000;cursor:pointer;user-select:none}
 .ico span{display:block;font-size:38px}
 .tb{position:absolute;left:0;right:0;bottom:0;height:40px;display:flex;align-items:center;background:linear-gradient(#ffffff66,#a9cbe944 12%,#2b5683aa 50%,#10294acc);backdrop-filter:blur(8px);border-top:1px solid #fffa;box-shadow:inset 0 1px 0 #fff6;color:#fff;font-size:12px;z-index:5}
@@ -447,6 +447,59 @@ body.v8 #s.metro,body.v8 #s.setup{background:#1f6aa5}
 @keyframes gpbd{50%{margin-top:6px}}
 @media(prefers-reduced-motion:reduce){#gptr .ring,#gptr .lab{animation:none}}
 #sideList li.cur,#sideList li.cur *{animation:none!important}
+/* ===== v7: Windows 8 / 10 final setup pages (later-setup look) ===== */
+.oo{position:relative;overflow:hidden;display:block!important;font-family:'Segoe UI','Segoe UI Light',Tahoma,Arial,sans-serif;color:#fff}
+.oo-main{position:absolute;left:9%;top:10%;right:9%;bottom:22%;display:flex;flex-direction:column;min-width:0;z-index:2}
+.o10 .oo-main{right:40%}
+.oo-t{font:200 34px/1.15 'Segoe UI Light','Segoe UI',sans-serif;margin:0 0 18px;color:#fff;overflow-wrap:anywhere}
+.o8 .oo-t{font-size:42px}
+.oo-b{flex:1;overflow:auto;font-size:15px;line-height:1.4;color:#ffffffe6;padding-inline-end:6px}
+.oo-b p{margin:0 0 14px}
+.oo .row{display:block;margin:12px 0;max-width:420px}
+.oo .row label{display:block;font-size:13px;opacity:.85;margin-bottom:4px}
+.oo input[type=text],.oo input[type=password]{width:100%;box-sizing:border-box;padding:8px 10px;font-size:16px;background:#fff;color:#111;border:2px solid transparent;border-radius:0}
+.oo input:disabled{background:#ffffff59;color:#fffc}
+.oo .row:has(select){display:grid;grid-template-columns:1fr;gap:6px;max-width:460px}
+.oo select{width:100%;padding:7px;font-size:14px;border-radius:0}
+.oo .warn{min-height:20px;color:#ffe2a0}
+.oo .link{color:#fff;text-decoration:underline;cursor:pointer}
+.oo .foot{position:absolute;right:9%;bottom:7%;left:auto;padding:0!important;background:none;border:0;display:flex;gap:10px;z-index:3}
+.oo .foot button{min-width:112px;padding:8px 18px;font-size:15px;border:2px solid transparent;border-radius:0;cursor:pointer;color:#fff}
+.o10 .foot #nx{background:#0078d7}
+.o10 .foot #nx:hover:not(:disabled){background:#1a86dc;border-color:#ffffffaa}
+.o10 .foot #nx:disabled{background:#ffffff2e;opacity:.55;cursor:default}
+.o10 .foot button:not(#nx){background:#ffffff26}
+.o10 .foot button:not(#nx):hover{background:#ffffff40}
+.o8 .foot button{background:transparent;border-color:#fff}
+.o8 .foot button:hover:not(:disabled){background:#ffffff33}
+.o8 .foot button:disabled{opacity:.4}
+.o10 .opt{background:none;border:0;padding:6px 0;margin:4px 0}
+.o10 .opt:hover{background:none}
+.o10 .opt b{color:#fff;font-weight:400;text-decoration:underline}
+.o8 .opt{padding:10px 0;border:0}
+.o8 .opt b{color:#fff;font:300 24px 'Segoe UI Light','Segoe UI',sans-serif}
+.o8 .opt:hover{background:#ffffff22}
+.o8 .sw{width:64px;height:64px;margin:4px;border-width:3px}
+.olist{max-height:100%;overflow:auto;background:#00000033;font-size:15px}
+.olist .oi{padding:9px 14px;cursor:pointer}
+.olist .oi:hover{background:#ffffff22}
+.olist .oi.sel{background:#0078d7}
+.tgl{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin:0 0 16px}
+.tgl b{display:block;font-weight:600;font-size:15px}
+.tgl small{display:block;opacity:.8;font-size:12px;line-height:1.35;max-width:380px}
+.tgl input{appearance:none;-webkit-appearance:none;flex:none;width:46px;height:22px;border:2px solid #fff;border-radius:12px;background:transparent;position:relative;cursor:pointer;margin:2px 0 0}
+.tgl input:before{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;background:#fff;border-radius:50%;transition:left .15s}
+.tgl input:checked{background:#0078d7;border-color:#0078d7}
+.tgl input:checked:before{left:27px}
+.oo-art{position:absolute;pointer-events:none;z-index:1}
+.o10 .oo-art{right:9%;top:16%;width:28%;display:grid;place-items:center}
+.o10 .oo-art svg{width:100%;max-width:250px;height:auto;fill:none;stroke:#fff;stroke-width:.22;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+.o8 .oo-art{right:-7%;bottom:-16%;width:48%;opacity:.09}
+.o8 .oo-art svg{width:100%;height:auto}
+.oo-cor{position:absolute;left:9%;bottom:7%;width:44px;height:44px;z-index:2}
+body.v8 .metro .sub,body.v10 .metro .sub{font:200 30px 'Segoe UI Light','Segoe UI',sans-serif;opacity:1}
+/* sign-in avatar */
+.uav{margin:0 auto 12px;display:grid;place-items:center;border:0}
 </style>
 </head>
 <body>
@@ -1028,10 +1081,10 @@ const G = {
         usbIco = K.ins ? `<div class="ico" style="top:206px" ondblclick="openW()"><span>${K.med=='dvd'?'📀':'💾'}</span>${K.med=='dvd'?T('DVD RW Drive','Lecteur DVD-RW'):T('Removable Disk','Disque amovible')} (${usbL}:)</div>` : '',
         edn = (K.ver=='10'?EDN10:K.ver=='8'?EDN8:EDN7)[K.ed ?? (K.ver=='7'?3:1)];
         const deskBg = K.ver=='10'
-            ? `url('img/win10.jpg') center/cover no-repeat,radial-gradient(ellipse at 50% 40%,#0a3d62,#1e5b8a 40%,#0d2b45)`
+            ? `url('img/win10.webp') center/cover no-repeat,url('img/wen10.webp') center/cover no-repeat,radial-gradient(ellipse at 50% 40%,#0a3d62,#1e5b8a 40%,#0d2b45)`
             : K.ver=='8'
-            ? `url('img/win8.jpg') center/cover no-repeat,linear-gradient(135deg,#1e5b8a,#0a3d62)`
-            : `url('img/win7.jpg') center/cover no-repeat,radial-gradient(ellipse 50% 35% at 72% 48%,#d8f6ff,#6cc4f4 40%,#0000 75%),linear-gradient(160deg,#2a8be0,#0a3f90 55%,#04204d)`;
+            ? `url('img/win8.webp') center/cover no-repeat,linear-gradient(135deg,#1e5b8a,#0a3d62)`
+            : `url('img/win7.webp') center/cover no-repeat,radial-gradient(ellipse 50% 35% at 72% 48%,#d8f6ff,#6cc4f4 40%,#0000 75%),linear-gradient(160deg,#2a8be0,#0a3f90 55%,#04204d)`;
         show(`<div class="desk" style="width:100%;height:100%;background:${deskBg};align-items:flex-start;justify-content:flex-start"><div class="ico" style="top:14px" onclick="alert(T('Recycle Bin is empty.','La Corbeille est vide.'))"><span>🗑️</span>${T('Recycle Bin','Corbeille')}</div><div class="ico" style="top:110px" ondblclick="openW()"><span>🖥️</span>${CPN()}</div>${usbIco}<div class="win" id="w1"><div class="bar"><span>🖥️ ${CPN()}</span><span class="wc"><button aria-label="Minimize" onclick="winMin()">–</button><button aria-label="Maximize" onclick="winMax()">▢</button><button class="x" aria-label="Close" onclick="winClose()">✕</button></span></div>${drv}${usbDrv}<div style="padding:0 16px 14px;font-size:12px;color:#555">${T('Computer name','Nom de l’ordinateur')} : ${esc(K.pc || 'WIN-PC')} · ${VN()} ${T(edn[0], edn[1])}</div></div>${startHtml()}<div class="tb"><button class="orb" aria-label="Start" onclick="K.ver=='8'?go('wstart'):$('sm').classList.toggle('open')">${K.ver=='7'?flag(26):flat(24)}</button>${K.ver=='10'?`<div class="srch">🔍 ${T('Type here to search','Taper ici pour rechercher')}</div>`:''}<div class="pin"><button title="Internet Explorer" onclick="nyi()">🌐</button><button title="${CPN()}" onclick="openW()">📁</button><button title="Media Player" onclick="nyi()">▶️</button></div><button id="tbw" class="tbw" onclick="tbwClick()">🖥️ ${CPN()}</button><div class="tray"><span>▲</span><span>🔊</span><span>🌐</span><div id="ck"></div></div><button class="sd" aria-label="Show desktop" onclick="showDesk()"></button></div></div>`, 'desk');
         root.style.background = deskBg;
 		root.onclick = e => { if (!e.target.closest('#sm,.orb')) $('sm').classList.remove('open') };
@@ -1369,7 +1422,7 @@ const nxo=c=>SEQ[K.ver][SEQ[K.ver].indexOf(c)+1]||'wel', pvo=c=>(c=='o4'&&K.ver=
 ['key','rg','kb','net','acc','wstart'].forEach(x=>MON.add(x));
 const flat=(s,c='#fff')=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><path fill="${c}" d="M0 3.4 9.8 2v9.4H0zM11 1.8 24 0v11.4H11zM0 12.6h9.8V22L0 20.6zM11 12.6h13V24l-13-1.8z"/></svg>`;
 function vwin(b,n,o={}){const h=vwin0(b,n,o);return K.ver=='8'?h.replace('class="dlg w8dlg"','class="w8s"'):h}
-const fs=(t,b,nx,o={})=>`<div class="w8s" style="background:${K.ver=='8'?(K.col||'#5b2d90'):'linear-gradient(135deg,#0a3d62,#1e5b8a 45%,#0d2b45)'}"><div class="bar">${t}</div><div class="pane">${b}</div><div class="foot">${o.back?`<button onclick="go('${o.back}')">${T('Back','Précédent')}</button>`:''}<button id="nx" onclick='${nx}' ${o.dis?'disabled':''}>${o.label||T('Next','Suivant')}</button></div></div>`;
+let fs=(t,b,nx,o={})=>`<div class="w8s" style="background:${K.ver=='8'?(K.col||'#5b2d90'):'linear-gradient(135deg,#0a3d62,#1e5b8a 45%,#0d2b45)'}"><div class="bar">${t}</div><div class="pane">${b}</div><div class="foot">${o.back?`<button onclick="go('${o.back}')">${T('Back','Précédent')}</button>`:''}<button id="nx" onclick='${nx}' ${o.dis?'disabled':''}>${o.label||T('Next','Suivant')}</button></div></div>`;
 const sel=(id,a)=>`<select id="${id}" style="max-width:360px">${a.map(x=>`<option>${x}</option>`).join('')}</select>`;
 /* product key: Win 8 and Win 10 ask for it right after "Install now" */
 G.key=()=>{const w=K.ver=='10';show(vwin(`<h2>${w?T('Activate Windows','Activer Windows'):T('Enter the product key to activate Windows','Entrez la clé de produit pour activer Windows')}</h2><p>${T('The product key is on the packaging or in the confirmation email you received when you bought Windows.','La clé de produit se trouve sur l’emballage ou dans l’e-mail de confirmation reçu lors de l’achat de Windows.')}</p><div class="row"><label for="k">${T('Product key:','Clé de produit :')}</label><input type="text" id="k" placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" maxlength="29" value="${esc(K.key||'')}" oninput="keyChk()"></div>${w?`<p><span class="link" onclick="skipKey()">${T('I don’t have a product key','Je n’ai pas de clé de produit')}</span></p>`:''}`,'keyNext()',{back:'home',dis:!K.key}),'setup')};
@@ -1404,7 +1457,7 @@ function accOk(){const u=$('u').value.trim(),p=$('p1').value,h=$('ph').value.tri
  go(nxo('acc'))}
 /* Windows 8 Start screen */
 G.wstart=()=>{const c=K.col||'#5b2d90',t=(bg,n,ic,f,w)=>`<div onclick="${f||'nyi()'}" style="background:${bg};padding:14px;min-height:96px;${w?'grid-column:span 2;':''}cursor:pointer;display:flex;flex-direction:column;justify-content:space-between"><span style="font-size:30px">${ic}</span><span style="font-size:13px">${n}</span></div>`;
- show(`<div style="width:100%;height:100%;overflow:auto;background:${c};color:#fff;padding:4% 6%"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font:200 38px 'Segoe UI Light','Segoe UI',sans-serif;margin:0">${T('Start','Démarrer')}</h1><div style="display:flex;gap:10px;align-items:center"><b>${esc(K.user)}</b><button aria-label="Power" title="${T('Shut down','Arrêter')}" onclick="go('shut')" style="background:#ffffff26;color:#fff;border:1px solid #fff8;border-radius:0">⏻</button></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:20px;max-width:640px">${t("url('img/win8.jpg') center/cover,#1f6aa5",T('Desktop','Bureau'),'🖥️',"go('desk')",1)}${t('#d24726','Mail','✉️')}${t('#00a300','Store','🛍️',0,1)}${t('#0050ef',T('Calendar','Calendrier'),'📅')}${t('#1ba1e2','Internet Explorer','🌐')}${t('#e51400','Photos','🖼️')}${t('#008299',T('Weather','Météo'),'☀️')}${t('#6a00ff','People','👥')}</div></div>`,'')};
+ show(`<div style="width:100%;height:100%;overflow:auto;background:${c};color:#fff;padding:4% 6%"><div style="display:flex;justify-content:space-between;align-items:center"><h1 style="font:200 38px 'Segoe UI Light','Segoe UI',sans-serif;margin:0">${T('Start','Démarrer')}</h1><div style="display:flex;gap:10px;align-items:center"><b>${esc(K.user)}</b><button aria-label="Power" title="${T('Shut down','Arrêter')}" onclick="go('shut')" style="background:#ffffff26;color:#fff;border:1px solid #fff8;border-radius:0">⏻</button></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:20px;max-width:640px">${t("url('img/win8.webp') center/cover,#1f6aa5",T('Desktop','Bureau'),'🖥️',"go('desk')",1)}${t('#d24726','Mail','✉️')}${t('#00a300','Store','🛍️',0,1)}${t('#0050ef',T('Calendar','Calendrier'),'📅')}${t('#1ba1e2','Internet Explorer','🌐')}${t('#e51400','Photos','🖼️')}${t('#008299',T('Weather','Météo'),'☀️')}${t('#6a00ff','People','👥')}</div></div>`,'')};
 /* guide + help texts */
 const GDV={'8':{o1:'اختر لوناً واكتب اسماً للجهاز (يظهر في الشبكة).',o4:'«الإعدادات السريعة» تفعّل التحديثات والحماية وهي الاختيار المعتاد.'},'10':{o4:'راجع خيارات الخصوصية ثم اضغط «قبول».'}};
 Object.assign(GD,{key:'أدخل مفتاح المنتج الآن. في ويندوز 10 يمكنك اختيار «ليس لدي مفتاح منتج» والتفعيل لاحقاً.',rg:'تأكد أن المنطقة صحيحة ثم اضغط «نعم».',kb:'اختر تخطيط لوحة المفاتيح ثم «نعم». يمكنك تخطي التخطيط الثاني.',net:'اختر «ليس لدي إنترنت» للمتابعة بحساب محلي.',acc:'أنشئ حساباً محلياً: اسم المستخدم وكلمة المرور (اختيارية) والتلميح مطلوب إذا وضعت كلمة مرور.',wstart:'هذه شاشة «ابدأ» في ويندوز 8. انقر بلاطة «سطح المكتب». زر الإيقاف أعلى اليمين.'});
@@ -1417,7 +1470,7 @@ Object.assign(H,{
  wstart:["This is the Windows 8 Start screen. Click the Desktop tile. Power is top right.","Voici l’écran Démarrer de Windows 8. Cliquez sur la tuile Bureau. L’alimentation est en haut à droite.","هذه شاشة «ابدأ» في ويندوز 8. انقر بلاطة «سطح المكتب». زر الإيقاف أعلى اليمين."]});
 const HV={'8':{o1:["Pick a color and type a name for the PC.","Choisissez une couleur et un nom pour le PC.","اختر لوناً واكتب اسماً للجهاز."],o4:["Express settings turn on updates and protection. It is the usual choice.","Les paramètres rapides activent mises à jour et protection. C’est le choix habituel.","الإعدادات السريعة تفعّل التحديثات والحماية وهي الاختيار المعتاد."]},'10':{o4:["Review the privacy switches, then click Accept.","Vérifiez les options de confidentialité puis cliquez sur Accepter.","راجع خيارات الخصوصية ثم اضغط «قبول»."]}};
 /* ===== v3: closer to the real Windows 8 / 10 setup ===== */
-const IMG10="url('img/win10.jpg') center/cover no-repeat,url('img/win10.jpg') center/cover no-repeat",IMG8="url('img/win8.jpg') center/cover no-repeat";
+const IMG10="url('img/win10.webp') center/cover no-repeat,url('img/wen10.webp') center/cover no-repeat",IMG8="url('img/win8.webp') center/cover no-repeat";
 const LG=()=>K.ver=='7'?'login':'lock';
 SEQ['8']=['o1','net','o4','ms','acc'];                                   /* Personalize > Wireless > Settings > Sign in > Local account */
 SEQ['10']=['rg','kb','kb2','net','ltd','acc','pwd','sq','o4'];           /* Region > Keyboard > 2nd layout > Network > Limited setup > User > Password > Security Q > Privacy */
@@ -1845,6 +1898,50 @@ function gUpdate(){
 }
 setInterval(gUpdate,200);
 addEventListener('resize',gUpdate);
+
+
+/* ===== v7: Windows 8 / 10 final setup pages (later-setup look, SVG art) ===== */
+const OIC={
+ globe:'<circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.5" ry="10"/><path d="M2 12h20M3.5 7h17M3.5 17h17"/>',
+ keyboard:'<rect x="2" y="6" width="20" height="12" rx="1"/><path d="M5 9.5h1.5M8.5 9.5h1.5M12 9.5h1.5M15.5 9.5h1.5M18.5 9.5h.5M5 12.5h1.5M8.5 12.5h1.5M12 12.5h1.5M15.5 12.5h1.5M18.5 12.5h.5M7 15.5h10"/>',
+ wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10.5 10.5 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.6-8 8-8s8 3.5 8 8"/>',
+ lock:'<rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.2"/>',
+ ques:'<path d="M4 4h16v12H9l-5 4z"/><path d="M10 8.5a2 2 0 1 1 3 1.7c-.7.4-1 .8-1 1.6M12 13.7v.3"/>',
+ shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'};
+const OMAP={rg:'globe',kb:'keyboard',kb2:'keyboard',net:'wifi',ltd:'wifi',acc:'user',pwd:'lock',sq:'ques',o4:'shield'};
+const COR='<svg class="oo-cor" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19" fill="none" stroke="#fff" stroke-width="3"/><circle cx="22" cy="22" r="8" fill="#fff"/></svg>';
+fs=(t,b,nx,o={})=>{
+  const v8=K.ver=='8',bg=v8?(K.col||'#5b2d90'):'linear-gradient(135deg,#0a3d62,#1e5b8a 45%,#0d2b45)';
+  const art=v8?flat(520,'#fff'):(OMAP[cur]?`<svg viewBox="0 0 24 24" aria-hidden="true">${OIC[OMAP[cur]]}</svg>`:'');
+  return `<div class="w8s oo ${v8?'o8':'o10'}" style="background:${bg}"><div class="oo-main"><h1 class="oo-t">${t}</h1><div class="oo-b">${b}</div></div><div class="oo-art">${art}</div>${v8?'':COR}<div class="foot">${o.back?`<button onclick="go('${o.back}')">${T('Back','Précédent')}</button>`:''}<button id="nx" onclick='${nx}' ${o.dis?'disabled':''}>${o.label||T('Next','Suivant')}</button></div></div>`};
+const olist=(id,a,s)=>`<div class="olist" id="${id}">${a.map((x,i)=>`<div class="oi${i==s?' sel':''}" onclick="olSel(this)">${x}</div>`).join('')}</div>`;
+function olSel(e){e.parentNode.querySelectorAll('.oi').forEach(x=>x.classList.remove('sel'));e.classList.add('sel')}
+G.rg=()=>show(fs(T('Let’s start with region. Is this right?','Commençons par la région. Est-ce correct ?'),olist('rgs',[['Algeria','Algérie'],['Belgium','Belgique'],['Canada','Canada'],['Egypt','Égypte'],['France','France'],['Germany','Allemagne'],['Italy','Italie'],['Morocco','Maroc'],['Qatar','Qatar'],['Saudi Arabia','Arabie saoudite'],['Spain','Espagne'],['Tunisia','Tunisie'],['Turkey','Turquie'],['United Arab Emirates','Émirats arabes unis'],['United Kingdom','Royaume-Uni'],['United States','États-Unis']].map(x=>T(x[0],x[1])),0),'go(nxo("rg"))',{label:T('Yes','Oui')}),'oobe');
+G.kb=()=>show(fs(T('Is this the right keyboard layout?','Est-ce la bonne disposition du clavier ?'),olist('kbs',['US','French','Arabic (101)','Arabic (102)','German','Spanish'],K.ui=='fr'?1:0),'go(nxo("kb"))',{label:T('Yes','Oui'),back:'rg'}),'oobe');
+const o4_8=G.o4;
+G.o4=()=>{if(K.ver!='10')return o4_8();
+  const P=[['Location','Localisation','Let Windows and apps request your location.','Autorisez Windows et les applications à demander votre position.'],['Find my device','Localiser mon appareil','Let Windows keep track of your device if you lose it.','Windows suit votre appareil si vous le perdez.'],['Diagnostic data','Données de diagnostic','Send diagnostic data to help improve Windows.','Envoyez des données de diagnostic pour améliorer Windows.'],['Tailored experiences','Expériences personnalisées','Get tips and recommendations based on your diagnostic data.','Recevez des conseils selon vos données de diagnostic.'],['Advertising ID','ID de publicité','Let apps use your advertising ID for more relevant ads.','Autorisez les applications à utiliser votre ID de publicité.']];
+  show(fs(T('Choose privacy settings for your device','Choisissez les paramètres de confidentialité de votre appareil'),`<p>${T('Review each setting, then select Accept.','Vérifiez chaque paramètre puis sélectionnez Accepter.')}</p>${P.map(p=>`<div class="tgl"><div><b>${T(p[0],p[1])}</b><small>${T(p[2],p[3])}</small></div><input type="checkbox" checked aria-label="${T(p[0],p[1])}"></div>`).join('')}`,'go(nxo("o4"))',{label:T('Accept','Accepter'),back:pvo('o4')}),'oobe')};
+/* spinner: ring of dots (Win 8 / 10) */
+const show_0=show;
+show=function(h,c){show_0(h,c);if(K.ver=='8'&&cur=='wel')root.style.background=K.col||'#5b2d90'};
+/* sign-in avatar: silhouette instead of the flower */
+const PERSON='<svg viewBox="0 0 24 24" width="70%" height="70%" aria-hidden="true"><circle cx="12" cy="8.5" r="4.2" fill="#fff"/><path d="M3.5 22c0-5 3.8-8.2 8.5-8.2s8.5 3.2 8.5 8.2z" fill="#fff"/></svg>';
+const login_0=G.login;
+G.login=()=>{login_0();
+  const a=root.querySelector('div[style*="110px"][style*="border-radius"]');
+  if(a&&K.ver!='7'){
+    a.className='uav';a.innerHTML=PERSON;
+    a.style.background=K.ver=='10'?'#8d8d8d':(K.col||'#5b2d90');
+    a.style.border=K.ver=='10'?'0':'2px solid #fff';
+    if(K.ver=='8')a.style.borderRadius='0'}};
+/* lock screen: bigger clock on Win 8 + soft bottom gradient */
+const lock_0=G.lock;
+G.lock=()=>{lock_0();
+  const w=root.firstElementChild;if(!w)return;
+  w.style.backgroundImage='linear-gradient(to top,#000a,#0000 50%),'+w.style.backgroundImage;
+  if(K.ver=='8')w.querySelectorAll('div').forEach(d=>{if(d.style.fontSize=='90px')d.style.fontSize='130px';else if(d.style.fontSize=='32px')d.style.fontSize='44px'})};
 
 go('pick');
 </script>
