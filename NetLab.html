@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NetLab 2.0 – مختبر تعلّم الشبكات</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#eaf0f7;--pn:#fff;--ln:#d5deea;--tx:#0e1a2b;--mu:#60708a;--ac:#1f6feb;--ok:#12a150;--bd:#d92d3a;--cv:#f4f7fb;--grid:#cfd9e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#070d18;--pn:#0f1829;--ln:#223250;--tx:#e7eefb;--mu:#8da0c0;--ac:#4d94ff;--ok:#2fd18b;--bd:#ff6b78;--cv:#0a1222;--grid:#17253f}}
+:root[data-theme="dark"]{--bg:#070d18;--pn:#0f1829;--ln:#223250;--tx:#e7eefb;--mu:#8da0c0;--ac:#4d94ff;--ok:#2fd18b;--bd:#ff6b78;--cv:#0a1222;--grid:#17253f}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.45 "Segoe UI",Tahoma,"Noto Sans Arabic",system-ui,-apple-system,Roboto,sans-serif}
+#app{height:100%;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:var(--pn);border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.brand i{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#1f6feb,#8b5cf6);display:grid;place-items:center;color:#fff}
+.brand small{display:block;font-weight:500;color:var(--mu);font-size:11.5px;margin-top:-2px}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:1px solid var(--ln);background:var(--pn);color:var(--tx);padding:7px 12px;border-radius:9px}
+button:hover{border-color:var(--ac)}button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+button.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+button.danger{color:var(--bd)}
+main{flex:1;display:flex;min-height:0}
+#pal{width:124px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--pn);border-inline-end:1px solid var(--ln);overflow:auto;flex:none}
+.pi{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border:1px solid var(--ln);border-radius:12px;color:var(--c);cursor:grab;touch-action:none;user-select:none;background:var(--bg);font-size:11.5px;flex:none}
+.pi span{color:var(--tx);text-align:center;font-weight:600}.pi:hover{border-color:var(--c)}.pi.on{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 30%,transparent)}.psep{flex:none;font-size:10.5px;color:var(--mu);font-weight:700;text-align:center;align-self:center}
+#cv{flex:1;position:relative;overflow:hidden;background-color:var(--cv);background-image:radial-gradient(var(--grid) 1px,transparent 1px);background-size:22px 22px;min-width:0}
+#cv.cab{cursor:crosshair}
+#ln,#pk{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.lk{stroke-width:3.5;stroke-linecap:round}
+.lk.eth{stroke:var(--ac)}.lk.usb{stroke:var(--mu);stroke-dasharray:2 7}
+.lk.wifi{stroke:#a855f7;stroke-dasharray:6 6;animation:fl 1s linear infinite}
+@keyframes fl{to{stroke-dashoffset:-12}}
+@media(prefers-reduced-motion:reduce){.lk.wifi{animation:none}}
+.lk.hot{stroke:var(--ok);stroke-width:6;filter:drop-shadow(0 0 6px var(--ok))}
+.hit{stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:pointer}
+.rng{fill:rgba(168,85,247,.07);stroke:#a855f7;stroke-dasharray:4 6;opacity:.7}
+.node{position:absolute;transform:translate(-50%,-50%);width:96px;text-align:center;cursor:grab;touch-action:none;user-select:none}
+.node .ic{position:relative;width:62px;height:62px;margin:auto;display:grid;place-items:center;border-radius:16px;background:var(--pn);border:1.5px solid var(--ln);color:var(--c);box-shadow:0 6px 18px rgba(8,20,45,.15)}
+.node.sel .ic{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 28%,transparent)}
+.node.pend .ic{border-color:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 30%,transparent)}
+.nm{font-weight:600;font-size:12px;margin-top:5px}
+.ip{font-size:11px;color:var(--mu);font-family:ui-monospace,Menlo,monospace;min-height:14px}
+.dot{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;border:2px solid var(--pn);background:var(--mu)}
+.dot.on{background:var(--ok)}.dot.lim{background:#f59e0b}
+.bdg{position:absolute;bottom:-7px;left:-8px;font-size:9.5px;padding:1px 6px;border-radius:8px;background:var(--ac);color:#fff;font-weight:600}
+.bdg.w{left:auto;right:-10px;background:#a855f7}
+#hint{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--mu);pointer-events:none;padding:20px}
+#hint div{max-width:340px}#hint b{display:block;font-size:18px;color:var(--tx);margin-bottom:6px}
+#hint button{pointer-events:auto;margin-top:12px}
+#ins{width:300px;padding:14px;background:var(--pn);border-inline-start:1px solid var(--ln);overflow-y:auto;flex:none}
+#ins h4{margin:16px 0 6px;font-size:13px}
+.ih{display:flex;gap:10px;align-items:center}.ih .ic{color:var(--c)}
+.ih input{font-weight:700;font-size:15px;width:100%}
+.ih small{color:var(--mu)}
+input{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:7px 9px;width:100%}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:12px;font-size:13px}
+.kv span:nth-child(odd){color:var(--mu)}.kv span:nth-child(even){text-align:left;unicode-bidi:plaintext;font-family:ui-monospace,Menlo,monospace}
+.note{background:var(--bg);border:1px dashed var(--ln);border-radius:10px;padding:10px;color:var(--mu);font-size:12.5px;margin-top:8px}
+.ap{display:flex;align-items:center;justify-content:space-between;padding:9px 10px;border:1px solid var(--ln);border-radius:10px;margin-bottom:6px;cursor:pointer}
+.ap:hover{border-color:#a855f7}
+.bars{display:inline-flex;gap:2px;align-items:flex-end;margin-inline-start:8px}.bars i{width:4px;background:var(--ln);border-radius:1px}.bars i.f{background:#a855f7}
+.row{display:flex;gap:6px;margin-top:6px}.row button{flex:none}
+.err{color:var(--bd);font-size:12.5px;margin-top:4px}
+.guide{padding-inline-start:18px;margin:8px 0;color:var(--mu)}.guide li{margin-bottom:6px}.guide b{color:var(--tx)}
+#log{height:104px;overflow:auto;padding:8px 14px;background:var(--pn);border-top:1px solid var(--ln);font:12px/1.6 ui-monospace,Menlo,monospace;color:var(--mu);flex:none}
+#log i{opacity:.6;font-style:normal;margin-right:8px}#log .ok{color:var(--ok)}#log .bad{color:var(--bd)}
+#toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:9px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw;text-align:center}
+#toast.show{opacity:1}header{background:linear-gradient(90deg,var(--pn),color-mix(in srgb,var(--ac) 9%,var(--pn)))}.node .ic{background:linear-gradient(160deg,var(--pn),color-mix(in srgb,var(--c) 14%,var(--pn)))}.lk.eth{filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}.node:focus-visible{outline:0}.node:focus-visible .ic,.pi:focus-visible{outline:3px solid var(--ac);outline-offset:3px}.hl{animation:pl 1.3s ease-in-out infinite}.node.hl .ic,.pi.hl,button.hl,input.hl,.ap.hl{box-shadow:0 0 0 3px #f59e0b,0 0 22px #f59e0b}@keyframes pl{50%{filter:brightness(1.3)}}@media(prefers-reduced-motion:reduce){.hl{animation:none}}.dot{width:17px;height:17px;top:-6px;right:-6px;display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;line-height:1}.mc{background:linear-gradient(160deg,color-mix(in srgb,var(--ac) 10%,var(--pn)),var(--pn));border:1px solid var(--ln);border-radius:14px;padding:12px;margin-bottom:14px}.mh{display:flex;align-items:center;gap:8px}.lvb{font-size:11.5px;font-weight:700;background:var(--ac);color:#fff;border-radius:7px;padding:2px 8px}.pg{display:flex;gap:4px;margin:10px 0}.pg i{flex:1;height:5px;border-radius:3px;background:var(--ln)}.pg i.f{background:var(--ok)}.pg i.c{background:var(--ac)}.st{list-style:none;padding:0;margin:8px 0}.st li{display:flex;gap:8px;padding:5px 0;color:var(--mu)}.st li.c{color:var(--tx);font-weight:600}.st li.d{text-decoration:line-through}.ck{flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ln);display:grid;place-items:center;font-size:11px}.st .c .ck{border-color:var(--ac);color:var(--ac)}.st .d .ck{background:var(--ok);border-color:var(--ok);color:#fff}.help{background:var(--bg);border-left:3px solid var(--ac);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--mu);margin-bottom:8px}.win{background:color-mix(in srgb,var(--ok) 15%,var(--pn));border:1px solid var(--ok);border-radius:10px;padding:10px;margin-bottom:8px}#mb{position:absolute;left:12px;right:12px;top:12px;z-index:5;background:var(--tx);color:var(--bg);padding:9px 14px;border-radius:12px;display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:13px}#mb[hidden]{display:none}#mb button{padding:4px 10px;background:transparent;color:inherit;border-color:currentColor}select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:6px;min-width:0}
+.ghost{position:fixed;transform:translate(-50%,-50%);pointer-events:none;color:var(--c);z-index:99;opacity:.9;background:var(--pn);border:1.5px solid var(--c);border-radius:14px;padding:8px}
+@media(max-width:860px){
+html,body{height:auto}#app{height:auto;min-height:100vh}
+main{flex-direction:column}
+#pal{width:auto;flex-direction:row;border-inline-end:0;border-bottom:1px solid var(--ln)}.pi{width:84px}
+#cv{flex:none;height:62vh}
+#ins{width:auto;border-inline-start:0;border-top:1px solid var(--ln)}}
+body.big{font-size:17px}body.big .ip{font-size:14px}body.big .nm{font-size:15px}body.big .pi{font-size:14px}body.big #log{font-size:15px;height:130px}.ip,#pt,#rp,#wp{direction:ltr}#pt{text-align:left}.pop{position:fixed;top:70px;left:50%;transform:translateX(-50%);width:min(470px,94vw);max-height:62vh;overflow:auto;background:var(--pn);border:1.5px solid var(--ln);border-radius:12px;box-shadow:0 12px 40px #0006;z-index:30}.dkt{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--ac);color:#fff;border-radius:10px 10px 0 0}.dkt button{background:none;border:0;color:#fff;font-size:16px;padding:2px 8px}.dkb2{display:flex;gap:4px;padding:6px;border-bottom:1px solid var(--ln);flex-wrap:wrap}.dkb2 .on{outline:2px solid var(--ac)}.dkc{padding:10px}#co{direction:ltr;text-align:left;background:#0b1220;color:#9fe3b4;padding:8px;border-radius:8px;min-height:80px;font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;margin:8px 0 0}.stk{background:#fff8c5;color:#3a3000;border:1px dashed #b59b00;border-radius:8px;padding:8px 10px;margin:8px 0;font-size:12.5px;line-height:1.8}.stk code{direction:ltr;unicode-bidi:embed;font-weight:700}#rst{position:relative;overflow:hidden;width:100%}#rst:after{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:0;background:#d92d3a66}#rst.hold:after{width:100%;transition:width 2.5s linear}.dkt{cursor:move;touch-action:none;user-select:none}#cp{top:90px;width:min(560px,94vw);z-index:36}#ip{top:100px;width:min(520px,94vw);z-index:34}#ip img{max-width:100%;border-radius:10px;display:block;margin:auto}.cch{display:block;width:100%;text-align:start;margin-bottom:6px}.cch span{display:block;color:var(--mu);font-size:12.5px;font-weight:400;margin-top:2px}.cch small{color:var(--ac);margin-inline-start:6px}.cch.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--pn))}.goal{background:color-mix(in srgb,var(--ac) 10%,var(--pn));border:1.5px solid var(--ac);border-radius:10px;padding:9px 11px;margin:8px 0;font-size:13px}.sub{color:var(--mu);font-size:12px;font-weight:600;margin:6px 0 2px}
+.pwd{position:absolute;bottom:-5px;left:-5px;width:14px;height:14px;border-radius:50%;border:2px solid var(--pn);background:#22c55e;box-shadow:0 0 0 1px rgba(0,0,0,.18)}.pwd.r{background:#ef4444}.node.pwoff .ic svg,.node.pwoff .nm{opacity:.5}
+
+/* NetLab 2.0 learning layer */
+.lesson{border:1px solid var(--ac);background:color-mix(in srgb,var(--ac) 7%,var(--pn));border-radius:12px;padding:11px;margin:9px 0}
+.lesson h3{margin:0 0 6px;font-size:15px}.lesson p{margin:5px 0;color:var(--mu);font-size:12.5px}.lesson .tip{background:var(--bg);padding:8px;border-radius:8px;margin:7px 0;font-size:12px}
+.lessonbar{display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap}.lessonbar button{font-size:12px}
+#glossary{z-index:45;width:min(620px,95vw);max-height:78vh}#glossary .dkc{max-height:65vh;overflow:auto}
+.gsearch{margin:5px 0 10px}.gitem{padding:9px;border-bottom:1px solid var(--ln)}.gitem b{display:block}.gitem small{color:var(--ac);font-weight:600}.gitem p{margin:3px 0;color:var(--mu);font-size:12.5px}
+#packetHelp{position:absolute;z-index:8;bottom:12px;left:12px;right:12px;max-width:560px;margin:auto;background:var(--pn);border:1px solid var(--ac);box-shadow:0 6px 24px #0002;border-radius:12px;padding:10px 12px;font-size:12px}
+#packetHelp[hidden]{display:none}#packetHelp b{color:var(--ac)}#packetHelp .steps{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}#packetHelp .steps span{background:var(--bg);border-radius:7px;padding:4px 7px}
+#toast{white-space:normal;max-width:min(560px,92vw);line-height:1.55}
+@media(max-width:860px){#packetHelp{bottom:8px}}
+</style></head><body>
+<div id="app">
+<header>
+<div class="brand"><i><svg width="18" height="18" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><circle cx="24" cy="10" r="5"/><circle cx="10" cy="38" r="5"/><circle cx="38" cy="38" r="5"/><path d="M24 15v10M24 25L12 34M24 25l12 9"/></svg></i><div>NetLab<small>ابنِ شبكة محلية وجرّبها</small></div></div>
+<div class="tools"><button id="bSel" class="on">تحريك</button><button id="bMd" onclick="openCp()">🎯 التحديات</button><button onclick="openGlossary()">📚 قاموس الشبكات</button><button id="bEx">تحميل مثال</button><button id="bBig" onclick="document.body.classList.toggle('big')">عرض كبير</button><button id="bClr" class="danger">مسح</button></div>
+</header>
+<main>
+<aside id="pal" aria-label="صندوق الأجهزة"></aside>
+<section id="cv"><svg id='ln'></svg><svg id='pk'></svg><div id='nodes'></div><div id='mb' hidden></div>
+<div id="hint"><div><b>اسحب الأجهزة إلى هنا لتبدأ</b>اختر راوتراً ومحوّلاً وبعض الحواسيب من صندوق الأجهزة ثم صِلها بالكبلات أو الواي فاي.<br><button class="pri" onclick="load()">حمّل شبكة مثال</button></div></div></section>
+<aside id='ins'><div id='ms'></div><div id='ib'></div></aside>
+</main>
+<div id='log' role='log' aria-live='polite'></div></div>
+<div id="ip" class="pop" hidden role="dialog" aria-label="صورة الجهاز"><div class="in"></div></div><div id="cp" class="pop" hidden role="dialog" aria-label="اختيار الوضع"><div class="in"></div></div><div id="dk" class="pop" hidden role="dialog" aria-label="سطح المكتب"><div class="in"></div></div><div id="glossary" class="pop" hidden role="dialog" aria-label="قاموس الشبكات"><div class="in"></div></div><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const R=340,cv=$('#cv');
+const IC={pc:'<rect x="7" y="7" width="34" height="23" rx="3"/><path d="M18 41h12M24 30v11"/>',
+laptop:'<rect x="11" y="9" width="26" height="19" rx="2"/><path d="M4 35h40l-4 4H8z"/>',
+switch:'<rect x="4" y="17" width="40" height="15" rx="3"/><path d="M11 25h1M18 25h1M25 25h1M32 25h1M39 25h1" stroke-width="4"/>',
+hub:'<circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="3"/><path d="M24 12V5M24 36v7M12 24H5M36 24h7"/>',
+router:'<rect x="5" y="26" width="38" height="13" rx="3"/><path d="M13 26L9 9M35 26l4-17M16 33h1M22 33h1M28 33h1" stroke-width="3"/>',
+printer:'<path d="M14 18V7h20v11M14 34H8V19h32v15h-6"/><rect x="14" y="28" width="20" height="13" rx="1"/>',
+nprinter:'<path d="M14 18V7h20v11M14 34H8V19h32v15h-6"/><rect x="14" y="28" width="20" height="13" rx="1"/><circle cx="41" cy="9" r="3"/>',
+nic:'<rect x="17" y="24" width="14" height="19" rx="2"/><path d="M21 24v-5h6v5M12 11a17 17 0 0 1 24 0M17 16a10 10 0 0 1 14 0"/>'};
+IC.cab_eth='<rect x="15" y="6" width="18" height="17" rx="2"/><path d="M19 23v5M24 23v5M29 23v5M24 28v14"/>';IC.cab_usb='<path d="M24 40V8M24 8l-4 5h8zM24 28l9-6v-4M24 22l-9-5"/><circle cx="24" cy="40" r="3"/><rect x="30" y="13" width="6" height="5"/><circle cx="15" cy="17" r="2.5"/>';IC.net='<path d="M14 36h22a8 8 0 0 0 1-16 11 11 0 0 0-21-2 9 9 0 0 0-2 18z"/>';const ico=(t,s)=>`<svg viewBox="0 0 48 48" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">${IC[t]}</svg>`;
+const T={pc:{n:'حاسوب',eth:1,usb:2,h:210},laptop:{n:'محمول',eth:1,usb:2,h:265},switch:{n:'محوّل',eth:8,h:150},hub:{n:'موزّع',eth:4,h:35},router:{n:'راوتر',eth:4,h:25},printer:{n:'طابعة USB',usb:1,h:290},nprinter:{n:'طابعة شبكة',eth:1,h:320},nic:{n:'بطاقة واي فاي',h:180},net:{n:'الإنترنت',eth:1,h:200}};
+const INFO={pc:'حاسوب مكتبي: جهاز طرفي يرسل البيانات ويستقبلها. له منفذ إيثرنت واحد ويحتاج بطاقة واي فاي ليتصل لاسلكياً.',laptop:'حاسوب محمول له منفذ إيثرنت وبطاقة واي فاي مدمجة، فيتصل بكبل أو لاسلكياً.',switch:'المحوّل يجمع أجهزة كثيرة في شبكة واحدة. يتعلم عنوان MAC لكل جهاز والمنفذ الذي يقف خلفه (جدول MAC: حدّد المحوّل بعد Ping لتراه) ثم يرسل إلى المنفذ الصحيح فقط. وإن لم يعرف الوجهة، أو كان الإرسال بثّاً مثل ARP، أرسل إلى كل المنافذ.',hub:'الموزّع ينسخ كل إشارة إلى جميع منافذه، فيستقبل الجميع كل شيء: بطيء وأقل خصوصية. حلّت المحوّلات محله.',router:'الراوتر يربط شبكتك بشبكات أخرى كالإنترنت. وهو خادم DHCP يمنح كل جهاز عنوان IP، ويبثّ الواي فاي باسم (SSID) وكلمة مرور. لكل راوتر شبكته الخاصة (192.168.x.0): جهازان في شبكتين مختلفتين لا يتخاطبان إلا عبر راوتر.',printer:'طابعة موصولة بكبل USB بحاسوب واحد؛ لا يستخدمها غيره.',nprinter:'طابعة لها منفذ شبكة وعنوان IP خاص؛ يطبع عليها أي حاسوب في الشبكة دون كبل USB.',nic:'بطاقة واي فاي: محوّل صغير يضيف الواي فاي للحاسوب المكتبي. اسحبها فوق الحاسوب لتركيبها.',net:'الإنترنت: شبكة خارجية (عنوانها 8.8.8.8). لا تصلها إلا عبر راوتر.'},ST={on:'متصل',lim:'محدود، بلا DHCP',off:'غير متصل'};const NM={pc:['Ordinateur de bureau','Desktop PC'],laptop:['Ordinateur portable','Laptop'],switch:['Commutateur (switch)','Switch'],hub:['Concentrateur (hub)','Hub'],router:['Routeur','Router'],printer:['Imprimante USB','USB printer'],nprinter:['Imprimante réseau','Network printer'],nic:['Carte Wi-Fi','Wi-Fi card'],net:['Internet','Internet']};const CAB={eth:{n:'كبل إيثرنت',h:215,s:85,i:'كبل إيثرنت (RJ45): يوصل الحاسوب والمحمول والمحوّل والموزّع والراوتر وطابعة الشبكة. اخترته ثم اضغط جهازين لتوصيلهما.'},usb:{n:'كبل USB',h:215,s:12,i:'كبل USB: يوصل طابعة USB بحاسوب واحد فقط؛ لا يعبر الشبكة.'}};let ctype='eth',free=false,dkd=null,dka='',D=[],L=[],uid=1,sel=null,mode='sel',pend=null,hot=[],lg=[],nums={},lv=0,done=[],ev={},gOn=true,kf=null;
+const get=id=>D.find(d=>d.id===id),isInfra=d=>d.t=='switch'||d.t=='hub'||d.t=='router',canWifi=d=>d.t=='laptop'||(d.t=='pc'&&d.nic);
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const deg=(id,k)=>L.filter(l=>l.k==k&&(l.a==id||l.b==id)).length;
+function log(m,c){lg.push({m,c:c||'',t:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})});if(lg.length>60)lg.shift();const e=$('#log');e.innerHTML=lg.map(x=>`<div class="${x.c}"><i>${x.t}</i>${esc(x.m)}</div>`).join('');e.scrollTop=1e9}
+let tt;function toast(m,ok){if($('#co'))co(m);const e=$('#toast');let why='';if(!ok){if(/كبل|رابط|اتصال|غير متصل/.test(m))why='\nالتفسير: تحقق من توصيل الجهازين ونوع الكبل أو حالة Wi-Fi.';else if(/IP|عنوان|قناع|بوابة|169\.254/.test(m))why='\nالتفسير: راجع عنوان IP وقناع الشبكة والبوابة، وتأكد من عدم تكرار العنوان.';else if(/كلمة مرور|password/.test(m))why='\nالتفسير: تحقق من كلمة المرور وإعدادات الأمان ثم حاول مجدداً.';else if(/Ping|مهلة|ردود|جهاز بهذا العنوان/.test(m))why='\nالتفسير: افحص الاتصال أولاً، ثم إعدادات IP، ثم المسار إلى الجهاز الهدف.';else why='\nالتفسير: اقرأ رسالة الخطأ، وافحص الإعداد المرتبط بالعملية ثم أعد المحاولة.'}e.textContent=m+why;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),ok?3600:5200);log(m,ok?'ok':'bad')}
+const edges=()=>[...L,...D.filter(d=>d.w).map(d=>({id:'w'+d.id,a:d.id,b:d.w,k:'wifi'}))];
+const l3=e=>{const A=get(e.a),B=get(e.b);return(A.t=='router'&&(B.t=='router'||B.t=='net'))||(A.t=='net'&&B.t=='router')};
+function bfs(a){const E=edges().filter(e=>e.k!='usb'&&!l3(e)),prev=new Map([[a,null]]),q=[a];
+while(q.length){const n=q.shift();if(n!=a&&!isInfra(get(n)))continue;for(const e of E){const m=e.a==n?e.b:e.b==n?e.a:null;if(m!=null&&!prev.has(m)){prev.set(m,n);q.push(m)}}}return prev}
+function pth(prev,b){if(!prev.has(b))return null;const p=[];for(let n=b;n!=null;n=prev.get(n))p.push(n);return p.reverse()}
+function compute(){
+D.forEach(d=>{if(d.w){const r=get(d.w);if(!r||!r.wifi||dist(d,r)>R){log(`فقد ${d.name} إشارة الواي فاي`,'bad');d.w=null}}});
+const rs=D.filter(d=>d.t=='router'),E=edges(),used=new Set(rs.map(r=>r.sn).filter(Boolean));
+rs.forEach(r=>{if(!r.sn){let n=1;while(used.has(n))n++;r.sn=n;used.add(n)}r.sub='192.168.'+r.sn;
+r.dup=rs.find(x=>bfs(r.id).has(x.id))!=r;if(!r.dup){r.ip=r.sub+'.1';r.mask='255.255.255.0';r.dupl=0}});
+D.forEach(d=>{d.st='off';d.gw=null;d.cf=false;
+if(d.t=='net'){d.st='on';d.ip='8.8.8.8';d.mask=null;return}
+if(d.t=='router'&&!d.dup){d.st='on';return}
+if(d.t=='switch'||d.t=='hub'||d.t=='printer'){d.ip=null;d.mask=null;return}
+const P=rs.find(r=>bfs(d.id).has(r.id)),lk=E.some(e=>e.k!='usb'&&(e.a==d.id||e.b==d.id)),c=d.cfg;
+if(d.t=='router'){d.st='on';if(!d.dupl){d.dupl=1;log(`⚠ ${d.name} في الشبكة نفسها مع راوتر آخر: صار مجرد عميل DHCP (مثل نقطة وصول). لربط شبكتين صِل الراوترين بكبل مباشر.`,'bad')}}
+if(c&&c.m=='static'&&lk&&ipn(c.ip)!=null){d.ip=c.ip;d.mask=c.mask;d.gw=c.gw||null;d.st='on'}
+else if(P){P.ls=P.ls||{};if(!P.ls[d.id]){let n;do{n=P.nx=(P.nx||9)+1}while(D.some(x=>x.cfg&&x.cfg.m=='static'&&x.cfg.ip==P.sub+'.'+n));P.ls[d.id]=n;log(`DHCP: أعطى ${P.name} العنوان ${P.sub}.${n} إلى ${d.name}`,'ok')}d.ip=`${P.sub}.${P.ls[d.id]}`;d.mask='255.255.255.0';d.gw=P.ip;d.st='on'}
+else if(lk){d.ap=d.ap||(apn=apn%240+1);d.ip='169.254.1.'+(d.ap+9);d.mask='255.255.0.0';d.st='lim'}
+else{d.ip=null;d.mask=null}});
+const g={};D.forEach(d=>{if(d.ip&&d.t!='net'){const k=Math.min(...bfs(d.id).keys())+'|'+d.ip;(g[k]=g[k]||[]).push(d)}});
+Object.values(g).forEach(a=>{if(a.length>1)a.forEach(x=>{x.cf=true;if(x.t!='router'&&x.st=='on')x.st='lim'})});
+D.forEach(d=>{if(d.cf&&!d.cfl){log(`⚠ تعارض IP: العنوان ${d.ip} مستخدم في أكثر من جهاز (${d.name} وغيره)`,'bad');d.cfl=1}else if(!d.cf)d.cfl=0});
+const sg=E.map(e=>e.id+':'+e.a+'-'+e.b).join()+'|'+D.filter(d=>d.ip).map(d=>d.id+'='+d.ip).join();
+if(sg!==sig){sig=sg;D.forEach(d=>{d.arp={};if(d.mt)d.mt={}})}}
+function mk(t,x,y){const d={id:uid++,t,x,y,name:T[t].n+' '+(nums[t]=(nums[t]||0)+1)};d.mac=mac(d.id);if(t=='pc'||t=='laptop'){d.wg='WORKGROUP';d.disc=false;d.fps=false;d.pps=true;d.acc=[]}if(t=='router'){d.ssid='NetLab-'+d.id;d.pw=rp(8);d.ap=rp(8);d.au='admin';d.wifi=true;d.def={ssid:d.ssid,pw:d.pw,ap:d.ap}}D.push(d);return d}
+function link(a,b,kind){const A=get(a),B=get(b);if(a==b)return;
+if(L.some(l=>(l.a==a&&l.b==b)||(l.a==b&&l.b==a)))return toast('هذان الجهازان موصولان بالفعل');
+const usb=A.t=='printer'||B.t=='printer';
+if(kind=='eth'&&usb)return toast('طابعة USB لا تُوصل بكبل إيثرنت: اختر «كبل USB» من الصندوق');
+if(kind=='usb'&&!usb)return toast('كبل USB يوصل طابعة USB بحاسوب فقط. لباقي الأجهزة اختر «كبل إيثرنت»');
+if(usb){const o=A.t=='printer'?B:A;if(A.t==B.t||!(o.t=='pc'||o.t=='laptop'))return toast('طابعة USB تُوصل بحاسوب أو محمول فقط')}
+const k=usb?'usb':'eth';
+for(const d of[A,B])if(cap(d,k)<=deg(d.id,k))return toast(`لا يوجد منفذ ${usb?'USB':'إيثرنت'} حر في ${d.name}`);
+L.push({id:uid++,a,b,k});log(`كبل ${usb?'USB':'إيثرنت '+((A.t=='switch'||A.t=='hub')==(B.t=='switch'||B.t=='hub')?'متقاطع (Crossover)':'مستقيم (Straight)')}: ${A.name} ⇄ ${B.name}${usb?'':' · الأجهزة الحديثة تضبط نوع الكبل تلقائياً (Auto-MDI-X)'}`,'ok')}
+function nodes(){$('#nodes').innerHTML=D.map(d=>`<div class="node${sel==d.id?' sel':''}${pend==d.id?' pend':''}${d.on===false?' pwoff':''}" data-id="${d.id}" data-t="${d.t}" tabindex="0" role="button" aria-label="${esc(d.name)}, ${T[d.t].n}${d.ip?', IP '+d.ip:''}${ends(d)?(d.on===false?', مطفأ':', يعمل'):''}${d.t!='printer'&&!isInfra(d)||d.t=='router'?', '+ST[d.st]:''}" style="left:${d.x}px;top:${d.y}px;--c:hsl(${T[d.t].h} 85% 60%)"><div class="ic">${ico(d.t,40)}${ends(d)?`<span class="pwd${d.on===false?' r':''}" title="${d.on===false?'مطفأ':'يعمل'}"></span>`:''}${d.nic?'<b class="bdg">NIC</b>':''}${d.w?'<b class="bdg w">Wi-Fi</b>':''}${d.t!='printer'&&!isInfra(d)||d.t=='router'?`<span class="dot ${d.st}" title="${ST[d.st]}">${{on:'✓',lim:'!',off:'×'}[d.st]}</span>`:''}</div><div class="nm">${esc(d.name)}</div><div class="ip">${d.t=='router'&&!d.wifi?'الواي فاي متوقف':(d.cf?'⚠ ':'')+(d.ip||(d.t=='printer'?'USB':d.st=='off'&&d.t!='switch'&&d.t!='hub'?'بلا رابط':''))}</div></div>`).join('')}
+function lines(){let h='';const r=get(sel);
+if(r&&r.t=='router'&&r.wifi)h+=`<circle cx="${r.x}" cy="${r.y}" r="${R}" class="rng"/>`;
+for(const e of edges()){const A=get(e.a),B=get(e.b),k=e.a+'-'+e.b,k2=e.b+'-'+e.a,p=`x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"`;
+h+=`<line ${p} class="lk ${e.k}${hot.includes(k)||hot.includes(k2)?' hot':''}"/><line ${p} class="hit" onclick="rmL('${e.id}')"><title>اضغط للفصل</title></line>`}
+$('#ln').innerHTML=h}
+function row(a,b){return `<span>${a}</span><span>${esc(b)}</span>`}
+function ins(){const d=get(sel),e=$('#ib');
+if(!d){e.innerHTML=`<h4 style="margin-top:0">كيف تبني شبكة</h4><ol class="guide"><li><b>اسحب</b> الأجهزة من الصندوق إلى لوحة العمل.</li><li>اختر <b>كبل إيثرنت</b> (أو <b>كبل USB</b> للطابعة USB) من الصندوق ثم اضغط جهازين لتوصيلهما.</li><li>للواي فاي: افتح سطح مكتب المحمول ← واي فاي ← اختر الشبكة (كلمة المرور على ملصق الراوتر).</li><li>الحاسوب المكتبي يحتاج <b>بطاقة واي فاي</b> تُسحب فوقه.</li><li>اختر حاسوباً وافتح <b>سطح المكتب</b> لتجرّب الواي فاي والمتصفح وPing والطباعة.</li></ol><div class="note">اضغط كبلاً لفصله. أخضر: متصل. برتقالي: متصل بلا DHCP.<br><span style="color:var(--ac)">━ إيثرنت</span> · <span style="color:var(--mu)">┅ USB</span> · <span style="color:#a855f7">╌ واي فاي</span><br><span style=\"color:#22c55e\">●</span> حاسوب يعمل · <span style=\"color:#ef4444\">●</span> حاسوب مطفأ</div>`;return}
+const st=ST[d.st];
+let h=`<div class="ih" style="--c:hsl(${T[d.t].h} 85% 60%)"><span class="ic">${ico(d.t,38)}</span><div><input value="${esc(d.name)}" onchange="ren(this.value)" aria-label="اسم الجهاز"><small>${T[d.t].n}</small><small dir="ltr" style="display:block">${NM[d.t][0]} · ${NM[d.t][1]}</small></div></div><div class="note">${INFO[d.t]}</div><div class="row"><button onclick="showImg('${d.t}')">🖼 عرض الصورة</button></div><div class="kv">`;
+h+=row('العربية',T[d.t].n)+row('Français',NM[d.t][0])+row('English',NM[d.t][1]);h+=`</div><div class="row"><button onclick="togMore()" aria-expanded="${!!d.more}">${d.more?'▲ إخفاء المعلومات':'ℹ عرض المعلومات'}</button></div>`;if(d.more){h+='<div class="kv">';if(d.ip)h+=row('عنوان IP',d.ip);if(d.mask)h+=row('قناع الشبكة',d.mask);if(d.gw)h+=row('البوابة',d.gw);if(d.cfg&&d.cfg.m=='static')h+=row('الإعداد','يدوي (Static)');if(d.mac&&d.t!='hub'&&d.t!='net'&&d.t!='printer')h+=row('MAC',d.mac);
+if(d.t!='printer'&&!isInfra(d)||d.t=='router')h+=row('الحالة',st);
+if(ends(d))h+=row('الطاقة',d.on===false?'مطفأ':'يعمل')+row('مجموعة العمل',wgOf(d));if(cap(d,'eth'))h+=row('منافذ الإيثرنت',`${deg(d.id,'eth')} / ${cap(d,'eth')} مستخدم`);
+if(cap(d,'usb'))h+=row('منافذ USB',`${deg(d.id,'usb')} / ${cap(d,'usb')} مستخدم`);
+h+='</div>'}const cs=edges().filter(e=>e.a==d.id||e.b==d.id);if(cs.length)h+='<h4>الاتصالات</h4>'+cs.map(e=>{const o=get(e.a==d.id?e.b:e.a);return `<div class='ap' style='cursor:default'><span>${{eth:'إيثرنت',usb:'USB',wifi:'واي فاي'}[e.k]} إلى ${esc(o.name)}</span><button onclick="rmL('${e.id}')" aria-label="فصل ${esc(o.name)}">فصل</button></div>`}).join('');
+if(d.cf)h+=`<div class="err">⚠ تعارض عناوين IP: ${esc(d.ip)} مستخدم في جهاز آخر داخل الشبكة نفسها. غيّر أحدهما.</div>`;if(d.t=='router'&&d.dup)h+='<div class="err">⚠ يوجد راوتر آخر يعمل خادم DHCP في هذه الشبكة، فصار هذا الراوتر عميلاً فقط. لربط شبكتين مستقلتين صِل الراوترين بكبل مباشر.</div>';if(d.t=='switch')h+=swUI(d)+mtUI(d);if(d.t=='printer'||d.t=='nprinter')h+=plUI(d);if(d.t=='router'){const n=D.filter(x=>x.w==d.id).length,f=d.def;h+=`<div class="stk"><b>ملصق على الراوتر</b><br>واي فاي: <code>${esc(f.ssid)}</code> · كلمة المرور: <code>${f.pw}</code><br>الإدارة: <code>http://${d.ip}</code><br>المستخدم: <code>admin</code> · كلمة المرور: <code>${f.ap}</code></div><div class="note">للإعداد افتح متصفح حاسوب موصول وادخل العنوان أعلاه. أجهزة لاسلكية: ${n} · الواي فاي: ${d.wifi?'يعمل':'متوقف'}</div><div class="row"><button class="danger" id="rst" onpointerdown="rstDown()" onpointerup="rstUp()" onpointerleave="rstUp()" onkeydown="if(event.key=='Enter'&&!event.repeat)rstDown()" onkeyup="rstUp()">🔘 زر إعادة الضبط (اضغط مطولاً)</button></div>`}
+if(d.t=='pc'||d.t=='laptop')h+=`<div class="row"><button class="pri dkb" onclick="openDk(${d.id})"${d.on===false?' disabled':''}>🖥 فتح سطح المكتب</button><button class="${d.on===false?'':'danger'}" onclick="togPower(${d.id})" aria-pressed="${d.on!==false}">⏻ ${d.on===false?'تشغيل':'إيقاف'}</button>${d.t=='pc'&&d.nic?`<button onclick="nicOff()">إزالة بطاقة الواي فاي</button>`:''}</div>`;
+h+=`<div class="row" style="margin-top:18px"><button class="danger" onclick="rm()">حذف الجهاز</button></div>`;e.innerHTML=h}
+const q=t=>D.filter(d=>d.t==t),ends=d=>d.t=='pc'||d.t=='laptop',P=t=>`#pal [data-t=${t}]`,N=t=>`.node[data-t=${t}]`,typ=l=>[get(l.a).t,get(l.b).t],cab=(s,k)=>()=>mode=='cab'&&ctype==(k||'eth')?s:`#pal [data-cab=${k||'eth'}]`,tp=()=>$('#pt')?'#pt':$('#dk:not([hidden])')?'#dk [data-a=cmd]':`#ib .dkb,${N('pc')},${N('laptop')}`,pr=()=>$('#dk [onclick^=doPrint]')?'#dk [onclick^=doPrint]':$('#dk:not([hidden])')?'#dk [data-a=prn]':`#ib .dkb,${N('pc')},${N('laptop')}`;
+let sig='',apn=0;
+const cap=(d,k)=>k=='eth'&&d.ports?d.ports:(T[d.t][k]||0);
+const mac=id=>{const h=id.toString(16).padStart(4,'0').toUpperCase();return`02:4E:4C:00:${h.slice(0,2)}:${h.slice(2)}`};
+const ipn=s=>{const p=String(s==null?'':s).trim().split('.');if(p.length!=4||p.some(x=>!/^\d{1,3}$/.test(x)||+x>255))return null;return((+p[0]<<24)|(+p[1]<<16)|(+p[2]<<8)|+p[3])>>>0};
+const maskOk=s=>{const n=ipn(s);if(n==null||n==0||n==0xFFFFFFFF)return false;const i=(~n)>>>0;return(i&(i+1))==0};
+const same=(a,m,b)=>{a=ipn(a);b=ipn(b);m=ipn(m);return a!=null&&b!=null&&m!=null&&((a&m)>>>0)==((b&m)>>>0)};
+const pn=(sw,id)=>L.filter(l=>l.k=='eth'&&(l.a==sw.id||l.b==sw.id)).findIndex(l=>l.a==id||l.b==id)+1;
+function swUI(d){const c=cap(d,'eth');return `<h4>نوع المحوّل</h4><div class="row"><select aria-label="عدد منافذ المحوّل" onchange="setPorts(this.value)">${[5,8,16,24].map(n=>`<option value="${n}" ${n==c?'selected':''}>${n} منافذ</option>`).join('')}</select></div><div class="note">غيّر عدد منافذ المحوّل: 5 أو 8 أو 16 أو 24. لا يمكن تصغيره دون عدد الكبلات الموصولة به.</div>`}
+function setPorts(v){const d=d0();v=+v;const u=deg(d.id,'eth');if(u>v){toast(`${d.name}: ${u} كبلات موصولة. افصل ${u-v} منها قبل اختيار ${v} منافذ`);return render()}d.ports=v;log(`${d.name}: صار المحوّل بـ ${v} منفذاً`,'ok');render()}
+function togMore(){const d=d0();d.more=!d.more;render()}
+function mtUI(sw){const e=Object.entries(sw.mt||{}).filter(([m,id])=>get(id));
+return `<h4>جدول MAC للمحوّل</h4>${e.length?`<div class="note" dir="ltr" style="font-family:ui-monospace,Menlo,monospace;font-size:11.5px">${e.map(([m,id])=>`${m} → Port ${pn(sw,id)} (${esc(get(id).name)})`).join('<br>')}</div>`:'<div class="note">فارغ: لم يتعلم المحوّل أي عنوان بعد. أجرِ Ping بين جهازين متصلين به ثم حدّده من جديد.</div>'}<div class="note">كل إطار يمر بالمحوّل يكشف عنوان MAC المرسل والمنفذ الذي جاء منه، فيتعلمه. بعدها يرسل إلى ذلك المنفذ فقط. أما البثّ (ARP) أو العنوان المجهول فيُرسَل إلى كل المنافذ (وميض برتقالي). يُمسح الجدول عند تغيير الكبلات (تبسيط).</div>`}
+function segs(p){const s=[];let c=[];p.forEach((id,i)=>{c.push(id);if(i>0&&i<p.length-1&&get(id).t=='router'){s.push(c);c=[id]}});s.push(c);return s}
+function l2learn(p){let fl=0;segs(p.filter(i=>get(i).t!='net')).forEach(s=>{if(s.length<2)return;const A=get(s[0]),B=get(s[s.length-1]);A.arp=A.arp||{};B.arp=B.arp||{};
+if(A.ip&&B.ip&&A.arp[B.ip]!=B.mac){A.arp[B.ip]=B.mac;B.arp[A.ip]=A.mac;fl=1}
+s.forEach((id,i)=>{const n=get(id);if(n.t=='switch'){n.mt=n.mt||{};n.mt[A.mac]=s[i-1];n.mt[B.mac]=s[i+1]}})});return fl}
+function reach(a,b){
+if(a.on===false)return{e:'aoff'};if(b.on===false)return{e:'boff'};if(!a.ip)return{e:'noip'};
+const da=bfs(a.id);
+if(b.t!='net'&&same(a.ip,a.mask,b.ip)){const p=pth(da,b.id);return p?{p}:{e:'nol2'}}
+const isR=a.t=='router'&&!a.dup;
+if(!isR&&!a.gw)return{e:'nogw'};
+const R=isR?a:D.find(r=>r.t=='router'&&r.ip==a.gw&&da.has(r.id));
+if(!R)return{e:'badgw'};
+const lk=(x,y)=>L.some(l=>l.k=='eth'&&((l.a==x&&l.b==y)||(l.a==y&&l.b==x)));
+const goal=r=>b.t=='net'?lk(r.id,b.id):(!r.dup&&same(r.ip,'255.255.255.0',b.ip)&&bfs(r.id).has(b.id));
+const prev=new Map([[R.id,null]]),q=[R.id];let T=null;
+while(q.length){const n=q.shift();if(goal(get(n))){T=n;break}
+L.forEach(l=>{if(l.k!='eth')return;const o=l.a==n?l.b:l.b==n?l.a:null;if(o!=null&&get(o).t=='router'&&!prev.has(o)){prev.set(o,n);q.push(o)}})}
+if(T==null)return{e:'nort'};
+let p=pth(da,R.id).concat(pth(prev,T).slice(1));
+if(b.t=='net')p.push(b.id);else p=p.concat(pth(bfs(T),b.id).slice(1));
+return{p}}
+function pingErr(d,t,e){return({
+aoff:`${d.name}: الجهاز مطفأ`,
+boff:`Ping ${t.ip}: انتهت المهلة (Request timed out). قد يكون ${t.name} مطفأً أو منقطعاً`,
+noip:`${d.name}: لا يوجد رابط (لا كبل ولا واي فاي)`,
+nol2:`Ping ${t.ip}: الوجهة تقع في شبكتك حسب القناع، لكن لا يوجد مسار فعلي. افحص الكبلات أو الواي فاي`,
+nogw:t.t=='net'?(d.st=='lim'?'لا DHCP ولا بوابة: وصّل الراوتر':'لا بوابة: لا يُبلغ الإنترنت إلا عبر راوتر'):`Ping ${t.ip}: الوجهة خارج شبكتك (${d.ip} / ${d.mask}) ولا توجد بوابة مضبوطة`,
+badgw:`Ping ${t.ip}: الوجهة خارج شبكتك والبوابة ${d.gw} لا تردّ: ليست راوتراً في شبكتك. راجع عنوان البوابة`,
+nort:t.t=='net'?'الراوتر لا يملك طريقاً إلى الإنترنت: وصّل «الإنترنت» بالراوتر':`Ping ${t.ip}: الراوتر لا يعرف طريقاً إلى تلك الشبكة. صِل الراوترين بكبل مباشر`})[e]}
+function setCfg(m){const d=d0();if(m=='dhcp'){d.cfg={m:'dhcp'};log(`${d.name}: عاد إلى العنوان التلقائي (DHCP)`)}
+else{const c=d.cfg&&d.cfg.m=='static'?d.cfg:{ip:d.ip||'192.168.1.50',mask:d.mask||'255.255.255.0',gw:d.gw||''};d.cfg={m:'static',ip:c.ip,mask:c.mask,gw:c.gw};log(`${d.name}: عنوان يدوي: عدّل IP والقناع والبوابة ثم احفظ`)}render()}
+function saveIp(){const d=d0(),ip=$('#si').value.trim(),m=$('#sm').value.trim(),g=$('#sg').value.trim();
+if(ipn(ip)==null)return toast('عنوان IP غير صالح: أربعة أرقام بين 0 و255 تفصلها نقاط');
+if(!maskOk(m))return toast('قناع الشبكة غير صالح: مثل 255.255.255.0');
+if(g&&ipn(g)==null)return toast('عنوان البوابة غير صالح');
+d.cfg={m:'static',ip,mask:m,gw:g};log(`${d.name}: عنوان يدوي ${ip} / ${m}${g?' · بوابة '+g:' · بلا بوابة'}`,'ok');render()}
+function ipUI(d){const c=d.cfg&&d.cfg.m=='static'?d.cfg:null;
+let h=`<div class="row" style="margin-top:0"><button class="${c?'':'on'}" onclick="setCfg('dhcp')">تلقائي (DHCP)</button><button class="${c?'on':''}" onclick="setCfg('static')">يدوي (Static)</button></div>`;
+if(c)h+=`<label style="display:block;margin-top:8px">عنوان IP</label><input id="si" dir="ltr" value="${esc(c.ip)}" placeholder="192.168.1.50"><label style="display:block;margin-top:6px">قناع الشبكة (Subnet mask)</label><input id="sm" dir="ltr" value="${esc(c.mask)}" placeholder="255.255.255.0"><label style="display:block;margin-top:6px">البوابة (Gateway)</label><input id="sg" dir="ltr" value="${esc(c.gw||'')}" placeholder="192.168.1.1"><div class="row"><button class="pri" onclick="saveIp()">حفظ</button></div>`;
+else h+=`<div class="kv" dir="ltr">${row('IP',d.ip||'—')}${row('Mask',d.mask||'—')}${row('Gateway',d.gw||'—')}${row('MAC',d.mac)}</div>`;
+return h+'<div class="note">القناع يحدّد أي العناوين «داخل شبكتك» فتُرسَل لها مباشرة، وأيّها «خارجها» فتُرسَل إلى البوابة. مثال: 192.168.1.10 مع 255.255.255.0 يعدّ 192.168.1.x فقط محلية. في الوضع اليدوي أنت المسؤول عن عنوان فريد وقناع وبوابة صحيحين.</div>'}
+const ip0=()=>$('#dk:not([hidden])')?'#dk [data-a=ip]':`#ib .dkb,${N('pc')},${N('laptop')}`;
+const MIS=[
+{n:'أول اتصال',lv:'مبتدئ',g:'أنشئ شبكة محلية سلكية من حاسوبين وكبل إيثرنت متقاطع (Crossover)، ثم تأكد أنهما يتواصلان بـ Ping.',k:'حاسوبان وكبل يكوّنان أصغر شبكة. بلا راوتر اختار كل حاسوب عنوان 169.254.x.x بنفسه.',s:[
+{t:'اسحب حاسوباً إلى لوحة العمل',ok:()=>q('pc').length>0,hl:()=>P('pc'),w:'الحاسوب جهاز طرفي: يرسل البيانات ويستقبلها.'},
+{t:'أضف حاسوباً ثانياً',ok:()=>q('pc').length>1,hl:()=>P('pc'),w:'الشبكة تحتاج جهازين على الأقل.'},
+{t:'اختر «كبل إيثرنت» من الصندوق ثم اضغط الحاسوبين لوصلهما',ok:()=>L.some(l=>l.k=='eth'),hl:cab(N('pc')),w:'بين جهازين متماثلين (حاسوب–حاسوب) نستخدم كبلاً متقاطعاً (Crossover)، وبين حاسوب ومحوّل كبلاً مستقيماً. سيذكر السجل نوع الكبل. ملاحظة: هذه قاعدة الأجهزة القديمة؛ أما بطاقات الشبكة الحديثة فتكتشف النوع تلقائياً (Auto-MDI-X) فيعمل أي كبل.',p:'أي عنوان IP سيظهر وليس هناك راوتر؟'},
+{t:'اختر حاسوباً، اكتب IP الآخر واضغط Ping',ok:()=>ev.p_pc,hl:tp,w:'Ping رسالة اختبار صغيرة؛ وصول الردّ يثبت أن الجهازين يتواصلان.'}]},
+{n:'إضافة محوّل',lv:'سهل',g:'أنشئ شبكة نجمية: ثلاثة حواسيب موصولة بمحوّل (Switch) وتتواصل فيما بينها.',k:'المحوّل يجمع أجهزة كثيرة في شبكة واحدة. العناوين 169.254 طبيعية هنا: لا يوجد خادم DHCP.',s:[
+{t:'أضف محوّلاً',ok:()=>q('switch').length>0,hl:()=>P('switch'),w:'المحوّل نقطة اللقاء المركزية في الشبكة السلكية.'},
+{t:'أضف ثلاثة حواسيب (حاسوب أو محمول)',ok:()=>D.filter(ends).length>2,hl:()=>P('pc'),w:'كل حاسوب يأخذ منفذاً خاصاً في المحوّل.'},
+{t:'صِل كل حاسوب بالمحوّل بكبل',ok:()=>L.filter(l=>typ(l).includes('switch')&&l.k=='eth').length>2,hl:cab(`${N('switch')},${N('pc')},${N('laptop')}`),w:'كبل واحد لكل جهاز، وللمحوّل 8 منافذ.',p:'لماذا تظهر العلامة البرتقالية (!)؟'},
+{t:'أجرِ Ping من حاسوب إلى آخر',ok:()=>ev.ping,hl:tp,w:'تسير البيانات: حاسوب ← محوّل ← حاسوب. راقب الحزمة والمسار الأخضر.'}]},
+{n:'الموزّع أم المحوّل؟',lv:'سهل',g:'اكتشف عملياً الفرق بين الموزّع (Hub) والمحوّل (Switch) في توزيع البيانات.',k:'الموزّع ينسخ الإشارة إلى كل المنافذ فيسمعها الجميع. المحوّل يرسلها إلى المنفذ المقصود فقط.',s:[
+{t:'أضف موزّعاً وثلاثة حواسيب وصِلها به',ok:()=>q('hub').length>0&&L.filter(l=>typ(l).includes('hub')&&l.k=='eth').length>2,hl:()=>!q('hub').length?P('hub'):D.filter(ends).length<3?P('pc'):cab(`${N('hub')},${N('pc')},${N('laptop')}`)(),w:'الموزّع جهاز بسيط بلا ذكاء.'},
+{t:'أجرِ Ping بين حاسوبين وراقب الحزم الرمادية',ok:()=>ev.ping,hl:tp,w:'الحزم الرمادية نسخ وصلت لأجهزة لم تُقصد: بطء وخصوصية أقل.',p:'هل سيصل الإرسال إلى الحاسوب الثالث أيضاً؟'},
+{t:'افصل الكبلات عن الموزّع (اضغط الكبل)، أضف محوّلاً وصِل به الحواسيب',ok:()=>L.filter(l=>typ(l).includes('switch')&&l.k=='eth').length>2,hl:()=>!q('switch').length?P('switch'):cab(`${N('switch')},${N('pc')},${N('laptop')}`)(),w:'لكل حاسوب منفذ إيثرنت واحد، لذا افصله أولاً.'},
+{t:'أجرِ Ping عبر المحوّل وقارن',ok:()=>ev.psw,hl:tp,w:'لا حزم رمادية الآن: المحوّل يرسل للمنفذ المقصود فقط. (قد ترى وميضاً برتقالياً في أول Ping: هذا بثّ ARP يسأل «من يملك هذا العنوان؟» فيصل للجميع مرة واحدة، ثم يتعلم المحوّل. حدّد المحوّل لترى جدول MAC.)'}]},
+{n:'أساسيات عناوين IP',lv:'مبتدئ',g:'أنشئ شبكة صغيرة واضبط عنوان IP وقناع الشبكة والبوابة يدوياً، ثم اختبر الاتصال.',k:'عنوان IP يعرّف واجهة الجهاز على شبكة IP. يجب أن تكون العناوين فريدة، وأن تتوافق إعدادات الشبكة حتى يتم الاتصال.',s:[
+{t:'أضف محوّلاً وحاسوبين وصِل كلاً منهما بالمحوّل',ok:()=>q('switch').length>0&&D.filter(ends).length>=2&&L.filter(l=>l.k=='eth'&&typ(l).includes('switch')).length>=2,hl:()=>!q('switch').length?P('switch'):P('pc'),w:'المحوّل يربط الأجهزة في شبكة محلية واحدة.'},
+{t:'افتح إعدادات الشبكة للحاسوب الأول واضبط IP على 192.168.1.10 والقناع 255.255.255.0',ok:()=>D.filter(ends).some(d=>d.ip=='192.168.1.10'&&d.mask=='255.255.255.0'),hl:ip0,w:'العنوان 192.168.1.10 مثال لعنوان خاص داخل شبكة محلية. القناع /24 يحدد أن أول ثلاثة أجزاء تمثل الشبكة.'},
+{t:'اضبط الحاسوب الثاني على 192.168.1.20 والقناع نفسه',ok:()=>D.filter(ends).some(d=>d.ip=='192.168.1.20'&&d.mask=='255.255.255.0'),hl:ip0,w:'يجب أن يكون لكل جهاز عنوان مختلف، لكن ضمن الشبكة نفسها في هذا التمرين.'},
+{t:'من أحد الحاسوبين أجرِ Ping إلى عنوان الحاسوب الآخر',ok:()=>ev.p_pc,hl:tp,w:'نجاح Ping يعني أن الجهازين تبادلا رسائل اختبار عبر الشبكة.'}]},
+{n:'الراوتر وDHCP',lv:'متوسط',g:'أنشئ شبكة براوتر ومحوّل وحاسوبين تأخذ عناوينها تلقائياً عبر DHCP.',k:'خادم DHCP أعطى كل جهاز عنواناً حراً مع عنوان البوابة. هذا «إيجار» مؤقت: في الواقع ينتهي ويُجدَّد.',s:[
+{t:'أضف راوتراً ومحوّلاً ثم صِلهما',ok:()=>L.some(l=>typ(l).includes('router')&&typ(l).includes('switch')),hl:()=>!q('router').length?P('router'):!q('switch').length?P('switch'):cab(`${N('router')},${N('switch')}`)(),w:'يتصل الراوتر بالمحوّل ليصل إلى كل أجهزته.'},
+{t:'أضف حاسوبين وصِلهما بالمحوّل',ok:()=>D.filter(d=>ends(d)&&d.st=='on').length>1,hl:()=>D.filter(ends).length<2?P('pc'):cab(`${N('pc')},${N('switch')}`)(),w:'عند الانضمام يعطيه الراوتر (خادم DHCP) عنواناً مثل 192.168.1.10 ويخبره بالبوابة.',p:'ما العنوان الذي سيأخذه الحاسوب الأول؟'},
+{t:'أجرِ Ping للراوتر على 192.168.1.1',ok:()=>ev.p_router,hl:tp,w:'192.168.1.1 هو عنوان البوابة: باب شبكتك إلى الخارج.'}]},
+{n:'الاتصال بالإنترنت',lv:'متوسط',g:'اربط شبكتك المحلية بالإنترنت عبر الراوتر وتحقق بـ Ping إلى 8.8.8.8.',k:'المحوّل يربط أجهزة الشبكة الواحدة، أما الراوتر فهو البوابة إلى شبكات أخرى كالإنترنت.',s:[
+{t:'أضف راوتراً وصِل حاسوباً به',ok:()=>L.some(l=>l.k=='eth'&&typ(l).includes('router')&&(ends(get(l.a))||ends(get(l.b)))),hl:()=>!q('router').length?P('router'):!q('pc').length?P('pc'):cab(`${N('router')},${N('pc')}`)(),w:'الحاسوب يأخذ عنوانه من الراوتر.'},
+{t:'أضف «الإنترنت» وصِله بالراوتر',ok:()=>L.some(l=>typ(l).includes('net')&&typ(l).includes('router')),hl:()=>!q('net').length?P('net'):cab(`${N('net')},${N('router')}`)(),w:'الراوتر يربط شبكتك المحلية بالشبكة الخارجية.'},
+{t:'من الحاسوب أجرِ Ping إلى 8.8.8.8',ok:()=>ev.p_net,hl:tp,w:'الرسالة تمر عبر الراوتر (البوابة) لتخرج من شبكتك.',p:'ماذا لو وصلتَ الحاسوب بالإنترنت مباشرة بلا راوتر؟ جرّب.'}]},
+{n:'مشاركة الطابعات',lv:'صعب',g:'جهّز الطباعة: طابعة USB لحاسوب واحد، وطابعة شبكة يستخدمها الجميع.',k:'طابعة USB تخدم حاسوباً واحداً، وطابعة الشبكة تخدم الجميع.',s:[
+{t:'أضف حاسوباً وطابعة USB وصِلهما بـ «كبل USB»',ok:()=>L.some(l=>l.k=='usb'),hl:()=>!q('pc').length?P('pc'):!q('printer').length?P('printer'):cab(`${N('pc')},${N('printer')}`,'usb')(),w:'كبل USB يوصل الطابعة بحاسوب واحد مباشرة.'},
+{t:'اطبع صفحة اختبار على طابعة USB',ok:()=>ev.pr_printer,hl:pr,w:'الحاسوب الموصول بالكبل فقط يستطيع استخدامها.'},
+{t:'أضف حاسوباً ثانياً وحاول إضافة طابعة USB من 🖨 الطابعات بكتابة مسارها',ok:()=>ev.prfail,hl:()=>q('pc').length<2?P('pc'):pr(),w:'اكتب مساراً مثل \\\\IP\\Printer1: ستفشل لأن الطابعة موصولة بالحاسوب الأول وحده ولم تُشارك.',p:'هل تظهر الطابعة تلقائياً في الحاسوب الثاني؟'},
+{t:'أضف محوّلاً وطابعة شبكة، وصِلهما والحاسوب بالمحوّل',ok:()=>{const n=q('nprinter')[0];return !!n&&D.some(d=>ends(d)&&pth(bfs(d.id),n.id))},hl:()=>!q('switch').length?P('switch'):!q('nprinter').length?P('nprinter'):cab(`${N('switch')},${N('nprinter')},${N('pc')}`)(),w:'لطابعة الشبكة عنوان IP خاص وتُستخدم عبر المحوّل.'},
+{t:'من 🖨 الطابعات أضف طابعة الشبكة ثم اطبع صفحة اختبار',ok:()=>ev.pr_nprinter,hl:pr,w:'فعّل اكتشاف الشبكة من 🔗 مركز المشاركة لتظهر في قائمة الإضافة، أو اكتب عنوان IP الطابعة. بعد الإضافة يطبع عليها أي حاسوب في الشبكة.'}]},
+{n:'إدارة الراوتر وواي فاي آمن',lv:'خبير',g:'ادخل إلى إدارة الراوتر من المتصفح، وأمّن الواي فاي بكلمتي مرور قويتين، ثم صِل محمولاً.',k:'تُضبط إعدادات الراوتر من متصفح حاسوب عبر عنوانه. غيّر كلمتي المرور الافتراضيتين (الواي فاي والإدارة)، وإن نسيتهما فزر Reset يعيد الإعدادات الأصلية.',s:[
+{t:'أضف راوتراً وصِل به حاسوباً بكبل',ok:()=>L.some(l=>l.k=='eth'&&typ(l).includes('router')&&(ends(get(l.a))||ends(get(l.b)))),hl:()=>!q('router').length?P('router'):!q('pc').length?P('pc'):cab(`${N('router')},${N('pc')}`)(),w:'الإعداد الأول يتم من حاسوب موصول بكبل.'},
+{t:'من سطح مكتب الحاسوب ← المتصفح: ادخل عنوان الراوتر وسجّل الدخول ببيانات الملصق',ok:()=>ev.login,hl:br0,w:'ملصق الراوتر يحمل عنوان الإدارة واسم المستخدم وكلمة المرور الافتراضية.',p:'ما عنوان صفحة الراوتر؟'},
+{t:'غيّر كلمة مرور الواي فاي إلى قوية (أحرف وأرقام) واحفظ',ok:()=>ev.pwch,hl:br0,w:'كلمات المرور الافتراضية معروفة لدى الجميع، والقوية تمنع الغرباء.',p:'هل تكفي 11111111؟ جرّب.'},
+{t:'غيّر كلمة مرور الإدارة أيضاً',ok:()=>ev.apch,hl:br0,w:'من يعرف كلمة الإدارة يتحكم في الشبكة كلها.'},
+{t:'أضف محمولاً قرب الراوتر وانضم: سطح المكتب ← واي فاي',ok:()=>D.some(d=>d.w),hl:()=>!q('laptop').length?P('laptop'):wf(),w:'اختر الشبكة وأدخل كلمة المرور الجديدة. (الحاسوب المكتبي يحتاج بطاقة واي فاي أولاً.)'},
+{t:'من المحمول أجرِ Ping للحاسوب السلكي',ok:()=>ev.lw,hl:tp,w:'السلكي واللاسلكي يشتركان في شبكة واحدة عبر الراوتر.'}]},
+{n:'إصلاح الأعطال',lv:'تحدٍّ',g:'أصلح الشبكة المعطّلة حتى يتواصل المحمول مع كل الحواسيب.',k:'افحص بالترتيب: الكبلات، ثم الحالة (✓ ! ×)، ثم العناوين، ثم Ping. وزر Reset آخر الحلول: يمسح كل التعديلات.',
+init(){const W=cv.clientWidth,H=cv.clientHeight,m=(t,x,y)=>mk(t,Math.round(W*x),Math.round(H*y)),r=m('router',.5,.17),s=m('switch',.5,.46),a=m('pc',.25,.78);m('pc',.65,.8);m('laptop',.82,.3);r.ssid=r.def.ssid='Home-WiFi';r.pw='changed99';link(s.id,a.id)},s:[
+{t:'الحاسوب بعلامة (!): صِل المحوّل بالراوتر',ok:()=>L.some(l=>typ(l).includes('router')&&typ(l).includes('switch')),hl:cab(`${N('router')},${N('switch')}`),w:'بلا راوتر لا يوجد DHCP، فيأخذ الجهاز عنوان 169.254.',p:'ما سبب العلامة البرتقالية؟'},
+{t:'حاسوب بعلامة (×): وصّله بالمحوّل',ok:()=>q('pc').every(d=>d.st=='on'),hl:cab(`${N('switch')},${N('pc')}`),w:'علامة × تعني عدم وجود أي رابط.'},
+{t:'الواي فاي لا يقبل كلمة مرور الملصق (غُيّرت): أعد ضبط الراوتر بزر Reset',ok:()=>ev.reset,hl:()=>$('#rst')?'#rst':N('router'),w:'اضغط الزر مطولاً: يعيد الراوتر إلى إعدادات المصنع المطبوعة على الملصق.'},
+{t:'انضم المحمول إلى «Home-WiFi» بكلمة مرور الملصق',ok:()=>D.some(d=>d.t=='laptop'&&d.w),hl:wf,w:'سطح المكتب ← واي فاي ← الشبكة ← كلمة مرور الملصق.'},
+{t:'من المحمول أجرِ Ping لكل حاسوب مكتبي، واحداً واحداً',ok:()=>{const p=q('pc');return p.length>0&&p.every(x=>ev.lwids&&ev.lwids[x.id])},hl:tp,w:'نجاح Ping لكل حاسوب يؤكد أن كل شيء يعمل (يجب اختبار كل حاسوب على حدة).'}]},
+{n:'العناوين اليدوية وتعارض IP',lv:'متقدم',g:'أصلح شبكة فيها جهازان بالعنوان نفسه وجهاز بعنوان من شبكة أخرى، حتى يصل الجميع إلى الإنترنت.',k:'العنوان اليدوي مسؤوليتك: يجب أن يكون فريداً، وداخل شبكة الراوتر (IP والقناع)، وأن تشير البوابة إلى عنوان الراوتر. DHCP يفعل هذا كله تلقائياً.',
+init(){const W=cv.clientWidth,H=cv.clientHeight,m=(t,x,y)=>mk(t,Math.round(W*x),Math.round(H*y)),r=m('router',.5,.17),s=m('switch',.5,.46),a=m('pc',.2,.8),b=m('pc',.5,.84),c=m('pc',.8,.8),n=m('net',.84,.17);
+r.ssid=r.def.ssid='Lab-WiFi';[[r,s],[s,a],[s,b],[s,c],[r,n]].forEach(x=>link(x[0].id,x[1].id));
+r.ls={};r.ls[a.id]=10;r.nx=10;b.cfg={m:'static',ip:'192.168.1.10',mask:'255.255.255.0',gw:'192.168.1.1'};c.cfg={m:'static',ip:'192.168.2.20',mask:'255.255.255.0',gw:'192.168.2.1'}},s:[
+{t:'حاسوبان بعلامة (!) لأن لهما العنوان نفسه: افتح «إعدادات الشبكة» في أحدهما وغيّر عنوانه (أو أعده إلى DHCP)',ok:()=>q('pc').length>0&&!D.some(d=>d.cf),hl:ip0,w:'لا يجوز أن يحمل جهازان العنوان نفسه في شبكة واحدة: لا يعرف أحد لمن يسلّم الرسالة. DHCP يمنع ذلك تلقائياً؛ أما العناوين اليدوية فمسؤوليتك.',p:'من سيردّ على Ping إلى 192.168.1.10؟'},
+{t:'حاسوب عنوانه من شبكة أخرى (192.168.2.x): ضع عنواناً 192.168.1.x والقناع 255.255.255.0 والبوابة 192.168.1.1',ok:()=>{const e=D.filter(ends);return e.length>0&&e.every(d=>d.ip&&same(d.ip,d.mask,'192.168.1.1')&&d.gw=='192.168.1.1')},hl:ip0,w:'البوابة 192.168.2.1 غير موجودة في هذه الشبكة، فلا يعرف الحاسوب كيف يخرج منها.',p:'هل ينجح Ping إلى 8.8.8.8 قبل التصحيح؟ جرّب.'},
+{t:'من أي حاسوب أجرِ Ping إلى الإنترنت 8.8.8.8',ok:()=>ev.p_net,hl:tp,w:'الآن العناوين صحيحة والبوابة صحيحة، فيخرج Ping عبر الراوتر.'}]},
+{n:'راوتران وشبكتان',lv:'متقدم',g:'ابنِ شبكتين لكل منهما راوتر وحاسوب، ثم صِل الراوترين بكبل ليتخاطب الحاسوبان.',k:'كل راوتر له شبكته (192.168.1.x و192.168.2.x). جهازان في شبكتين مختلفتين لا يتخاطبان إلا عبر راوتر، وكل راوتر ينقص TTL بمقدار 1.',s:[
+{t:'أضف راوترين، وصِل بكل راوتر حاسوباً (مباشرة أو عبر محوّل)',ok:()=>q('router').length>1&&new Set(D.filter(d=>ends(d)&&d.st=='on'&&d.gw).map(d=>d.gw)).size>1,hl:()=>q('router').length<2?P('router'):D.filter(ends).length<2?P('pc'):cab(`${N('router')},${N('pc')}`)(),w:'كل راوتر يوزّع عناوين شبكته: الأول 192.168.1.x والثاني 192.168.2.x.',p:'هل سيتخاطب الحاسوبان وهما في شبكتين منفصلتين؟ جرّب Ping.'},
+{t:'صِل الراوترين ببعضهما بكبل مباشر',ok:()=>L.some(l=>typ(l)[0]=='router'&&typ(l)[1]=='router'),hl:cab(N('router')),w:'الكبل بين راوترين يربط شبكتين. أما لو وصلتهما بمحوّل واحد فسيصيران في شبكة واحدة وبخادمي DHCP متعارضين.',p:'ماذا لو وصلتَ الراوترين بمحوّل بدل كبل مباشر؟ جرّب.'},
+{t:'من حاسوب أجرِ Ping إلى حاسوب الشبكة الأخرى',ok:()=>ev.rtHost,hl:tp,w:'الرسالة تذهب إلى البوابة ثم الراوتر الآخر ثم الحاسوب. لاحظ أن TTL نقص بمقدار 1 عند كل راوتر.'}]}];
+let lessonSeen=[];
+const LESSONS={
+'أول اتصال':['ما هي الشبكة؟','الشبكة مجموعة أجهزة متصلة لتبادل البيانات والموارد. يمكن أن يكون الاتصال سلكياً أو لاسلكياً.','ابدأ بجهازين وكبل، ثم اختبر هل يستطيع أحدهما الوصول إلى الآخر.'],
+'إضافة محوّل':['لماذا نحتاج إلى محوّل؟','المحوّل (Switch) يربط عدة أجهزة داخل الشبكة المحلية، ويتعلم عناوين MAC ليوجه الإطارات إلى المنفذ المناسب.','لاحظ كيف يتصل كل حاسوب بمنفذ مختلف في المحوّل.'],
+'الموزّع أم المحوّل؟':['كيف يختلف Hub عن Switch؟','الموزّع Hub يكرر الإشارة إلى المنافذ، بينما يتعلم المحوّل عناوين MAC ويوجه الإطار عادةً إلى المنفذ المقصود.','قارن حركة البيانات عند استخدام الموزّع ثم المحوّل.'],
+'أساسيات عناوين IP':['ما هو عنوان IP؟','عنوان IPv4 يتكون من أربعة أرقام تفصل بينها نقاط، مثل 192.168.1.10. يستخدمه الجهاز للتعريف بعنوانه على شبكة IP.','في هذا الدرس ستستخدم عنوانين مختلفين ضمن الشبكة 192.168.1.0/24.'],
+'الراوتر وDHCP':['كيف يحصل الجهاز على إعداداته تلقائياً؟','DHCP يوزع إعدادات الشبكة مثل عنوان IP وقناع الشبكة والبوابة الافتراضية، بدلاً من إدخالها يدوياً على كل جهاز.','راقب العنوان الذي يحصل عليه الحاسوب بعد الاتصال بالراوتر.'],
+'الاتصال بالإنترنت':['ما الفرق بين الشبكة المحلية والإنترنت؟','الشبكة المحلية تربط أجهزتك القريبة. الراوتر يمرر البيانات بين شبكتك وشبكات أخرى، ومنها الإنترنت.','تابع المسار من الحاسوب إلى الراوتر ثم إلى نقطة الإنترنت المحاكية.'],
+'مشاركة الطابعات':['كيف تعمل الطابعة عبر الشبكة؟','طابعة USB تتصل مباشرة بحاسوب. أما طابعة الشبكة فلها اتصال شبكي ويمكن للأجهزة المصرح لها استخدامها.','قارن بين توصيل USB والطابعة المتصلة بالمحوّل.'],
+'إدارة الراوتر وواي فاي آمن':['كيف نحمي الشبكة اللاسلكية؟','نقطة الوصول اللاسلكية تتيح للأجهزة الاتصال بالشبكة عبر Wi-Fi. استخدم كلمة مرور قوية وغيّر بيانات الإدارة الافتراضية.','ستغير إعدادات الشبكة ثم توصل جهازاً لاسلكياً.'],
+'إصلاح الأعطال':['كيف تبدأ تشخيص مشكلة اتصال؟','ابدأ بالطبقة المادية: الطاقة والكبل والاتصال اللاسلكي. ثم تحقق من عنوان IP والقناع والبوابة، وبعدها استخدم Ping.','اتبع خطوات التشخيص واحدة تلو الأخرى ولا تغيّر كل الإعدادات دفعة واحدة.'],
+'العناوين اليدوية وتعارض IP':['ما الذي يجعل إعداد IP صحيحاً؟','يجب أن يكون عنوان الجهاز فريداً، وأن يتوافق مع قناع الشبكة. وللوصول إلى شبكات أخرى، يحتاج الجهاز إلى بوابة افتراضية صحيحة.','ستصلح تعارض عنوان ومشكلة جهاز موجود في شبكة مختلفة.'],
+'راوتران وشبكتان':['لماذا نحتاج إلى التوجيه؟','عندما تكون الأجهزة في شبكات IP مختلفة، تمر الحزم عبر راوتر يختار المسار التالي نحو الوجهة.','راقب انتقال الحزمة عبر الراوترين في هذا التمرين المبسط.']};
+function ms(){try{localStorage.setItem('nl',JSON.stringify({v:2,lv,done,free,lessonSeen}))}catch(e){}$('#bMd').textContent=free?'🎨 رسم حر':'🎯 التحديات';if(free){document.querySelectorAll('.hl').forEach(e=>e.classList.remove('hl'));$('#ms').innerHTML=`<div class='mc'><div class='mh'><b>🎨 رسم حر</b></div><div class='note'>ابنِ شبكتك بحرية بلا مهام. اختر «التحديات» لتحصل على هدف نهائي وخطوات صغيرة.</div><div class='row'><button class='pri' onclick='openCp()'>🎯 اختر تحدياً</button></div></div>`;return}const m=MIS[lv],ok=m.s.map(s=>s.ok()),i=ok.indexOf(false),fin=i<0;if(fin&&!done[lv]){done[lv]=1;log(`اكتمل المستوى ${lv+1}: ${m.n}`,'ok')}$('#ms').innerHTML=`<div class='mc'><div class='mh'><span class='lvb'>${m.lv}</span><b>المستوى ${lv+1}: ${m.n}</b></div><div class='pg'>${MIS.map((_,j)=>`<i class='${done[j]?'f':j==lv?'c':''}'></i>`).join('')}</div>${!lessonSeen[lv]?`<div class='lesson'><h3>📘 قبل أن تبدأ: ${esc((LESSONS[m.n]||['مفهوم الشبكة'])[0])}</h3><p>${esc((LESSONS[m.n]||['',''])[1]||'تعرف على الفكرة الأساسية قبل تنفيذ النشاط.')}</p><div class='tip'><b>ماذا ستفعل؟</b><br>${esc((LESSONS[m.n]||['','',''])[2]||m.g)}</div><div class='lessonbar'><small>شرح تمهيدي · حوالي دقيقة</small><button class='pri' onclick='startLesson()'>فهمت، ابدأ التطبيق ←</button></div></div>`:''}<div class='goal'>🎯 <b>الهدف النهائي</b><br>${m.g}</div><div class='sub'>الخطوات الصغيرة</div><ol class='st'>${m.s.map((s,j)=>`<li class='${ok[j]?'d':j==i?'c':''}'><span class='ck'>${ok[j]?'✓':j+1}</span><span>${s.t}${ok[j]?' (تم)':''}</span></li>`).join('')}</ol>${fin?`<div class='win' role='status'><b>أحسنت! اكتمل المستوى</b><br>${m.k}</div>${lv<MIS.length-1?`<button class='pri' onclick='goLv(lv+1)'>المستوى التالي</button>`:''}`:gOn?`<div class='help'><b>لماذا؟</b> ${m.s[i].w}${m.s[i].p?`<br><b>توقّع:</b> ${m.s[i].p}`:''}</div>`:''}<div class='row'><select aria-label='اختر المستوى' onchange='goLv(+this.value)'>${MIS.map((x,j)=>`<option value='${j}' ${j==lv?'selected':''}>${done[j]?'✓ ':''}المستوى ${j+1}: ${x.n}</option>`).join('')}</select><button onclick='gOn=!gOn;ms()' aria-pressed='${gOn}'>الإرشاد: ${gOn?'يعمل':'متوقف'}</button></div><div class='row'><button onclick='goLv(lv)'>إعادة المستوى</button></div><small style='color:var(--mu);display:block;margin-top:8px'>لوحة المفاتيح: Tab للتنقل بين الأجهزة، Enter للاختيار أو التوصيل، الأسهم للتحريك، Delete للحذف.</small></div>`;document.querySelectorAll('.hl').forEach(e=>e.classList.remove('hl'));if(gOn&&!fin){const s=m.s[i].hl();if(s)document.querySelectorAll(s).forEach(e=>e.classList.add('hl'))}}
+function startLesson(){lessonSeen[lv]=1;ms()}
+const goLv=n=>{free=false;cpClose();lv=n;D=[];L=[];uid=1;nums={};sel=null;pend=null;ev={};hot=[];log(`المستوى ${n+1}: ${MIS[n].n}`);if(MIS[n].init)MIS[n].init();setMode('sel')};
+function banner(){const b=$('#mb');b.hidden=mode!='cab';b.innerHTML=mode=='cab'?`<span>${pend?'اضغط الآن <b>الجهاز الثاني</b> لإتمام الكبل.':`${CAB[ctype].n}: اضغط جهازاً ثم آخر لتوصيلهما. ما زال بإمكانك سحب الأجهزة.`}</span><button>تم</button>`:'';const x=b.querySelector('button');if(x)x.onclick=()=>setMode('sel')}
+function rev(id,b){const i=$('#'+id),h=i.type=='password';i.type=h?'text':'password';b.textContent=h?'إخفاء':'إظهار';b.setAttribute('aria-pressed',h)}
+function pkt(p,fl){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const Q=p.map(get),pa=a=>'M'+a.map(n=>n.x+' '+n.y).join(' L'),t=Math.max(.5,(p.length-1)*.45),c=(f,d,b,u)=>`<circle r='7' style='fill:${f}' opacity='${b?0:1}'>${b?`<set attributeName='opacity' to='1' begin='${b}s'/>`:''}<animateMotion dur='${u}s' begin='${b}s' path='${d}' fill='freeze'/></circle>`;let h=c('var(--ac)',pa(Q),0,t)+c('var(--ok)',pa([...Q].reverse()),t,t);Q.forEach((n,i)=>{if(n.t=='hub'||(fl&&n.t=='switch'))edges().forEach(e=>{const o=e.a==n.id?get(e.b):e.b==n.id?get(e.a):null;if(o&&e.k!='usb'&&!p.includes(o.id))h+=c(n.t=='hub'?'var(--mu)':'#f59e0b',pa([n,o]),i*.45,.5)})});const k=$('#pk');k.innerHTML=h;k.setCurrentTime(0);setTimeout(()=>k.innerHTML='',t*2000+600)}
+$('#nodes').addEventListener('keydown',e=>{const n=e.target.closest('.node');if(!n)return;const d=get(+n.dataset.id),s=e.shiftKey?40:12,v={ArrowLeft:[-s,0],ArrowRight:[s,0],ArrowUp:[0,-s],ArrowDown:[0,s]}[e.key];if(v){e.preventDefault();d.x=clamp(d.x+v[0],48,cv.clientWidth-48);d.y=clamp(d.y+v[1],40,cv.clientHeight-40);sel=d.id;kf=d.id;render()}else if(e.key=='Enter'||e.key==' '){e.preventDefault();if(mode=='cab'){if(pend==null)pend=d.id;else{link(pend,d.id,ctype);pend=null}}sel=d.id;kf=d.id;render()}});
+$('#pal').addEventListener('keydown',e=>{const p=e.target.closest('.pi');if(!p||(e.key!='Enter'&&e.key!=' '))return;e.preventDefault();if(p.dataset.cab)return setCab(p.dataset.cab);const t=p.dataset.t;if(t=='nic'){const d=get(sel);if(d&&d.t=='pc'){d.nic=true;log(`رُكّبت بطاقة الواي فاي في ${d.name}`,'ok')}else toast('اختر حاسوباً أولاً ثم ركّب بطاقة الواي فاي')}else{const d=mk(t,clamp(cv.clientWidth/2+(Math.random()-.5)*240,48,cv.clientWidth-48),clamp(cv.clientHeight/2+(Math.random()-.5)*160,40,cv.clientHeight-40));sel=d.id;log(`تمت إضافة ${d.name}`);log('📘 '+INFO[t])}render()});
+const d0=()=>get(sel);
+const rp=n=>(Math.random().toString(36)+'abcdefghijk').slice(2,2+n);
+function wf(){return $('#dk .ap')?'#dk .ap':$('#dk:not([hidden])')?'#dk [data-a=wifi]':`#ib .dkb,${N('laptop')},${N('pc')}`}
+function br0(){return $('#dk:not([hidden])')?'#dk [data-a=br]':`#ib .dkb,${N('pc')},${N('laptop')}`}
+function co(m){const d=d0();if(!d)return;(d.co=d.co||[]).push(m);if(d.co.length>80)d.co.shift();const e=$('#co');if(e)e.textContent=d.co.slice(-14).join('\n')}
+function openDk(id){if(get(id).on===false)return toast('الحاسوب مطفأ: شغّله أولاً');dkd=id;dka='';render()}
+function closeDk(){dkd=null;dkRender()}
+function dkApp(a){dka=a;render()}
+function dkRender(){const e=$('#dk'),d=get(dkd);if(!d||sel!=dkd||d.on===false){dkd=null;e.hidden=true;return}e.hidden=false;
+const A=[['wifi','📶 واي فاي'],['br','🌐 المتصفح'],['cmd','⌨ موجه الأوامر'],['prn','🖨 الطابعات'],['fl','📁 الملفات'],['sh','🔗 مركز المشاركة'],['ip','⚙ إعدادات الشبكة']];
+let h=`<div class="dkt"><b>🖥 ${esc(d.name)}</b><span><button onclick="togPower(${d.id})" aria-label="إيقاف تشغيل الحاسوب" title="إيقاف التشغيل">⏻</button> <button onclick="closeDk()" aria-label="إغلاق">✕</button></span></div><div class="dkb2">${A.map(a=>`<button data-a="${a[0]}" class="${dka==a[0]?'on':''}" onclick="dkApp('${a[0]}')">${a[1]}</button>`).join('')}</div><div class="dkc">`;
+if(dka=='wifi')h+=wifiUI(d);else if(dka=='br')h+=brUI(d);else if(dka=='ip')h+=ipUI(d);else if(dka=='sh')h+=shUI(d);else if(dka=='fl')h+=flUI(d);
+else if(dka=='cmd')h+=`<datalist id="ips">${D.filter(x=>x.ip&&x!=d).map(x=>`<option value="${x.ip}">${esc(x.name)}</option>`).join('')}</datalist><div class="row" style="margin-top:0"><input id="pt" dir="ltr" list="ips" placeholder="ping 192.168.1.10 · ipconfig · arp -a · net view" onkeydown="if(event.key=='Enter')doPing()"><button class="pri" onclick="doPing()">Ping</button></div><pre id="co">${esc((d.co||[]).slice(-14).join('\n'))}</pre>`;
+else if(dka=='prn')h+=prnUI(d);
+else h+='<div class="note">اختر تطبيقاً من شريط المهام.</div>';
+e.querySelector('.in').innerHTML=h+'</div>'}
+function wifiUI(d){if(!canWifi(d))return '<div class="note">لا يوجد محوّل لاسلكي. اسحب <b>بطاقة واي فاي</b> من الصندوق فوق هذا الحاسوب.</div>';
+if(d.w){const r=get(d.w);return `<div class="ap" style="cursor:default"><span><b>${esc(r.ssid)}</b><br><small style="color:var(--ok)">متصل</small></span><button onclick="rmL('w${d.id}')">قطع الاتصال</button></div>`}
+const aps=D.filter(r=>r.t=='router'&&r.wifi&&dist(d,r)<=R);let h=aps.length?'':'<div class="note">لا توجد شبكات في النطاق. قرّب الجهاز من راوتر يعمل واي فاي.</div>';
+h+=aps.map(r=>{const s=clamp(4-Math.floor(dist(d,r)/90),1,4);return `<div class="ap" onclick="pickW(${r.id})"><span>🔒 ${esc(r.ssid)}</span><span class="bars">${[1,2,3,4].map(i=>`<i class="${i<=s?'f':''}" style="height:${4+i*3}px"></i>`).join('')}</span></div>`}).join('');
+if(d.pick&&get(d.pick))h+=`<label>كلمة المرور لـ ${esc(get(d.pick).ssid)}</label><div class="row" style="margin-top:2px"><input id="wp" type="password" placeholder="أدخل كلمة المرور" aria-label="كلمة مرور الواي فاي" onkeydown="if(event.key=='Enter')conn()"><button onclick="rev('wp',this)" aria-pressed="false">إظهار</button></div><div class="row"><button class="pri" onclick="conn()">اتصال</button><button onclick="d0().pick=null;render()">إلغاء</button></div>${d.err?`<div class="err">${d.err}</div>`:''}`;return h}
+function brUI(d){const b=d.br=d.br||{u:'',a:0};
+let h=`<div class="row" style="margin-top:0"><input id="bu" dir="ltr" value="${esc(b.u)}" placeholder="http://192.168.1.1" onkeydown="if(event.key=='Enter')go()"><button class="pri" onclick="go()">اذهب</button></div>`;
+if(b.p=='err')h+=`<div class="err">${b.m}</div>`;
+else if(b.p=='net')h+='<h4>🌐 الإنترنت</h4><div class="note">وصلتَ إلى الخادم 8.8.8.8. الإنترنت يعمل!</div>';
+else if(b.p=='login')h+=`<h4>راوتر «${esc(get(b.r).name)}»: تسجيل الدخول</h4><input id="lu" dir="ltr" placeholder="المستخدم" aria-label="المستخدم"><input id="lp" dir="ltr" type="password" placeholder="كلمة المرور" aria-label="كلمة المرور" onkeydown="if(event.key=='Enter')login()" style="margin-top:6px"><div class="row"><button class="pri" onclick="login()">دخول</button></div>${b.m?`<div class="err">${b.m}</div>`:''}`;
+else if(b.p=='admin'){const r=get(b.r);h+=`<h4>إعدادات الواي فاي</h4><label>اسم الشبكة (SSID)</label><input id="as" dir="ltr" value="${esc(r.ssid)}"><label style="display:block;margin-top:6px">كلمة المرور</label><input id="aw" dir="ltr" value="${esc(r.pw)}"><div class="row"><button class="pri" onclick="saveW()">حفظ</button><button onclick="admW()">الواي فاي: ${r.wifi?'يعمل':'متوقف'}</button></div><h4>كلمة مرور الإدارة</h4><input id="aa" dir="ltr" placeholder="كلمة مرور جديدة (8+)"><div class="row"><button onclick="saveA()">تغيير</button></div><h4>الأجهزة المتصلة</h4>${Object.keys(r.ls||{}).filter(k=>get(+k)&&get(+k).ip).map(k=>`<div class="note" dir="ltr">${esc(get(+k).name)} — ${get(+k).ip}</div>`).join('')||'<div class="note">لا يوجد</div>'}<div class="row"><button onclick="logout()">خروج</button></div>`}
+else h+='<div class="note">اكتب عنوان الراوتر المطبوع على ملصقه ثم اضغط «اذهب».</div>';return h}
+function go(){const d=d0(),b=d.br=d.br||{},u=$('#bu').value.trim().replace(/^https?:\/\//,'').replace(/\/$/,'');b.u=u;b.m='';
+if(!d.ip){b.p='err';b.m='لا يوجد اتصال بالشبكة (افحص الكبل أو الواي فاي)'}
+else{const t=D.find(x=>x.ip==u),pa=t&&t!=d?reach(d,t):null,ok2=pa&&!pa.e&&(t.t=='net'||!reach(t,d).e);
+if(!t){b.p='err';b.m='تعذّر العثور على الموقع: لا يوجد جهاز بهذا العنوان'}
+else if(d.cf||t.cf){b.p='err';b.m='تعارض عناوين IP: أكثر من جهاز بالعنوان نفسه، فلا يمكن الوصول بثقة'}
+else if(!ok2){b.p='err';b.m=pa&&pa.e=='nogw'&&t.t=='net'?'لا بوابة: يلزم راوتر للوصول إلى الإنترنت':'تعذّر الوصول: لا يوجد مسار إلى هذا العنوان (افحص الكبلات والعنوان والقناع والبوابة)'}
+else if(t.t=='router'){b.r=t.id;b.p=b.a==t.id?'admin':'login'}
+else if(t.t=='net')b.p='net';
+else{b.p='err';b.m='هذا الجهاز لا يشغّل خادم ويب'}}
+render()}
+function login(){const b=d0().br,r=get(b.r);if($('#lu').value==r.au&&$('#lp').value==r.ap){b.a=r.id;b.p='admin';b.m='';ev.login=1;log('تم تسجيل الدخول إلى '+r.name,'ok')}else b.m='بيانات الدخول خاطئة. راجع الملصق على الراوتر.';render()}
+function logout(){const b=d0().br;b.a=0;b.p='login';render()}
+function admW(){get(d0().br.r).wifi^=1;render()}
+function saveW(){const r=get(d0().br.r),n=$('#as').value.trim(),v=$('#aw').value;if(!n)return toast('اسم الشبكة فارغ');if(v.length<8)return toast('كلمة مرور الواي فاي 8 أحرف على الأقل');
+if(/\d/.test(v)&&/\D/.test(v)&&!/^(.)\1+$/.test(v)&&v!=r.def.pw)ev.pwch=1;else toast('كلمة مرور ضعيفة أو افتراضية: امزج أحرفاً وأرقاماً ولا تكرّر حرفاً');
+r.ssid=n;if(v!=r.pw){r.pw=v;D.forEach(x=>{if(x.w==r.id)x.w=null})}log('تم حفظ إعدادات الواي فاي: أعد وصل الأجهزة اللاسلكية بالكلمة الجديدة.','ok');render()}
+function saveA(){const r=get(d0().br.r),v=$('#aa').value;if(v.length<8)return toast('كلمة مرور الإدارة 8 أحرف على الأقل');if(v==r.def.ap)return toast('اختر كلمة مرور مختلفة عن الافتراضية');
+r.ap=v;ev.apch=1;D.forEach(x=>{if(x.br){x.br.a=0;if(x.br.p=='admin')x.br.p='login'}});log('تغيّرت كلمة مرور الإدارة: سجّل الدخول من جديد.','ok');render()}
+let rt;function rstDown(){const b=$('#rst');b.classList.add('hold');clearTimeout(rt);rt=setTimeout(doReset,2500)}
+function rstUp(){clearTimeout(rt);const b=$('#rst');b&&b.classList.remove('hold')}
+function doReset(){const r=d0(),f=r.def;r.ssid=f.ssid;r.pw=f.pw;r.ap=f.ap;r.ls={};r.nx=9;D.forEach(x=>{if(x.w==r.id)x.w=null;if(x.br){x.br.a=0;if(x.br.p=='admin')x.br.p='login'}});ev.reset=1;toast('أُعيد ضبط الراوتر إلى إعدادات المصنع',1);render()}
+const GLOSSARY=[
+['Network','الشبكة','مجموعة أجهزة متصلة لتبادل البيانات والموارد.'],['IP Address','عنوان IP','عنوان منطقي يعرّف واجهة الجهاز على شبكة IP. مثال: 192.168.1.10.'],['IPv4','الإصدار الرابع من IP','نظام عناوين يستخدم 32 بت ويكتب عادةً بأربعة أرقام مفصولة بنقاط.'],['Subnet Mask','قناع الشبكة','يحدد أي جزء من عنوان IP يمثل الشبكة وأي جزء يمثل الجهاز.'],['Default Gateway','البوابة الافتراضية','عنوان الراوتر الذي يرسل إليه الجهاز الحزم المتجهة إلى شبكات أخرى.'],['MAC Address','عنوان MAC','عنوان طبقة ربط البيانات المرتبط بواجهة الشبكة.'],['Switch','المحوّل','يربط الأجهزة في شبكة محلية ويوجه الإطارات اعتماداً على عناوين MAC.'],['Hub','الموزّع','يكرر الإشارة الواردة إلى بقية المنافذ بدلاً من اختيار منفذ الوجهة.'],['Router','الراوتر / الموجّه','يمرر حزم IP بين شبكات مختلفة.'],['DHCP','التوزيع الآلي للعناوين','بروتوكول يوزع إعدادات IP تلقائياً على الأجهزة.'],['DNS','نظام أسماء النطاقات','يترجم أسماء المواقع مثل example.com إلى عناوين IP.'],['Ping','اختبار الاتصال','أداة تستخدم رسائل ICMP Echo لاختبار إمكانية الوصول إلى وجهة.'],['ARP','بروتوكول تحليل العناوين','يساعد IPv4 على معرفة عنوان MAC المقابل لعنوان IP محلي.'],['Packet','حزمة بيانات','وحدة بيانات في طبقة الشبكة تُرسل من مصدر إلى وجهة.'],['Ethernet','إيثرنت','تقنيات شائعة للاتصال الشبكي السلكي.'],['Wi-Fi','واي فاي','تقنيات اتصال شبكي لاسلكي.'],['SSID','اسم الشبكة اللاسلكية','الاسم الذي يظهر للمستخدم عند اختيار شبكة Wi-Fi.'],['ICMP','بروتوكول رسائل التحكم','يستخدم رسائل تشخيصية مثل Echo Request وEcho Reply.']
+];
+function renderGlossary(q=''){const box=$('#glossary .in'),v=q.trim().toLowerCase();const items=GLOSSARY.filter(a=>a.join(' ').toLowerCase().includes(v));box.innerHTML=`<div class="dkt"><b>📚 قاموس الشبكات | Network Glossary</b><button onclick="$('#glossary').hidden=true" aria-label="إغلاق">✕</button></div><div class="dkc"><input class="gsearch" id="gq" placeholder="ابحث بالعربية أو الإنجليزية..." value="${esc(q)}" oninput="renderGlossary(this.value)"><div>${items.map(a=>`<div class="gitem"><b>${esc(a[0])} · ${esc(a[1])}</b><p>${esc(a[2])}</p></div>`).join('')||'<p>لا توجد نتائج مطابقة.</p>'}</div><small style="color:var(--mu)">${items.length} مصطلحاً</small></div>`;const i=$('#gq');i.focus();i.setSelectionRange(i.value.length,i.value.length)}
+function openGlossary(){const e=$('#glossary');e.hidden=false;renderGlossary()}
+function openCp(){const e=$('#cp');e.hidden=false;e.querySelector('.in').innerHTML=`<div class="dkt"><b>اختر طريقة التعلّم</b><button onclick="cpClose()" aria-label="إغلاق">✕</button></div><div class="dkc"><button class="cch ${free?'on':''}" onclick="setFree()"><b>🎨 رسم حر</b><span>ابنِ أي شبكة تريد بلا مهام، وجرّب الأجهزة بحرية.</span></button><h4>🎯 التحديات</h4>${MIS.map((m,j)=>`<button class="cch ${!free&&lv==j?'on':''}" onclick="goLv(${j})"><b>${done[j]?'✓ ':''}المستوى ${j+1}: ${m.n}<small>${m.lv}</small></b><span>${m.g}</span></button>`).join('')}</div>`}
+function cpClose(){$('#cp').hidden=true}
+function setFree(){free=true;cpClose();render()}
+function showImg(t){const e=$('#ip');e.hidden=false;e.querySelector('.in').innerHTML=`<div class="dkt"><b>🖼 ${T[t].n} · ${NM[t][0]} · ${NM[t][1]}</b><button onclick="$('#ip').hidden=true" aria-label="إغلاق">✕</button></div><div class="dkc"><img src="img/${t}.webp" alt="${T[t].n}" onerror="imgErr(this,'${t}')"></div>`}
+function imgErr(i,t){i.outerHTML=`<div class="note" style="text-align:center"><div style="color:hsl(${T[t].h} 85% 60%)">${ico(t,90)}</div>لا توجد صورة بعد.<br>ضع الصورة في: <b dir="ltr">img/${t}.webp</b></div>`}
+let dg=null;addEventListener('pointerdown',e=>{const t=e.target.closest('.dkt');if(!t||e.target.closest('button'))return;const k=t.closest('.pop'),r=k.getBoundingClientRect();dg={k,x:e.clientX-r.left,y:e.clientY-r.top};k.style.transform='none';k.style.left=r.left+'px';k.style.top=r.top+'px'});
+addEventListener('pointermove',e=>{if(dg){dg.k.style.left=clamp(e.clientX-dg.x,0,innerWidth-80)+'px';dg.k.style.top=clamp(e.clientY-dg.y,0,innerHeight-40)+'px'}});
+addEventListener('pointerup',()=>{dg=null});
+addEventListener('keydown',e=>{if(e.key=='Escape'){if(dkd)closeDk();cpClose();$('#ip').hidden=true;$('#glossary').hidden=true}});
+function render(){compute();nodes();if(kf){const n=$('.node[data-id="'+kf+'"]');n&&n.focus();kf=null}lines();ins();dkRender();ms();banner();$('#hint').style.display=D.length?'none':'grid'}
+const ren=v=>{d0().name=v||'Device';render()};
+function rm(){const d=d0();L=L.filter(l=>l.a!=d.id&&l.b!=d.id);D.forEach(x=>{if(x.w==d.id)x.w=null});D=D.filter(x=>x!=d);sel=null;pend=null;log(`تم حذف ${d.name}`);render()}
+function rmL(id){if(String(id)[0]=='w'){const d=get(+String(id).slice(1));if(d){d.w=null;log(`انقطع اتصال ${d.name} بالواي فاي`)}}else{L=L.filter(l=>l.id!=id);log('تم فصل الكبل')}render()}
+function setR(k,v){const r=d0();if(k=='pw'&&v.length<8){toast('كلمة مرور الواي فاي 8 أحرف على الأقل');return render()}
+r[k]=v;if(k=='pw'){if(v.length>=8&&/\d/.test(v)&&/\D/.test(v)&&!/^(.)\1+$/.test(v)&&v!='12345678')ev.pwch=1;else toast('كلمة مرور ضعيفة: امزج أحرفاً وأرقاماً ولا تكرّر حرفاً واحداً');D.forEach(x=>{if(x.w==r.id){x.w=null}});log('تغيّرت كلمة المرور: فُصلت كل الأجهزة، أعد الاتصال بالكلمة الجديدة.')}render()}
+function togW(){const r=d0();r.wifi=!r.wifi;log(`${r.name}: الواي فاي ${r.wifi?'يعمل':'متوقف'}`);render()}
+function nicOff(){d0().nic=false;d0().w=null;render()}
+function pickW(id){const d=d0();d.pick=id;d.err='';render();$('#wp').focus()}
+function conn(){const d=d0(),r=get(d.pick),v=$('#wp').value;
+if(v===r.pw){d.w=r.id;d.pick=null;d.err='';log(`انضم ${d.name} إلى «${r.ssid}»`,'ok')}else{d.err='كلمة المرور خاطئة. راجع الملصق على الراوتر وحاول ثانية.';log(`${d.name}: كلمة مرور خاطئة لـ «${r.ssid}»`,'bad')}render()}
+function showPacketLesson(path,fl,received){const box=$('#packetHelp');if(!box)return;const names=path.map(id=>{const d=get(id);return d?d.name:'جهاز'});box.innerHTML=`<div><b>📦 ماذا حدث للحزمة؟</b> ${received? 'وصل ردّ Ping بنجاح.':'لم يصل ردّ Ping.'}</div><div class="steps"><span>1. الحاسوب يرسل ICMP Echo Request</span><span>2. تمر الحزمة عبر: ${esc(names.join(' ← '))}</span><span>3. الوجهة تحاول إرسال Echo Reply</span><span>4. ${received?'يستقبل المصدر الردّ':'تحقق من سبب عدم الردّ'}</span></div>${fl?'<p style="margin:6px 0 0;color:var(--mu)">ملاحظة: قد يسبق Ping طلب ARP لمعرفة عنوان MAC للوجهة المحلية أو للبوابة.</p>':''}<div style="text-align:end;margin-top:5px"><button onclick="$('#packetHelp').hidden=true">إخفاء الشرح</button></div>`;box.hidden=false;clearTimeout(window.packetHelpTimer);window.packetHelpTimer=setTimeout(()=>box.hidden=true,10000)}
+function doPing(){const d=d0(),raw=$('#pt').value.trim();if(!raw)return toast('اكتب ping أو ipconfig أو arp -a، أو عنوان IP الهدف');
+if(/^net\s+view/i.test(raw)){co('> net view');const v=D.filter(x=>canSee(d,x));co('   Workgroup: '+wgOf(d));if(!v.length)co(d.disc?'   (no computers found) تحقق من مجموعة العمل ومن أن الجهاز الآخر فعّل اكتشاف الشبكة':'   Network discovery is off: فعّل اكتشاف الشبكة من مركز المشاركة');else v.forEach(x=>co('   \\\\'+x.name));return}
+if(/^ipconfig/i.test(raw)){co('> ipconfig');co(`   Host Name . . . . . : ${d.name}`);co(`   DHCP Enabled. . . . : ${d.cfg&&d.cfg.m=='static'?'No (static)':'Yes'}`);co(`   IPv4 Address. . . . : ${d.ip||'—'}`);co(`   Subnet Mask . . . . : ${d.mask||'—'}`);co(`   Default Gateway . . : ${d.gw||'—'}`);co(`   Physical Address. . : ${d.mac}`);return}
+if(/^arp/i.test(raw)){co('> arp -a');const a=Object.entries(d.arp||{});if(!a.length)co('   (empty) أجرِ Ping أولاً ليتعلّم الجهاز عناوين MAC');else{co('   Internet Address     Physical Address');a.forEach(([k,v])=>co('   '+k.padEnd(20)+' '+v))}return}
+const ip=raw.replace(/^ping\s+/i,'');
+if(!d.ip)return toast(`${d.name}: لا يوجد رابط (لا كبل ولا واي فاي)`);
+const t=D.find(x=>x.ip==ip&&x!=d)||D.find(x=>x.ip==ip);if(!t)return toast(`Ping ${ip}: لا يوجد أي جهاز بهذا العنوان`);
+if(t==d)return toast('هذا عنوان جهازك نفسه: الاختبار يفحص بطاقتك فقط. جرّب جهازاً آخر');
+if(d.cf)return toast(`${d.name}: تعارض عناوين IP: عنوانك ${d.ip} مستخدم أيضاً في جهاز آخر. غيّر أحدهما`);
+if(t.cf)return toast(`Ping ${ip}: أكثر من جهاز يحمل هذا العنوان (تعارض IP): الردود غير موثوقة`);
+const f=reach(d,t);if(f.e)return toast(pingErr(d,t,f.e));
+if(t.t!='net'&&reach(t,d).e)return toast(`Ping ${ip}: انتهت المهلة. الطلب وصل لكن الردّ لا يعود: ${t.name} لا يعرف طريق العودة إليك (راجع القناع والبوابة عنده)`);
+const p=f.p,hops=p.length-1,rc=p.slice(1,-1).filter(i=>get(i).t=='router').length,fl=l2learn(p);
+let wl=0,wi=0;for(let i=0;i<hops;i++){const A=get(p[i]),B=get(p[i+1]);if(A.w==B.id||B.w==A.id){wi=1;wl=Math.max(wl,clamp((dist(A,B)/R-.7)*2,0,.6))}}
+const ttl=(t.t=='router'||t.t=='nprinter'?64:128)-rc,out=[`> ping ${ip}`,`Pinging ${ip} with 32 bytes of data:`];let rcv=0,sum=0;
+for(let i=0;i<4;i++){if(Math.random()<wl)out.push('Request timed out.');else{const tm=hops*2+(wi?5:0)+Math.floor(Math.random()*3)+(i==0&&fl?4:0);rcv++;sum+=tm;out.push(`Reply from ${ip}: bytes=32 time=${tm}ms TTL=${ttl}`)}}
+out.push(`Ping statistics: Sent = 4, Received = ${rcv}, Lost = ${4-rcv} (${(4-rcv)*25}% loss)`);out.forEach(x=>co(x));
+if(!rcv){log(`Ping ${ip} (${t.name}): لا ردود: الإشارة اللاسلكية ضعيفة جداً`,'bad');return toast('انتهت المهلة: كل الحزم ضاعت. قرّب الجهاز اللاسلكي من الراوتر')}
+ev.ping=1;ev['p_'+t.t]=1;if(p.some(i=>get(i).t=='switch'))ev.psw=1;if(d.t=='laptop'&&t.t=='pc'){ev.lwids=ev.lwids||{};ev.lwids[t.id]=1;if(!t.w)ev.lw=1}if(rc>0){ev.rt=1;if(t.t!='net')ev.rtHost=1}
+ms();pkt(p,fl);showPacketLesson(p,fl,rcv>0);hot=[];for(let i=0;i<hops;i++)hot.push(p[i]+'-'+p[i+1]);
+log(`Ping ${ip} (${t.name}): ${rcv}/4 ردود، متوسط ${Math.round(sum/rcv)}ms، TTL=${ttl}، القفزات ${hops}${fl?'، ARP: تعلّمت الأجهزة عناوين MAC':''}`,'ok');lines();setTimeout(()=>{hot=[];lines()},1600)}
+const wgOf=d=>d.wg||'WORKGROUP';
+const usbTo=(d,x)=>L.some(l=>l.k=='usb'&&((l.a==d.id&&l.b==x.id)||(l.b==d.id&&l.a==x.id)));
+const hostOk=(a,b)=>!!a.ip&&!!b.ip&&!a.cf&&!b.cf&&!reach(a,b).e&&!reach(b,a).e;
+const canSee=(a,b)=>a!=b&&ends(b)&&!!a.disc&&!!b.disc&&wgOf(a)==wgOf(b)&&!!a.ip&&!!b.ip&&same(a.ip,a.mask,b.ip)&&hostOk(a,b);
+const fol=d=>d.fo||(d.fo=[{n:'المستندات',f:['ملاحظات.txt'],sh:null}]);
+const nowT=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+function resolve(a,t){const p=String(t||'').trim().replace(/^[\\\/]+/,'').split(/[\\\/]/),h=p[0];const x=ipn(h)!=null?D.find(y=>y!=a&&ends(y)&&y.ip==h):D.find(y=>y!=a&&ends(y)&&y.name.toLowerCase()==h.toLowerCase()&&y.ip&&a.ip&&same(a.ip,a.mask,y.ip));return{h:x,sh:p[1]||''}}
+function shErr(a,h){if(!h)return 'تعذّر العثور على المسار. تحقّق من اسم الحاسوب أو عنوان IP (الأسماء تعمل داخل الشبكة نفسها فقط، أما عنوان IP فيعمل عبر الراوتر أيضاً)';if(!a.ip)return a.name+': لا يوجد رابط بالشبكة';if(h.on===false)return `تعذّر الوصول إلى ${h.name}: لا يردّ (قد يكون مطفأً)`;if(!hostOk(a,h))return `لا يوجد اتصال شبكي صالح بين ${a.name} و${h.name} (جرّب Ping وراجع تعارض العناوين)`;if(!h.fps)return `رُفض الوصول: ${h.name} لم يفعّل «مشاركة الملفات والطابعات»`;return ''}
+function togSh(k){const d=d0();d[k]=k=='pps'?!ppsOn(d):!d[k];log(`${d.name}: ${{disc:'اكتشاف الشبكة',fps:'مشاركة الملفات والطابعات',pps:'المشاركة المحمية بكلمة مرور'}[k]} ${d[k]?'مفعّل':'متوقف'}`,'ok');ev['sh_'+k]=d[k]?1:ev['sh_'+k];render()}
+function setWg(){const d=d0(),v=$('#wgi').value.trim().toUpperCase();if(!/^[A-Z0-9_-]{1,15}$/.test(v))return toast('اسم مجموعة العمل: أحرف لاتينية وأرقام فقط (حتى 15)');d.wg=v;log(`${d.name}: مجموعة العمل الآن ${v}`,'ok');ev.wg=1;render()}
+const ppsOn=d=>d.pps!==false,accs=d=>d.acc||(d.acc=[]);
+function credOk(a,h){if(!ppsOn(h))return true;const c=(a.cred&&a.cred[h.id])||(a.rcred&&a.rcred[h.id]);return !!c&&accs(h).some(x=>x.u.toLowerCase()==c.u.toLowerCase()&&x.p===c.p)}
+function loginUI(d,h){return `<div class="note"><b>🔒 بيانات الاعتماد</b><br>يطلب <span dir="ltr">\\\\${esc(h.ip)}</span> (${esc(h.name)}) اسم مستخدم وكلمة مرور لحساب موجود على ${esc(h.name)} نفسه، وليس على هذا الحاسوب.</div><div class="row"><input id="lu" dir="ltr" placeholder="اسم المستخدم" autocomplete="off"><input id="lp" type="password" placeholder="كلمة المرور" autocomplete="off" onkeydown="if(event.key=='Enter')doLogin(${h.id})"></div><div class="row"><button id="lr" onclick="this.classList.toggle('on')" aria-pressed="false">☐ تذكّر بيانات الاعتماد</button></div><div class="row"><button class="pri" onclick="doLogin(${h.id})">دخول</button><button onclick="cancelLogin()">إلغاء</button></div>`}
+function doLogin(hid){const d=d0(),h=get(hid),e=shErr(d,h);if(e)return toast(e);const u=$('#lu').value.trim(),pw=$('#lp').value,rem=$('#lr').classList.contains('on'),ac=accs(h).find(x=>x.u.toLowerCase()==u.toLowerCase()&&x.p===pw);h.alog=h.alog||[];h.alog.push({t:nowT(),u:u||'—',n:d.name,ip:d.ip,ok:!!ac});if(h.alog.length>20)h.alog.shift();
+if(!ac){ev.shBad=1;ms();log(`${d.name} → ${h.name}: فشل تسجيل الدخول (${u||'—'})`);toast('اسم المستخدم أو كلمة المرور غير صحيحة');return render()}
+d.cred=d.cred||{};d.cred[hid]={u:ac.u,p:pw};if(rem){d.rcred=d.rcred||{};d.rcred[hid]={u:ac.u,p:pw}}
+ev.shLogin=1;log(`${d.name} → ${h.name}: دخول ناجح بحساب ${ac.u}`,'ok');const cp=d.cp;d.cp=null;if(cp&&cp.pid&&cp.h==hid)return addPr(hid,cp.pid);render()}
+function cancelLogin(){const d=d0();d.cp=null;if(d.rv)d.rv=null;render()}
+function addAcc(){const d=d0(),u=$('#acn').value.trim(),pw=$('#acp').value;if(!/^[A-Za-z0-9_-]{1,20}$/.test(u))return toast('اسم المستخدم: أحرف لاتينية وأرقام فقط (حتى 20)');if(!pw)return toast('اكتب كلمة مرور');const A=accs(d),x=A.find(y=>y.u.toLowerCase()==u.toLowerCase());if(x){x.p=pw;log(`${d.name}: غُيّرت كلمة مرور الحساب ${x.u}`,'ok')}else{A.push({u,p:pw});log(`${d.name}: أُنشئ الحساب ${u}`,'ok')}ev.acc=1;render()}
+function delAcc(i){const d=d0(),x=accs(d).splice(i,1)[0];if(x)log(`${d.name}: حُذف الحساب ${x.u}`);render()}
+function forgetCred(hid){const d=d0();if(d.rcred)delete d.rcred[hid];if(d.cred)delete d.cred[hid];render()}
+function togPower(id){const d=get(id==null?sel:id);if(!d||!ends(d))return;d.on=d.on===false;if(d.on===false){if(dkd==d.id)dkd=null;d.cred={};D.forEach(x=>{if(x.cred)delete x.cred[d.id]});d.cp=null;d.rv=null}ev.pwr=1;log(`${d.name}: ${d.on===false?'أُطفئ الحاسوب (انقطعت الجلسات والمشاركات)':'شُغّل الحاسوب'}`,d.on===false?'':'ok');render()}
+function shUI(d){const b=(k,t)=>{const on=k=='pps'?ppsOn(d):d[k];return `<button class="${on?'on':''}" aria-pressed="${!!on}" onclick="togSh('${k}')">${on?'✓ مفعّل':'✗ متوقف'} · ${t}</button>`};
+const A=accs(d),rc=Object.keys(d.rcred||{}).filter(k=>get(+k)),al=(d.alog||[]).slice(-6).reverse();
+return `<div class="note">يشبه «مركز الشبكة والمشاركة» في ويندوز. لكي تتبادل الأجهزة الطابعات والمجلدات: فعّل الخيارين في الجهازين، واجعل مجموعة العمل واحدة، وكونا في الشبكة نفسها، وأن يكون الحاسوب صاحب المشاركة <b>شغّالاً</b>.</div><div class="kv" dir="ltr">${row('Computer name',d.name)}${row('IP',d.ip||'—')}${row('Workgroup',wgOf(d))}</div><label style="display:block;margin-top:10px">مجموعة العمل (Workgroup)</label><div class="row" style="margin-top:4px"><input id="wgi" dir="ltr" value="${esc(wgOf(d))}" maxlength="15"><button onclick="setWg()">حفظ</button></div><div class="row">${b('disc','اكتشاف الشبكة')}</div><div class="row">${b('fps','مشاركة الملفات والطابعات')}</div><div class="row">${b('pps','المشاركة المحمية بكلمة مرور')}</div><div class="note">اكتشاف الشبكة: يرى الحاسوب الأجهزة الأخرى ويراه الآخرون (في الشبكة الفرعية نفسها وبمجموعة العمل نفسها). مشاركة الملفات والطابعات: تسمح للآخرين باستخدام طابعاتك ومجلداتك. المشاركة المحمية بكلمة مرور: متى فُعّلت طُلب من أي زائر اسم مستخدم وكلمة مرور لحساب على هذا الحاسوب، وإن أُوقفت دخل الجميع بلا بيانات (Everyone) وهذا أقل أماناً. ويمكنك دائماً كتابة المسار يدوياً: \\\\IP\\الاسم.</div>
+<h4>حسابات هذا الحاسوب</h4>${A.length?A.map((x,i)=>`<div class="ap" style="cursor:default"><span>👤 <b dir="ltr">${esc(x.u)}</b> · ${'•'.repeat(Math.min(x.p.length,10))}${x.p.length<6?' <small style="color:#f59e0b">⚠ ضعيفة</small>':''}</span><button onclick="delAcc(${i})" aria-label="حذف الحساب ${esc(x.u)}">حذف</button></div>`).join(''):'<div class="note">لا توجد حسابات.</div>'}${ppsOn(d)&&d.fps&&!A.length?'<div class="err">المشاركة المحمية مفعّلة ولا توجد أي حسابات: لن يستطيع أحد الدخول إلى مجلداتك وطابعاتك. أنشئ حساباً أو أوقف الحماية.</div>':''}<div class="row"><input id="acn" dir="ltr" placeholder="اسم المستخدم" maxlength="20" autocomplete="off"><input id="acp" type="password" placeholder="كلمة المرور" maxlength="30" autocomplete="new-password"></div><div class="row"><button onclick="addAcc()">➕ إضافة / تغيير كلمة المرور</button></div>
+${rc.length?'<h4>بيانات اعتماد محفوظة</h4>'+rc.map(k=>`<div class="ap" style="cursor:default"><span dir="ltr">\\\\${esc(get(+k).name)} · ${esc(d.rcred[k].u)}</span><button onclick="forgetCred(${k})">نسيان</button></div>`).join(''):''}
+${al.length?'<h4>سجل الدخول إلى هذا الحاسوب</h4><div class="note" style="font-size:12px">'+al.map(x=>`${x.t} · ${esc(x.u)} من ${esc(x.n)} (${esc(x.ip||'—')}) · ${x.ok?'✓ نجح':'✗ فشل'}`).join('<br>')+'</div>':''}`}
+function sharePr(pid){const d=d0();if(!d.fps)return toast('فعّل «مشاركة الملفات والطابعات» من 🔗 مركز المشاركة أولاً');const n=$('#psn'+pid).value.trim();if(!/^[A-Za-z0-9_-]{1,20}$/.test(n))return toast('اسم المشاركة: أحرف لاتينية وأرقام فقط');if(Object.values(d.ps||{}).some(x=>x.toLowerCase()==n.toLowerCase()))return toast('هذا الاسم مستخدم لمشاركة أخرى');d.ps=d.ps||{};d.ps[pid]=n;ev.prShare=1;log(`${d.name}: شارك الطابعة ${get(pid).name} باسم ${n}`,'ok');render()}
+function unsharePr(pid){const d=d0();if(d.ps)delete d.ps[pid];log(`${d.name}: أوقف مشاركة ${get(pid).name}`);render()}
+function addPr(hid,pid){const d=d0(),h=get(hid),e=shErr(d,h);if(e)return toast(e);if(!(h.ps&&h.ps[pid])||!usbTo(h,get(pid)))return toast('هذه الطابعة لم تعد مشتركة');if(!credOk(d,h)){d.cp={h:hid,pid};ev.shAsk=1;toast(`${h.name} يطلب اسم مستخدم وكلمة مرور`);return render()}d.rpr=d.rpr||[];if(!d.rpr.some(x=>x.p==pid))d.rpr.push({h:hid,p:pid});ev.prAdd=1;log(`${d.name}: أضاف الطابعة ${get(pid).name} من ${h.name}`,'ok');toast(`أُضيفت ${get(pid).name} من ${h.name}. جرّب الطباعة عليها`,1);render()}
+function addNp(pid){const d=d0(),x=get(pid);if(!x||x.t!='nprinter')return;if(!d.ip||!hostOk(d,x))return toast(`لا يوجد اتصال شبكي صالح بين ${d.name} و${x.name} (جرّب Ping)`);d.npr=d.npr||[];if(!d.npr.includes(pid))d.npr.push(pid);ev.npAdd=1;log(`${d.name}: أضاف طابعة الشبكة ${x.name} (${x.ip})`,'ok');toast(`أُضيفت ${x.name}. جرّب الطباعة عليها`,1);render()}
+function rmPr(pid){const d=d0();d.npr=(d.npr||[]).filter(i=>i!=pid);d.rpr=(d.rpr||[]).filter(r=>r.p!=pid);log(`${d.name}: أزال الطابعة ${get(pid).name}`);render()}
+function addPrPath(){const d=d0(),raw=$('#pa').value.trim();if(!raw)return toast('اكتب عنوان IP طابعة الشبكة أو مسار الطابعة المشتركة \\\\IP\\الاسم');const bad=m=>{ev.prfail=1;ms();toast(m)};
+if(ipn(raw)!=null){const x=D.find(y=>y.t=='nprinter'&&y.ip==raw);if(!x)return bad(`لا توجد طابعة شبكة بالعنوان ${raw}`);return addNp(x.id)}
+const r=resolve(d,raw),e=shErr(d,r.h);if(e)return bad(e);if(!r.sh)return bad('أضف اسم الطابعة المشتركة بعد اسم الحاسوب: \\\\IP\\الاسم');const pid=Object.keys(r.h.ps||{}).find(k=>r.h.ps[k].toLowerCase()==r.sh.toLowerCase());if(!pid||!usbTo(r.h,get(+pid)))return bad(`لا توجد طابعة مشتركة باسم ${r.sh} على ${r.h.name}. يجب أن يشاركها صاحبها أولاً`);addPr(r.h.id,+pid)}
+function prnUI(d){const loc=D.filter(x=>x.t=='printer'&&usbTo(d,x));let h='';
+if(loc.length){h+='<h4>طابعات موصولة بهذا الحاسوب (USB)</h4>'+loc.map(x=>{const s=d.ps&&d.ps[x.id];return `<div class="ap" style="cursor:default"><span><b>${esc(x.name)}</b><br><small style="color:${s?'var(--ok)':'var(--mu)'}">${s?'مشتركة: \\\\'+esc(d.ip||d.name)+'\\'+esc(s):'غير مشتركة'}</small></span>${s?`<button onclick="unsharePr(${x.id})">إيقاف المشاركة</button>`:''}</div>${s?'':`<div class="row"><input id="psn${x.id}" dir="ltr" value="Printer${x.id}" aria-label="اسم المشاركة"><button onclick="sharePr(${x.id})">مشاركة</button></div>`}`}).join('')+(d.fps?'':'<div class="note">مشاركة الطابعة تتطلب تفعيل «مشاركة الملفات والطابعات» من 🔗 مركز المشاركة.</div>')}
+const mine=[...loc.map(x=>({x,t:'USB'})),...(d.npr||[]).filter(i=>get(i)).map(i=>({x:get(i),t:'شبكة · '+get(i).ip,r:1})),...(d.rpr||[]).filter(r=>get(r.p)&&get(r.h)).map(r=>({x:get(r.p),t:'مشتركة من '+get(r.h).name,r:1}))];
+h+='<h4>الطابعات المثبتة على هذا الحاسوب</h4>'+(mine.length?mine.map(m=>`<div class="row"><button style="flex:1" onclick="doPrint(${m.x.id})">🖨 اطبع صفحة اختبار على ${esc(m.x.name)} (${esc(m.t)})</button>${m.r?`<button onclick="rmPr(${m.x.id})" aria-label="إزالة الطابعة">✕</button>`:''}</div>`).join(''):'<div class="note">لا توجد طابعات. كما في ويندوز، لا تظهر الطابعة هنا إلا بعد إضافتها: طابعة USB تُثبَّت عند توصيلها بهذا الحاسوب، أما طابعات الشبكة والطابعات المشتركة فتُضاف من «إضافة طابعة» أدناه.</div>');
+const avN=D.filter(x=>x.t=='nprinter'&&d.disc&&d.ip&&x.ip&&same(d.ip,d.mask,x.ip)&&hostOk(d,x)&&!(d.npr||[]).includes(x.id));
+const avS=[];D.forEach(x=>{if(canSee(d,x)&&x.fps&&x.ps)Object.keys(x.ps).forEach(k=>{const q=get(+k);if(q&&usbTo(x,q)&&!(d.rpr||[]).some(y=>y.p==+k))avS.push([x,+k])})});
+h+='<h4>إضافة طابعة</h4>'+((d.cp&&d.cp.pid&&get(d.cp.h))?loginUI(d,get(d.cp.h)):'')+((avN.length||avS.length)?avN.map(x=>`<div class="row"><button style="width:100%" onclick="addNp(${x.id})">➕ ${esc(x.name)} · طابعة شبكة (${esc(x.ip)})</button></div>`).join('')+avS.map(a=>`<div class="row"><button style="width:100%" onclick="addPr(${a[0].id},${a[1]})">➕ ${esc(get(a[1]).name)} · مشتركة على ${esc(a[0].name)}</button></div>`).join(''):`<div class="note">${d.disc?'لا توجد طابعات ظاهرة الآن. تأكد أن طابعة الشبكة موصولة بالشبكة نفسها، وأن الطابعة المشتركة فعّل صاحبها اكتشاف الشبكة ومشاركة الملفات والطابعات ومجموعة العمل نفسها.':'اكتشاف الشبكة متوقف على هذا الحاسوب فلا يرى الطابعات. فعّله من 🔗 مركز المشاركة، أو اكتب العنوان يدوياً.'}</div>`);
+return h+`<div class="note">يدوياً: عنوان IP لطابعة الشبكة، أو مسار طابعة مشتركة.</div><div class="row"><input id="pa" dir="ltr" placeholder="192.168.1.12  أو  \\\\192.168.1.10\\Printer5" onkeydown="if(event.key=='Enter')addPrPath()"><button onclick="addPrPath()">إضافة</button></div>`}
+function plUI(p){const a=p.pl||[];return `<h4>سجل الطباعة</h4>`+(a.length?`<div class="note" style="font-size:12px">${a.slice().reverse().map(x=>`${x.t} · <b>${esc(x.f)}</b> (${esc(x.ip)}) · ${esc(x.h)}`).join('<br>')}</div>`:'<div class="note">لا توجد مهام طباعة بعد. يسجّل هنا اسم كل حاسوب أرسل مهمة.</div>')}
+function doPrint(pid){const d=d0(),p=get(pid);let ok=false,how='',why='',via=null;
+if(p.t=='printer'){if(usbTo(d,p)){ok=true;how='كبل USB مباشر'}else{const r=(d.rpr||[]).find(x=>x.p==pid),h=r&&get(r.h);if(h){const e=shErr(d,h);if(e)why=e;else if(!(h.ps&&h.ps[pid])||!usbTo(h,p))why=`${h.name} لم تعد تشارك ${p.name}`;else if(!credOk(d,h))why=`${h.name} يطلب تسجيل الدخول من جديد (تغيّرت بيانات الاعتماد): أزل الطابعة وأضفها ثانية`;else{ok=true;via=h;how=`عبر مشاركة ${h.name}`}}}}
+else if(!(d.npr||[]).includes(pid))why=`${p.name} غير مضافة على ${d.name}: أضفها أولاً من 🖨 الطابعات ← إضافة طابعة`;else{ok=!d.cf&&!p.cf&&!reach(d,p).e&&!reach(p,d).e;how='عبر الشبكة'}
+if(ok){p.pl=p.pl||[];p.pl.push({t:nowT(),f:d.name,ip:d.ip||'—',h:how});if(p.pl.length>30)p.pl.shift();ev['pr_'+p.t]=1;if(via)ev.prShared=1;log(`طباعة: ${d.name} → ${p.name} (${how})`,'ok');ms()}else if(p.t=='printer'){ev.prfail=1;ms()}
+toast(ok?`أُرسلت صفحة الاختبار من ${d.name} إلى ${p.name}${via?' عبر '+via.name:''}`:(why||`${p.name} غير متاحة من ${d.name}. شاركها من الحاسوب الموصولة به ثم أضفها هنا`),ok);render()}
+function shF(i){const d=d0();if(!d.fps)return toast('فعّل «مشاركة الملفات والطابعات» من 🔗 مركز المشاركة أولاً');const n=$('#fn'+i).value.trim();if(!/^[A-Za-z0-9_-]{1,20}$/.test(n))return toast('اسم المشاركة: أحرف لاتينية وأرقام فقط');if(fol(d).some(f=>f.sh&&f.sh.n.toLowerCase()==n.toLowerCase()))return toast('هذا الاسم مستخدم لمشاركة أخرى');fol(d)[i].sh={n,rw:$('#fp'+i).value=='rw',lg:[]};ev.flShare=1;log(`${d.name}: شارك المجلد ${fol(d)[i].n} باسم ${n}`,'ok');render()}
+function unshF(i){const d=d0();fol(d)[i].sh=null;log(`${d.name}: أوقف مشاركة ${fol(d)[i].n}`);render()}
+function addFile(i){const f=fol(d0())[i];f.f.push('ملف'+(f.f.length+1)+'.txt');render()}
+function addFolder(){const d=d0(),n=$('#nfd').value.trim();if(!n)return toast('اكتب اسم المجلد');fol(d).push({n,f:[],sh:null});render()}
+function rvHost(id){d0().rv={h:id};render()}
+function rvBack(){const d=d0();d.rv=d.rv&&d.rv.i!=null?{h:d.rv.h}:null;render()}
+function rvOpen(hid,i){const d=d0(),h=get(hid);d.rv={h:hid,i};if(!shErr(d,h)&&credOk(d,h)){const f=fol(h)[i];if(f&&f.sh){f.sh.lg.push(`${nowT()} · ${d.name} (${d.ip}) فتح المجلد`);ev.flOpen=1}}render()}
+function rvPath(){const d=d0(),r=resolve(d,$('#fpth').value),e=shErr(d,r.h);if(e)return toast(e);if(!credOk(d,r.h)){d.rv={h:r.h.id};return render()}if(r.sh){const F=fol(r.h),i=F.findIndex(f=>f.sh&&f.sh.n.toLowerCase()==r.sh.toLowerCase());if(i<0)return toast(`لا يوجد مجلد مشترك باسم ${r.sh} على ${r.h.name}`);return rvOpen(r.h.id,i)}d.rv={h:r.h.id};render()}
+function rvAdd(){const d=d0(),rv=d.rv,h=rv&&get(rv.h),e=h?shErr(d,h):'تعذّر الوصول';if(e)return toast(e);if(!credOk(d,h))return render();const f=fol(h)[rv.i];if(!f||!f.sh)return toast('لم يعد المجلد مشتركاً');if(!f.sh.rw){f.sh.lg.push(`${nowT()} · ${d.name} (${d.ip}) محاولة كتابة مرفوضة`);ev.flDeny=1;toast('رُفض الوصول: المجلد مشترك للقراءة فقط. صاحبه يجب أن يمنح «قراءة وكتابة»');return render()}const n='من-'+d.name+'-'+(f.f.length+1)+'.txt';f.f.push(n);f.sh.lg.push(`${nowT()} · ${d.name} (${d.ip}) أضاف ${n}`);ev.flWrite=1;toast('تم نسخ الملف إلى '+h.name,1);render()}
+function rvUI(d){const rv=d.rv;
+if(rv){const h=get(rv.h);if(h){const e=shErr(d,h),bk='<div class="row"><button onclick="rvBack()">رجوع</button></div>';
+if(e)return `<div class="err">${esc(e)}</div>${bk}`;
+if(!credOk(d,h))return loginUI(d,h)+bk;
+if(rv.i==null){const F=fol(h);return `<div class="note" dir="ltr">\\\\${esc(h.ip)} (${esc(h.name)})</div>`+(F.some(f=>f.sh)?F.map((f,i)=>f.sh?`<div class="row"><button style="width:100%" onclick="rvOpen(${h.id},${i})">📁 ${esc(f.sh.n)} · ${f.sh.rw?'قراءة وكتابة':'قراءة فقط'}</button></div>`:'').join(''):'<div class="note">لا توجد مجلدات مشتركة على هذا الحاسوب.</div>')+bk}
+const f=fol(h)[rv.i];if(!f||!f.sh)return `<div class="err">لم يعد هذا المجلد مشتركاً.</div>${bk}`;
+return `<div class="note" dir="ltr">\\\\${esc(h.ip)}\\${esc(f.sh.n)} · ${f.sh.rw?'Read/Write':'Read only'}</div><div class="note">${f.f.length?f.f.map(esc).join('<br>'):'فارغ'}</div><div class="row"><button class="pri" onclick="rvAdd()">➕ نسخ ملف إلى هذا المجلد</button></div>${bk}`}d.rv=null}
+const hs=D.filter(x=>canSee(d,x));
+return (hs.length?hs.map(x=>`<div class="row"><button style="width:100%" onclick="rvHost(${x.id})">💻 ${esc(x.name)}</button></div>`).join(''):`<div class="note">${d.disc?'لا توجد أجهزة ظاهرة في مجموعة العمل '+esc(wgOf(d))+'. تأكد أن الجهاز الآخر فعّل اكتشاف الشبكة وله مجموعة العمل نفسها وهو في الشبكة نفسها.':'اكتشاف الشبكة متوقف: فعّله من 🔗 مركز المشاركة لترى الأجهزة، أو اكتب المسار يدوياً.'}</div>`)+`<div class="row"><input id="fpth" dir="ltr" placeholder="\\\\192.168.1.10\\Docs" onkeydown="if(event.key=='Enter')rvPath()"><button onclick="rvPath()">فتح</button></div>`}
+function flUI(d){const F=fol(d);let h='<h4>مجلداتي</h4>'+F.map((f,i)=>`<div class="ap" style="cursor:default"><span><b>📁 ${esc(f.n)}</b><br><small>${f.f.length?f.f.map(esc).join('، '):'فارغ'}</small>${f.sh?`<br><small style="color:var(--ok)">مشترك: \\\\${esc(d.ip||d.name)}\\${esc(f.sh.n)} · ${f.sh.rw?'قراءة وكتابة':'قراءة فقط'}</small>`:''}</span><button onclick="addFile(${i})">➕ ملف</button></div>${f.sh?`<div class="row"><button onclick="unshF(${i})">إيقاف مشاركة «${esc(f.n)}»</button></div>${f.sh.lg.length?`<div class="note" style="font-size:12px">سجل الوصول:<br>${f.sh.lg.slice(-6).reverse().map(esc).join('<br>')}</div>`:''}`:`<div class="row"><input id="fn${i}" dir="ltr" value="${i?'Folder'+(i+1):'Documents'}" aria-label="اسم المشاركة"><select id="fp${i}" aria-label="الصلاحية"><option value="r">قراءة فقط</option><option value="rw">قراءة وكتابة</option></select><button onclick="shF(${i})">مشاركة</button></div>`}`).join('');
+h+=`<div class="row"><input id="nfd" placeholder="اسم مجلد جديد"><button onclick="addFolder()">📁 مجلد جديد</button></div>`;
+if(!d.fps)h+='<div class="note">لن يتمكن الآخرون من فتح مجلداتك قبل تفعيل «مشاركة الملفات والطابعات» من 🔗 مركز المشاركة.</div>';
+return h+'<h4>الشبكة</h4>'+rvUI(d)}
+function load(){D=[];L=[];uid=1;nums={};sel=null;pend=null;ev={};hot=[];const W=cv.clientWidth,H=cv.clientHeight,m=(t,x,y)=>mk(t,Math.round(W*x),Math.round(H*y));
+const r=m('router',.5,.17),s=m('switch',.5,.46),a=m('pc',.22,.76),b=m('pc',.4,.82),n=m('nprinter',.62,.82),p=m('printer',.07,.62),l=m('laptop',.8,.3);
+r.ssid=r.def.ssid='School-WiFi';[[r,s],[s,a],[s,b],[s,n],[a,p]].forEach(x=>link(x[0].id,x[1].id));sel=l.id;
+log('تم تحميل المثال. اقرأ ملصق الراوتر ثم من المحمول: سطح المكتب ← واي فاي ← School-WiFi.');render()}
+function setMode(m){mode=m;pend=null;$('#bSel').classList.toggle('on',m=='sel');document.querySelectorAll('.pi[data-cab]').forEach(e=>{const on=m=='cab'&&e.dataset.cab==ctype;e.classList.toggle('on',on);e.setAttribute('aria-pressed',on)});cv.classList.toggle('cab',m=='cab');if(m=='cab')log(CAB[ctype].n+': اضغط جهازين لتوصيلهما');render()}
+function setCab(k){if(mode=='cab'&&ctype==k)setMode('sel');else{ctype=k;setMode('cab')}}
+$('#bSel').onclick=()=>setMode('sel');$('#pal').addEventListener('click',e=>{const p=e.target.closest('.pi[data-cab]');if(p)setCab(p.dataset.cab)});$('#bEx').onclick=load;
+$('#bClr').onclick=()=>{D=[];L=[];nums={};uid=1;sel=null;pend=null;ev={};hot=[];log('تم مسح لوحة العمل');render()};
+$('#pal').innerHTML=Object.keys(CAB).map(k=>`<div class="pi" data-cab="${k}" tabindex="0" role="button" aria-pressed="false" title="${CAB[k].n}: ${CAB[k].i}" aria-label="${CAB[k].n}. ${CAB[k].i}" style="--c:hsl(${CAB[k].h} ${CAB[k].s}% 60%)">${ico('cab_'+k,34)}<span>${CAB[k].n}</span></div>`).join('')+'<div class="psep">الأجهزة</div>'+Object.keys(T).map(t=>`<div class="pi" data-t="${t}" tabindex="0" role="button" title="${T[t].n} · ${NM[t][0]} · ${NM[t][1]}: ${INFO[t]}" aria-label="أضف ${T[t].n}. ${INFO[t]}" style="--c:hsl(${T[t].h} 85% 60%)">${ico(t,34)}<span>${T[t].n}</span></div>`).join('');
+let dr=null,gh=null;
+$('#nodes').addEventListener('pointerdown',e=>{const n=e.target.closest('.node');if(!n)return;const d=get(+n.dataset.id);dr={d,n,sx:e.clientX,sy:e.clientY,ox:d.x,oy:d.y,mv:0}});
+$('#pal').addEventListener('pointerdown',e=>{const p=e.target.closest('.pi');if(!p||p.dataset.cab)return;e.preventDefault();const t=p.dataset.t,el=document.createElement('div');el.className='ghost';el.style.setProperty('--c',`hsl(${T[t].h} 85% 60%)`);el.innerHTML=ico(t,44);el.style.left=e.clientX+'px';el.style.top=e.clientY+'px';document.body.appendChild(el);gh={t,el,sx:e.clientX,sy:e.clientY,mv:0}});
+cv.addEventListener('pointerdown',e=>{if(e.target.closest('.node')||e.target.classList.contains('hit')||e.target.closest('#hint button'))return;sel=null;pend=null;render()});
+addEventListener('pointermove',e=>{
+if(dr){const dx=e.clientX-dr.sx,dy=e.clientY-dr.sy;if(Math.hypot(dx,dy)>4)dr.mv=1;
+if(dr.mv){dr.d.x=clamp(dr.ox+dx,48,cv.clientWidth-48);dr.d.y=clamp(dr.oy+dy,40,cv.clientHeight-40);dr.n.style.left=dr.d.x+'px';dr.n.style.top=dr.d.y+'px';lines()}}
+if(gh){gh.el.style.left=e.clientX+'px';gh.el.style.top=e.clientY+'px';if(Math.hypot(e.clientX-gh.sx,e.clientY-gh.sy)>5)gh.mv=1}});
+addEventListener('pointerup',e=>{
+if(dr){const{d,mv}=dr;dr=null;
+if(!mv&&mode=='cab'){if(pend==null)pend=d.id;else{link(pend,d.id,ctype);pend=null}}
+sel=d.id;render()}
+if(gh){const{t,el,mv}=gh;gh=null;el.remove();const r=cv.getBoundingClientRect(),inside=e.clientX>r.left&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom;
+if(t=='nic'){const n=mv&&document.elementFromPoint(e.clientX,e.clientY)?.closest('.node'),d=n&&get(+n.dataset.id);
+if(d&&d.t=='pc'){d.nic=true;sel=d.id;log(`رُكّبت بطاقة الواي فاي في ${d.name}`,'ok')}else toast('أفلت البطاقة فوق حاسوب مكتبي');render()}
+else if(inside||!mv){const x=inside&&mv?e.clientX-r.left:cv.clientWidth/2+(Math.random()-.5)*240,y=inside&&mv?e.clientY-r.top:cv.clientHeight/2+(Math.random()-.5)*160;
+const d=mk(t,clamp(x,48,cv.clientWidth-48),clamp(y,40,cv.clientHeight-40));sel=d.id;log(`تمت إضافة ${d.name}`);log('📘 '+INFO[t]);render()}}});
+addEventListener('keydown',e=>{if(e.key=='Delete'&&sel&&!/INPUT/.test(document.activeElement.tagName))rm()});
+addEventListener('resize',()=>{D.forEach(d=>{d.x=clamp(d.x,48,cv.clientWidth-48);d.y=clamp(d.y,40,cv.clientHeight-40)});render()});
+try{const z=JSON.parse(localStorage.getItem('nl'));if(z){const oldVersion=!z.v;lv=Math.min((+z.lv||0)+(oldVersion&&(+z.lv||0)>=4?1:0),MIS.length-1);done=z.done||[];lessonSeen=z.lessonSeen||[];if(oldVersion){done.splice(4,0,0);lessonSeen.splice(4,0,0)}free=!!z.free}}catch(e){}let ok1=0;try{ok1=!!localStorage.getItem('nl')}catch(e){}if(!free&&MIS[lv].init)MIS[lv].init();log('مرحباً بك في NetLab.');render();if(!ok1)openCp();
+</script></body></html>
