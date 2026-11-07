@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>لا للغش | رسالة توعوية</title>
+<style>
+  :root {
+    --bg: #0b1220;
+    --panel: rgba(20, 32, 52, .82);
+    --line: rgba(255,255,255,.12);
+    --text: #f4f7fb;
+    --muted: #b6c2d2;
+    --gold: #f5c45e;
+    --cyan: #64d8d0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text);
+    font-family: Tahoma, Arial, sans-serif;
+    background:
+      radial-gradient(ellipse at 12% 12%, rgba(44,119,155,.22), transparent 35%),
+      radial-gradient(ellipse at 88% 82%, rgba(186,133,42,.15), transparent 32%),
+      var(--bg);
+    display: grid; place-items: center; padding: 28px 16px;
+  }
+  .page { width: min(960px, 100%); }
+  header { text-align: center; margin-bottom: 26px; }
+  .eyebrow { color: var(--cyan); font-size: .9rem; letter-spacing: .08em; }
+  h1 { font-size: clamp(2.5rem, 8vw, 5.4rem); margin: 12px 0 8px; line-height: 1.15; }
+  h1 span { color: var(--gold); }
+  .subtitle { color: var(--muted); font-size: clamp(1rem, 2.5vw, 1.2rem); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 26px; padding: clamp(22px, 5vw, 42px);
+    box-shadow: 0 24px 70px rgba(0,0,0,.32);
+    backdrop-filter: blur(12px);
+  }
+  .main-message {
+    text-align: center; font-size: clamp(1.45rem, 4vw, 2.25rem);
+    line-height: 1.8; font-weight: 800; margin: 0 0 10px;
+  }
+  .main-message strong { color: var(--gold); }
+  .intro { text-align: center; color: var(--muted); line-height: 1.9; margin: 0 auto 28px; max-width: 720px; }
+  .messages {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+  }
+  .message {
+    border: 1px solid var(--line); border-radius: 16px; padding: 17px 18px;
+    background: rgba(255,255,255,.035); line-height: 1.8;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .mark { color: var(--cyan); font-size: 1.2rem; font-weight: bold; }
+  .message b { color: #fff; }
+  .quote {
+    margin: 26px 0 0; padding: 20px; text-align: center;
+    border-right: 3px solid var(--gold); background: rgba(245,196,94,.07);
+    border-radius: 12px; line-height: 2; font-size: 1.12rem;
+  }
+  .signature { text-align: center; margin-top: 25px; color: var(--muted); }
+  .signature strong { display: block; color: var(--text); font-size: 1.15rem; margin-top: 7px; }
+  footer { text-align: center; color: #7f8da1; font-size: .85rem; margin-top: 20px; }
+  @media (max-width: 620px) {
+    .messages { grid-template-columns: 1fr; }
+    .card { border-radius: 20px; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="eyebrow">رسالة إلى كل تلميذ وتلميذة</div>
+    <h1><span>لا</span> للغش</h1>
+    <div class="subtitle">كن صادقًا مع نفسك… فنجاحك يستحق أن يكون حقيقيًا</div>
+  </header>
+
+  <section class="card">
+    <p class="main-message">علامتك لا تُعرّفك… <strong>أخلاقك هي التي ترفعك.</strong></p>
+    <p class="intro">
+      الامتحان ليس مجرد ورقة وأسئلة، بل فرصة لتكتشف ما تعلمته وتعرف ما تحتاج إلى تحسينه.
+      لا تجعل خوفك من علامة低ة يدفعك إلى خسارة شيء أكبر: ثقتك بنفسك وصدقك.
+    </p>
+
+    <div class="messages">
+      <div class="message"><span class="mark">✓</span><div><b>الغش ليس نجاحًا.</b><br>إنه علامة لا تعكس مستواك الحقيقي.</div></div>
+      <div class="message"><span class="mark">✓</span><div><b>ثق بنفسك.</b><br>ما تعرفه اليوم هو ثمرة جهدك، وما لا تعرفه يمكنك تعلمه.</div></div>
+      <div class="message"><span class="mark">✓</span><div><b>خطؤك فرصة للتعلم.</b><br>إجابة خاطئة بصدق أفضل من علامة مزيفة.</div></div>
+      <div class="message"><span class="mark">✓</span><div><b>الأمانة قبل العلامة.</b><br>حافظ على نزاهتك حتى عندما لا يراقبك أحد.</div></div>
+      <div class="message"><span class="mark">✓</span><div><b>لا تظلم زملاءك.</b><br>العدل واحترام مجهود الآخرين من أخلاق التلميذ الواعي.</div></div>
+      <div class="message"><span class="mark">✓</span><div><b>تعلّم من أجل مستقبلك.</b><br>المعرفة التي تكتسبها سترافقك، أما العلامة وحدها فستنتهي.</div></div>
+    </div>
+
+    <div class="quote">
+      «لا أريد علامة لا أستحقها، بل أريد أن أكون أفضل مما كنت عليه بالأمس.»
+    </div>
+    <div class="signature">
+      معًا من أجل مدرسة يسودها الاحترام والنزاهة
+      <strong>Farid Mezane</strong>
+    </div>
+  </section>
+  <footer>النجاح الحقيقي يبدأ بالصدق وينمو بالاجتهاد.</footer>
+</main>
+</body>
+</html>
